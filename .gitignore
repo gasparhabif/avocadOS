@@ -1,16 +1,3 @@
-## Combination to ignore files without extension
-
-# Ignore all
-*
-
-# Unignore all without extensions
-!*.*
-
-# Unignore all dirs
-!*/
-
-## End of combination
-
 # Prerequisites
 *.d
 
