@@ -1,24 +1,8 @@
-## START COMBINATION
-
-# Ignore all
-*
-
-# Unignore all with extensions
-!*.*
-
-# Unignore all dirs
-!*/
-
-## END COMBINATION
-
-# Ignore logs
-*.log
-
 # Prerequisites
 *.d
 
 # Object files
-*.o
+# *.o
 *.ko
 *.obj
 *.elf
