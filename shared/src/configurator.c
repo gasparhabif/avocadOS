@@ -5,21 +5,18 @@ t_cpu_conf *get_cpu_config(char *path)
     t_cpu_conf *response = malloc(sizeof(t_cpu_conf));
     t_config *basicConfig = config_create(path);
 
-    printf("Read file %s", path);
     // TODO: Add check existance: bool config_has_property(t_config*, char* key);
     // TODO: Add checks to formats
-    // (response)->ip_ram = config_get_string_value(basicConfig, "IP_MI_RAM_HQ");
-    // response->puerto_ram = config_get_int_value(basicConfig, "PUERTO_MI_RAM_HQ");
-    // (response)->ip_mongo = config_get_string_value(basicConfig, "IP_I_MONGO_STORE");
-    printf("Leo del archivo: %i", config_get_int_value(basicConfig, "PUERTO_I_MONGO_STORE"));
+    response->ip_ram = config_get_string_value(basicConfig, "IP_MI_RAM_HQ");
+    response->puerto_ram = config_get_int_value(basicConfig, "PUERTO_MI_RAM_HQ");
+    response->ip_mongo = config_get_string_value(basicConfig, "IP_I_MONGO_STORE");
     response->puerto_mongo = config_get_int_value(basicConfig, "PUERTO_I_MONGO_STORE");
-    printf("Guardo en el response: %i", response->puerto_mongo);
-    // response->grado_multitarea = config_get_int_value(basicConfig, "GRADO_MULTITAREA");
-    // // TODO: Chequear algoritmo valido
-    // response->algoritmo = config_get_string_value(basicConfig, "ALGORITMO");
-    // response->quantum = config_get_int_value(basicConfig, "QUANTUM");
-    // response->duracion_sabotaje = config_get_int_value(basicConfig, "DURACION_SABOTAJE");
-    // response->retardo_ciclo_cpu = config_get_int_value(basicConfig, "RETARDO_CICLO_CPU");
+    response->grado_multitarea = config_get_int_value(basicConfig, "GRADO_MULTITAREA");
+    // TODO: Chequear algoritmo valido
+    response->algoritmo = config_get_string_value(basicConfig, "ALGORITMO");
+    response->quantum = config_get_int_value(basicConfig, "QUANTUM");
+    response->duracion_sabotaje = config_get_int_value(basicConfig, "DURACION_SABOTAJE");
+    response->retardo_ciclo_cpu = config_get_int_value(basicConfig, "RETARDO_CICLO_CPU");
 
     free(basicConfig);
 
