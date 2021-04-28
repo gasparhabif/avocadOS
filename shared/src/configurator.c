@@ -1,19 +1,5 @@
 #include "configurator.h"
 
-void main()
-{
-
-    //asignar valor de config a la variable valor
-    valor = config_get_string_value(config, "CLAVE");
-    ip = config_get_string_value(config, "IP");
-    puerto = config_get_string_value(config, "PUERTO");
-}
-
-t_config *leer_config(void)
-{
-    return config_create("tp0.config");
-}
-
 t_cpu_conf *get_cpu_config(char *path)
 {
     t_cpu_conf *response = malloc(sizeof(t_cpu_conf));

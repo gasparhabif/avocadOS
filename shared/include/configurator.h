@@ -40,7 +40,21 @@ typedef struct
 
 } t_ram_conf;
 
-// Free the return value of init_config after using it
+/* 
+    Loads all configuration values for CPU (Discordiador)
+    in a Struct with previous corresponding checks.
+    You must free the return value after using it.
+*/
 t_cpu_conf *get_cpu_config(char *);
+/* 
+    Loads all configuration values for Store (i-Mongo-Store)
+    in a Struct with previous corresponding checks.
+    You must free the return value after using it.
+*/
 t_store_conf *get_store_config(char *);
+/* 
+    Loads all configuration values for CPU (Mi-Ram-HQ)
+    in a Struct with previous corresponding checks.
+    You must free the return value after using it.
+*/
 t_ram_conf *get_ram_config(char *);
