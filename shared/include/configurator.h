@@ -41,6 +41,6 @@ typedef struct
 } t_ram_conf;
 
 // Free the return value of init_config after using it
-t_cpu_conf *get_cpu_config(String);
-t_store_conf *get_store_config(String);
-t_ram_conf *get_ram_config(String);
+t_cpu_conf *get_cpu_config(char *);
+t_store_conf *get_store_config(char *);
+t_ram_conf *get_ram_config(char *);
