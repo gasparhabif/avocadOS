@@ -58,3 +58,5 @@ t_store_conf *get_store_config(char *);
     You must free the return value after using it.
 */
 t_ram_conf *get_ram_config(char *);
+
+#endif
