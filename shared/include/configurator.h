@@ -3,6 +3,7 @@
 
 #include <commons/config.h>
 #include <string.h>
+#include <stdlib.h>
 
 // DEBATE: Pasar ip y puerto a otro struct
 // DEBATE: Usar enum para todos los campos de cada archivo
