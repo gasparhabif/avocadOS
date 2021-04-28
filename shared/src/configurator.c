@@ -6,9 +6,9 @@ t_cpu_conf *get_cpu_config(char *path)
     t_config basicConfig = config_create(path);
     // TODO: Add check existance: bool config_has_property(t_config*, char* key);
     // TODO: Add checks to formats
-    response->ip_ram = config_get_string_value(basicConfig, "IP_MI_RAM_HQ");
+    (response)->ip_ram = config_get_string_value(basicConfig, "IP_MI_RAM_HQ");
     response->puerto_ram = config_get_int_value(basicConfig, "PUERTO_MI_RAM_HQ");
-    response->ip_mongo = config_get_string_value(basicConfig, "IP_I_MONGO_STORE");
+    (response)->ip_mongo = config_get_string_value(basicConfig, "IP_I_MONGO_STORE");
     response->puerto_mongo = config_get_int_value(basicConfig, "PUERTO_I_MONGO_STORE");
     response->grado_multitarea = config_get_int_value(basicConfig, "GRADO_MULTITAREA");
     // TODO: Chequear algoritmo valido
