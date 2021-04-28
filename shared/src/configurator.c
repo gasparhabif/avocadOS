@@ -3,7 +3,7 @@
 t_cpu_conf *get_cpu_config(char *path)
 {
     t_cpu_conf *response = malloc(sizeof(t_cpu_conf));
-    t_config basicConfig = config_create(path);
+    t_config *basicConfig = config_create(path);
     // TODO: Add check existance: bool config_has_property(t_config*, char* key);
     // TODO: Add checks to formats
     (response)->ip_ram = config_get_string_value(basicConfig, "IP_MI_RAM_HQ");
@@ -17,12 +17,14 @@ t_cpu_conf *get_cpu_config(char *path)
     response->duracion_sabotaje = config_get_int_value(basicConfig, "DURACION_SABOTAJE");
     response->retardo_ciclo_cpu = config_get_int_value(basicConfig, "RETARDO_CICLO_CPU");
 
+    free(basicConfig);
+
     return response;
 }
 t_store_conf *get_store_config(char *path)
 {
     t_store_conf *response = malloc(sizeof(t_store_conf));
-    t_config basicConfig = config_create(path);
+    t_config *basicConfig = config_create(path);
     // TODO: Add check existance: bool config_has_property(t_config*, char* key);
 
     // TODO: Check existing file or create it
@@ -30,12 +32,14 @@ t_store_conf *get_store_config(char *path)
     response->puerto = config_get_int_value(basicConfig, "PUERTO");
     response->tiempo_sincronizacion = config_get_int_value(basicConfig, "TIEMPO_SINCRONIZACION");
 
+    free(basicConfig);
+
     return response;
 }
 t_ram_conf *get_ram_config(char *path)
 {
     t_ram_conf *response = malloc(sizeof(t_ram_conf));
-    t_config basicConfig = config_create(path);
+    t_config *basicConfig = config_create(path);
 
     // TODO: Add check existance: bool config_has_property(t_config*, char* key);
     response->tamanio_memoria = config_get_int_value(basicConfig, "TAMANIO_MEMORIA");
@@ -49,6 +53,8 @@ t_ram_conf *get_ram_config(char *path)
     // TODO: Chequear algoritmo valido
     response->algoritmo_reemplazo = config_get_string_value(basicConfig, "ALGORITMO_REEMPLAZO");
     response->puerto = config_get_int_value(basicConfig, "PUERTO");
+
+    free(basicConfig);
 
     return response;
 }
