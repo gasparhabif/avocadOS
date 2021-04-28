@@ -4,6 +4,8 @@ t_cpu_conf *get_cpu_config(char *path)
 {
     t_cpu_conf *response = malloc(sizeof(t_cpu_conf));
     t_config *basicConfig = config_create(path);
+
+    printf("Read file %s", path);
     // TODO: Add check existance: bool config_has_property(t_config*, char* key);
     // TODO: Add checks to formats
     (response)->ip_ram = config_get_string_value(basicConfig, "IP_MI_RAM_HQ");
