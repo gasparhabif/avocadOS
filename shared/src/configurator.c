@@ -14,7 +14,7 @@ t_config *leer_config(void)
     return config_create("tp0.config");
 }
 
-t_cpu_conf *init_config(String path)
+t_cpu_conf *get_cpu_config(String path)
 {
     t_cpu_conf *response = malloc(sizeof(t_cpu_conf));
     t_config basicConfig = config_create(path);
@@ -33,7 +33,7 @@ t_cpu_conf *init_config(String path)
 
     return response;
 }
-t_store_conf *init_config(String path)
+t_store_conf *get_store_config(String path)
 {
     t_store_conf *response = malloc(sizeof(t_store_conf));
     t_config basicConfig = config_create(path);
@@ -46,7 +46,7 @@ t_store_conf *init_config(String path)
 
     return response;
 }
-t_ram_conf *init_config(String path)
+t_ram_conf *get_ram_config(String path)
 {
     t_ram_conf *response = malloc(sizeof(t_ram_conf));
     t_config basicConfig = config_create(path);
