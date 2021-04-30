@@ -4,10 +4,43 @@
 #include <commons/config.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <stdio.h> // Eliminar luego
 
-// DEBATE: Pasar ip y puerto a otro struct
-// DEBATE: Usar enum para todos los campos de cada archivo
+// TODO: Desarrollar destroyers para cada TAD
+
+#define CANTIDAD_CAMPOS_CPU 9
+#define CANTIDAD_CAMPOS_STORE 3
+#define CANTIDAD_CAMPOS_RAM 7
+
+enum POS_CAMPOS_CPU
+{
+    IP_RAM,
+    PUERTO_RAM,
+    IP_MONGO,
+    PUERTO_MONGO,
+    GRADO_MULTITAREA,
+    ALGORITMO,
+    QUANTUM,
+    DURACION_SABOTAJE,
+    RETARDO_CICLO_CPU
+};
+
+enum POS_CAMPOS_STORE
+{
+    PUNTO_MONTAJE,
+    STORE_PUERTO,
+    TIEMPO_SINCRONIZACION
+};
+enum POS_CAMPOS_RAM
+{
+    TAMANIO_MEMORIA,
+    ESQUEMA_MEMORIA,
+    TAMANIO_PAGINA,
+    TAMANIO_SWAP,
+    PATH_SWAP,
+    ALGORITMO_REEMPLAZO,
+    RAM_PUERTO
+};
 
 typedef struct
 {
