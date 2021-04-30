@@ -3,143 +3,149 @@
 t_log *g_logger;
 t_config *g_config;
 
-int main(int argc, char **argv){
+int main(int argc, char **argv)
+{
 
-	char *ip_RAM, *puerto_RAM;
-	char *ip_MONGO, *puerto_MONGO;
+	char *ip_RAM, *ip_MONGO;
+	int puerto_RAM = 101, puerto_MONGO = 100;
 
-	pid_t p_ram, p_mongo;
+	// pid_t p_ram, p_mongo;
 
 	iniciar_logger(g_logger);
 	iniciar_config(g_config);
 
-	//leer_config_dConexion(ip_RAM, puerto_RAM, ip_MONGO, puerto_MONGO);
-	ip_RAM = leer_config("IP_MI_RAM_HQ");
-	puerto_RAM = leer_config("PUERTO_MI_RAM_HQ");
-	ip_MONGO = leer_config("IP_I_MONGO_STORE");
-	puerto_MONGO = leer_config("PUERTO_I_MONGO_STORE");
+	ip_RAM = malloc(sizeof(ip_RAM));
+	ip_MONGO = malloc(sizeof(ip_MONGO));
+
+	ip_RAM = config_get_string_value(g_config, "IP_MI_RAM_HQ");
+	// puerto_RAM = config_get_int_value(g_config, "PUERTO_MI_RAM_HQ");
+	ip_MONGO = config_get_string_value(g_config, "IP_I_MONGO_STORE");
+	// puerto_MONGO = config_get_int_value(g_config, "PUERTO_I_MONGO_STORE");
 
 	log_info(g_logger, "\nObtuve IP de ram: %s, puerto: %s\nObtuve IP de MONGO: %s, puerto: %s", ip_RAM, puerto_RAM, ip_MONGO, puerto_MONGO);
 
-	p_ram= fork();
+	// p_ram = fork();
 
-	if(p_ram == 0){
+	// if (p_ram == 0)
+	// {
 
-		//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
-		log_info(g_logger, "Conectando con RAM...");
+	// 	//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
+	// 	log_info(g_logger, "Conectando con RAM...");
 
-		int sockfd_ram;
-		struct sockaddr_in ram_addr;
+	// 	int sockfd_ram;
+	// 	struct sockaddr_in *ram_addr;
 
-		if( (sockfd_ram = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-				perror("Socket MI_RAM_HQ ERROR");
-		}
+	// 	if ((sockfd_ram = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+	// 	{
+	// 		perror("Socket MI_RAM_HQ ERROR");
+	// 	}
 
-		ram_addr.sin_family = AF_INET;
-		ram_addr.sin_port = htons(puerto_RAM);
-		ram_addr.sin_addr.s_addr = INADDR_ANY;
-		memset(&(ram_addr.sin_zero), '\0', 8);
+	// 	ram_addr->sin_family = AF_INET;
+	// 	// ram_addr->sin_port = htons(puerto_RAM);
+	// 	ram_addr->sin_addr.s_addr = INADDR_ANY;
+	// 	memset(&(ram_addr->sin_zero), '\0', 8);
 
-		if (connect(sockfd_ram, (struct sockaddr *)&ram_addr, sizeof(struct sockaddr)) == -1) {
-			perror("Connect MI_RAM_HQ ERROR");
-		}
+	// 	if (connect(sockfd_ram, (struct sockaddr *)&ram_addr, sizeof(struct sockaddr)) == -1)
+	// 	{
+	// 		perror("Connect MI_RAM_HQ ERROR");
+	// 	}
 
-		char *enviarPorRam = "Soy el discordiador! Me conecte";
+	// 	char *enviarPorRam = "Soy el discordiador! Me conecte";
 
-		int bEnviadosPorRam = send(sockfd_ram, enviarPorRam, sizeof(enviarPorRam), 0);
-		log_info(g_logger, "Mande %s, en total %d bytes", enviarPorRam, bEnviadosPorRam);
+	// 	int bEnviadosPorRam = send(sockfd_ram, enviarPorRam, sizeof(enviarPorRam), 0);
+	// 	log_info(g_logger, "Mande %s, en total %d bytes", enviarPorRam, bEnviadosPorRam);
 
-		close(sockfd_ram);
+	// 	close(sockfd_ram);
 
-		exit(0);
+	// 	exit(0);
 
-		//FIN DEL PROCESO HIJO: 		MI_RAM_HQ
-	}
+	// 	//FIN DEL PROCESO HIJO: 		MI_RAM_HQ
+	// }
 
-	else{
-		p_mongo = fork();
+	// else
+	// {
+	// 	p_mongo = fork();
 
-		if (p_mongo == 0) {
+	// 	if (p_mongo == 0)
+	// 	{
 
-			//INICIO DEL PROCESO HIJO: 	I_MONGO_STORE
+	// 		//INICIO DEL PROCESO HIJO: 	I_MONGO_STORE
 
-			log_info(g_logger, "Conectando con MONGO...");
+	// 		log_info(g_logger, "Conectando con MONGO...");
 
-			int sockfd_mongo;
-			struct sockaddr_in mongo_addr;
+	// 		int sockfd_mongo;
+	// 		struct sockaddr_in mongo_addr;
 
-			if( (sockfd_mongo = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-				perror("Socket I_MONGO_STORE ERROR");
-			}
+	// 		if ((sockfd_mongo = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+	// 		{
+	// 			perror("Socket I_MONGO_STORE ERROR");
+	// 		}
 
-			mongo_addr.sin_family = AF_INET;
-			mongo_addr.sin_port = htons(puerto_MONGO);
-			mongo_addr.sin_addr.s_addr = INADDR_ANY;
-			memset(&(mongo_addr.sin_zero), '\0', 8);
+	// 		mongo_addr.sin_family = AF_INET;
+	// 		// mongo_addr.sin_port = htons(puerto_MONGO);
+	// 		mongo_addr.sin_addr.s_addr = INADDR_ANY;
+	// 		memset(&(mongo_addr.sin_zero), '\0', 8);
 
-			if (connect(sockfd_mongo, (struct sockaddr *)&mongo_addr, sizeof(struct sockaddr)) == -1) {
-				perror("Connect I_MONGO_STORE ERROR");
-			}
+	// 		if (connect(sockfd_mongo, (struct sockaddr *)&mongo_addr, sizeof(struct sockaddr)) == -1)
+	// 		{
+	// 			perror("Connect I_MONGO_STORE ERROR");
+	// 		}
 
-			char *enviarPorMongo = "Soy el discordiador! Me conecte";
+	// 		char *enviarPorMongo = "Soy el discordiador! Me conecte";
 
-			int bEnviadosPorMongo = send(sockfd_mongo, enviarPorMongo, sizeof(enviarPorMongo), 0);
-			log_info(g_logger, "Mande %s, en total %d bytes", enviarPorMongo, bEnviadosPorMongo);
+	// 		int bEnviadosPorMongo = send(sockfd_mongo, enviarPorMongo, sizeof(enviarPorMongo), 0);
+	// 		log_info(g_logger, "Mande %s, en total %d bytes", enviarPorMongo, bEnviadosPorMongo);
 
-			close(sockfd_mongo);
+	// 		close(sockfd_mongo);
 
-			exit(0);
+	// 		exit(0);
 
-			//FIN DEL PROCESO HIJO: 	I_MONGO_STORE
+	// 		//FIN DEL PROCESO HIJO: 	I_MONGO_STORE
+	// 	}
+	// 	else
+	// 	{
+	// 		//PADRE
 
-		}
-		else{
-	        //PADRE
+	// 		//Esperar INICIAR_PLANIFICACION por consola
 
-			//Esperar INICIAR_PLANIFICACION por consola
+	// 		char *leido;
 
-			char * leido;
+	// 		leido = readline(">");
 
-			leido = readline(">");
+	// 		while (strcmp(leido, ""))
+	// 		{
 
-			while(strcmp(leido, "")){
+	// 			leido = readline(">");
+	// 		}
 
+	// 		exit(0);
+	// 	}
+	// }
 
-				leido = readline(">");
-			}
-
-			exit(0);
-	    }
-	}
+	free(ip_MONGO);
+	free(ip_RAM);
 
 	log_destroy(g_logger);
 	config_destroy(g_config);
 
-
-
 	return EXIT_SUCCESS;
 }
 
-void iniciar_logger(){
+void iniciar_logger()
+{
 	g_logger = log_create("discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
 	log_info(g_logger, "Se inicio el log del discordiador: proceso %d", getpid());
 	return;
 }
 
-void iniciar_config(){
+void iniciar_config()
+{
 	g_config = config_create("discordiador.config");
 	return;
 }
 
-void leer_config_dConexion(char *ip_RAM, char *puerto_RAM, char *ip_MONGO, char *puerto_MONGO){
-	ip_RAM = leer_config("IP_MI_RAM_HQ");
-	puerto_RAM = leer_config("PUERTO_MI_RAM_HQ");
-	ip_MONGO = leer_config("IP_I_MONGO_STORE");
-	puerto_MONGO = leer_config("PUERTO_I_MONGO_STORE");
-	return;
-}
-
-char* leer_config(char* dato){
+char *leer_config(char *dato)
+{
 	char *valor;
 	valor = config_get_string_value(g_config, dato);
 	return valor;

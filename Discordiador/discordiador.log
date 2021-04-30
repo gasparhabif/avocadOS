@@ -1,0 +1,64 @@
+[INFO] 21:23:57:369 DISCORDIADOR/(2119:2119): Se inicio el log del discordiador: proceso 2119
+[INFO] 21:24:33:329 DISCORDIADOR/(2132:2132): Se inicio el log del discordiador: proceso 2132
+[INFO] 21:25:06:163 DISCORDIADOR/(2146:2146): Se inicio el log del discordiador: proceso 2146
+[INFO] 21:25:50:076 DISCORDIADOR/(2159:2159): Se inicio el log del discordiador: proceso 2159
+[INFO] 21:25:50:076 DISCORDIADOR/(2159:2159): Se procedera a leer el archivo
+[INFO] 21:26:17:651 DISCORDIADOR/(2175:2175): Se inicio el log del discordiador: proceso 2175
+[INFO] 21:26:17:651 DISCORDIADOR/(2175:2175): Se procedera a leer el archivo
+[INFO] 21:26:17:652 DISCORDIADOR/(2175:2175): Retorne
+[INFO] 21:28:00:815 DISCORDIADOR/(2188:2188): Se inicio el log del discordiador: proceso 2188
+[INFO] 21:28:00:816 DISCORDIADOR/(2188:2188): aca llegue
+[INFO] 21:28:10:116 DISCORDIADOR/(2200:2200): Se inicio el log del discordiador: proceso 2200
+[INFO] 21:30:22:227 DISCORDIADOR/(2230:2230): Se inicio el log del discordiador: proceso 2230
+[INFO] 21:31:06:736 DISCORDIADOR/(2243:2243): Se inicio el log del discordiador: proceso 2243
+[INFO] 21:31:06:737 DISCORDIADOR/(2243:2243): Aca si:
+[INFO] 21:31:06:737 DISCORDIADOR/(2243:2243): Aca si 2:
+[INFO] 21:34:20:316 DISCORDIADOR/(2268:2268): Se inicio el log del discordiador: proceso 2268
+[INFO] 21:34:43:189 DISCORDIADOR/(2280:2280): Se inicio el log del discordiador: proceso 2280
+[INFO] 21:34:43:190 DISCORDIADOR/(2280:2280): Existe la prop: %b
+[INFO] 21:34:43:190 DISCORDIADOR/(2280:2280): Aca si: 3
+[INFO] 21:34:43:191 DISCORDIADOR/(2280:2280): 
+Obtuve IP de ram: 127.0.0.1
+[INFO] 21:34:43:191 DISCORDIADOR/(2280:2282): Conectando con MONGO...
+[INFO] 21:34:43:192 DISCORDIADOR/(2280:2281): Conectando con RAM...
+[INFO] 21:36:48:853 DISCORDIADOR/(2293:2293): Se inicio el log del discordiador: proceso 2293
+[INFO] 21:37:19:581 DISCORDIADOR/(2305:2305): Se inicio el log del discordiador: proceso 2305
+[INFO] 21:38:01:999 DISCORDIADOR/(2317:2317): Se inicio el log del discordiador: proceso 2317
+[INFO] 21:38:40:657 DISCORDIADOR/(2329:2329): Se inicio el log del discordiador: proceso 2329
+[INFO] 21:38:59:179 DISCORDIADOR/(2341:2341): Se inicio el log del discordiador: proceso 2341
+[INFO] 21:39:29:548 DISCORDIADOR/(2353:2353): Se inicio el log del discordiador: proceso 2353
+[INFO] 21:39:29:549 DISCORDIADOR/(2353:2353): Hola 127.0.0.1
+[INFO] 21:39:29:550 DISCORDIADOR/(2353:2355): Conectando con MONGO...
+[INFO] 21:39:29:550 DISCORDIADOR/(2353:2354): Conectando con RAM...
+[INFO] 21:40:06:997 DISCORDIADOR/(2366:2366): Se inicio el log del discordiador: proceso 2366
+[INFO] 21:40:28:260 DISCORDIADOR/(2378:2378): Se inicio el log del discordiador: proceso 2378
+[INFO] 21:40:43:958 DISCORDIADOR/(2390:2390): Se inicio el log del discordiador: proceso 2390
+[INFO] 21:41:16:200 DISCORDIADOR/(2402:2402): Se inicio el log del discordiador: proceso 2402
+[INFO] 21:41:16:201 DISCORDIADOR/(2402:2402): Hola 127.0.0.1
+[INFO] 21:41:16:202 DISCORDIADOR/(2402:2404): Conectando con MONGO...
+[INFO] 21:41:16:202 DISCORDIADOR/(2402:2403): Conectando con RAM...
+[INFO] 21:43:36:995 DISCORDIADOR/(2415:2415): Se inicio el log del discordiador: proceso 2415
+[INFO] 21:43:36:996 DISCORDIADOR/(2415:2415): Hola 127.0.0.1
+[INFO] 21:43:36:997 DISCORDIADOR/(2415:2417): Conectando con MONGO...
+[INFO] 21:43:36:998 DISCORDIADOR/(2415:2416): Conectando con RAM...
+[INFO] 21:44:26:202 DISCORDIADOR/(2427:2427): Se inicio el log del discordiador: proceso 2427
+[INFO] 21:44:39:810 DISCORDIADOR/(2439:2439): Se inicio el log del discordiador: proceso 2439
+[INFO] 21:47:42:795 DISCORDIADOR/(2451:2451): Se inicio el log del discordiador: proceso 2451
+[INFO] 21:47:53:232 DISCORDIADOR/(2463:2463): Se inicio el log del discordiador: proceso 2463
+[INFO] 21:48:15:031 DISCORDIADOR/(2475:2475): Se inicio el log del discordiador: proceso 2475
+[INFO] 21:48:27:432 DISCORDIADOR/(2487:2487): Se inicio el log del discordiador: proceso 2487
+[INFO] 21:49:06:911 DISCORDIADOR/(2503:2503): Se inicio el log del discordiador: proceso 2503
+[INFO] 21:50:08:722 DISCORDIADOR/(2509:2509): Se inicio el log del discordiador: proceso 2509
+[INFO] 21:50:24:080 DISCORDIADOR/(2521:2521): Se inicio el log del discordiador: proceso 2521
+[INFO] 21:50:39:746 DISCORDIADOR/(2533:2533): Se inicio el log del discordiador: proceso 2533
+[INFO] 22:02:52:710 DISCORDIADOR/(2540:2540): Se inicio el log del discordiador: proceso 2540
+[INFO] 22:06:24:897 DISCORDIADOR/(2546:2546): Se inicio el log del discordiador: proceso 2546
+[INFO] 22:07:29:727 DISCORDIADOR/(2558:2558): Se inicio el log del discordiador: proceso 2558
+[INFO] 22:08:32:410 DISCORDIADOR/(2570:2570): Se inicio el log del discordiador: proceso 2570
+[INFO] 22:08:53:746 DISCORDIADOR/(2582:2582): Se inicio el log del discordiador: proceso 2582
+[INFO] 22:09:06:495 DISCORDIADOR/(2594:2594): Se inicio el log del discordiador: proceso 2594
+[INFO] 22:12:55:501 DISCORDIADOR/(2600:2600): Se inicio el log del discordiador: proceso 2600
+[INFO] 22:13:39:175 DISCORDIADOR/(2612:2612): Se inicio el log del discordiador: proceso 2612
+[INFO] 22:14:03:929 DISCORDIADOR/(2624:2624): Se inicio el log del discordiador: proceso 2624
+[INFO] 22:18:12:078 DISCORDIADOR/(2640:2640): Se inicio el log del discordiador: proceso 2640
+[INFO] 22:21:13:102 DISCORDIADOR/(1741:1741): Se inicio el log del discordiador: proceso 1741
