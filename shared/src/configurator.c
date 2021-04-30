@@ -87,7 +87,7 @@ t_store_conf *get_store_config(char *path)
 static void llenar_campos_store(char *response[CANTIDAD_CAMPOS_STORE])
 {
     response[PUNTO_MONTAJE] = "PUNTO_MONTAJE";
-    response[PUERTO_STORE] = "PUERTO";
+    response[STORE_PUERTO] = "PUERTO";
     response[TIEMPO_SINCRONIZACION] = "TIEMPO_SINCRONIZACION";
 }
 
@@ -125,5 +125,5 @@ static void llenar_campos_ram(char *response[CANTIDAD_CAMPOS_RAM])
     response[TAMANIO_SWAP] = "TAMANIO_SWAP";
     response[PATH_SWAP] = "PATH_SWAP";
     response[ALGORITMO_REEMPLAZO] = "ALGORITMO_REEMPLAZO";
-    response[PUERTO_RAM] = "PUERTO";
+    response[RAM_PUERTO] = "PUERTO";
 }
