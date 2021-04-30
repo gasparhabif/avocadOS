@@ -15,13 +15,14 @@ int main(int argc, char **argv)
 
 	p_ram = fork();
 
+	char *msg = "Prueba";
+
 	if (p_ram == 0)
 	{
 		//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
 
 		int socketfd_ram;
 		struct sockaddr_in ram_addr;
-		//ram_addr = malloc(sizeof(struct sockaddr_in));
 
 		log_info(g_logger, "Conectando con RAM...");
 
@@ -29,12 +30,6 @@ int main(int argc, char **argv)
 		{
 			perror("Socket MI_RAM_HQ ERROR");
 		}
-/*
-		ram_addr->sin_family = AF_INET;
-		ram_addr->sin_port = htons(config->puerto_ram);
-		ram_addr->sin_addr.s_addr = INADDR_ANY;
-		//memset(&(ram_addr->sin_zero), '\0', 8);
-*/
 
 		ram_addr.sin_family = AF_INET;
 		ram_addr.sin_port = htons(config->puerto_ram);
@@ -46,16 +41,11 @@ int main(int argc, char **argv)
 			perror("Connect MI_RAM_HQ ERROR");
 		}
 
-		//free(ram_addr);
-
-		char *enviarPorRam = "Soy el discordiador! Me conecte";
-
-		int bEnviadosPorRam = send(socketfd_ram, enviarPorRam, sizeof(enviarPorRam), 0);
-		log_info(g_logger, "Mande %s, en total %d bytes", enviarPorRam, bEnviadosPorRam);
+		int bEnviadosPorRam = send(socketfd_ram, msg, sizeof(msg), 0);
+		log_info(g_logger, "Mande %s, en total %d bytes", msg, bEnviadosPorRam);
 
 		close(socketfd_ram);
 
-		kill(p_ram, SIGTERM);
 		exit(0);
 
 		//FIN DEL PROCESO HIJO: 		MI_RAM_HQ
@@ -72,7 +62,6 @@ int main(int argc, char **argv)
 
 			int sockfd_mongo;
 			struct sockaddr_in mongo_addr;
-			//mongo_addr = malloc(sizeof(struct sockaddr_in));
 
 			log_info(g_logger, "Conectando con MONGO...");
 
@@ -80,12 +69,7 @@ int main(int argc, char **argv)
 			{
 				perror("Socket I_MONGO_STORE ERROR");
 			}
-/*
-			mongo_addr->sin_family = AF_INET;
-			mongo_addr->sin_port = htons(config->puerto_mongo);
-			mongo_addr->sin_addr.s_addr = INADDR_ANY;
-			//memset(&(mongo_addr.sin_zero), '\0', 8);
-*/
+
 			mongo_addr.sin_family = AF_INET;
 			mongo_addr.sin_port = htons(config->puerto_mongo);
 			mongo_addr.sin_addr.s_addr = INADDR_ANY;
@@ -96,12 +80,8 @@ int main(int argc, char **argv)
 				perror("Connect I_MONGO_STORE ERROR");
 			}
 
-			//free(mongo_addr);
-
-			char *enviarPorMongo = "Soy el discordiador! Me conecte";
-
-			int bEnviadosPorMongo = send(sockfd_mongo, enviarPorMongo, sizeof(enviarPorMongo), 0);
-			log_info(g_logger, "Mande %s, en total %d bytes", enviarPorMongo, bEnviadosPorMongo);
+			int bEnviadosPorMongo = send(sockfd_mongo, msg, sizeof(msg), 0);
+			log_info(g_logger, "Mande %s, en total %d bytes", msg, bEnviadosPorMongo);
 
 			close(sockfd_mongo);
 
@@ -114,8 +94,6 @@ int main(int argc, char **argv)
 			//PADRE
 
 			//Esperar INICIAR_PLANIFICACION por consola
-
-			wait(NULL);
 
 			char *leido;
 
