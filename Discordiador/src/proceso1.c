@@ -17,31 +17,36 @@ int main(int argc, char **argv)
 
 	if (p_ram == 0)
 	{
-		int socketfd_ram;
-		struct sockaddr_in *ram_addr;
-		ram_addr = malloc(sizeof(struct sockaddr_in));
-
 		//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
+
+		int socketfd_ram;
+		struct sockaddr_in ram_addr;
+		//ram_addr = malloc(sizeof(struct sockaddr_in));
+
 		log_info(g_logger, "Conectando con RAM...");
 
 		if ((socketfd_ram = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		{
 			perror("Socket MI_RAM_HQ ERROR");
 		}
-
+/*
 		ram_addr->sin_family = AF_INET;
 		ram_addr->sin_port = htons(config->puerto_ram);
 		ram_addr->sin_addr.s_addr = INADDR_ANY;
-		memset(&(ram_addr->sin_zero), '\0', 8);
+		//memset(&(ram_addr->sin_zero), '\0', 8);
+*/
 
-		log_info(g_logger, "Voy a intentar conectar");
+		ram_addr.sin_family = AF_INET;
+		ram_addr.sin_port = htons(config->puerto_ram);
+		ram_addr.sin_addr.s_addr = INADDR_ANY;
+		memset(&(ram_addr.sin_zero), '\0', 8);
 
 		if (connect(socketfd_ram, (struct sockaddr *)&ram_addr, sizeof(struct sockaddr)) == -1)
 		{
 			perror("Connect MI_RAM_HQ ERROR");
 		}
 
-		free(ram_addr);
+		//free(ram_addr);
 
 		char *enviarPorRam = "Soy el discordiador! Me conecte";
 
@@ -65,18 +70,24 @@ int main(int argc, char **argv)
 
 			//INICIO DEL PROCESO HIJO: 	I_MONGO_STORE
 
-			log_info(g_logger, "Conectando con MONGO...");
-
 			int sockfd_mongo;
 			struct sockaddr_in mongo_addr;
+			//mongo_addr = malloc(sizeof(struct sockaddr_in));
+
+			log_info(g_logger, "Conectando con MONGO...");
 
 			if ((sockfd_mongo = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 			{
 				perror("Socket I_MONGO_STORE ERROR");
 			}
-
+/*
+			mongo_addr->sin_family = AF_INET;
+			mongo_addr->sin_port = htons(config->puerto_mongo);
+			mongo_addr->sin_addr.s_addr = INADDR_ANY;
+			//memset(&(mongo_addr.sin_zero), '\0', 8);
+*/
 			mongo_addr.sin_family = AF_INET;
-			// mongo_addr.sin_port = htons(puerto_MONGO);
+			mongo_addr.sin_port = htons(config->puerto_mongo);
 			mongo_addr.sin_addr.s_addr = INADDR_ANY;
 			memset(&(mongo_addr.sin_zero), '\0', 8);
 
@@ -84,6 +95,8 @@ int main(int argc, char **argv)
 			{
 				perror("Connect I_MONGO_STORE ERROR");
 			}
+
+			//free(mongo_addr);
 
 			char *enviarPorMongo = "Soy el discordiador! Me conecte";
 
@@ -101,6 +114,8 @@ int main(int argc, char **argv)
 			//PADRE
 
 			//Esperar INICIAR_PLANIFICACION por consola
+
+			wait(NULL);
 
 			char *leido;
 
