@@ -1,132 +1,123 @@
 #include "proceso1.h"
 
 t_log *g_logger;
-t_config *g_config;
 
 int main(int argc, char **argv)
 {
 
-	char *ip_RAM, *ip_MONGO;
-	int puerto_RAM = 101, puerto_MONGO = 100;
+	t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
 
-	// pid_t p_ram, p_mongo;
+	pid_t p_ram, p_mongo;
 
 	iniciar_logger(g_logger);
-	iniciar_config(g_config);
 
-	ip_RAM = malloc(sizeof(ip_RAM));
-	ip_MONGO = malloc(sizeof(ip_MONGO));
+	log_info(g_logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
 
-	ip_RAM = config_get_string_value(g_config, "IP_MI_RAM_HQ");
-	// puerto_RAM = config_get_int_value(g_config, "PUERTO_MI_RAM_HQ");
-	ip_MONGO = config_get_string_value(g_config, "IP_I_MONGO_STORE");
-	// puerto_MONGO = config_get_int_value(g_config, "PUERTO_I_MONGO_STORE");
+	p_ram = fork();
 
-	log_info(g_logger, "\nObtuve IP de ram: %s, puerto: %s\nObtuve IP de MONGO: %s, puerto: %s", ip_RAM, puerto_RAM, ip_MONGO, puerto_MONGO);
+	if (p_ram == 0)
+	{
+		int socketfd_ram;
+		struct sockaddr_in *ram_addr;
+		ram_addr = malloc(sizeof(struct sockaddr_in));
 
-	// p_ram = fork();
+		//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
+		log_info(g_logger, "Conectando con RAM...");
 
-	// if (p_ram == 0)
-	// {
+		if ((socketfd_ram = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+		{
+			perror("Socket MI_RAM_HQ ERROR");
+		}
 
-	// 	//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
-	// 	log_info(g_logger, "Conectando con RAM...");
+		ram_addr->sin_family = AF_INET;
+		ram_addr->sin_port = htons(config->puerto_ram);
+		ram_addr->sin_addr.s_addr = INADDR_ANY;
+		memset(&(ram_addr->sin_zero), '\0', 8);
 
-	// 	int sockfd_ram;
-	// 	struct sockaddr_in *ram_addr;
+		log_info(g_logger, "Voy a intentar conectar");
 
-	// 	if ((sockfd_ram = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-	// 	{
-	// 		perror("Socket MI_RAM_HQ ERROR");
-	// 	}
+		if (connect(socketfd_ram, (struct sockaddr *)&ram_addr, sizeof(struct sockaddr)) == -1)
+		{
+			perror("Connect MI_RAM_HQ ERROR");
+		}
 
-	// 	ram_addr->sin_family = AF_INET;
-	// 	// ram_addr->sin_port = htons(puerto_RAM);
-	// 	ram_addr->sin_addr.s_addr = INADDR_ANY;
-	// 	memset(&(ram_addr->sin_zero), '\0', 8);
+		free(ram_addr);
 
-	// 	if (connect(sockfd_ram, (struct sockaddr *)&ram_addr, sizeof(struct sockaddr)) == -1)
-	// 	{
-	// 		perror("Connect MI_RAM_HQ ERROR");
-	// 	}
+		char *enviarPorRam = "Soy el discordiador! Me conecte";
 
-	// 	char *enviarPorRam = "Soy el discordiador! Me conecte";
+		int bEnviadosPorRam = send(socketfd_ram, enviarPorRam, sizeof(enviarPorRam), 0);
+		log_info(g_logger, "Mande %s, en total %d bytes", enviarPorRam, bEnviadosPorRam);
 
-	// 	int bEnviadosPorRam = send(sockfd_ram, enviarPorRam, sizeof(enviarPorRam), 0);
-	// 	log_info(g_logger, "Mande %s, en total %d bytes", enviarPorRam, bEnviadosPorRam);
+		close(socketfd_ram);
 
-	// 	close(sockfd_ram);
+		kill(p_ram, SIGTERM);
+		exit(0);
 
-	// 	exit(0);
+		//FIN DEL PROCESO HIJO: 		MI_RAM_HQ
+	}
 
-	// 	//FIN DEL PROCESO HIJO: 		MI_RAM_HQ
-	// }
+	else
+	{
+		p_mongo = fork();
 
-	// else
-	// {
-	// 	p_mongo = fork();
+		if (p_mongo == 0)
+		{
 
-	// 	if (p_mongo == 0)
-	// 	{
+			//INICIO DEL PROCESO HIJO: 	I_MONGO_STORE
 
-	// 		//INICIO DEL PROCESO HIJO: 	I_MONGO_STORE
+			log_info(g_logger, "Conectando con MONGO...");
 
-	// 		log_info(g_logger, "Conectando con MONGO...");
+			int sockfd_mongo;
+			struct sockaddr_in mongo_addr;
 
-	// 		int sockfd_mongo;
-	// 		struct sockaddr_in mongo_addr;
+			if ((sockfd_mongo = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+			{
+				perror("Socket I_MONGO_STORE ERROR");
+			}
 
-	// 		if ((sockfd_mongo = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-	// 		{
-	// 			perror("Socket I_MONGO_STORE ERROR");
-	// 		}
+			mongo_addr.sin_family = AF_INET;
+			// mongo_addr.sin_port = htons(puerto_MONGO);
+			mongo_addr.sin_addr.s_addr = INADDR_ANY;
+			memset(&(mongo_addr.sin_zero), '\0', 8);
 
-	// 		mongo_addr.sin_family = AF_INET;
-	// 		// mongo_addr.sin_port = htons(puerto_MONGO);
-	// 		mongo_addr.sin_addr.s_addr = INADDR_ANY;
-	// 		memset(&(mongo_addr.sin_zero), '\0', 8);
+			if (connect(sockfd_mongo, (struct sockaddr *)&mongo_addr, sizeof(struct sockaddr)) == -1)
+			{
+				perror("Connect I_MONGO_STORE ERROR");
+			}
 
-	// 		if (connect(sockfd_mongo, (struct sockaddr *)&mongo_addr, sizeof(struct sockaddr)) == -1)
-	// 		{
-	// 			perror("Connect I_MONGO_STORE ERROR");
-	// 		}
+			char *enviarPorMongo = "Soy el discordiador! Me conecte";
 
-	// 		char *enviarPorMongo = "Soy el discordiador! Me conecte";
+			int bEnviadosPorMongo = send(sockfd_mongo, enviarPorMongo, sizeof(enviarPorMongo), 0);
+			log_info(g_logger, "Mande %s, en total %d bytes", enviarPorMongo, bEnviadosPorMongo);
 
-	// 		int bEnviadosPorMongo = send(sockfd_mongo, enviarPorMongo, sizeof(enviarPorMongo), 0);
-	// 		log_info(g_logger, "Mande %s, en total %d bytes", enviarPorMongo, bEnviadosPorMongo);
+			close(sockfd_mongo);
 
-	// 		close(sockfd_mongo);
+			exit(0);
 
-	// 		exit(0);
+			//FIN DEL PROCESO HIJO: 	I_MONGO_STORE
+		}
+		else
+		{
+			//PADRE
 
-	// 		//FIN DEL PROCESO HIJO: 	I_MONGO_STORE
-	// 	}
-	// 	else
-	// 	{
-	// 		//PADRE
+			//Esperar INICIAR_PLANIFICACION por consola
 
-	// 		//Esperar INICIAR_PLANIFICACION por consola
+			char *leido;
 
-	// 		char *leido;
+			leido = readline(">");
 
-	// 		leido = readline(">");
+			while (strcmp(leido, ""))
+			{
 
-	// 		while (strcmp(leido, ""))
-	// 		{
+				leido = readline(">");
+			}
 
-	// 			leido = readline(">");
-	// 		}
-
-	// 		exit(0);
-	// 	}
-	// }
-
-	free(ip_MONGO);
-	free(ip_RAM);
+			exit(0);
+		}
+	}
 
 	log_destroy(g_logger);
-	config_destroy(g_config);
+	free(config);
 
 	return EXIT_SUCCESS;
 }
@@ -134,19 +125,6 @@ int main(int argc, char **argv)
 void iniciar_logger()
 {
 	g_logger = log_create("discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
-	log_info(g_logger, "Se inicio el log del discordiador: proceso %d", getpid());
+	log_info(g_logger, "Se inicio el log del discordiador: Proceso ID %d", getpid());
 	return;
-}
-
-void iniciar_config()
-{
-	g_config = config_create("discordiador.config");
-	return;
-}
-
-char *leer_config(char *dato)
-{
-	char *valor;
-	valor = config_get_string_value(g_config, dato);
-	return valor;
 }
