@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-char* mi_funcion_compartida();
+#include "configurator.h"
+
+char *mi_funcion_compartida();
 
 #endif

@@ -2,7 +2,7 @@
 
 int main()
 {
-    t_log *logger = log_create("./logs/proceso1.log", "PROCESO1", true, LOG_LEVEL_INFO);
-    log_info(logger, "Soy el proceso 1! %s", mi_funcion_compartida());
-    log_destroy(logger);
+    t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
+    printf("En el proceso 1 llega: %s\n", config->ip_ram);
+    free(config);
 }
