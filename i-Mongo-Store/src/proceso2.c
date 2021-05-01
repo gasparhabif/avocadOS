@@ -2,7 +2,7 @@
 
 int main()
 {
-    t_log *logger = log_create("./logs/proceso2.log", "PROCESO2", true, LOG_LEVEL_INFO);
-    log_info(logger, "Soy el proceso 2! %s", mi_funcion_compartida());
-    log_destroy(logger);
+    t_store_conf *config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
+    printf("PUNTO_MONTAJE: %s\nPUERTO: %d\nTIEMPO_SINCRONIZACION: %d\n", config->punto_montaje, config->puerto, config->tiempo_sincronizacion);
+    free(config);
 }
