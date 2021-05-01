@@ -6,6 +6,9 @@ static void llenar_campos_cpu(char **);
 static void llenar_campos_store(char **);
 static void llenar_campos_ram(char **);
 static void verificar_algoritmo_valido(char *);
+static void verificar_esquema_valido(char *);
+static void verificar_swap_valido(int, int);
+static void verificar_reemplazo_valido(char *);
 
 static void verificar_existencia_campos(char **campos, t_config *config)
 {
@@ -73,7 +76,7 @@ static void verificar_algoritmo_valido(char *algoritmo)
     if (!string_equals_ignore_case("FIFO", algoritmo) && !string_equals_ignore_case("RR", algoritmo))
     {
         printf("Error, el algoritmo %s especificado en el archivo de configuración no es válido.\n", algoritmo);
-        printf("\t(Algoritmos válidos: FIFO - RR)\n");
+        printf("\t->(Algoritmos válidos: FIFO - RR)\n");
         exit(0);
         // log error
     }
@@ -113,20 +116,51 @@ t_ram_conf *get_ram_config(char *path)
     verificar_existencia_campos(campos_ram, basicConfig);
 
     response->tamanio_memoria = config_get_int_value(basicConfig, campos_ram[TAMANIO_MEMORIA]);
-    // TODO: Chequear esquema valido
     response->esquema_memoria = config_get_string_value(basicConfig, campos_ram[ESQUEMA_MEMORIA]);
-    // TODO: Check que sea multiplo de 2
     response->tamanio_pagina = config_get_int_value(basicConfig, campos_ram[TAMANIO_PAGINA]);
     response->tamanio_swap = config_get_int_value(basicConfig, campos_ram[TAMANIO_SWAP]);
-    // TODO: Check existing file or create it
     response->path_swap = config_get_string_value(basicConfig, campos_ram[PATH_SWAP]);
-    // TODO: Chequear algoritmo valido
     response->algoritmo_reemplazo = config_get_string_value(basicConfig, campos_ram[ALGORITMO_REEMPLAZO]);
     response->puerto = config_get_int_value(basicConfig, campos_ram[RAM_PUERTO]);
+
+    verificar_esquema_valido(response->esquema_memoria);
+    verificar_swap_valido(response->tamanio_swap, response->tamanio_pagina);
+    verificar_reemplazo_valido(response->algoritmo_reemplazo);
 
     free(basicConfig);
 
     return response;
+}
+
+static void verificar_esquema_valido(char *esquema)
+{
+    if (!string_equals_ignore_case("SEGMENTACION", esquema) && !string_equals_ignore_case("PAGINACION", esquema))
+    {
+        printf("Error, el esquema %s especificado en el archivo de configuración no es válido.\n", esquema);
+        printf("\t-> (Esquemas válidos: SEGMENTACION - PAGINACION)\n");
+        exit(0);
+        // log error
+    }
+}
+static void verificar_swap_valido(int swap, int pagina)
+{
+    if (swap % pagina != 0)
+    {
+        printf("Error, el tamaño de SWAP %i especificado en el archivo de configuración no es válido.\n", swap);
+        printf("\t-> (El tamaño debe ser múltiplo del tamaño de la página)\n");
+        exit(0);
+        // log error
+    }
+}
+static void verificar_reemplazo_valido(char *reemplazo)
+{
+    if (!string_equals_ignore_case("LRU", reemplazo) && !string_equals_ignore_case("CLOCK", reemplazo))
+    {
+        printf("Error, el algoritmo de reemplazo %s especificado en el archivo de configuración no es válido.\n", reemplazo);
+        printf("\t-> (Esquemas válidos: LRU - CLOCK)\n");
+        exit(0);
+        // log error
+    }
 }
 
 static void llenar_campos_ram(char *response[CANTIDAD_CAMPOS_RAM])
