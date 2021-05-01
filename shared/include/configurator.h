@@ -2,7 +2,7 @@
 #define CONFIGURATOR_H_
 
 #include <commons/config.h>
-#include <string.h>
+#include <commons/string.h>
 #include <stdlib.h>
 #include <stdio.h> // Eliminar luego
 

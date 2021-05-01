@@ -5,6 +5,7 @@ int tamanio_string_array(char **);
 static void llenar_campos_cpu(char **);
 static void llenar_campos_store(char **);
 static void llenar_campos_ram(char **);
+static void verificar_algoritmo_valido(char *);
 
 static void verificar_existencia_campos(char **campos, t_config *config)
 {
@@ -41,11 +42,12 @@ t_cpu_conf *get_cpu_config(char *path)
     response->ip_mongo = config_get_string_value(basicConfig, campos_cpu[IP_MONGO]);
     response->puerto_mongo = config_get_int_value(basicConfig, campos_cpu[PUERTO_MONGO]);
     response->grado_multitarea = config_get_int_value(basicConfig, campos_cpu[GRADO_MULTITAREA]);
-    // TODO: Chequear algoritmo valido
     response->algoritmo = config_get_string_value(basicConfig, campos_cpu[ALGORITMO]);
     response->quantum = config_get_int_value(basicConfig, campos_cpu[QUANTUM]);
     response->duracion_sabotaje = config_get_int_value(basicConfig, campos_cpu[DURACION_SABOTAJE]);
     response->retardo_ciclo_cpu = config_get_int_value(basicConfig, campos_cpu[RETARDO_CICLO_CPU]);
+
+    verificar_algoritmo_valido(response->algoritmo);
 
     // free de los campos?
     free(basicConfig);
@@ -64,6 +66,17 @@ static void llenar_campos_cpu(char *response[CANTIDAD_CAMPOS_CPU])
     response[QUANTUM] = "QUANTUM";
     response[DURACION_SABOTAJE] = "DURACION_SABOTAJE";
     response[RETARDO_CICLO_CPU] = "RETARDO_CICLO_CPU";
+}
+
+static void verificar_algoritmo_valido(char *algoritmo)
+{
+    if (!string_equals_ignore_case("FIFO", algoritmo) && !string_equals_ignore_case("RR", algoritmo))
+    {
+        printf("Error, el algoritmo %s especificado en el archivo de configuración no es válido.\n", algoritmo);
+        printf("\t(Algoritmos válidos: FIFO - RR)\n");
+        exit(0);
+        // log error
+    }
 }
 
 t_store_conf *get_store_config(char *path)
@@ -99,7 +112,6 @@ t_ram_conf *get_ram_config(char *path)
     llenar_campos_ram(campos_ram);
     verificar_existencia_campos(campos_ram, basicConfig);
 
-    // TODO: Add check existance: bool config_has_property(t_config*, char* key);
     response->tamanio_memoria = config_get_int_value(basicConfig, campos_ram[TAMANIO_MEMORIA]);
     // TODO: Chequear esquema valido
     response->esquema_memoria = config_get_string_value(basicConfig, campos_ram[ESQUEMA_MEMORIA]);
