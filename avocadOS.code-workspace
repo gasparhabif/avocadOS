@@ -1,16 +1,21 @@
 {
 	"folders": [
 		{
-			"path": "proceso1"
+			"path": "Discordiador"
 		},
 		{
-			"path": "proceso2"
+			"path": "i-Mongo-Store"
 		},
 		{
-			"path": "proceso3"
+			"path": "Mi-Ram-HQ"
 		},
 		{
 			"path": "shared"
 		}
-	]
+	],
+	"settings": {
+		"files.associations": {
+			"proceso1.h": "c"
+		}
+	}
 }
