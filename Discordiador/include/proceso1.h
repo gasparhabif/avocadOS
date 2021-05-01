@@ -16,9 +16,14 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-
 #include "shared_utils.h"
 
 void iniciar_logger();
+int abrir_conexion(char *puerto);
+
+t_log *g_logger;
+char *msg="hola";
+char userOption;
+int mandarPorMongo=0, mandarPorRAM=0;
 
 #endif
