@@ -1,8 +1,112 @@
 #include "proceso1.h"
 
-int main()
+int abrir_conexion(char *puerto);
+
+char *msg = "hola";
+t_log *g_logger;
+
+int main(int argc, char **argv)
 {
-    t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
-    printf("En el proceso 1 llega la ip: %s junto al puerto: %i \n", config->ip_ram, config->puerto_ram);
-    free(config);
+	t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
+	pid_t p_ram, p_mongo;
+
+	iniciar_logger(g_logger);
+
+	log_info(g_logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
+	p_ram = fork();
+
+	if (p_ram == 0)
+	{
+		//INICIO DEL PROCESO HIJO: 		MI_RAM_HQ
+
+		log_info(g_logger, "Conectando a RAM...");
+		int socketfd_ram = abrir_conexion((void *)config->puerto_ram);
+
+		int bEnviadosPorRam = send(socketfd_ram, msg, sizeof(msg), 0);
+		log_info(g_logger, "Mande a RAM %s, en total %d bytes", msg, bEnviadosPorRam);
+
+		close(socketfd_ram);
+		exit(0);
+
+		//FIN DEL PROCESO HIJO: 		MI_RAM_HQ
+	}
+
+	else
+	{
+		p_mongo = fork();
+
+		if (p_mongo == 0)
+		{
+
+			//INICIO DEL PROCESO HIJO: 	I_MONGO_STORE
+
+			log_info(g_logger, "Conectando a MONGO...");
+			int sockfd_mongo = abrir_conexion((void *)config->puerto_mongo);
+
+			int bEnviadosPorMongo = send(sockfd_mongo, msg, sizeof(msg), 0);
+			log_info(g_logger, "Mande a MONGO %s, en total %d bytes", msg, bEnviadosPorMongo);
+
+			close(sockfd_mongo);
+
+			exit(0);
+
+			//FIN DEL PROCESO HIJO: 	I_MONGO_STORE
+		}
+		else
+		{
+			//PADRE
+
+			char *leido;
+
+			leido = readline(">");
+
+			while (strcmp(leido, ""))
+			{
+
+				leido = readline(">");
+			}
+
+			free(leido);
+
+			exit(0);
+
+			// FIN PADRE
+		}
+	}
+
+	log_destroy(g_logger);
+	free(config);
+
+	return EXIT_SUCCESS;
+}
+
+void iniciar_logger()
+{
+	g_logger = log_create("discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
+	log_info(g_logger, "Se inicio el log del discordiador: Proceso ID %d", getpid());
+	return;
+}
+
+int abrir_conexion(char *puerto)
+{
+
+	int socketfd;
+	struct sockaddr_in server_addr;
+
+	if ((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+	{
+		perror("Socket ERROR");
+	}
+
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_port = htons((int)puerto);
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	memset(&(server_addr.sin_zero), '\0', 8);
+
+	if (connect(socketfd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
+	{
+		perror("Connect ERROR");
+	}
+
+	return socketfd;
 }
