@@ -380,3 +380,11 @@ Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
 [INFO] 19:50:11:485 DISCORDIADOR/(9128:9150): Mande al socket: 151317416
 El mensaje %
 En total 151317896 bytes
+[INFO] 20:40:52:260 DISCORDIADOR/(13428:13428): Se inicio el log del discordiador: Proceso ID 13428
+[INFO] 20:40:52:261 DISCORDIADOR/(13428:13428): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 20:40:52:262 DISCORDIADOR/(13428:13430): Conectando a MONGO...
+[INFO] 20:40:52:267 DISCORDIADOR/(13428:13430): Mande a MONGO hola, en total 4 bytes
+[INFO] 20:40:52:268 DISCORDIADOR/(13428:13429): Conectando a RAM...
+[INFO] 20:40:52:273 DISCORDIADOR/(13428:13429): Mande a RAM hola, en total 4 bytes

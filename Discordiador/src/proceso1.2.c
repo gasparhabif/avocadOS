@@ -12,6 +12,9 @@ int main(int argc, char **argv)
 
 	pthread_t hiloRAM, hiloMONGO;
 	
+	sockfd_mongo = malloc(sizeof(int));
+	sockfd_ram = malloc(sizeof(int));
+
 	struct d_conexion d_conexion_ram;
 	d_conexion_ram.puerto = (void *) config->puerto_ram;
 	d_conexion_ram.socket = sockfd_ram;
@@ -57,8 +60,8 @@ int main(int argc, char **argv)
 		free(msg);
 	}
 
-	close(sockfd_ram);
-	close(sockfd_mongo);
+	close(*sockfd_ram);
+	close(*sockfd_mongo);
 	log_destroy(logger);
 	free(config);
 
@@ -70,7 +73,7 @@ void abrir_conexion(void *unaConexion){
 	struct d_conexion *dConexion = unaConexion;
 	struct sockaddr_in server_addr;
 
-	if ((dConexion->socket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+	if ((*dConexion->socket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
 		perror("Socket ERROR");
 	}
@@ -82,7 +85,7 @@ void abrir_conexion(void *unaConexion){
 	server_addr.sin_addr.s_addr = INADDR_ANY;
 	memset(&(server_addr.sin_zero), '\0', 8);
 
-	if (connect(dConexion->socket, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
+	if (connect(*dConexion->socket, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
 	{
 		perror("Connect ERROR");
 	}
@@ -94,7 +97,7 @@ void enviar_mensaje(void *unMensaje){
 	
 	struct d_mensaje *msg = unMensaje;
 
-	int bEnviados = send(msg->socket, msg->datos, 4, 0);
-	log_info(logger, "Mande al socket: %d\nEl mensaje %\nEn total %d bytes", msg->socket, msg->datos, bEnviados);
+	int bEnviados = send(*msg->socket, msg->datos, 4, 0);
+	log_info(logger, "Mande al socket: %d\nEl mensaje %\nEn total %d bytes", *msg->socket, msg->datos, bEnviados);
 
 }

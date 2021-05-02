@@ -30,7 +30,7 @@ struct d_mensaje {
 };
 
 void iniciar_logger();
-void abrir_conexion(void *d_crear_conexion);
+//void abrir_conexion(void *d_crear_conexion);
 void enviar_mensaje(void *unMensaje);
 
 int *sockfd_mongo;
