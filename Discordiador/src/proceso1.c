@@ -6,7 +6,7 @@ int main()
 
     int store_connection = connect_to(config->ip_mongo, config->puerto_mongo);
 
-    // Verificar socket
+    // Verificar conexión
     if (store_connection == -1)
     {
         perror("Algo malió sal");

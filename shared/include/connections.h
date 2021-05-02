@@ -10,5 +10,6 @@
 #include <sys/socket.h>
 
 int connect_to(char *ip, int port);
+int init_server(int port);
 
 #endif

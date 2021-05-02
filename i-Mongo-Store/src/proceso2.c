@@ -4,21 +4,10 @@ int main()
 {
     t_store_conf *config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
 
-    // Inicializar i-Mongo-Store Server
-    struct sockaddr_in server_dir;
-    server_dir.sin_family = AF_INET;
-    server_dir.sin_addr.s_addr = INADDR_ANY;
-    server_dir.sin_port = htons(config->puerto);
+    int server_instance = init_server(config->puerto);
 
-    // Crear socket
-    int server = socket(AF_INET, SOCK_STREAM, 0);
-
-    // Fix
-    int flag = 1;
-    setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
-
-    // Verificar socket
-    if (bind(server, (void *)&server_dir, sizeof(server_dir)) != 0)
+    // Verificar instancia
+    if (server_instance == -1)
     {
         perror("Algo malió sal");
         return 1;
@@ -26,12 +15,12 @@ int main()
 
     // Escuchar
     printf("Servidor escuchando en puerto %d\n", config->puerto);
-    listen(server, 100);
+    listen(server_instance, 100);
 
     // Aceptar conexión
     struct sockaddr_in client_dir;
-    unsigned int dir_size;
-    int client = accept(server, (void *)&client_dir, &dir_size);
+    unsigned int dir_size = sizeof(socklen_t);
+    int client = accept(server_instance, (void *)&client_dir, &dir_size);
 
     // Verificar conexión recibida
     if (client == -1)
@@ -41,8 +30,6 @@ int main()
     }
 
     printf("Recibí una conexión en el socket %d\n", client);
-    send(client, "Hola, cliente!", 15, 0);
-
     char *buffer = malloc(100);
 
     while (1)
