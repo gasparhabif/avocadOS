@@ -16,14 +16,24 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 #include "shared_utils.h"
 
-void iniciar_logger();
-int abrir_conexion(char *puerto);
+struct d_conexion {
+    char *puerto;
+    int *socket;
+};
 
-t_log *g_logger;
-char *msg="hola";
-char userOption;
-int mandarPorMongo=0, mandarPorRAM=0;
+struct d_mensaje {
+    char *datos;
+    int *socket;
+};
+
+void iniciar_logger();
+void abrir_conexion(void *d_crear_conexion);
+void enviar_mensaje(void *unMensaje);
+
+int *sockfd_mongo;
+int *sockfd_ram;
 
 #endif
