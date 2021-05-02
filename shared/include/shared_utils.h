@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "configurator.h"
+#include "connections.h"
 
 char *mi_funcion_compartida();
 
