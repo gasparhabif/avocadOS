@@ -13,44 +13,70 @@ int main(int argc, char **argv)
 	sockfd_mongo = malloc(sizeof(int));
 	sockfd_ram = malloc(sizeof(int));
 
-	struct d_conexion d_conexion_ram;
-	d_conexion_ram.puerto = (void *) config->puerto_ram;
-	d_conexion_ram.socket = sockfd_ram;
-
 	log_info(logger, "Conectando a RAM...");
-	pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) &d_conexion_ram);
-
-	struct d_conexion d_conexion_mongo;
-	d_conexion_mongo.puerto = (void *) config->puerto_mongo;
-	d_conexion_mongo.socket = sockfd_mongo;
+	pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
-	pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) &d_conexion_mongo);
+	pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) config->puerto_mongo);
 
-	pthread_join(abrir_conexion_ram, NULL);
-	pthread_join(abrir_conexion_mongo, NULL);
+	pthread_join(abrir_conexion_ram, &sockfd_ram);
+	pthread_join(abrir_conexion_mongo, &sockfd_mongo);
+
+	char reconectOP;
+
+	while((int) sockfd_ram == -1){
+		printf("Error de conexion con RAM, reconectar: [s|n]\n");
+		scanf("%c", &reconectOP);
+
+		if(reconectOP == 's'){
+			pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) config->puerto_ram);
+			pthread_join(abrir_conexion_ram, &sockfd_ram);
+		}
+		else if(reconectOP == 'n'){
+			exit(1);
+		}
+	}
+
+	while((int) sockfd_mongo == -1){
+		printf("Error de conexion con MONGO, reconectar: [s|n]");
+		scanf("%c", &reconectOP);
+
+		if(reconectOP == 's'){
+			pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) config->puerto_mongo);
+			pthread_join(abrir_conexion_mongo, &sockfd_mongo);
+		}
+		else if(reconectOP == 'n'){
+			exit(1);
+		}
+	}
+
+	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	escuchando = 1;
 	pthread_t escuchar_ram, escuchar_mongo;
 	pthread_create(&escuchar_ram,   NULL, (void*) recibir_mensaje, sockfd_ram);
 	pthread_create(&escuchar_mongo, NULL, (void*) recibir_mensaje, sockfd_mongo);
 
+
 	pthread_t hiloEnviarMensaje;
 	char userOption = '\0';
 	struct d_mensaje msg;
 
-	//msg.datos = "hola";
-
 	while(userOption != 'E'){
 
-		puts("Mensaje a enviar:");
-		scanf("%s", msg.datos);
+//		puts("Mensaje a enviar:");
+//		scanf("%s", msg.datos);
+
+//		printf("escribiste %s\n", msg.datos);
+
 
 		puts("Enviar mensaje a:");
 		puts("\t[m] i-Mongo-Store");
 		puts("\t[t] Mi-RAM-HQ");
 		puts("\t[E] EXIT");
 		while((userOption = getchar()) !='\n');
+
+		userOption = 'm';
 
 		if(userOption == 'm'){
 			msg.socket = sockfd_mongo;
@@ -68,8 +94,8 @@ int main(int argc, char **argv)
 	}
 
 	escuchando=0;
-	close(*sockfd_ram);
-	close(*sockfd_mongo);
+	close((int) sockfd_ram);
+	close((int) sockfd_mongo);
 	free(sockfd_ram);
 	free(sockfd_mongo);
 	log_destroy(logger);

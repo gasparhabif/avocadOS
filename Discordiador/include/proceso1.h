@@ -19,22 +19,17 @@
 #include <pthread.h>
 #include "shared_utils.h"
 
-struct d_conexion {
-    char *puerto;
-    int *socket;
-};
-
 struct d_mensaje {
     char *datos;
     int *socket;
 };
 
-void abrir_conexion(void *unaConexion);
+void abrir_conexion(int puerto);
 void enviar_mensaje(void *unMensaje);
 void recibir_mensaje(int sockfd);
 
-int *sockfd_mongo;
-int *sockfd_ram;
+void *sockfd_mongo;
+void *sockfd_ram;
 t_log *logger;
 int escuchando;
 

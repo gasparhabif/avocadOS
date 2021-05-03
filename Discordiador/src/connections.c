@@ -1,5 +1,5 @@
 #include "proceso1.h"
-
+/*
 void abrir_conexion(void *unaConexion){
 
 	struct d_conexion *dConexion = unaConexion;
@@ -20,6 +20,35 @@ void abrir_conexion(void *unaConexion){
 	{
 		perror("Connect ERROR");
 	}
+
+	return;
+}
+*/
+
+void abrir_conexion(int puerto){
+
+	int sockfd;
+
+	struct sockaddr_in server_addr;
+
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+	{
+		perror("Socket ERROR");
+		sockfd = -1;
+	}
+
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_port = htons(puerto);
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	memset(&(server_addr.sin_zero), '\0', 8);
+
+	if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
+	{
+		perror("Connect ERROR");
+		sockfd = -1;
+	}
+
+	pthread_exit((void *) sockfd);
 
 	return;
 }
