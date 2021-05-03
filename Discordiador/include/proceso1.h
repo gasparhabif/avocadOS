@@ -21,7 +21,7 @@
 
 struct d_mensaje {
     char *datos;
-    int *socket;
+    int socket;
 };
 
 void abrir_conexion(int puerto);

@@ -57,8 +57,8 @@ void enviar_mensaje(void *unMensaje){
 	
 	struct d_mensaje *msg = unMensaje;
 
-	int bEnviados = send(*msg->socket, msg->datos, 4, 0);
-	log_info(logger, "\nMande al socket: %d\nEl mensaje %\nEn total %d bytes", *msg->socket, *msg->datos, bEnviados);
+	int bEnviados = send(msg->socket, msg->datos, 4, 0);
+	log_info(logger, "\nMande al socket: %d\nEl mensaje %\nEn total %d bytes", msg->socket, *msg->datos, bEnviados);
 
 	return;
 }

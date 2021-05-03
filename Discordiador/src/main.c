@@ -62,6 +62,8 @@ int main(int argc, char **argv)
 	char userOption = '\0';
 	struct d_mensaje msg;
 
+	msg.datos = "hola";
+
 	while(userOption != 'E'){
 
 //		puts("Mensaje a enviar:");
@@ -69,23 +71,21 @@ int main(int argc, char **argv)
 
 //		printf("escribiste %s\n", msg.datos);
 
-
 		puts("Enviar mensaje a:");
 		puts("\t[m] i-Mongo-Store");
 		puts("\t[t] Mi-RAM-HQ");
 		puts("\t[E] EXIT");
-		while((userOption = getchar()) !='\n');
-
-		userOption = 'm';
+//		while((userOption = getchar()) !='\n');
+		userOption = getchar();
 
 		if(userOption == 'm'){
-			msg.socket = sockfd_mongo;
+			msg.socket = (int) sockfd_mongo;
 
 			pthread_create(&hiloEnviarMensaje, NULL, (void*) enviar_mensaje, (void *) &msg);
 			pthread_join(hiloEnviarMensaje, NULL);
 		}
 		else if(userOption == 'r'){
-			msg.socket = sockfd_ram;
+			msg.socket = (int) sockfd_ram;
 
 			pthread_create(&hiloEnviarMensaje, NULL, (void*) enviar_mensaje, (void *) &msg);
 			pthread_join(hiloEnviarMensaje, NULL);
@@ -96,8 +96,8 @@ int main(int argc, char **argv)
 	escuchando=0;
 	close((int) sockfd_ram);
 	close((int) sockfd_mongo);
-	free(sockfd_ram);
-	free(sockfd_mongo);
+//	free(sockfd_ram);
+//	free(sockfd_mongo);
 	log_destroy(logger);
 	free(config);
 
