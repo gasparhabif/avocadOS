@@ -6,4 +6,8 @@
 #include <stdbool.h>
 #include "shared_utils.h"
 
+t_log* logger;
+
+void iniciar_logger(void);
+
 #endif
