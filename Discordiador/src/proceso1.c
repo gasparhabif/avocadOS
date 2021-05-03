@@ -2,7 +2,7 @@
 
 int abrir_conexion(char *puerto);
 
-char *msg = "hola";
+char *msg = "soy una prueba mas compleja";
 t_log *g_logger;
 
 int main(int argc, char **argv)

@@ -388,3 +388,31 @@ Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
 [INFO] 20:40:52:267 DISCORDIADOR/(13428:13430): Mande a MONGO hola, en total 4 bytes
 [INFO] 20:40:52:268 DISCORDIADOR/(13428:13429): Conectando a RAM...
 [INFO] 20:40:52:273 DISCORDIADOR/(13428:13429): Mande a RAM hola, en total 4 bytes
+[INFO] 21:00:19:892 DISCORDIADOR/(2685:2685): Se inicio el log del discordiador: Proceso ID 2685
+[INFO] 21:00:19:893 DISCORDIADOR/(2685:2685): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 21:00:19:895 DISCORDIADOR/(2685:2687): Conectando a MONGO...
+[INFO] 21:00:19:895 DISCORDIADOR/(2685:2686): Conectando a RAM...
+[INFO] 21:00:19:897 DISCORDIADOR/(2685:2686): Mande a RAM hola, en total 4 bytes
+[INFO] 21:01:23:316 DISCORDIADOR/(2690:2690): Se inicio el log del discordiador: Proceso ID 2690
+[INFO] 21:01:23:317 DISCORDIADOR/(2690:2690): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 21:01:23:319 DISCORDIADOR/(2690:2692): Conectando a MONGO...
+[INFO] 21:01:23:321 DISCORDIADOR/(2690:2691): Conectando a RAM...
+[INFO] 21:01:23:321 DISCORDIADOR/(2690:2692): Mande a MONGO hola, en total 4 bytes
+[INFO] 21:02:33:698 DISCORDIADOR/(2723:2723): Se inicio el log del discordiador: Proceso ID 2723
+[INFO] 21:02:33:699 DISCORDIADOR/(2723:2723): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 21:02:33:702 DISCORDIADOR/(2723:2725): Conectando a MONGO...
+[INFO] 21:02:33:703 DISCORDIADOR/(2723:2725): Mande a MONGO hola soy una prueba mas compleja, en total 4 bytes
+[INFO] 21:02:33:702 DISCORDIADOR/(2723:2724): Conectando a RAM...
+[INFO] 21:04:34:790 DISCORDIADOR/(2766:2766): Se inicio el log del discordiador: Proceso ID 2766
+[INFO] 21:04:34:790 DISCORDIADOR/(2766:2766): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 21:04:34:791 DISCORDIADOR/(2766:2768): Conectando a MONGO...
+[INFO] 21:04:34:792 DISCORDIADOR/(2766:2768): Mande a MONGO soy una prueba mas compleja, en total 4 bytes
+[INFO] 21:04:34:792 DISCORDIADOR/(2766:2767): Conectando a RAM...
