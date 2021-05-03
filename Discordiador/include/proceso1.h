@@ -29,11 +29,13 @@ struct d_mensaje {
     int *socket;
 };
 
-void iniciar_logger();
-//void abrir_conexion(void *d_crear_conexion);
+void abrir_conexion(void *unaConexion);
 void enviar_mensaje(void *unMensaje);
+void recibir_mensaje(int sockfd);
 
 int *sockfd_mongo;
 int *sockfd_ram;
+t_log *logger;
+int escuchando;
 
 #endif
