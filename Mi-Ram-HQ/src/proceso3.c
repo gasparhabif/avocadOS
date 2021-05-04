@@ -28,7 +28,6 @@ int main()
     }
     
     log_info(logger, "Recibí una conexión en el socket %d", client);
-    int connection_discordiador = connect_to("127.0.0.1", 5000);
     char *buffer = malloc(100);
 
     while (1)
@@ -42,14 +41,6 @@ int main()
         }
         buffer[msg_size] = '\0';
         log_info(logger, "Recibí \"%s\" con peso de %d bytes", buffer, msg_size);
-
-        if(connection_discordiador == -1)
-            log_error(logger, "Algo malió sal al conectar con Discordiador");
-        else
-        {
-            send(connection_discordiador, "OK", 2, 0);
-            log_info(logger, "Envie mensaje de confirmación de recepción al Discordiador");
-        }
     }
 
     free(buffer);
