@@ -2,6 +2,8 @@
 
 int main(int argc, char **argv)
 {
+	system("clear");
+
 	logger = log_create("discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
 	log_info(logger, "Se inicio el log del discordiador: Proceso ID %d", getpid());
 
@@ -23,29 +25,26 @@ int main(int argc, char **argv)
 	pthread_join(abrir_conexion_mongo, &sockfd_mongo);
 
 	char reconectOP;
+	system("clear");
 
-	while((int) sockfd_ram == -1){
-		printf("Error de conexion con RAM, reconectar: [s|n]\n");
-		scanf("%c", &reconectOP);
-
-		if(reconectOP == 's'){
-			pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) config->puerto_ram);
-			pthread_join(abrir_conexion_ram, &sockfd_ram);
-		}
-		else if(reconectOP == 'n'){
-			exit(1);
-		}
-	}
-
-	while((int) sockfd_mongo == -1){
-		printf("Error de conexion con MONGO, reconectar: [s|n]");
-		scanf("%c", &reconectOP);
+	while((int) sockfd_ram == -1 || (int) sockfd_mongo == -1){
+		system("clear");
+		printf("Error de conexion ¿desea reconectar? [s|n]\n");
+		reconectOP = getchar();
 
 		if(reconectOP == 's'){
-			pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) config->puerto_mongo);
-			pthread_join(abrir_conexion_mongo, &sockfd_mongo);
-		}
-		else if(reconectOP == 'n'){
+
+			if((int) sockfd_ram == -1){
+				pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) config->puerto_ram);
+				pthread_join(abrir_conexion_ram, &sockfd_ram);
+			}
+
+			if((int) sockfd_mongo == -1){
+				pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) config->puerto_mongo);
+				pthread_join(abrir_conexion_mongo, &sockfd_mongo);
+			}
+
+		} else if(reconectOP == 'n'){
 			exit(1);
 		}
 	}
@@ -57,26 +56,24 @@ int main(int argc, char **argv)
 	pthread_create(&escuchar_ram,   NULL, (void*) recibir_mensaje, sockfd_ram);
 	pthread_create(&escuchar_mongo, NULL, (void*) recibir_mensaje, sockfd_mongo);
 
-
 	pthread_t hiloEnviarMensaje;
 	char userOption = '\0';
 	struct d_mensaje msg;
-
-	msg.datos = "hola";
+	system("clear");
 
 	while(userOption != 'E'){
 
-//		puts("Mensaje a enviar:");
-//		scanf("%s", msg.datos);
+		msg.datos = malloc(MAX_DATA_SIZE);
+		puts("Mensaje a enviar:");
+		scanf("%s", msg.datos);
 
-//		printf("escribiste %s\n", msg.datos);
+		fflush(stdin);
 
 		puts("Enviar mensaje a:");
 		puts("\t[m] i-Mongo-Store");
-		puts("\t[t] Mi-RAM-HQ");
+		puts("\t[r] Mi-RAM-HQ");
 		puts("\t[E] EXIT");
-//		while((userOption = getchar()) !='\n');
-		userOption = getchar();
+		scanf(" %c", &userOption);
 
 		if(userOption == 'm'){
 			msg.socket = (int) sockfd_mongo;
@@ -91,13 +88,13 @@ int main(int argc, char **argv)
 			pthread_join(hiloEnviarMensaje, NULL);
 		}
 
+		free(msg.datos);
+		system("clear");
 	}
 
 	escuchando=0;
 	close((int) sockfd_ram);
 	close((int) sockfd_mongo);
-//	free(sockfd_ram);
-//	free(sockfd_mongo);
 	log_destroy(logger);
 	free(config);
 

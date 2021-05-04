@@ -19,6 +19,8 @@
 #include <pthread.h>
 #include "shared_utils.h"
 
+#define MAX_DATA_SIZE 30
+
 struct d_mensaje {
     char *datos;
     int socket;
