@@ -7,6 +7,7 @@
 #include <commons/log.h>
 
 #include "configurator.h"
+#include "serializacion.h"
 
 char *mi_funcion_compartida();
 
