@@ -1,6 +1,6 @@
 #include "proceso1.h"
 
-void abrir_conexion(int puerto){
+int abrir_conexion(int puerto){
 
 	int sockfd;
 
@@ -19,21 +19,18 @@ void abrir_conexion(int puerto){
 
 	if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
 	{
+		log_info(logger, "Error en connect %d", sockfd);
 		perror("Connect ERROR");
 		sockfd = -1;
 	}
 
-	pthread_exit((void *) sockfd);
-
-	return;
+	return sockfd;
 }
 
-void enviar_mensaje(void *unMensaje){
-	
-	struct d_mensaje *msg = unMensaje;
+void enviar_mensaje(int socket, char *msg){
 
-	int bEnviados = send(msg->socket, msg->datos, 4, 0);
-	log_info(logger, "\nMande al socket: %d\nEl mensaje %s\nEn total %d bytes", msg->socket, msg->datos, bEnviados);
+	int bEnviados = send(socket, msg, sizeof(msg), 0);
+	log_info(logger, "\nMande al socket: %d\nEl mensaje %s\nEn total %d bytes", socket, msg, bEnviados);
 
 	return;
 }

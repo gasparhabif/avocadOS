@@ -5,8 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <commons/log.h>
-#include <readline/readline.h>
 #include <commons/string.h>
+#include <commons/txt.h>
+#include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -21,17 +22,19 @@
 
 #define MAX_DATA_SIZE 30
 
-struct d_mensaje {
-    char *datos;
-    int socket;
-};
-
-void abrir_conexion(int puerto);
-void enviar_mensaje(void *unMensaje);
+int abrir_conexion(int puerto);
+void enviar_mensaje(int socket, char *msg);
 void recibir_mensaje(int sockfd);
 
-void *sockfd_mongo;
-void *sockfd_ram;
+void INICIAR_PATOTA        (char** parametros);
+void LISTAR_TRIPULANTES    (char** parametros);
+void EXPULSAR_TRIPULANTE   (char** parametros);
+void INICIAR_PLANIFICACION (char** parametros);
+void PAUSAR_PLANIFICACION  (char** parametros);
+void OBTENER_BITACORA      (char** parametros);
+
+int sockfd_mongo;
+int sockfd_ram;
 t_log *logger;
 int escuchando;
 

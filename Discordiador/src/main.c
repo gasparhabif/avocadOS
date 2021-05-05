@@ -4,68 +4,94 @@ int main(int argc, char **argv)
 {
 	system("clear");
 
-	logger = log_create("discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
+	//CREO EL LOGGER Y CONFIG
+	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
 	log_info(logger, "Se inicio el log del discordiador: Proceso ID %d", getpid());
 
 	t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
 	log_info(logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
 
-	pthread_t abrir_conexion_ram, abrir_conexion_mongo;
-	
-	sockfd_mongo = malloc(sizeof(int));
-	sockfd_ram = malloc(sizeof(int));
 
+	//LECTURA DE CONSOLA
+	void (*comando[6]) (char**)={INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
+
+	char *leido;
+	char **parametros;
+	leido = readline(">");
+
+	while(strcmp(leido, "")){
+		
+		parametros = string_split(leido, " ");
+
+		if (strcmp(parametros[0],      "INICIAR_PATOTA"       ) == 0) 
+			comando[0](parametros);
+		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES"   ) == 0)
+			comando[1](parametros);
+		else if (strcmp(parametros[0], "EXPULSAR_TRIPULANTE"  ) == 0) 
+			comando[2](parametros);
+		else if (strcmp(parametros[0], "INICIAR_PLANIFICACION") == 0)
+			comando[3](parametros);
+		else if (strcmp(parametros[0], "PAUSAR_PLANIFICACION" ) == 0) 
+			comando[4](parametros);
+		else if (strcmp(parametros[0], "OBTENER_BITACORA"     ) == 0)
+			comando[5](parametros);
+		else{
+			printf("No reconozco ese comando\n");
+		}
+
+		free(leido);
+		free(parametros);
+		leido=readline(">");
+	}
+	free(leido);
+
+	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
-	pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) config->puerto_ram);
+	sockfd_ram = abrir_conexion((int) config->ip_ram);
 
 	log_info(logger, "Conectando a MONGO...");
-	pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) config->puerto_mongo);
-
-	pthread_join(abrir_conexion_ram, &sockfd_ram);
-	pthread_join(abrir_conexion_mongo, &sockfd_mongo);
+	sockfd_mongo = abrir_conexion((int) config->ip_mongo);
 
 	char reconectOP;
 	system("clear");
 
-	while((int) sockfd_ram == -1 || (int) sockfd_mongo == -1){
+	while(sockfd_ram == -1 || sockfd_mongo == -1){
 		system("clear");
 		printf("Error de conexion ¿desea reconectar? [s|n]\n");
+		fflush(stdin);
 		reconectOP = getchar();
 
 		if(reconectOP == 's'){
 
-			if((int) sockfd_ram == -1){
-				pthread_create(&abrir_conexion_ram, NULL, (void*) abrir_conexion, (void *) config->puerto_ram);
-				pthread_join(abrir_conexion_ram, &sockfd_ram);
-			}
-
-			if((int) sockfd_mongo == -1){
-				pthread_create(&abrir_conexion_mongo, NULL, (void*) abrir_conexion, (void *) config->puerto_mongo);
-				pthread_join(abrir_conexion_mongo, &sockfd_mongo);
-			}
+			if(sockfd_ram == -1)
+				sockfd_ram = abrir_conexion((int) config->ip_ram);
+			if(sockfd_mongo == -1)
+				sockfd_mongo = abrir_conexion((int) config->ip_mongo);
 
 		} else if(reconectOP == 'n'){
 			exit(1);
+			system("clear");
 		}
 	}
 
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
+	//ME PONGO A ESCUCHAR LOS SOCKETS
 	escuchando = 1;
 	pthread_t escuchar_ram, escuchar_mongo;
-	pthread_create(&escuchar_ram,   NULL, (void*) recibir_mensaje, sockfd_ram);
-	pthread_create(&escuchar_mongo, NULL, (void*) recibir_mensaje, sockfd_mongo);
+	pthread_create(&escuchar_ram,   NULL, (void*) recibir_mensaje, (void *) sockfd_ram);
+	pthread_create(&escuchar_mongo, NULL, (void*) recibir_mensaje, (void *) sockfd_mongo);
 
-	pthread_t hiloEnviarMensaje;
+	//MANDO MENSAJES
 	char userOption = '\0';
-	struct d_mensaje msg;
+	char *msg;
 	system("clear");
 
 	while(userOption != 'E'){
 
-		msg.datos = malloc(MAX_DATA_SIZE);
+		msg = malloc(MAX_DATA_SIZE);
 		puts("Mensaje a enviar:");
-		scanf("%s", msg.datos);
+		scanf("%s", msg);
 
 		fflush(stdin);
 
@@ -76,25 +102,20 @@ int main(int argc, char **argv)
 		scanf(" %c", &userOption);
 
 		if(userOption == 'm'){
-			msg.socket = (int) sockfd_mongo;
-
-			pthread_create(&hiloEnviarMensaje, NULL, (void*) enviar_mensaje, (void *) &msg);
-			pthread_join(hiloEnviarMensaje, NULL);
+			enviar_mensaje(sockfd_mongo, msg);
 		}
 		else if(userOption == 'r'){
-			msg.socket = (int) sockfd_ram;
-
-			pthread_create(&hiloEnviarMensaje, NULL, (void*) enviar_mensaje, (void *) &msg);
-			pthread_join(hiloEnviarMensaje, NULL);
+			enviar_mensaje(sockfd_ram, msg);
 		}
 
-		free(msg.datos);
+		free(msg);
 		system("clear");
 	}
 
+	system("clear");
 	escuchando=0;
-	close((int) sockfd_ram);
-	close((int) sockfd_mongo);
+	close(sockfd_ram);
+	close(sockfd_mongo);
 	log_destroy(logger);
 	free(config);
 
