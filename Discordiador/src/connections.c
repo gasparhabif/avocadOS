@@ -50,5 +50,40 @@ void recibir_mensaje(int sockfd){
         printf("Recibí: %s", buf);
     }
 
+/*
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+	
+	while(escuchando){
+		//RECIBO EL CODIGO DE OPERACION
+		recv(unSocket, &(paquete->codigo_operacion), sizeof(uint8_t), 0)) == -1)
+		//RECIBO EL TAMAÑO DEL STREAM
+		recv(unSocket, &(paquete->buffer->size), sizeof(uint32_t), 0);
+		//RESERVO LA MEMORIA PARA RECIBIR AL STREAM
+		paquete->buffer->stream = malloc(paquete->buffer->size);
+		//RECIBO EL STREAM
+		recv(unSocket, paquete->buffer->stream, paquete->buffer->size, 0);
+
+		void *dRecibidos;
+
+		switch(paquete->codigo_operacion){
+			case TCB:
+				dRecibidos = desearilizarTCB(paquete);
+				break;
+			case PCB:
+				desearilizarPCB(paquete);
+				break;
+			default:
+				log_info(logger, "Recibi un paquete desconocido");
+				break;
+		}
+
+		free(paquete->buffer->stream);
+    	free(paquete->buffer);
+    	free(paquete);		
+	}
+
+	return dRecibidos;
+*/
     return;
 }

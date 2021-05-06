@@ -1,6 +1,6 @@
 #include "serializacion.h"
 
-void* serializarTCB(TCB unTCB){
+void* serializarTCB(t_TCB unTCB){
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -30,7 +30,7 @@ void* serializarTCB(TCB unTCB){
     //CREAMOS EL PAQUETE
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    paquete->codigo_operacion = TCBcop;
+    paquete->codigo_operacion = TCB;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR
@@ -43,11 +43,11 @@ void* serializarTCB(TCB unTCB){
     offset += sizeof(uint32_t);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    return a_enviar;
-
     //LIBERO MEMORIA
     free(a_enviar);
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+
+    return a_enviar;
 }
