@@ -4,9 +4,19 @@
 #include <string.h>
 #include <stdint.h>
 
-#define TCB 1
-#define PCB 2
+#define TCB 0
+#define PCB 1
+#define TAREAS 2
 
+#define MOVER_POSICION   0
+#define GENERAR_OXIGENO  1
+#define CONSUMIR_OXIGENO 2
+#define GENERAR_COMIDA   3
+#define CONSUMIR_COMIDA  4
+#define GENERAR_BASURA   5
+#define DESCARTAR_BASURA 6
+
+//BUFFER Y PAQUETE
 typedef struct {
     u_int32_t size;
     void* stream;
@@ -17,6 +27,7 @@ typedef struct{
     t_buffer* buffer;
 } t_paquete;
 
+//TCB Y PCB
 typedef struct{
     u_int32_t PID;
     u_int32_t tareas;
@@ -30,3 +41,21 @@ typedef struct {
     u_int32_t proximaInstruccion;
     u_int32_t puntero_PCB;
 } t_TCB;
+
+//TAREAS
+typedef struct {
+    u_int8_t codigoTarea;
+    u_int32_t parametro;
+    u_int32_t posX;
+    u_int32_t posY;
+    u_int32_t duracionTarea;
+} t_tareas;
+
+//DEFINIDAS EN serializacion.c
+void* serializarTCB    (t_TCB);
+void* serializarPCB    (t_PCB);
+void* serializarTareas (t_tareas*);
+
+//DEFINIDAS EN deserializacion.c
+void* deserializarTCB(t_paquete*);
+void* deserializarPCB(t_paquete*);

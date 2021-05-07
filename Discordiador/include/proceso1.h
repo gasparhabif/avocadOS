@@ -22,10 +22,12 @@
 
 #define MAX_DATA_SIZE 30
 
+//DEFINIDAS EN connections.c
 int abrir_conexion(int puerto);
 void enviar_mensaje(int socket, char *msg);
 void recibir_mensaje(int sockfd);
 
+//DEFINIDAS EN consola.c
 void INICIAR_PATOTA        (char** parametros);
 void LISTAR_TRIPULANTES    (char** parametros);
 void EXPULSAR_TRIPULANTE   (char** parametros);
@@ -33,6 +35,10 @@ void INICIAR_PLANIFICACION (char** parametros);
 void PAUSAR_PLANIFICACION  (char** parametros);
 void OBTENER_BITACORA      (char** parametros);
 
+//DEFINIDAS EN aux.c
+void leer_tareas(t_tareas*, FILE*);
+
+//VARIABLES GLOBALES
 int sockfd_mongo;
 int sockfd_ram;
 t_log *logger;

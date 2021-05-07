@@ -71,7 +71,10 @@ void recibir_mensaje(int sockfd){
 				dRecibidos = desearilizarTCB(paquete);
 				break;
 			case PCB:
-				desearilizarPCB(paquete);
+				deserializarPCB(paquete);
+				break;
+			case TAREAS:
+				deseralizarTareas(paquete);
 				break;
 			default:
 				log_info(logger, "Recibi un paquete desconocido");

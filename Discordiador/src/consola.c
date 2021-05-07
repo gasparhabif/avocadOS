@@ -23,6 +23,11 @@ void INICIAR_PATOTA (char** parametros){
                 printf("Usted especifio mas tripulantes de los que desea crear\n");
             else{
                 
+                //LEO LAS INSTRUCCIONES DEL ARCHIVO
+                t_tareas *tareas;
+                leer_tareas(tareas, fpTareas);
+
+
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;
                 tripulantes_tcb = malloc(sizeof(TCB) * cantTripulantes);
@@ -32,7 +37,7 @@ void INICIAR_PATOTA (char** parametros){
                     tripulantes_tcb[i].estado = 'n';
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
-                    //tripulantes_tcb[i].proximaInstruccion = ;
+                    tripulantes_tcb[i].proximaInstruccion = 0;
                     //tripulantes_tcb[i].puntero_PCB = ;
                 }
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola
@@ -43,9 +48,14 @@ void INICIAR_PATOTA (char** parametros){
 
                 
                 //pthread_t *tripulantes_hilos = malloc(sizeof(pthread_t) * cantTripulantes);
+
+                free(tripulantes_tcb);
             }
         }
+
+    fclose(fpTareas);
     }
+    
 }
 
 void LISTAR_TRIPULANTES (char** parametros){
