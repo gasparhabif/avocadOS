@@ -38,5 +38,33 @@ void* deserializarPCB(t_paquete* paquete){
     return PCB_enviar;
 
     //OJOOOO
-    //free(TCB_enviar);
+    //free(PCB_enviar);
+}
+
+void* deserializarTareas(t_paquete* paquete){
+
+    t_tareas *tareas_enviar;
+
+    int cantTareasRecibidas = paquete->buffer->size;
+    void* stream = paquete->buffer->stream;
+
+    tareas_enviar = malloc(cantTareasRecibidas * sizeof(t_tareas));
+
+    for(int i=0; i<cantTareasRecibidas; i++){
+        memcpy(&(tareas_enviar[i].codigoTarea), stream, sizeof(u_int8_t));
+        stream += sizeof(u_int8_t);
+        memcpy(&(tareas_enviar[i].parametro), stream, sizeof(u_int32_t));
+        stream += sizeof(u_int32_t);
+        memcpy(&(tareas_enviar[i].posX), stream, sizeof(u_int32_t));
+        stream += sizeof(u_int32_t);
+        memcpy(&(tareas_enviar[i].posY), stream, sizeof(u_int32_t));
+        stream += sizeof(u_int32_t);
+        memcpy(&(tareas_enviar[i].duracionTarea), stream, sizeof(u_int32_t));
+        stream += sizeof(u_int32_t);
+    }
+
+    return tareas_enviar;
+
+    //OJOOOO
+    //free(tareas_enviar);
 }

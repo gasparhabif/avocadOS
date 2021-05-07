@@ -59,3 +59,4 @@ void* serializarTareas (t_tareas*);
 //DEFINIDAS EN deserializacion.c
 void* deserializarTCB(t_paquete*);
 void* deserializarPCB(t_paquete*);
+void* deserializarTareas(t_paquete*);
