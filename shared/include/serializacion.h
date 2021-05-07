@@ -57,6 +57,6 @@ void* serializarPCB    (t_PCB);
 void* serializarTareas (t_tareas*);
 
 //DEFINIDAS EN deserializacion.c
-void* deserializarTCB(t_paquete*);
-void* deserializarPCB(t_paquete*);
-void* deserializarTareas(t_paquete*);
+t_TCB*    deserializarTCB(t_paquete*);
+t_PCB*    deserializarPCB(t_paquete*);
+t_tareas* deserializarTareas(t_paquete*);

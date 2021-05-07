@@ -1,6 +1,6 @@
 #include "serializacion.h"
 
-void* deserializarTCB(t_paquete* paquete){
+t_TCB* deserializarTCB(t_paquete* paquete){
 
     t_TCB *TCB_enviar = malloc(sizeof(t_TCB));
 
@@ -25,7 +25,7 @@ void* deserializarTCB(t_paquete* paquete){
     //free(TCB_enviar);
 }
 
-void* deserializarPCB(t_paquete* paquete){
+t_PCB* deserializarPCB(t_paquete* paquete){
 
     t_PCB *PCB_enviar = malloc(sizeof(t_PCB));
     void* stream = paquete->buffer->stream;
@@ -41,7 +41,7 @@ void* deserializarPCB(t_paquete* paquete){
     //free(PCB_enviar);
 }
 
-void* deserializarTareas(t_paquete* paquete){
+t_tareas* deserializarTareas(t_paquete* paquete){
 
     t_tareas *tareas_enviar;
 
