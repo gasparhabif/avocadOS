@@ -1,10 +1,9 @@
 #include "proceso1.h"
 
-int abrir_conexion(int puerto){
+int abrir_conexion(int puerto)
+{
 
 	int sockfd;
-
-	struct sockaddr_in server_addr;
 
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
@@ -12,13 +11,15 @@ int abrir_conexion(int puerto){
 		sockfd = -1;
 	}
 
+	struct sockaddr_in server_addr;
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(puerto);
 	server_addr.sin_addr.s_addr = INADDR_ANY;
 	memset(&(server_addr.sin_zero), '\0', 8);
 
-	if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1)
+	if (connect(sockfd, (void *)&server_addr, sizeof(server_addr)) == -1)
 	{
+		// TODO: Hacer close en caso de error
 		log_info(logger, "Error en connect %d", sockfd);
 		perror("Connect ERROR");
 		sockfd = -1;
@@ -27,30 +28,34 @@ int abrir_conexion(int puerto){
 	return sockfd;
 }
 
-void enviar_mensaje(int socket, char *msg){
+void enviar_mensaje(int socket, char *msg)
+{
 
-	int bEnviados = send(socket, msg, sizeof(msg), 0);
+	int bEnviados = send(socket, msg, 100, 0);
 	log_info(logger, "\nMande al socket: %d\nEl mensaje %s\nEn total %d bytes", socket, msg, bEnviados);
 
 	return;
 }
 
-void recibir_mensaje(int sockfd){
+void recibir_mensaje(int sockfd)
+{
 
-    int bRecibidos;
-    char buf[MAX_DATA_SIZE];
-    
-    while(escuchando){
-        if((bRecibidos = recv(sockfd, buf, sizeof(buf), 0)) == -1){
-            perror("ERROR en el recv");
-        }
+	int bRecibidos;
+	char buf[MAX_DATA_SIZE];
 
-        buf[30] = '\0';
+	while (escuchando)
+	{
+		if ((bRecibidos = recv(sockfd, buf, sizeof(buf), 0)) == -1)
+		{
+			perror("ERROR en el recv");
+		}
 
-        printf("Recibí: %s", buf);
-    }
+		buf[30] = '\0';
 
-/*
+		printf("Recibí: %s", buf);
+	}
+
+	/*
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->buffer = malloc(sizeof(t_buffer));
 	
@@ -88,5 +93,5 @@ void recibir_mensaje(int sockfd){
 
 	return dRecibidos;
 */
-    return;
+	return;
 }

@@ -11,64 +11,68 @@ int main(int argc, char **argv)
 	t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
 	log_info(logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
 
-
 	//LECTURA DE CONSOLA
-	void (*comando[6]) (char**)={INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
+	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
 
 	char *leido;
 	char **parametros;
 	leido = readline(">");
 
-	while(strcmp(leido, "")){
-		
+	while (strcmp(leido, ""))
+	{
+
 		parametros = string_split(leido, " ");
 
-		if (strcmp(parametros[0],      "INICIAR_PATOTA"       ) == 0) 
+		if (strcmp(parametros[0], "INICIAR_PATOTA") == 0)
 			comando[0](parametros);
-		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES"   ) == 0)
+		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES") == 0)
 			comando[1](parametros);
-		else if (strcmp(parametros[0], "EXPULSAR_TRIPULANTE"  ) == 0) 
+		else if (strcmp(parametros[0], "EXPULSAR_TRIPULANTE") == 0)
 			comando[2](parametros);
 		else if (strcmp(parametros[0], "INICIAR_PLANIFICACION") == 0)
 			comando[3](parametros);
-		else if (strcmp(parametros[0], "PAUSAR_PLANIFICACION" ) == 0) 
+		else if (strcmp(parametros[0], "PAUSAR_PLANIFICACION") == 0)
 			comando[4](parametros);
-		else if (strcmp(parametros[0], "OBTENER_BITACORA"     ) == 0)
+		else if (strcmp(parametros[0], "OBTENER_BITACORA") == 0)
 			comando[5](parametros);
-		else{
+		else
+		{
 			printf("No reconozco ese comando\n");
 		}
 
 		free(leido);
 		free(parametros);
-		leido=readline(">");
+		leido = readline(">");
 	}
 	free(leido);
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
-	sockfd_ram = abrir_conexion((int) config->ip_ram);
+	sockfd_ram = abrir_conexion(config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
-	sockfd_mongo = abrir_conexion((int) config->ip_mongo);
+	sockfd_mongo = abrir_conexion(config->puerto_mongo);
 
 	char reconectOP;
 	system("clear");
 
-	while(sockfd_ram == -1 || sockfd_mongo == -1){
+	while (sockfd_ram == -1 || sockfd_mongo == -1)
+	{
 		system("clear");
 		printf("Error de conexion ¿desea reconectar? [s|n]\n");
 		fflush(stdin);
 		reconectOP = getchar();
 
-		if(reconectOP == 's'){
+		if (reconectOP == 's')
+		{
 
-			if(sockfd_ram == -1)
-				sockfd_ram = abrir_conexion((int) config->ip_ram);
-			if(sockfd_mongo == -1)
-				sockfd_mongo = abrir_conexion((int) config->ip_mongo);
-
-		} else if(reconectOP == 'n'){
+			if (sockfd_ram == -1)
+				sockfd_ram = abrir_conexion(config->puerto_ram);
+			if (sockfd_mongo == -1)
+				sockfd_mongo = abrir_conexion(config->puerto_mongo);
+		}
+		else if (reconectOP == 'n')
+		{
 			exit(1);
 			system("clear");
 		}
@@ -79,15 +83,16 @@ int main(int argc, char **argv)
 	//ME PONGO A ESCUCHAR LOS SOCKETS
 	escuchando = 1;
 	pthread_t escuchar_ram, escuchar_mongo;
-	pthread_create(&escuchar_ram,   NULL, (void*) recibir_mensaje, (void *) sockfd_ram);
-	pthread_create(&escuchar_mongo, NULL, (void*) recibir_mensaje, (void *) sockfd_mongo);
+	pthread_create(&escuchar_ram, NULL, (void *)recibir_mensaje, (void *)sockfd_ram);
+	pthread_create(&escuchar_mongo, NULL, (void *)recibir_mensaje, (void *)sockfd_mongo);
 
 	//MANDO MENSAJES
 	char userOption = '\0';
 	char *msg;
 	system("clear");
 
-	while(userOption != 'E'){
+	while (userOption != 'E')
+	{
 
 		msg = malloc(MAX_DATA_SIZE);
 		puts("Mensaje a enviar:");
@@ -101,10 +106,12 @@ int main(int argc, char **argv)
 		puts("\t[E] EXIT");
 		scanf(" %c", &userOption);
 
-		if(userOption == 'm'){
+		if (userOption == 'm')
+		{
 			enviar_mensaje(sockfd_mongo, msg);
 		}
-		else if(userOption == 'r'){
+		else if (userOption == 'r')
+		{
 			enviar_mensaje(sockfd_ram, msg);
 		}
 
@@ -113,7 +120,7 @@ int main(int argc, char **argv)
 	}
 
 	system("clear");
-	escuchando=0;
+	escuchando = 0;
 	close(sockfd_ram);
 	close(sockfd_mongo);
 	log_destroy(logger);

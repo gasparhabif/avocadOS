@@ -10,6 +10,7 @@ int connect_to(char *ip, int port)
     int client = socket(AF_INET, SOCK_STREAM, 0);
     int connection = connect(client, (void *)&server_dir, sizeof(server_dir));
 
+    // TODO: Hacer close en caso de error
     return connection == 0 ? client : connection;
 }
 
