@@ -8,6 +8,7 @@
 
 #include "configurator.h"
 #include "connections.h"
+#include "serializacion.h"
 
 char *mi_funcion_compartida();
 
