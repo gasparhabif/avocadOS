@@ -69,6 +69,8 @@ void leer_tareas(t_tareas *tareas, FILE *fpTareas){
         else{
             printf("Error desconocido interpretando el archivo");
         }
+        free(instruccion);
+        free(data);
     }
 
     free(line);

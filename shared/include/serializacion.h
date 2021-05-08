@@ -7,6 +7,7 @@
 #define TCB 0
 #define PCB 1
 #define TAREAS 2
+#define REALIZAR_TAREA 3
 
 #define MOVER_POSICION   0
 #define GENERAR_OXIGENO  1
@@ -50,6 +51,12 @@ typedef struct {
     u_int32_t posY;
     u_int32_t duracionTarea;
 } t_tareas;
+
+//RECEPCION DE TAREAS DEL MONGO
+typedef struct {
+    u_int8_t codigoTarea;
+    u_int32_t parametro;
+} tareas_mongo;
 
 //DEFINIDAS EN serializacion.c
 void* serializarTCB    (t_TCB);

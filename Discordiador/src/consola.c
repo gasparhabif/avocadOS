@@ -24,9 +24,10 @@ void INICIAR_PATOTA (char** parametros){
             else{
                 
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO
-                t_tareas *tareas;
+                t_tareas *tareas = NULL;
                 leer_tareas(tareas, fpTareas);
-
+                //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
+                serializarTareas(tareas);
 
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;
@@ -41,14 +42,14 @@ void INICIAR_PATOTA (char** parametros){
                     //tripulantes_tcb[i].puntero_PCB = ;
                 }
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola
-                for(int i = 3; i < parametros[cantParametros-1]; i++){
-                    tripulantes_tcb[i-3].posX = parametros[i];
-                    tripulantes_tcb[i-3].posY = parametros[i];
+                for(int i = 3; i < cantParametros; i++){
+                    tripulantes_tcb[i-3].posX = (uint32_t) parametros[i];
+                    tripulantes_tcb[i-3].posY = (uint32_t) parametros[i];
                 }
-
                 
                 //pthread_t *tripulantes_hilos = malloc(sizeof(pthread_t) * cantTripulantes);
 
+                free(tareas);
                 free(tripulantes_tcb);
             }
         }
