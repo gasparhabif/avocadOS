@@ -26,13 +26,13 @@ void tripulante(void *tcb){
     tcb_tripulante = tcb;
 
     tcb_tripulante->TID = tid;
-
+/*
     //ABRO LA CONEXION
     sockfd_tripulante_mongo = abrir_conexion(config->puerto_mongo);
     sockfd_tripulante_ram   = abrir_conexion(config->puerto_ram);
 
     //TODO: serializar tcb y mandarlo
-
+*/
     return;
 
 }

@@ -37,7 +37,7 @@ void PAUSAR_PLANIFICACION  (char** parametros);
 void OBTENER_BITACORA      (char** parametros);
 
 //DEFINIDAS EN aux.c
-void leer_tareas(t_tareas*, FILE*);
+void leer_tareas(t_tareas**, FILE*);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(void *tcb);

@@ -25,15 +25,14 @@ void INICIAR_PATOTA (char** parametros){
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO
                 t_tareas *tareas = NULL;
                 //EMPAQUETO LAS INSTRCCIONES
-                leer_tareas(tareas, fpTareas);
+                leer_tareas(&tareas, fpTareas);
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //serializarTareas(tareas);
                 //ENVIAR TAREAS
                 //.............
                 //LIBERO LA MEMORIA DE LAS TAREAS
-                free(tareas);
+                //free(tareas);
 
-/*
                 for(int i = 0; i< 6; i++){
                     printf("INST: %d\n", tareas[i].codigoTarea);
                     printf("PARA: %d\n", tareas[i].parametro);
@@ -41,7 +40,6 @@ void INICIAR_PATOTA (char** parametros){
                     printf("POSY: %d\n", tareas[i].posY);
                     printf("TIME: %d\n\n", tareas[i].duracionTarea);
                 }
-*/       
                 
                 //MANDO EL PCB
 
