@@ -2,6 +2,7 @@
 
 int main()
 {
+    system("clear");
     t_store_conf *config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
 
     int server_instance = init_server(config->puerto);
@@ -10,7 +11,7 @@ int main()
     if (server_instance == -1)
     {
         perror("Algo malió sal");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Escuchar
@@ -26,7 +27,7 @@ int main()
     if (client == -1)
     {
         perror("Algo malió sal");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     printf("Recibí una conexión en el socket %d\n", client);
@@ -39,15 +40,15 @@ int main()
         if (msg_size <= 0)
         {
             perror("Algo malió sal");
-            return 1;
+            return EXIT_FAILURE;
         }
 
         buffer[msg_size] = '\0';
-        printf("Recibí %d bytes:\n> %s\n", msg_size, buffer);
+        printf("%d bytes > %s", msg_size, buffer);
     }
 
     free(buffer);
     free(config);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
