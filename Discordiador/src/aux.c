@@ -26,8 +26,28 @@ void leer_tareas(t_tareas *tareas, FILE *fpTareas){
             while(instruccion[cantInstrucciones] != NULL)
                 cantInstrucciones++;
 
-            if(cantInstrucciones != 2)
-                printf("La instruccion %d no fue reconocida", i+1);
+            if(cantInstrucciones != 2){
+                //LA INSTRUCCION ES DESCARTAR BASURA O ES UN ERROR
+
+                data = string_split(instruccion[0], ";");
+
+                if (strcmp(data[0], "DESCARTAR_BASURA") == 0)
+                    tareas[i].codigoTarea = DESCARTAR_BASURA;
+                else
+                    tareas[i].codigoTarea = MOVER_POSICION;
+
+                while(data[cantParametros] != NULL)
+                    cantParametros++;
+
+                if(cantParametros == 4){
+                    tareas[i].posX          = atoi(data[1]);
+                    tareas[i].posY          = atoi(data[2]);
+                    tareas[i].duracionTarea = atoi(data[3]);
+                }
+                else{
+                    printf("La instruccion %d no fue reconocida\n", i+1);
+                }
+            }
             else{
                 if (strcmp(instruccion[0],      "GENERAR_OXIGENO" ) == 0) 
                     tareas[i].codigoTarea = GENERAR_OXIGENO;
@@ -39,11 +59,8 @@ void leer_tareas(t_tareas *tareas, FILE *fpTareas){
                     tareas[i].codigoTarea = CONSUMIR_COMIDA;
                 else if (strcmp(instruccion[0], "GENERAR_BASURA"  ) == 0) 
                     tareas[i].codigoTarea = GENERAR_BASURA;
-                else if (strcmp(instruccion[0], "DESCARTAR_BASURA") == 0)
-                    tareas[i].codigoTarea = DESCARTAR_BASURA;
-                else{
+                else
                     tareas[i].codigoTarea = MOVER_POSICION;
-                }
                 
                 data = string_split(instruccion[1], ";");
                 
@@ -51,27 +68,25 @@ void leer_tareas(t_tareas *tareas, FILE *fpTareas){
                     cantParametros++;
 
                 if(cantParametros == 4){
-                    tareas[i].parametro     = (u_int32_t) data[0];
-                    tareas[i].posX          = (u_int32_t) data[1];
-                    tareas[i].posY          = (u_int32_t) data[2];
-                    tareas[i].duracionTarea = (u_int32_t) data[3];
-                }
-                else if(tareas[i].codigoTarea == DESCARTAR_BASURA && cantParametros == 4){
-                    tareas[i].posX          = (u_int32_t) data[0];
-                    tareas[i].posY          = (u_int32_t) data[1];
-                    tareas[i].duracionTarea = (u_int32_t) data[2];
+                    tareas[i].parametro     = atoi(data[0]);
+                    tareas[i].posX          = atoi(data[1]);
+                    tareas[i].posY          = atoi(data[2]);
+                    tareas[i].duracionTarea = atoi(data[3]);
                 }
                 else{
-                    printf("Error desconocido interpretando el archivo");
+                    printf("La instruccion %d no fue reconocida\n", i+1);
                 }
             }
+            
         }
         else{
-            printf("Error desconocido interpretando el archivo");
+            printf("La instruccion %d no fue reconocida\n", i+1);
         }
-        free(instruccion);
-        free(data);
+
+        //ACA HAY UN SEG FAULT, nosepq?
+        //free(instruccion);
+        //free(data);
     }
 
     free(line);
-} 
+}

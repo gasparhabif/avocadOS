@@ -19,9 +19,9 @@ int abrir_conexion(int puerto)
 
 	if (connect(sockfd, (void *)&server_addr, sizeof(server_addr)) == -1)
 	{
-		// TODO: Hacer close en caso de error
 		log_info(logger, "Error en connect %d", sockfd);
 		perror("Connect ERROR");
+		close(sockfd);
 		sockfd = -1;
 	}
 

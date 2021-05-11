@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
 	log_info(logger, "Se inicio el log del discordiador: Proceso ID %d", getpid());
 
-	t_cpu_conf *config = get_cpu_config("../Discordiador/cfg/config.cfg");
+	config = get_cpu_config("../Discordiador/cfg/config.cfg");
 	log_info(logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
 
 	//LECTURA DE CONSOLA
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	char **parametros;
 	leido = readline(">");
 
-	while (strcmp(leido, ""))
+	while (strcmp(leido, "exit"))
 	{
 
 		parametros = string_split(leido, " ");

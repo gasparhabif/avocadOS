@@ -13,6 +13,7 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <sys/syscall.h>
 #include <signal.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -38,10 +39,14 @@ void OBTENER_BITACORA      (char** parametros);
 //DEFINIDAS EN aux.c
 void leer_tareas(t_tareas*, FILE*);
 
+//DEFINIDAS EN tripulantes.c
+void tripulante(void *tcb);
+
 //VARIABLES GLOBALES
 int sockfd_mongo;
 int sockfd_ram;
 t_log *logger;
 int escuchando;
+t_cpu_conf *config;
 
 #endif
