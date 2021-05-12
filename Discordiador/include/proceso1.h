@@ -37,7 +37,7 @@ void PAUSAR_PLANIFICACION(char **parametros);
 void OBTENER_BITACORA(char **parametros);
 
 //DEFINIDAS EN aux.c
-void leer_tareas(t_tareas **, FILE *);
+t_tareas* leer_tareas(FILE *);
 int contar_caracteres_especiales(size_t, char *, char);
 
 //DEFINIDAS EN tripulantes.c

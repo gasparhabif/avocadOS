@@ -27,25 +27,14 @@ void INICIAR_PATOTA(char **parametros)
                 printf("Usted especifio mas tripulantes de los que desea crear\n");
             else
             {
-                //LEO LAS INSTRUCCIONES DEL ARCHIVO
-                t_tareas *tareas = NULL;
-                //EMPAQUETO LAS INSTRCCIONES
-                leer_tareas(&tareas, fpTareas);
+                //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
+                t_tareas *tareas = leer_tareas(fpTareas);
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //serializarTareas(tareas);
                 //ENVIAR TAREAS
                 //.............
                 //LIBERO LA MEMORIA DE LAS TAREAS
-                //free(tareas);
-
-                for (int i = 0; i < 6; i++)
-                {
-                    printf("INST: %d\n", tareas[i].codigoTarea);
-                    printf("PARA: %d\n", tareas[i].parametro);
-                    printf("POSX: %d\n", tareas[i].posX);
-                    printf("POSY: %d\n", tareas[i].posY);
-                    printf("TIME: %d\n\n", tareas[i].duracionTarea);
-                }
+                free(tareas);
 
                 //MANDO EL PCB
 
@@ -69,8 +58,6 @@ void INICIAR_PATOTA(char **parametros)
                 printf("Cant de params justo: %d", cantParametros);
                 for (int i = 3; i < cantParametros; i++)
                 {
-                    printf("\nLos parametros son: %s\n", parametros[i]);
-                    printf("\nEl primer substring: %s y el segundo: %s\n", string_substring(parametros[i], 0, 1), string_substring(parametros[i], 2, 1));
                     tripulantes_tcb[i - 3].posX = atoi(string_substring(parametros[i], 0, 1));
                     tripulantes_tcb[i - 3].posY = atoi(string_substring(parametros[i], 2, 1));
                 }
@@ -80,11 +67,10 @@ void INICIAR_PATOTA(char **parametros)
                 pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
 
                 for (int i = 0; i < cantTripulantes; i++)
-                {
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *)&tripulantes_tcb[i]);
-                }
 
                 free(tripulantes_tcb);
+
             }
         }
 

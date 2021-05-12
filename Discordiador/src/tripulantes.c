@@ -33,6 +33,7 @@ void tripulante(void *tcb){
 
     //TODO: serializar tcb y mandarlo
 */
+
     return;
 
 }
