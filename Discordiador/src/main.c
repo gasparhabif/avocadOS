@@ -42,6 +42,9 @@ int main(int argc, char **argv)
 		{
 			if (strcmp(leido, ""))
 				printf("No reconozco ese comando\n");
+			//PLANIFICADOR MANUAL, solo para pruebas
+			else
+				turno = atoi(leido);
 		}
 
 		free(leido);

@@ -52,7 +52,8 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;
-                    //tripulantes_tcb[i].puntero_PCB = ;
+                    //TODO: traer el puntero de RAM
+                    tripulantes_tcb[i].puntero_PCB = 0;
                 }
 
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola

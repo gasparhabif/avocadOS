@@ -1,6 +1,6 @@
 #include "serializacion.h"
 
-void* serializarTCB(t_TCB unTCB){
+void* serializarTCB(t_TCB *unTCB){
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -12,17 +12,17 @@ void* serializarTCB(t_TCB unTCB){
     void *stream = malloc(buffer -> size);
     int offset = 0;
 
-    memcpy(stream + offset, &unTCB.TID, sizeof(uint32_t));
+    memcpy(stream + offset, &unTCB->TID, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(stream + offset, &unTCB.estado, sizeof(char));
+    memcpy(stream + offset, &unTCB->estado, sizeof(char));
     offset += sizeof(char);
-    memcpy(stream + offset, &unTCB.posX, sizeof(uint32_t));
+    memcpy(stream + offset, &unTCB->posX, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(stream + offset, &unTCB.posY, sizeof(uint32_t));
+    memcpy(stream + offset, &unTCB->posY, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(stream + offset, &unTCB.proximaInstruccion, sizeof(uint32_t));
+    memcpy(stream + offset, &unTCB->proximaInstruccion, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(stream + offset, &unTCB.puntero_PCB, sizeof(uint32_t));
+    memcpy(stream + offset, &unTCB->puntero_PCB, sizeof(uint32_t));
     offset += sizeof(uint32_t);
 
     buffer->stream = stream;

@@ -50,5 +50,7 @@ t_log *logger;
 int escuchando;
 t_cpu_conf *config;
 int patota_id;
+int exec;
+int turno;
 
 #endif
