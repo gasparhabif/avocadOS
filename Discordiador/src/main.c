@@ -55,10 +55,10 @@ int main(int argc, char **argv)
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
-	sockfd_ram = abrir_conexion(config->puerto_ram);
+	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
-	sockfd_mongo = abrir_conexion(config->puerto_mongo);
+	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	char reconectOP;
 	system("clear");
@@ -74,9 +74,9 @@ int main(int argc, char **argv)
 		{
 
 			if (sockfd_ram == -1)
-				sockfd_ram = abrir_conexion(config->puerto_ram);
+				sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 			if (sockfd_mongo == -1)
-				sockfd_mongo = abrir_conexion(config->puerto_mongo);
+				sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 		}
 		else if (reconectOP == 'n')
 		{
@@ -86,12 +86,6 @@ int main(int argc, char **argv)
 	}
 
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
-
-	//ME PONGO A ESCUCHAR LOS SOCKETS
-	escuchando = 1;
-	pthread_t escuchar_ram, escuchar_mongo;
-	pthread_create(&escuchar_ram, NULL, (void *)recibir_mensaje, (void *)sockfd_ram);
-	pthread_create(&escuchar_mongo, NULL, (void *)recibir_mensaje, (void *)sockfd_mongo);
 
 	//MANDO MENSAJES
 	char userOption = '\0';
@@ -115,11 +109,11 @@ int main(int argc, char **argv)
 
 		if (userOption == 'm')
 		{
-			enviar_mensaje(sockfd_mongo, msg);
+			//enviar_mensaje(sockfd_mongo, msg);
 		}
 		else if (userOption == 'r')
 		{
-			enviar_mensaje(sockfd_ram, msg);
+			//enviar_mensaje(sockfd_ram, msg);
 		}
 
 		free(msg);

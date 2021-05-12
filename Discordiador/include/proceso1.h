@@ -23,11 +23,6 @@
 
 #define MAX_DATA_SIZE 30
 
-//DEFINIDAS EN connections.c
-int abrir_conexion(int puerto);
-void enviar_mensaje(int socket, char *msg);
-void recibir_mensaje(int sockfd);
-
 //DEFINIDAS EN consola.c
 void INICIAR_PATOTA(char **parametros);
 void LISTAR_TRIPULANTES(char **parametros);
