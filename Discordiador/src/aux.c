@@ -4,11 +4,11 @@ void leer_tareas(t_tareas **tareas, FILE *fpTareas)
 {
 
     char *line = NULL;
-    char **instruccion;
     char **data;
     size_t len = 0;
     ssize_t read;
     int cantLineas = 0, cantInstrucciones = 0, cantParametros = 0;
+    char **instruccion = NULL;
 
     //CHEQUEO LA CANTIDAD DE LINEAS PARA RESERVAR LA MEMORIA
     while ((read = getline(&line, &len, fpTareas)) != -1)
@@ -17,7 +17,7 @@ void leer_tareas(t_tareas **tareas, FILE *fpTareas)
 
     //RESERVO LA MEMORIA
     for (int m = 0; m < cantLineas; ++m)
-        tareas[m] = malloc(sizeof(**tareas) * sizeof(*tareas));
+        tareas[m] = malloc(sizeof(t_tareas));
 
     //LEO LINEA A LINEA
     for (int i = 0; i < cantLineas; i++)
@@ -25,9 +25,7 @@ void leer_tareas(t_tareas **tareas, FILE *fpTareas)
         if ((read = getline(&line, &len, fpTareas)) != -1)
         {
             instruccion = string_split(line, " ");
-
-            while (instruccion[cantInstrucciones] != NULL)
-                cantInstrucciones++;
+            cantInstrucciones = 1 + contar_caracteres_especiales(read, line, ' ');
 
             if (cantInstrucciones != 2)
             {
@@ -45,6 +43,8 @@ void leer_tareas(t_tareas **tareas, FILE *fpTareas)
 
                 if (cantParametros == 4)
                 {
+                    // Ya que estas tareas no tienen parametros
+                    tareas[i]->parametro = 0;
                     tareas[i]->posX = atoi(data[1]);
                     tareas[i]->posY = atoi(data[2]);
                     tareas[i]->duracionTarea = atoi(data[3]);
@@ -91,10 +91,31 @@ void leer_tareas(t_tareas **tareas, FILE *fpTareas)
             printf("La instruccion %d no fue reconocida\n", i + 1);
         }
 
-        //ACA HAY UN SEG FAULT, nosepq?
-        //free(instruccion);
-        //free(data);
+        free(instruccion);
+        free(data);
     }
 
+    for (int i = 0; i < 6; i++)
+    {
+        printf("INST: %d\n", tareas[i]->codigoTarea);
+        printf("PARA: %d\n", tareas[i]->parametro);
+        printf("POSX: %d\n", tareas[i]->posX);
+        printf("POSY: %d\n", tareas[i]->posY);
+        printf("TIME: %d\n\n", tareas[i]->duracionTarea);
+    }
+    printf("\n++++++++++++++++++++++++\n");
+
+    fflush(fpTareas);
+    fclose(fpTareas);
     free(line);
+}
+
+int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
+{
+    int contador = 0;
+    for (int j = 0; j < read; ++j)
+        if (line[j] == caracterEspecial)
+            contador++;
+
+    return contador;
 }

@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 			comando[5](parametros);
 		else
 		{
-			if(strcmp(leido, ""))
+			if (strcmp(leido, ""))
 				printf("No reconozco ese comando\n");
 		}
 

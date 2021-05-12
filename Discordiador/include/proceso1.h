@@ -29,15 +29,16 @@ void enviar_mensaje(int socket, char *msg);
 void recibir_mensaje(int sockfd);
 
 //DEFINIDAS EN consola.c
-void INICIAR_PATOTA        (char** parametros);
-void LISTAR_TRIPULANTES    (char** parametros);
-void EXPULSAR_TRIPULANTE   (char** parametros);
-void INICIAR_PLANIFICACION (char** parametros);
-void PAUSAR_PLANIFICACION  (char** parametros);
-void OBTENER_BITACORA      (char** parametros);
+void INICIAR_PATOTA(char **parametros);
+void LISTAR_TRIPULANTES(char **parametros);
+void EXPULSAR_TRIPULANTE(char **parametros);
+void INICIAR_PLANIFICACION(char **parametros);
+void PAUSAR_PLANIFICACION(char **parametros);
+void OBTENER_BITACORA(char **parametros);
 
 //DEFINIDAS EN aux.c
-void leer_tareas(t_tareas**, FILE*);
+void leer_tareas(t_tareas **, FILE *);
+int contar_caracteres_especiales(size_t, char *, char);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(void *tcb);
