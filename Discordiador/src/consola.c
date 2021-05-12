@@ -30,18 +30,18 @@ void INICIAR_PATOTA(char **parametros)
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 t_tareas *tareas = leer_tareas(fpTareas);
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
-                //serializarTareas(tareas);
+                void *d_Enviar = serializarTareas_cPID(tareas, patota_id);
+                patota_id++;
                 //ENVIAR TAREAS
-                //.............
+                //enviar(d_enviar, sockfd_ram);
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
-
-                //MANDO EL PCB
+                free(d_Enviar);
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
+                //TODO
 
                 //CREO LOS TCB
-
                 t_TCB *tripulantes_tcb;
                 tripulantes_tcb = malloc(sizeof(t_TCB) * cantTripulantes);
 
@@ -54,8 +54,8 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i].proximaInstruccion = 0;
                     //tripulantes_tcb[i].puntero_PCB = ;
                 }
+
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola
-                printf("Cant de params justo: %d", cantParametros);
                 for (int i = 3; i < cantParametros; i++)
                 {
                     tripulantes_tcb[i - 3].posX = atoi(string_substring(parametros[i], 0, 1));

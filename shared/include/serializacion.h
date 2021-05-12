@@ -4,11 +4,14 @@
 #include <string.h>
 #include <stdint.h>
 
-#define TCB 0
-#define PCB 1
-#define TAREAS 2
-#define REALIZAR_TAREA 3
+//CODIGOS DE OPERACION
+#define TCB            0
+#define PCB            1
+#define TAREAS         2
+#define TAREAS_cPID    3
+#define REALIZAR_TAREA 4
 
+//CODIGOS DE TAREAS
 #define MOVER_POSICION   0
 #define GENERAR_OXIGENO  1
 #define CONSUMIR_OXIGENO 2
@@ -17,7 +20,18 @@
 #define GENERAR_BASURA   5
 #define DESCARTAR_BASURA 6
 
-//BUFFER Y PAQUETE
+//BUFFERS Y PAQUETE
+typedef struct {
+    u_int32_t size;
+    u_int32_t PID;
+    void* stream;
+} t_buffer_PID;
+
+typedef struct{
+    u_int8_t codigo_operacion;
+    t_buffer_PID* buffer;
+} t_paquete_PID;
+
 typedef struct {
     u_int32_t size;
     void* stream;
@@ -62,6 +76,7 @@ typedef struct {
 void* serializarTCB    (t_TCB);
 void* serializarPCB    (t_PCB);
 void* serializarTareas (t_tareas*);
+void* serializarTareas_cPID(t_tareas*, int);
 
 //DEFINIDAS EN deserializacion.c
 t_TCB*    deserializarTCB(t_paquete*);

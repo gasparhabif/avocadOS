@@ -11,6 +11,9 @@ int main(int argc, char **argv)
 	config = get_cpu_config("../Discordiador/cfg/config.cfg");
 	log_info(logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
 
+	//INICIALIZO EL PID
+	patota_id = 1;
+
 	//LECTURA DE CONSOLA
 	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
 

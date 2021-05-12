@@ -49,5 +49,6 @@ int sockfd_ram;
 t_log *logger;
 int escuchando;
 t_cpu_conf *config;
+int patota_id;
 
 #endif

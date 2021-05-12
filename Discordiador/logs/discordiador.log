@@ -6,3 +6,11 @@ Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
 [INFO] 01:38:15:563 DISCORDIADOR/(8923:8923): 
 Obtuve IP de ram: 127.0.0.1, puerto: 5001
 Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 02:52:49:671 DISCORDIADOR/(4532:4532): Se inicio el log del discordiador: Proceso ID 4532
+[INFO] 02:52:49:673 DISCORDIADOR/(4532:4532): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 02:55:12:539 DISCORDIADOR/(4786:4786): Se inicio el log del discordiador: Proceso ID 4786
+[INFO] 02:55:12:540 DISCORDIADOR/(4786:4786): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
