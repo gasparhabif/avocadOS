@@ -7,8 +7,8 @@
 #include <commons/log.h>
 
 #include "configurator.h"
-#include "connections.h"
 #include "serializacion.h"
+#include "connections.h"
 
 char *mi_funcion_compartida();
 

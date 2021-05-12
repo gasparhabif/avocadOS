@@ -1,3 +1,6 @@
+#ifndef serializacion_H
+#define serializacion_H
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,3 +85,5 @@ void* serializarTareas_cPID(t_tareas*, int);
 t_TCB*    deserializarTCB(t_paquete*);
 t_PCB*    deserializarPCB(t_paquete*);
 t_tareas* deserializarTareas(t_paquete*);
+
+#endif

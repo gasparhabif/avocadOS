@@ -28,3 +28,41 @@ int init_server(int port)
 
     return boundary == 0 ? server : boundary;
 }
+
+void* recibir_paquete(int sockfd)
+{
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+	
+    //RECIBO EL CODIGO DE OPERACION
+    recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+    //RECIBO EL TAMAÑO DEL STREAM
+    recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), 0);
+    //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+    //RECIBO EL STREAM
+    recv(sockfd, paquete->buffer->stream, paquete->buffer->size, 0);
+
+    void *dRecibidos;
+
+    switch(paquete->codigo_operacion){
+        case TCB:
+            dRecibidos = deserializarTCB(paquete);
+            break;
+        case PCB:
+            dRecibidos = deserializarPCB(paquete);
+            break;
+        case TAREAS:
+            dRecibidos = deserializarTareas(paquete);
+            break;
+        default:
+            //NO ENCONTRE NINGUN COP
+            break;
+    }
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+	return dRecibidos;
+}
