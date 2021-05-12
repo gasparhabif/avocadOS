@@ -5,5 +5,8 @@
 #include <commons/log.h>
 #include <stdbool.h>
 #include "shared_utils.h"
+#include <pthread.h>
+
+void *connection_handler(void *arg);
 
 #endif
