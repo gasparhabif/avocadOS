@@ -46,14 +46,17 @@ void* recibir_paquete(int sockfd)
     void *dRecibidos;
 
     switch(paquete->codigo_operacion){
-        case TCB:
-            dRecibidos = deserializarTCB(paquete);
+        case COMENZAR_PATOTA:
+            //dRecibidos = deserializar(paquete->buffer);
             break;
-        case PCB:
-            dRecibidos = deserializarPCB(paquete);
+        case INICIAR_TRIPULANTE:
+            dRecibidos = deserializarTCB(paquete->buffer);
             break;
-        case TAREAS:
-            dRecibidos = deserializarTareas(paquete);
+        case SOLICITAR_TAREA:
+
+            break;
+        case ENVIAR_PROXIMA_TAREA:
+            dRecibidos = deserializarTarea(paquete->buffer);
             break;
         default:
             //NO ENCONTRE NINGUN COP

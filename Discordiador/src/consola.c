@@ -33,13 +33,13 @@ void INICIAR_PATOTA(char **parametros)
                 void *d_Enviar = serializarTareas_cPID(tareas, patota_id);
                 patota_id++;
                 //ENVIAR TAREAS
-                //enviar(d_enviar, sockfd_ram);
+                send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
                 free(d_Enviar);
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
-                //TODO
+                //int direccionPCB = (int) recibir_paquete(sockfd_ram);
 
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;

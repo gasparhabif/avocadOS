@@ -1,70 +1,77 @@
 #include "serializacion.h"
 
-t_TCB* deserializarTCB(t_paquete* paquete){
+t_TCB* deserializarTCB(t_buffer* buffer){
 
-    t_TCB *TCB_enviar = malloc(sizeof(t_TCB));
+    t_TCB *TCB_recibido = malloc(sizeof(t_TCB));
 
-    void* stream = paquete->buffer->stream;
+    void* stream = buffer->stream;
 
-    memcpy(&(TCB_enviar->TID), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->TID), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_enviar->estado), stream, sizeof(char));
+    memcpy(&(TCB_recibido->estado), stream, sizeof(char));
     stream += sizeof(char);
-    memcpy(&(TCB_enviar->posX), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->posX), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_enviar->posY), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->posY), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_enviar->proximaInstruccion), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->proximaInstruccion), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_enviar->puntero_PCB), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->puntero_PCB), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
 
-    return TCB_enviar;
+    return TCB_recibido;
 
-    //OJOOOO
-    //free(TCB_enviar);
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(TCB_recibido);
 }
 
-t_PCB* deserializarPCB(t_paquete* paquete){
+t_tarea* deserializarTarea(t_buffer* buffer){
 
-    t_PCB *PCB_enviar = malloc(sizeof(t_PCB));
-    void* stream = paquete->buffer->stream;
+    t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
 
-    memcpy(&(PCB_enviar->PID), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(PCB_enviar->tareas), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
+    void* stream = buffer->stream;
 
-    return PCB_enviar;
+    memcpy(&(tarea_recibida->codigoTarea), stream, sizeof(u_int8_t));
+    stream += sizeof(u_int8_t);
+    memcpy(&(tarea_recibida->parametro), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(tarea_recibida->posX), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(tarea_recibida->posY), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(tarea_recibida->duracionTarea), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
 
-    //OJOOOO
-    //free(PCB_enviar);
+    return tarea_recibida;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(tarea_recibida);
 }
 
-t_tareas* deserializarTareas(t_paquete* paquete){
+t_tareas_cPID* deserializarTareas_cPID(t_buffer* buffer){
 
-    t_tareas *tareas_enviar;
+    t_tareas_cPID *tareas_cPID_recibidas = malloc(sizeof(t_tareas_cPID));
 
-    int cantTareasRecibidas = paquete->buffer->size;
-    void* stream = paquete->buffer->stream;
+    void* stream = buffer->stream;
 
-    tareas_enviar = malloc(cantTareasRecibidas * sizeof(t_tareas));
+    memcpy(&(tareas_cPID_recibidas->PID), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(tareas_cPID_recibidas->cantTareas), stream, sizeof(u_int8_t));
+    stream += sizeof(u_int8_t);
 
-    for(int i=0; i<cantTareasRecibidas; i++){
-        memcpy(&(tareas_enviar[i].codigoTarea), stream, sizeof(u_int8_t));
+    for(int i=0; i<tareas_cPID_recibidas->cantTareas; i++){
+        memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(u_int8_t));
         stream += sizeof(u_int8_t);
-        memcpy(&(tareas_enviar[i].parametro), stream, sizeof(u_int32_t));
+        memcpy(&(tareas_cPID_recibidas->tareas[i].parametro), stream, sizeof(u_int32_t));
         stream += sizeof(u_int32_t);
-        memcpy(&(tareas_enviar[i].posX), stream, sizeof(u_int32_t));
+        memcpy(&(tareas_cPID_recibidas->tareas[i].posX), stream, sizeof(u_int32_t));
         stream += sizeof(u_int32_t);
-        memcpy(&(tareas_enviar[i].posY), stream, sizeof(u_int32_t));
+        memcpy(&(tareas_cPID_recibidas->tareas[i].posY), stream, sizeof(u_int32_t));
         stream += sizeof(u_int32_t);
-        memcpy(&(tareas_enviar[i].duracionTarea), stream, sizeof(u_int32_t));
+        memcpy(&(tareas_cPID_recibidas->tareas[i].duracionTarea), stream, sizeof(u_int32_t));
         stream += sizeof(u_int32_t);
     }
 
-    return tareas_enviar;
+    return tareas_cPID_recibidas;
 
-    //OJOOOO
-    //free(tareas_enviar);
 }

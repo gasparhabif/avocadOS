@@ -28,19 +28,18 @@ void tripulante(void *tcb){
     tcb_tripulante->TID = tid;
 
     //ABRO LA CONEXION
-    //sockfd_tripulante_mongo = abrir_conexion(config->puerto_mongo);
-    //sockfd_tripulante_ram   = abrir_conexion(config->puerto_ram);
+    sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    sockfd_tripulante_ram   = connect_to(config->ip_ram, config->puerto_ram);
 
     //SERIALIZO EL TCB
     void* d_Enviar = serializarTCB(tcb_tripulante);
-
-    //TODO: mandar TCB
+    send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
 
     //cambiar estado a ready
     
     while(exec){
         if(turno == tid){
-
+            
         }
     }
     

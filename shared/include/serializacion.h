@@ -8,11 +8,12 @@
 #include <stdint.h>
 
 //CODIGOS DE OPERACION
-#define TCB            0
-#define PCB            1
-#define TAREAS         2
-#define TAREAS_cPID    3
-#define REALIZAR_TAREA 4
+#define COMENZAR_PATOTA      0
+#define INICIAR_TRIPULANTE   1
+#define SOLICITAR_TAREA      2
+#define ENVIAR_PROXIMA_TAREA 3
+#define REALIZAR_TAREA       4
+
 
 //CODIGOS DE TAREAS
 #define MOVER_POSICION   0
@@ -24,17 +25,6 @@
 #define DESCARTAR_BASURA 6
 
 //BUFFERS Y PAQUETE
-typedef struct {
-    u_int32_t size;
-    u_int32_t PID;
-    void* stream;
-} t_buffer_PID;
-
-typedef struct{
-    u_int8_t codigo_operacion;
-    t_buffer_PID* buffer;
-} t_paquete_PID;
-
 typedef struct {
     u_int32_t size;
     void* stream;
@@ -67,7 +57,13 @@ typedef struct {
     u_int32_t posX;
     u_int32_t posY;
     u_int32_t duracionTarea;
-} t_tareas;
+} t_tarea;
+
+typedef struct {
+    u_int32_t PID;
+    u_int8_t cantTareas;
+    t_tarea *tareas;
+} t_tareas_cPID;
 
 //RECEPCION DE TAREAS DEL MONGO
 typedef struct {
@@ -77,13 +73,11 @@ typedef struct {
 
 //DEFINIDAS EN serializacion.c
 void* serializarTCB        (t_TCB*);
-void* serializarPCB        (t_PCB);
-void* serializarTareas     (t_tareas*);
-void* serializarTareas_cPID(t_tareas*, int);
+void* serializarTarea      (t_tarea);
+void* serializarTareas_cPID(t_tarea*, int);
 
 //DEFINIDAS EN deserializacion.c
-t_TCB*    deserializarTCB(t_paquete*);
-t_PCB*    deserializarPCB(t_paquete*);
-t_tareas* deserializarTareas(t_paquete*);
+t_TCB*    deserializarTCB(t_buffer*);
+t_tarea* deserializarTarea(t_buffer*);
 
 #endif
