@@ -1,0 +1,86 @@
+[INFO] 01:35:15:571 DISCORDIADOR/(8586:8586): Se inicio el log del discordiador: Proceso ID 8586
+[INFO] 01:35:15:572 DISCORDIADOR/(8586:8586): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 01:38:15:562 DISCORDIADOR/(8923:8923): Se inicio el log del discordiador: Proceso ID 8923
+[INFO] 01:38:15:563 DISCORDIADOR/(8923:8923): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 02:52:49:671 DISCORDIADOR/(4532:4532): Se inicio el log del discordiador: Proceso ID 4532
+[INFO] 02:52:49:673 DISCORDIADOR/(4532:4532): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 02:55:12:539 DISCORDIADOR/(4786:4786): Se inicio el log del discordiador: Proceso ID 4786
+[INFO] 02:55:12:540 DISCORDIADOR/(4786:4786): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 10:55:56:040 DISCORDIADOR/(5191:5191): Se inicio el log del discordiador: Proceso ID 5191
+[INFO] 10:55:56:041 DISCORDIADOR/(5191:5191): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 10:56:21:195 DISCORDIADOR/(5191:5241): Error en connect 5
+[INFO] 10:56:21:196 DISCORDIADOR/(5191:5241): Error en connect 5
+[INFO] 10:57:28:160 DISCORDIADOR/(5428:5428): Se inicio el log del discordiador: Proceso ID 5428
+[INFO] 10:57:28:161 DISCORDIADOR/(5428:5428): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 10:57:45:405 DISCORDIADOR/(5581:5581): Se inicio el log del discordiador: Proceso ID 5581
+[INFO] 10:57:45:405 DISCORDIADOR/(5581:5581): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 10:59:54:095 DISCORDIADOR/(5904:5904): Se inicio el log del discordiador: Proceso ID 5904
+[INFO] 10:59:54:095 DISCORDIADOR/(5904:5904): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 11:08:09:933 DISCORDIADOR/(7282:7282): Se inicio el log del discordiador: Proceso ID 7282
+[INFO] 11:08:09:934 DISCORDIADOR/(7282:7282): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 18:54:44:925 DISCORDIADOR/(4606:4606): Se inicio el log del discordiador: Proceso ID 4606
+[INFO] 18:54:44:928 DISCORDIADOR/(4606:4606): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 18:54:44:928 DISCORDIADOR/(4606:4606): Conectando a RAM...
+[INFO] 18:54:44:929 DISCORDIADOR/(4606:4606): Conectando a MONGO...
+[INFO] 18:54:56:634 DISCORDIADOR/(4610:4610): Se inicio el log del discordiador: Proceso ID 4610
+[INFO] 18:54:56:636 DISCORDIADOR/(4610:4610): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 18:54:56:638 DISCORDIADOR/(4610:4610): Conectando a RAM...
+[INFO] 18:54:56:639 DISCORDIADOR/(4610:4610): Conectando a MONGO...
+[INFO] 18:59:47:588 DISCORDIADOR/(4616:4616): Se inicio el log del discordiador: Proceso ID 4616
+[INFO] 18:59:47:592 DISCORDIADOR/(4616:4616): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 18:59:47:593 DISCORDIADOR/(4616:4616): Conectando a RAM...
+[INFO] 18:59:47:594 DISCORDIADOR/(4616:4616): Conectando a MONGO...
+[INFO] 19:28:17:659 DISCORDIADOR/(4644:4644): Se inicio el log del discordiador: Proceso ID 4644
+[INFO] 19:28:17:814 DISCORDIADOR/(4644:4644): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 19:28:17:818 DISCORDIADOR/(4644:4644): Conectando a RAM...
+[INFO] 19:28:17:834 DISCORDIADOR/(4644:4644): Conectando a MONGO...
+[INFO] 19:33:58:756 DISCORDIADOR/(4651:4651): Se inicio el log del discordiador: Proceso ID 4651
+[INFO] 19:33:58:937 DISCORDIADOR/(4651:4651): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 19:33:58:942 DISCORDIADOR/(4651:4651): Conectando a RAM...
+[INFO] 19:33:58:957 DISCORDIADOR/(4651:4651): Conectando a MONGO...
+[INFO] 19:36:25:203 DISCORDIADOR/(4724:4724): Se inicio el log del discordiador: Proceso ID 4724
+[INFO] 19:36:25:373 DISCORDIADOR/(4724:4724): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 19:36:25:377 DISCORDIADOR/(4724:4724): Conectando a RAM...
+[INFO] 19:36:25:392 DISCORDIADOR/(4724:4724): Conectando a MONGO...
+[INFO] 19:38:19:327 DISCORDIADOR/(4763:4763): Se inicio el log del discordiador: Proceso ID 4763
+[INFO] 19:38:19:511 DISCORDIADOR/(4763:4763): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 19:38:19:517 DISCORDIADOR/(4763:4763): Conectando a RAM...
+[INFO] 19:38:19:534 DISCORDIADOR/(4763:4763): Conectando a MONGO...
+[INFO] 19:39:01:365 DISCORDIADOR/(4802:4802): Se inicio el log del discordiador: Proceso ID 4802
+[INFO] 19:39:01:565 DISCORDIADOR/(4802:4802): 
+Obtuve IP de ram: 127.0.0.1, puerto: 5001
+Obtuve IP de MONGO: 127.0.0.1, puerto: 5002
+[INFO] 19:39:01:572 DISCORDIADOR/(4802:4802): Conectando a RAM...
+[INFO] 19:39:01:586 DISCORDIADOR/(4802:4802): Conectando a MONGO...

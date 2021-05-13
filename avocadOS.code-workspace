@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "Discordiador"
+		},
+		{
+			"path": "i-Mongo-Store"
+		},
+		{
+			"path": "Mi-Ram-HQ"
+		},
+		{
+			"path": "shared"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"proceso1.h": "c"
+		}
+	}
+}
