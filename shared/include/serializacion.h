@@ -9,11 +9,11 @@
 
 //CODIGOS DE OPERACION
 #define COMENZAR_PATOTA      0
-#define INICIAR_TRIPULANTE   1
-#define SOLICITAR_TAREA      2
-#define ENVIAR_PROXIMA_TAREA 3
-#define REALIZAR_TAREA       4
-
+#define PUNTERO_PCB          1
+#define INICIAR_TRIPULANTE   2
+#define SOLICITAR_TAREA      3
+#define ENVIAR_PROXIMA_TAREA 4
+#define REALIZAR_TAREA       5
 
 //CODIGOS DE TAREAS
 #define MOVER_POSICION   0
@@ -79,5 +79,6 @@ void* serializarTareas_cPID(t_tarea*, int);
 //DEFINIDAS EN deserializacion.c
 t_TCB*    deserializarTCB(t_buffer*);
 t_tarea* deserializarTarea(t_buffer*);
+t_tareas_cPID* deserializarTareas_cPID(t_buffer*);
 
 #endif

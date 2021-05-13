@@ -47,7 +47,7 @@ void* recibir_paquete(int sockfd)
 
     switch(paquete->codigo_operacion){
         case COMENZAR_PATOTA:
-            //dRecibidos = deserializar(paquete->buffer);
+            dRecibidos = deserializarTareas_cPID(paquete->buffer);
             break;
         case INICIAR_TRIPULANTE:
             dRecibidos = deserializarTCB(paquete->buffer);
