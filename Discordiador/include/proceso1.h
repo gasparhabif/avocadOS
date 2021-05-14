@@ -24,19 +24,20 @@
 #define MAX_DATA_SIZE 30
 
 //DEFINIDAS EN consola.c
-void INICIAR_PATOTA(char **parametros);
-void LISTAR_TRIPULANTES(char **parametros);
-void EXPULSAR_TRIPULANTE(char **parametros);
-void INICIAR_PLANIFICACION(char **parametros);
-void PAUSAR_PLANIFICACION(char **parametros);
-void OBTENER_BITACORA(char **parametros);
+void INICIAR_PATOTA       (char **);
+void LISTAR_TRIPULANTES   (char **);
+void EXPULSAR_TRIPULANTE  (char **);
+void INICIAR_PLANIFICACION(char **);
+void PAUSAR_PLANIFICACION (char **);
+void OBTENER_BITACORA     (char **);
 
 //DEFINIDAS EN aux.c
 t_tareas* leer_tareas(FILE *);
 int contar_caracteres_especiales(size_t, char *, char);
 
 //DEFINIDAS EN tripulantes.c
-void tripulante(void *tcb);
+void tripulante(void *);
+int ejecutar_tarea (t_tarea, int);
 
 //VARIABLES GLOBALES
 int sockfd_mongo;
@@ -45,7 +46,9 @@ t_log *logger;
 int escuchando;
 t_cpu_conf *config;
 int patota_id;
-int exec;
+int ejecutandoTripulantes;
+int ejecutandoPlanificador;
+int planificando;
 int turno;
 
 #endif

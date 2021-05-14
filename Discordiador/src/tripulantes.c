@@ -31,18 +31,35 @@ void tripulante(void *tcb){
     sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram   = connect_to(config->ip_ram, config->puerto_ram);
 
-    //SERIALIZO EL TCB
+    //SERIALIZO Y ENVIO EL TCB
     void* d_Enviar = serializarTCB(tcb_tripulante);
     send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
-
-    //cambiar estado a ready
     
     while(exec){
         if(turno == tid){
+            //CAMBIAR A ESTADO EXEC
             
+            //PEDIR TAREA
+
+
+            //RECIBIR TAREA
+            t_tarea tarea_recibida = (t_tarea) recibir_paquete(sockfd_tripulante_ram);
+
+            //REALIZAR TAREA
+            ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
         }
     }
     
     return;
+
+}
+
+int ejecutar_tarea (t_tarea unaTarea, int sockfd_mongo){
+
+    void* d_enviar = serializar_tareas_mongo(unaTarea.codigoTarea, unaTarea.parametro);
+
+    send(sockfd_mongo, d_enviar, sizeof(d_enviar), 0);
+
+    return 1;
 
 }
