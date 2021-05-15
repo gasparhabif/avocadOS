@@ -30,7 +30,7 @@ void* serializarTCB(t_TCB *unTCB){
     //CREAMOS EL PAQUETE
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    paquete->codigo_operacion = TCB;
+    paquete->codigo_operacion = INICIAR_TRIPULANTE;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR
@@ -170,4 +170,45 @@ void* serializarTareas_cPID(t_tarea *unasTareas, int patotaID){
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
     //free(a_enviar);
     
+}
+
+void* serializarInt(uint32_t valor, uint32_t CODIGO_OPERACION){
+    
+    //CREO EL BUFFER
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    //CARGO EL SIZE DEL BUFFER
+    buffer->size = sizeof(uint32_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    void *stream = malloc(buffer -> size);
+
+    memcpy(stream, &valor, sizeof(uint32_t));
+
+    buffer->stream = stream;
+
+    //CREAMOS EL PAQUETE
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = CODIGO_OPERACION;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
 }

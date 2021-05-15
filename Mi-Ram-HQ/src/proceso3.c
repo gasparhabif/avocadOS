@@ -6,6 +6,10 @@ int main()
 
     t_ram_conf *config = get_ram_config("../Mi-Ram-HQ/cfg/config.cfg");
     log_info(logger, "Se cargo la config de la RAM");
+<<<<<<< HEAD
+=======
+    memoria = malloc(config->tamanio_memoria);
+>>>>>>> mi-ram-hq
 
     int server_instance;
     if ((server_instance = init_server(config->puerto)) == -1)
@@ -32,6 +36,7 @@ int main()
 
     while (1)
     {
+<<<<<<< HEAD
         int msg_size = recv(client, buffer, 100, 0);
 
         if (msg_size <= 0)
@@ -41,6 +46,13 @@ int main()
         }
         buffer[msg_size] = '\0';
         log_info(logger, "Recibí \"%s\" con peso de %d bytes", buffer, msg_size);
+=======
+        // int msg_size = recv(client, buffer, 100, 0);
+        t_tareas_cPID* tTareas = recibir_paquete(client);
+        log_info(logger, "%d", tTareas->PID);
+        void* paquete = serializarInt(tTareas->PID, PUNTERO_PCB);
+        send(client, paquete, sizeof(paquete), 0);
+>>>>>>> mi-ram-hq
     }
 
     free(buffer);

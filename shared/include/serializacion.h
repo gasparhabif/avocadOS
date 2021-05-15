@@ -75,10 +75,12 @@ typedef struct {
 void* serializarTCB        (t_TCB*);
 void* serializarTarea      (t_tarea);
 void* serializarTareas_cPID(t_tarea*, int);
+void* serializarInt        (uint32_t, uint32_t);
 
 //DEFINIDAS EN deserializacion.c
 t_TCB*    deserializarTCB(t_buffer*);
 t_tarea* deserializarTarea(t_buffer*);
 t_tareas_cPID* deserializarTareas_cPID(t_buffer*);
+int* deserializarInt        (t_buffer*);
 
 #endif

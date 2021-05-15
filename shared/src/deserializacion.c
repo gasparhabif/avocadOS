@@ -75,3 +75,17 @@ t_tareas_cPID* deserializarTareas_cPID(t_buffer* buffer){
     return tareas_cPID_recibidas;
 
 }
+
+int* deserializarInt(t_buffer* buffer){
+    
+    int *posicion_recibida = malloc(sizeof(int));
+
+    void* stream = buffer->stream;
+
+    memcpy(&(posicion_recibida), stream, sizeof(int));
+
+    return posicion_recibida;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(tarea_recibida);
+}

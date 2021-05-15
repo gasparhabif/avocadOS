@@ -165,3 +165,19 @@ X
 [INFO] 21:07:06:586 Mi-Ram-HQ/(1917:1917): Recibí "soy " con peso de 4 bytes
 [INFO] 21:07:06:587 Mi-Ram-HQ/(1917:1917): Envie mensaje de confirmación de recepción al Discordiador
 [ERROR] 21:07:06:589 Mi-Ram-HQ/(1917:1917): Algo malió sal al recibir el mensaje
+<<<<<<< HEAD
+=======
+[INFO] 18:54:50:889 Mi-Ram-HQ/(4609:4609): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 18:54:50:893 Mi-Ram-HQ/(4609:4609): Se cargo la config de la RAM
+[INFO] 18:54:50:894 Mi-Ram-HQ/(4609:4609): Servidor iniciado
+[INFO] 18:54:56:638 Mi-Ram-HQ/(4609:4609): Recibí una conexión en el socket 5
+[INFO] 18:57:07:635 Mi-Ram-HQ/(4609:4609): 0
+[INFO] 18:59:45:648 Mi-Ram-HQ/(4615:4615): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 18:59:45:651 Mi-Ram-HQ/(4615:4615): Se cargo la config de la RAM
+[INFO] 18:59:45:653 Mi-Ram-HQ/(4615:4615): Servidor iniciado
+[INFO] 18:59:47:593 Mi-Ram-HQ/(4615:4615): Recibí una conexión en el socket 5
+[INFO] 18:59:56:136 Mi-Ram-HQ/(4615:4615): 0
+[INFO] 19:21:53:489 Mi-Ram-HQ/(8360:8360): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 19:21:53:490 Mi-Ram-HQ/(8360:8360): Se cargo la config de la RAM
+[INFO] 19:21:53:490 Mi-Ram-HQ/(8360:8360): Servidor iniciado
+>>>>>>> mi-ram-hq

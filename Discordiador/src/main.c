@@ -14,6 +14,16 @@ int main(int argc, char **argv)
 	//INICIALIZO EL PID
 	patota_id = 1;
 
+<<<<<<< HEAD
+=======
+	//REALIZO LA CONEXION CON RAM Y MONGO
+	log_info(logger, "Conectando a RAM...");
+	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
+
+	log_info(logger, "Conectando a MONGO...");
+	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+
+>>>>>>> mi-ram-hq
 	//LECTURA DE CONSOLA
 	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
 
@@ -53,6 +63,7 @@ int main(int argc, char **argv)
 	}
 	free(leido);
 
+<<<<<<< HEAD
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
@@ -60,6 +71,8 @@ int main(int argc, char **argv)
 	log_info(logger, "Conectando a MONGO...");
 	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
+=======
+>>>>>>> mi-ram-hq
 	char reconectOP;
 	system("clear");
 
