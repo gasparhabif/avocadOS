@@ -53,3 +53,6 @@ dkms.conf
 
 # MacOS Files
 *.DS_Store
+
+# Logs
+*.log
