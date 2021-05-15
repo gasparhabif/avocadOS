@@ -175,3 +175,6 @@ X
 [INFO] 18:59:45:653 Mi-Ram-HQ/(4615:4615): Servidor iniciado
 [INFO] 18:59:47:593 Mi-Ram-HQ/(4615:4615): Recibí una conexión en el socket 5
 [INFO] 18:59:56:136 Mi-Ram-HQ/(4615:4615): 0
+[INFO] 19:21:53:489 Mi-Ram-HQ/(8360:8360): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 19:21:53:490 Mi-Ram-HQ/(8360:8360): Se cargo la config de la RAM
+[INFO] 19:21:53:490 Mi-Ram-HQ/(8360:8360): Servidor iniciado
