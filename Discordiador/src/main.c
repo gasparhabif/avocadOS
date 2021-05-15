@@ -14,8 +14,14 @@ int main(int argc, char **argv)
 	//INICIALIZO EL PID
 	patota_id = 1;
 
-<<<<<<< HEAD
-=======
+	//INICIALIZO VARIABLES CLAVE
+	ejecutandoTripulantes = 1;
+	ejecutandoPlanificador = 1;
+	planificando = 1;
+
+	//CREO EL THREAD
+
+
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
@@ -23,7 +29,34 @@ int main(int argc, char **argv)
 	log_info(logger, "Conectando a MONGO...");
 	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
->>>>>>> mi-ram-hq
+	//EN CASO DE QUE LA CONEXION HAYA FALLADO
+	char reconectOP;
+	system("clear");
+
+	while (sockfd_ram == -1 || sockfd_mongo == -1)
+	{
+		system("clear");
+		printf("Error de conexion ¿desea reconectar? [s|n]\n");
+		fflush(stdin);
+		reconectOP = getchar();
+
+		if (reconectOP == 's')
+		{
+
+			if (sockfd_ram == -1)
+				sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
+			if (sockfd_mongo == -1)
+				sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+		}
+		else if (reconectOP == 'n')
+		{
+			exit(1);
+			system("clear");
+		}
+	}
+
+	log_info(logger, "Conexión establecida con RAM y con Mongo!");
+
 	//LECTURA DE CONSOLA
 	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
 
@@ -52,7 +85,7 @@ int main(int argc, char **argv)
 		{
 			if (strcmp(leido, ""))
 				printf("No reconozco ese comando\n");
-			//PLANIFICADOR MANUAL, solo para pruebas
+			//PLANIFICADOR MANUAL, solo para pruebas TRANQUILOS!
 			else
 				turno = atoi(leido);
 		}
@@ -63,43 +96,7 @@ int main(int argc, char **argv)
 	}
 	free(leido);
 
-<<<<<<< HEAD
-	//REALIZO LA CONEXION CON RAM Y MONGO
-	log_info(logger, "Conectando a RAM...");
-	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
-
-	log_info(logger, "Conectando a MONGO...");
-	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
-
-=======
->>>>>>> mi-ram-hq
-	char reconectOP;
-	system("clear");
-
-	while (sockfd_ram == -1 || sockfd_mongo == -1)
-	{
-		system("clear");
-		printf("Error de conexion ¿desea reconectar? [s|n]\n");
-		fflush(stdin);
-		reconectOP = getchar();
-
-		if (reconectOP == 's')
-		{
-
-			if (sockfd_ram == -1)
-				sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
-			if (sockfd_mongo == -1)
-				sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
-		}
-		else if (reconectOP == 'n')
-		{
-			exit(1);
-			system("clear");
-		}
-	}
-
-	log_info(logger, "Conexión establecida con RAM y con Mongo!");
-
+/*
 	//MANDO MENSAJES
 	char userOption = '\0';
 	char *msg;
@@ -132,9 +129,9 @@ int main(int argc, char **argv)
 		free(msg);
 		system("clear");
 	}
+*/
 
 	system("clear");
-	escuchando = 0;
 	close(sockfd_ram);
 	close(sockfd_mongo);
 	log_destroy(logger);

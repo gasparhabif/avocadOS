@@ -30,15 +30,20 @@ void INICIAR_PATOTA(char **parametros)
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 t_tarea *tareas = leer_tareas(fpTareas);
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
+                printf("Serializando...\n");
                 void *d_Enviar = serializarTareas_cPID(tareas, patota_id);
+                printf("Serializacion completada, %d bytes se enviaran\n", sizeof(d_Enviar));
                 patota_id++;
                 //ENVIAR TAREAS
-                send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
+                printf("Enviando datos\n");
+                int bytesEnviados = send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
+                printf("Datos enviados! %d bytes\n", bytesEnviados);
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
                 free(d_Enviar);
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
+                printf("Recibiendo datos\n");
                 int direccionPCB = (int) recibir_paquete(sockfd_ram);
                 printf("Pos recibida: %d", direccionPCB);
 
@@ -90,10 +95,22 @@ void EXPULSAR_TRIPULANTE(char **parametros)
 
 void INICIAR_PLANIFICACION(char **parametros)
 {
+    if(planificando)
+        printf("El planificador ya se encuentra trabajando!\n");
+    else{
+        log_info(logger, "Iniciando planificacion...\n");
+        planificando = 1;
+    }
 }
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
+    if(!planificando)
+        printf("El planificador ya se encuentra pausado!\n");
+    else{
+        printf("Pausando planificacion...\n");
+        planificando = 0;
+    }
 }
 
 void OBTENER_BITACORA(char **parametros)

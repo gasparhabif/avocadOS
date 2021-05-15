@@ -47,6 +47,7 @@ void* recibir_paquete(int sockfd)
 
     switch(paquete->codigo_operacion){
         case COMENZAR_PATOTA:
+            printf("Voy por el buen camino\n");
             dRecibidos = deserializarTareas_cPID(paquete->buffer);
             break;
         case INICIAR_TRIPULANTE:

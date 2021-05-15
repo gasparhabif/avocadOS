@@ -35,7 +35,7 @@ void tripulante(void *tcb){
     void* d_Enviar = serializarTCB(tcb_tripulante);
     send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
     
-    while(exec){
+    while(ejecutandoTripulantes){
         if(turno == tid){
             //CAMBIAR A ESTADO EXEC
             
@@ -43,22 +43,25 @@ void tripulante(void *tcb){
 
 
             //RECIBIR TAREA
-            t_tarea tarea_recibida = (t_tarea) recibir_paquete(sockfd_tripulante_ram);
+            t_tarea *tarea_recibida = (t_tarea*) recibir_paquete(sockfd_tripulante_ram);
 
             //REALIZAR TAREA
             ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
         }
     }
     
+    close(sockfd_tripulante_mongo);
+    close(sockfd_tripulante_ram);
+
     return;
 
 }
 
-int ejecutar_tarea (t_tarea unaTarea, int sockfd_mongo){
+int ejecutar_tarea (t_tarea *unaTarea, int sockfd_mongo){
 
-    void* d_enviar = serializar_tareas_mongo(unaTarea.codigoTarea, unaTarea.parametro);
+    //void* d_enviar = serializar_tareas_mongo(unaTarea->codigoTarea, unaTarea->parametro);
 
-    send(sockfd_mongo, d_enviar, sizeof(d_enviar), 0);
+    //send(sockfd_mongo, d_enviar, sizeof(d_enviar), 0);
 
     return 1;
 

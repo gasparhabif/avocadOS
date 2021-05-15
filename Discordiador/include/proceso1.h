@@ -32,18 +32,17 @@ void PAUSAR_PLANIFICACION (char **);
 void OBTENER_BITACORA     (char **);
 
 //DEFINIDAS EN aux.c
-t_tareas* leer_tareas(FILE *);
+t_tarea* leer_tareas(FILE *);
 int contar_caracteres_especiales(size_t, char *, char);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(void *);
-int ejecutar_tarea (t_tarea, int);
+int ejecutar_tarea (t_tarea*, int);
 
 //VARIABLES GLOBALES
 int sockfd_mongo;
 int sockfd_ram;
 t_log *logger;
-int escuchando;
 t_cpu_conf *config;
 int patota_id;
 int ejecutandoTripulantes;

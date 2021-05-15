@@ -14,7 +14,7 @@
 [INFO] 20:00:01:998 Mi-Ram-HQ/(2893:2893): Servidor iniciado
 [INFO] 20:00:10:646 Mi-Ram-HQ/(2893:2893): Recibí una conexión en el socket 5
 
-[INFO] 20:00:10:647 Mi-Ram-HQ/(2893:2893): Recibí 4 bytes: soy �o�P�NP�N646 Mi-Ram-HQ/(2893:2893): Recibí una conexión en el socket 5
+[INFO] 20:00:10:647 Mi-Ram-HQ/(2893:2893): Recibí 4 bytes: soy �o�P�NP�N646 Mi-Ram-HQ/(2893:2893): Recibí una conexión en el socket 5
 X
 
 [INFO] 20:00:10:647 Mi-Ram-HQ/(2893:2893): Envie mensaje de confirmación de recepción al Discordiador
@@ -165,8 +165,6 @@ X
 [INFO] 21:07:06:586 Mi-Ram-HQ/(1917:1917): Recibí "soy " con peso de 4 bytes
 [INFO] 21:07:06:587 Mi-Ram-HQ/(1917:1917): Envie mensaje de confirmación de recepción al Discordiador
 [ERROR] 21:07:06:589 Mi-Ram-HQ/(1917:1917): Algo malió sal al recibir el mensaje
-<<<<<<< HEAD
-=======
 [INFO] 18:54:50:889 Mi-Ram-HQ/(4609:4609): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
 [INFO] 18:54:50:893 Mi-Ram-HQ/(4609:4609): Se cargo la config de la RAM
 [INFO] 18:54:50:894 Mi-Ram-HQ/(4609:4609): Servidor iniciado
@@ -180,4 +178,65 @@ X
 [INFO] 19:21:53:489 Mi-Ram-HQ/(8360:8360): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
 [INFO] 19:21:53:490 Mi-Ram-HQ/(8360:8360): Se cargo la config de la RAM
 [INFO] 19:21:53:490 Mi-Ram-HQ/(8360:8360): Servidor iniciado
->>>>>>> mi-ram-hq
+[INFO] 23:18:45:938 Mi-Ram-HQ/(5905:5905): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:18:45:943 Mi-Ram-HQ/(5905:5905): Se cargo la config de la RAM
+[INFO] 23:18:45:944 Mi-Ram-HQ/(5905:5905): Servidor iniciado
+[INFO] 23:18:52:516 Mi-Ram-HQ/(5905:5905): Recibí una conexión en el socket 5
+[INFO] 23:19:25:923 Mi-Ram-HQ/(5905:5905): 0
+[INFO] 23:20:34:632 Mi-Ram-HQ/(6103:6103): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:20:34:633 Mi-Ram-HQ/(6103:6103): Se cargo la config de la RAM
+[INFO] 23:20:34:634 Mi-Ram-HQ/(6103:6103): Servidor iniciado
+[INFO] 23:20:39:416 Mi-Ram-HQ/(6103:6103): Recibí una conexión en el socket 5
+[INFO] 23:26:50:677 Mi-Ram-HQ/(6879:6879): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:26:50:677 Mi-Ram-HQ/(6879:6879): Se cargo la config de la RAM
+[INFO] 23:26:50:678 Mi-Ram-HQ/(6879:6879): Servidor iniciado
+[INFO] 23:27:09:906 Mi-Ram-HQ/(6995:6995): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:27:09:907 Mi-Ram-HQ/(6995:6995): Se cargo la config de la RAM
+[INFO] 23:27:09:908 Mi-Ram-HQ/(6995:6995): Servidor iniciado
+[INFO] 23:27:18:817 Mi-Ram-HQ/(6995:6995): Recibí una conexión en el socket 5
+[INFO] 23:27:50:362 Mi-Ram-HQ/(6995:6995): Recibi una patota con PID: 0
+[INFO] 23:32:27:039 Mi-Ram-HQ/(7544:7544): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:32:27:040 Mi-Ram-HQ/(7544:7544): Se cargo la config de la RAM
+[INFO] 23:32:27:041 Mi-Ram-HQ/(7544:7544): Servidor iniciado
+[INFO] 23:32:34:557 Mi-Ram-HQ/(7544:7544): Recibí una conexión en el socket 5
+[INFO] 23:38:53:003 Mi-Ram-HQ/(8225:8225): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:38:53:004 Mi-Ram-HQ/(8225:8225): Se cargo la config de la RAM
+[INFO] 23:38:53:004 Mi-Ram-HQ/(8225:8225): Servidor iniciado
+[INFO] 23:38:58:113 Mi-Ram-HQ/(8225:8225): Recibí una conexión en el socket 5
+[INFO] 23:41:28:822 Mi-Ram-HQ/(8474:8474): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:41:28:823 Mi-Ram-HQ/(8474:8474): Se cargo la config de la RAM
+[INFO] 23:41:28:824 Mi-Ram-HQ/(8474:8474): Servidor iniciado
+[INFO] 23:41:34:354 Mi-Ram-HQ/(8474:8474): Recibí una conexión en el socket 5
+[INFO] 23:43:11:957 Mi-Ram-HQ/(8694:8694): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:43:11:958 Mi-Ram-HQ/(8694:8694): Se cargo la config de la RAM
+[INFO] 23:43:11:958 Mi-Ram-HQ/(8694:8694): Servidor iniciado
+[INFO] 23:43:14:714 Mi-Ram-HQ/(8694:8694): Recibí una conexión en el socket 5
+[INFO] 23:44:14:992 Mi-Ram-HQ/(9006:9006): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:44:14:993 Mi-Ram-HQ/(9006:9006): Se cargo la config de la RAM
+[INFO] 23:44:14:993 Mi-Ram-HQ/(9006:9006): Servidor iniciado
+[INFO] 23:44:20:102 Mi-Ram-HQ/(9006:9006): Recibí una conexión en el socket 5
+[INFO] 23:45:58:876 Mi-Ram-HQ/(9203:9203): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:45:58:877 Mi-Ram-HQ/(9203:9203): Se cargo la config de la RAM
+[INFO] 23:45:58:877 Mi-Ram-HQ/(9203:9203): Servidor iniciado
+[INFO] 23:46:02:121 Mi-Ram-HQ/(9203:9203): Recibí una conexión en el socket 5
+[INFO] 23:54:57:514 Mi-Ram-HQ/(10028:10028): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:54:57:515 Mi-Ram-HQ/(10028:10028): Se cargo la config de la RAM
+[INFO] 23:54:57:515 Mi-Ram-HQ/(10028:10028): Servidor iniciado
+[INFO] 23:55:01:575 Mi-Ram-HQ/(10028:10028): Recibí una conexión en el socket 5
+[INFO] 23:57:00:208 Mi-Ram-HQ/(10356:10356): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:57:00:209 Mi-Ram-HQ/(10356:10356): Se cargo la config de la RAM
+[INFO] 23:57:00:209 Mi-Ram-HQ/(10356:10356): Servidor iniciado
+[INFO] 23:57:05:413 Mi-Ram-HQ/(10356:10356): Recibí una conexión en el socket 5
+[INFO] 23:58:31:631 Mi-Ram-HQ/(10515:10515): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:58:31:632 Mi-Ram-HQ/(10515:10515): Se cargo la config de la RAM
+[INFO] 23:58:31:633 Mi-Ram-HQ/(10515:10515): Servidor iniciado
+[INFO] 23:58:34:213 Mi-Ram-HQ/(10515:10515): Recibí una conexión en el socket 5
+[INFO] 23:59:35:501 Mi-Ram-HQ/(10639:10639): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 23:59:35:502 Mi-Ram-HQ/(10639:10639): Se cargo la config de la RAM
+[INFO] 23:59:35:502 Mi-Ram-HQ/(10639:10639): Servidor iniciado
+[INFO] 23:59:46:875 Mi-Ram-HQ/(10639:10639): Recibí una conexión en el socket 5
+[INFO] 00:01:16:851 Mi-Ram-HQ/(10943:10943): Se inicio el log del Proceso 3 [Mi-Ram-HQ]
+[INFO] 00:01:16:852 Mi-Ram-HQ/(10943:10943): Se cargo la config de la RAM
+[INFO] 00:01:16:852 Mi-Ram-HQ/(10943:10943): Servidor iniciado
+[INFO] 00:01:20:287 Mi-Ram-HQ/(10943:10943): Recibí una conexión en el socket 5
+[INFO] 00:01:29:029 Mi-Ram-HQ/(10943:10943): Recibí una conexión en el socket 7

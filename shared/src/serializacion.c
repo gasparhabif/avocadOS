@@ -126,9 +126,9 @@ void* serializarTareas_cPID(t_tarea *unasTareas, int patotaID){
     void *stream = malloc(buffer -> size);
     int offset = 0;
 
-    memcpy(stream + offset, (void *) patotaID, sizeof(uint32_t));
+    memcpy(stream + offset, &patotaID, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(stream + offset, (void *) cantTareas, sizeof(uint8_t));
+    memcpy(stream + offset, &cantTareas, sizeof(uint8_t));
     offset += sizeof(uint32_t);
     for(int i = 0; i < cantTareas; i++){
         memcpy(stream + offset, &unasTareas[i].codigoTarea, sizeof(u_int8_t));
