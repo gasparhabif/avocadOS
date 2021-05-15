@@ -49,5 +49,6 @@ int ejecutandoTripulantes;
 int ejecutandoPlanificador;
 int planificando;
 int turno;
+pthread_mutex_t mutex;
 
 #endif

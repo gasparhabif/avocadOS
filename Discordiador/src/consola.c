@@ -29,15 +29,19 @@ void INICIAR_PATOTA(char **parametros)
             {
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 t_tarea *tareas = leer_tareas(fpTareas);
+                
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 printf("Serializando...\n");
-                void *d_Enviar = serializarTareas_cPID(tareas, patota_id);
-                printf("Serializacion completada, %d bytes se enviaran\n", sizeof(d_Enviar));
+                int tamanioSerializacion;
+                void *d_Enviar = serializarTareas_cPID(tareas, patota_id, &tamanioSerializacion);
+                printf("Serializacion completada, %d bytes se enviaran\n", tamanioSerializacion);
                 patota_id++;
+                
                 //ENVIAR TAREAS
                 printf("Enviando datos\n");
-                int bytesEnviados = send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
+                int bytesEnviados = send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
                 printf("Datos enviados! %d bytes\n", bytesEnviados);
+                
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
                 free(d_Enviar);
@@ -45,7 +49,7 @@ void INICIAR_PATOTA(char **parametros)
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 printf("Recibiendo datos\n");
                 int direccionPCB = (int) recibir_paquete(sockfd_ram);
-                printf("Pos recibida: %d", direccionPCB);
+                printf("Pos recibida: %d\n", direccionPCB);
 
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;

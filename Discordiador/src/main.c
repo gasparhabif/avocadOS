@@ -19,20 +19,22 @@ int main(int argc, char **argv)
 	ejecutandoPlanificador = 1;
 	planificando = 1;
 
-	//CREO EL THREAD
+	pthread_mutex_init(&mutex, NULL);
+
+	//CREO EL THREAD DE PLANIFICACION
 
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
-	log_info(logger, "Conectando a MONGO...");
-	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+//	log_info(logger, "Conectando a MONGO...");
+//	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
 	char reconectOP;
 	system("clear");
-
+/*
 	while (sockfd_ram == -1 || sockfd_mongo == -1)
 	{
 		system("clear");
@@ -54,7 +56,7 @@ int main(int argc, char **argv)
 			system("clear");
 		}
 	}
-
+*/
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//LECTURA DE CONSOLA
@@ -130,6 +132,10 @@ int main(int argc, char **argv)
 		system("clear");
 	}
 */
+
+	ejecutandoTripulantes = 0;
+	ejecutandoPlanificador = 0;
+	planificando = 0;
 
 	system("clear");
 	close(sockfd_ram);

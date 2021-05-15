@@ -32,12 +32,12 @@ int main()
         log_info(logger, "Recibí una conexión en el socket %d", client);
         //char *buffer = malloc(100);
 
-        // int msg_size = recv(client, buffer, 100, 0);
+        //int msg_size = recv(client, buffer, 100, 0);
         printf("Recibiendo...\n");
         t_tareas_cPID *tareas_cPID_recibidas = recibir_paquete(client);
-        printf("Recibi %d bytes\n", sizeof(tareas_cPID_recibidas));
+        //printf("Recibi %d bytes\n", sizeof(tareas_cPID_recibidas));
 
-        printf("INICIO DE PATOTA CON PID: %d", tareas_cPID_recibidas->PID);
+        printf("INICIO DE PATOTA CON PID: %d\n", tareas_cPID_recibidas->PID);
         for(int i=0; i<tareas_cPID_recibidas->cantTareas; i++){
             printf("-----TAREA %d-----\n", i+1);
             printf("CODT: %d\n", tareas_cPID_recibidas->tareas[i].codigoTarea);

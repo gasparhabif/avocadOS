@@ -107,12 +107,7 @@ void* serializarTarea(t_tarea unaTarea){
 }
 
 
-void* serializarTareas_cPID(t_tarea *unasTareas, int patotaID){
-    
-    // PARA SERIALIZAR TAREAS EL SIZE DEL BUFFER VA A SER LA CANTIDAD DE TAREAS, LUEGO EN EL
-    // SIZE DEL STREAM SERÁ LA CANTIDAD DE TAREAS MULTIPLICADO POR EL SIZEOF DE T_TAREA.
-    // DICHO DE OTRA FORMA, EN ESTA SERIALIZACION UTILIZO EL SIZE DEL BUFFER COMO CANTTAREAS.
-    // ADEMAS DEL SIZE HAY UN CAMPO PARA ENVIAR EL PID (patota ID).
+void* serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSerializacion){
 
     int cantTareas = sizeof(unasTareas) / sizeof(t_tarea);
 
@@ -121,6 +116,8 @@ void* serializarTareas_cPID(t_tarea *unasTareas, int patotaID){
 
     //CARGO EL SIZE DEL BUFFER
     buffer->size = sizeof(unasTareas) + sizeof(uint32_t) + sizeof(uint8_t);
+
+    *tamanioSerializacion = buffer->size;
 
     //CARGO EL STREAM DEL BUFFER
     void *stream = malloc(buffer -> size);
@@ -161,6 +158,10 @@ void* serializarTareas_cPID(t_tarea *unasTareas, int patotaID){
     offset += sizeof(uint32_t);
     memcpy(a_enviar + offset, &(paquete->buffer->stream), paquete->buffer->size);
 
+    //CARGO EL TAMANIO TOTAL DE LA SERIALIZACION
+    *tamanioSerializacion += sizeof(uint32_t) + sizeof(uint8_t);
+
+    //DEVUELVO LA MEMORIA UTILIZADA
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);

@@ -34,7 +34,33 @@ void tripulante(void *tcb){
     //SERIALIZO Y ENVIO EL TCB
     void* d_Enviar = serializarTCB(tcb_tripulante);
     send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
+
+    if(strcmp(config->algoritmo, "FIFO")==0){
+        
+        pthread_mutex_lock(&mutex);
+
+        while(1 /*Hasta que no termine de ejecutar las tareas*/){            
+            
+            t_tarea *tarea_recibida = (t_tarea*) recibir_paquete(sockfd_tripulante_ram);
+            //CAMBIAR A ESTADO EXEC
+
+            //PEDIR TAREA
+ 
+
+            //RECIBIR TAREA
+
+
+            //REALIZAR TAREA
+            ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
+
+            //CAMBIAR ESTADO A BLOQUED? LO QUE EL MONGO ME DIGA?
+
+            pthread_mutex_unlock(&mutex);
+        };
+        
+    }
     
+/*
     while(ejecutandoTripulantes){
         if(turno == tid){
             //CAMBIAR A ESTADO EXEC
@@ -49,6 +75,7 @@ void tripulante(void *tcb){
             ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
         }
     }
+*/
     
     close(sockfd_tripulante_mongo);
     close(sockfd_tripulante_ram);
