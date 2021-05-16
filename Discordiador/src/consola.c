@@ -28,27 +28,28 @@ void INICIAR_PATOTA(char **parametros)
             else
             {
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
-                t_tarea *tareas = leer_tareas(fpTareas);
-                
+                int cantTareas = 0;
+                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas);
+
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 printf("Serializando...\n");
                 int tamanioSerializacion;
-                void *d_Enviar = serializarTareas_cPID(tareas, patota_id, &tamanioSerializacion);
+                void *d_Enviar = serializarTareas_cPID(tareas, patota_id, &tamanioSerializacion, cantTareas);
                 printf("Serializacion completada, %d bytes se enviaran\n", tamanioSerializacion);
                 patota_id++;
-                
+
                 //ENVIAR TAREAS
                 printf("Enviando datos\n");
                 int bytesEnviados = send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
                 printf("Datos enviados! %d bytes\n", bytesEnviados);
-                
+
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
                 free(d_Enviar);
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 printf("Recibiendo datos\n");
-                int direccionPCB = (int) recibir_paquete(sockfd_ram);
+                int direccionPCB = (int)recibir_paquete(sockfd_ram);
                 printf("Pos recibida: %d\n", direccionPCB);
 
                 //CREO LOS TCB
@@ -81,7 +82,6 @@ void INICIAR_PATOTA(char **parametros)
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *)&tripulantes_tcb[i]);
 
                 free(tripulantes_tcb);
-
             }
         }
 
@@ -99,9 +99,10 @@ void EXPULSAR_TRIPULANTE(char **parametros)
 
 void INICIAR_PLANIFICACION(char **parametros)
 {
-    if(planificando)
+    if (planificando)
         printf("El planificador ya se encuentra trabajando!\n");
-    else{
+    else
+    {
         log_info(logger, "Iniciando planificacion...\n");
         planificando = 1;
     }
@@ -109,9 +110,10 @@ void INICIAR_PLANIFICACION(char **parametros)
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
-    if(!planificando)
+    if (!planificando)
         printf("El planificador ya se encuentra pausado!\n");
-    else{
+    else
+    {
         printf("Pausando planificacion...\n");
         planificando = 0;
     }

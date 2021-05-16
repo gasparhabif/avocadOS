@@ -29,11 +29,11 @@ int init_server(int port)
     return boundary == 0 ? server : boundary;
 }
 
-void* recibir_paquete(int sockfd)
+t_tareas_cPID *recibir_paquete(int sockfd)
 {
-	t_paquete* paquete = malloc(sizeof(t_paquete));
-	paquete->buffer = malloc(sizeof(t_buffer));
-	
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
     //RECIBO EL CODIGO DE OPERACION
     int a = recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
     printf("Recibido el COP %d\n", paquete->codigo_operacion);
@@ -46,31 +46,32 @@ void* recibir_paquete(int sockfd)
     int c = recv(sockfd, paquete->buffer->stream, paquete->buffer->size, 0);
     printf("Recibi el stream %d\n", c);
 
-    void *dRecibidos;
+    t_tareas_cPID *dRecibidos;
 
-    switch(paquete->codigo_operacion){
-        case COMENZAR_PATOTA:
-            printf("Voy por el buen camino\n");
-            dRecibidos = deserializarTareas_cPID(paquete->buffer);
-            printf("Tareas deserealizadas\n");
-            break;
-        case INICIAR_TRIPULANTE:
-            dRecibidos = deserializarTCB(paquete->buffer);
-            break;
-        case SOLICITAR_TAREA:
+    switch (paquete->codigo_operacion)
+    {
+    case COMENZAR_PATOTA:
+        printf("Voy por el buen camino\n");
+        dRecibidos = deserializarTareas_cPID(paquete->buffer);
+        printf("Tareas deserealizadas\n");
+        break;
+    case INICIAR_TRIPULANTE:
+        dRecibidos = deserializarTCB(paquete->buffer);
+        break;
+    case SOLICITAR_TAREA:
 
-            break;
-        case ENVIAR_PROXIMA_TAREA:
-            dRecibidos = deserializarTarea(paquete->buffer);
-            break;
-        default:
-            //NO ENCONTRE NINGUN COP
-            break;
+        break;
+    case ENVIAR_PROXIMA_TAREA:
+        dRecibidos = deserializarTarea(paquete->buffer);
+        break;
+    default:
+        //NO ENCONTRE NINGUN COP
+        break;
     }
 
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
 
-	return dRecibidos;
+    return dRecibidos;
 }

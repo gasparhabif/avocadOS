@@ -1,6 +1,6 @@
 #include "proceso1.h"
 
-t_tarea* leer_tareas(FILE *fpTareas)
+t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
 {
 
     char *line = NULL;
@@ -14,6 +14,8 @@ t_tarea* leer_tareas(FILE *fpTareas)
     //CHEQUEO LA CANTIDAD DE LINEAS PARA RESERVAR LA MEMORIA
     while ((read = getline(&line, &len, fpTareas)) != -1)
         cantLineas++;
+
+    *cantTareas = cantLineas;
     fseek(fpTareas, 0, SEEK_SET);
 
     //RESERVO LA MEMORIA
@@ -101,7 +103,7 @@ t_tarea* leer_tareas(FILE *fpTareas)
         free(instruccion);
         free(data);
     }
-    
+
     free(line);
 
     return tareas;

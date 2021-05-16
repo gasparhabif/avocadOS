@@ -11,6 +11,6 @@
 
 int connect_to(char *ip, int port);
 int init_server(int port);
-void* recibir_paquete(int);
+t_tareas_cPID *recibir_paquete(int);
 
 #endif

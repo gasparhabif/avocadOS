@@ -1,10 +1,11 @@
 #include "serializacion.h"
 
-t_TCB* deserializarTCB(t_buffer* buffer){
+t_TCB *deserializarTCB(t_buffer *buffer)
+{
 
     t_TCB *TCB_recibido = malloc(sizeof(t_TCB));
 
-    void* stream = buffer->stream;
+    void *stream = buffer->stream;
 
     memcpy(&(TCB_recibido->TID), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
@@ -25,11 +26,12 @@ t_TCB* deserializarTCB(t_buffer* buffer){
     //free(TCB_recibido);
 }
 
-t_tarea* deserializarTarea(t_buffer* buffer){
+t_tarea *deserializarTarea(t_buffer *buffer)
+{
 
     t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
 
-    void* stream = buffer->stream;
+    void *stream = buffer->stream;
 
     memcpy(&(tarea_recibida->codigoTarea), stream, sizeof(u_int8_t));
     stream += sizeof(u_int8_t);
@@ -48,13 +50,14 @@ t_tarea* deserializarTarea(t_buffer* buffer){
     //free(tarea_recibida);
 }
 
-t_tareas_cPID* deserializarTareas_cPID(t_buffer* buffer){
+t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
+{
 
     printf("Comenzando la deserealizacion...\n");
 
     t_tareas_cPID *tareas_cPID_recibidas = malloc(sizeof(t_tareas_cPID));
 
-    void* stream = buffer->stream;
+    void *stream = buffer->stream;
 
     printf("Llego aca\n");
 
@@ -67,7 +70,8 @@ t_tareas_cPID* deserializarTareas_cPID(t_buffer* buffer){
 
     tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas);
 
-    for(int i=0; i<tareas_cPID_recibidas->cantTareas; i++){
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+    {
         memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(u_int8_t));
         stream += sizeof(u_int8_t);
         memcpy(&(tareas_cPID_recibidas->tareas[i].parametro), stream, sizeof(u_int32_t));
@@ -83,14 +87,14 @@ t_tareas_cPID* deserializarTareas_cPID(t_buffer* buffer){
     printf("2. tareas_cPID_recibidas->cantTareas %d\n", tareas_cPID_recibidas->PID);
 
     return tareas_cPID_recibidas;
-
 }
 
-int* deserializarInt(t_buffer* buffer){
-    
+int *deserializarInt(t_buffer *buffer)
+{
+
     int *posicion_recibida = malloc(sizeof(int));
 
-    void* stream = buffer->stream;
+    void *stream = buffer->stream;
 
     memcpy(&(posicion_recibida), stream, sizeof(int));
 
