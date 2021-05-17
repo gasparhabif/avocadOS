@@ -29,7 +29,7 @@ int init_server(int port)
     return boundary == 0 ? server : boundary;
 }
 
-t_tareas_cPID *recibir_paquete(int sockfd)
+int recibir_paquete(int sockfd, void *dRecibidos)
 {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
@@ -46,9 +46,9 @@ t_tareas_cPID *recibir_paquete(int sockfd)
     int c = recv(sockfd, paquete->buffer->stream, paquete->buffer->size, 0);
     printf("Recibi el stream %d\n", c);
 
-    t_tareas_cPID *dRecibidos;
+    int codigo_operacion = paquete->codigo_operacion;
 
-    switch (paquete->codigo_operacion)
+    switch (codigo_operacion)
     {
     case COMENZAR_PATOTA:
         printf("Voy por el buen camino\n");
@@ -73,5 +73,5 @@ t_tareas_cPID *recibir_paquete(int sockfd)
     free(paquete->buffer);
     free(paquete);
 
-    return dRecibidos;
+    return codigo_operacion;
 }

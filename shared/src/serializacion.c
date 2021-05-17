@@ -130,16 +130,16 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     // for (int i = 0; i < cantTareas; i++)
     for (int i = 0; i < 1; i++)
     {
-        printf("Stream: %d, Offset: %d\n", stream, offset);
-        memcpy(stream + offset, &unasTareas[i].codigoTarea, sizeof(uint8_t));
+        printf("Stream: %d, Offset: %d\n", sizeof(stream), offset);
+        memcpy(stream + offset, &(unasTareas[i].codigoTarea), sizeof(uint8_t));
         offset += sizeof(uint8_t);
-        memcpy(stream + offset, &unasTareas[i].parametro, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].parametro), sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        memcpy(stream + offset, &unasTareas[i].posX, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].posX), sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        memcpy(stream + offset, &unasTareas[i].posY, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].posY), sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        memcpy(stream + offset, &unasTareas[i].duracionTarea, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].duracionTarea), sizeof(uint32_t));
         offset += sizeof(uint32_t);
     }
 
@@ -166,7 +166,7 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     offset += sizeof(uint8_t);
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(a_enviar + offset, &(paquete->buffer->stream), paquete->buffer->size);
+    memcpy(a_enviar + offset, (paquete->buffer->stream), paquete->buffer->size);
 
     //CARGO EL TAMANIO TOTAL DE LA SERIALIZACION
     *tamanioSerializacion += sizeof(uint32_t) + sizeof(uint8_t);

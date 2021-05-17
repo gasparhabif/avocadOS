@@ -6,9 +6,10 @@
 #include <stdbool.h>
 #include "shared_utils.h"
 
-void* memoria;
-t_log* logger;
+void *memoria;
+t_log *logger;
 
 void iniciar_logger(void);
+void comenzar_patota(t_tareas_cPID *);
 
 #endif

@@ -66,8 +66,6 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
     memcpy(&(tareas_cPID_recibidas->cantTareas), stream, sizeof(u_int8_t));
     stream += sizeof(u_int8_t);
 
-    printf("1. tareas_cPID_recibidas->cantTareas %d\n", tareas_cPID_recibidas->PID);
-
     tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas);
 
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
@@ -84,7 +82,6 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
         stream += sizeof(u_int32_t);
     }
 
-    printf("2. tareas_cPID_recibidas->cantTareas %d\n", tareas_cPID_recibidas->PID);
 
     return tareas_cPID_recibidas;
 }
