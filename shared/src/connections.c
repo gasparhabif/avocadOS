@@ -29,24 +29,24 @@ int init_server(int port)
     return boundary == 0 ? server : boundary;
 }
 
-t_tareas_cPID *recibir_paquete(int sockfd)
+void* recibir_paquete(int sockfd)
 {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
 
     //RECIBO EL CODIGO DE OPERACION
-    int a = recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
-    printf("Recibido el COP %d\n", paquete->codigo_operacion);
+    recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+    printf("Recibido el COP: %d\n", paquete->codigo_operacion);
     //RECIBO EL TAMAÑO DEL STREAM
-    int b = recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), 0);
-    printf("Recibido el buffer->size %d\n", paquete->buffer->size);
+    recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), 0);
+    printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
     //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
     paquete->buffer->stream = malloc(paquete->buffer->size);
     //RECIBO EL STREAM
-    int c = recv(sockfd, paquete->buffer->stream, paquete->buffer->size, 0);
-    printf("Recibi el stream %d\n", c);
+    int a = recv(sockfd, paquete->buffer->stream, paquete->buffer->size, 0);
+    printf("Recibi el stream: %d\n", a);
 
-    t_tareas_cPID *dRecibidos;
+    void* dRecibidos;
 
     switch (paquete->codigo_operacion)
     {

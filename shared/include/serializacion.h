@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 //CODIGOS DE OPERACION
-#define COMENZAR_PATOTA 0
+#define COMENZAR_PATOTA 7
 #define PUNTERO_PCB 1
 #define INICIAR_TRIPULANTE 2
 #define SOLICITAR_TAREA 3
@@ -85,9 +85,9 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *, int);
 void *serializarInt(uint32_t, uint32_t);
 
 //DEFINIDAS EN deserializacion.c
-t_TCB *deserializarTCB(t_buffer *);
-t_tarea *deserializarTarea(t_buffer *);
+t_TCB *deserializarTCB                (t_buffer *);
+t_tarea *deserializarTarea            (t_buffer *);
 t_tareas_cPID *deserializarTareas_cPID(t_buffer *);
-int *deserializarInt(t_buffer *);
+int *deserializarInt                  (t_buffer *);
 
 #endif

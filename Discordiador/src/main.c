@@ -32,9 +32,9 @@ int main(int argc, char **argv)
 //	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
-	char reconectOP;
+/*	char reconectOP;
 	system("clear");
-/*
+
 	while (sockfd_ram == -1 || sockfd_mongo == -1)
 	{
 		system("clear");

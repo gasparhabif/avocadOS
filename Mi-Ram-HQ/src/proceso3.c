@@ -40,15 +40,15 @@ int main()
         paquete->buffer = malloc(sizeof(t_buffer));
 
         //RECIBO EL CODIGO DE OPERACION
-        int a = recv(client, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+        recv(client, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL);
         printf("Recibido el COP %d\n", paquete->codigo_operacion);
         //RECIBO EL TAMAÑO DEL STREAM
-        int b = recv(client, &(paquete->buffer->size), sizeof(uint32_t), 0);
+        recv(client, &(paquete->buffer->size), sizeof(uint32_t), MSG_WAITALL);
         printf("Recibido el buffer->size %d\n", paquete->buffer->size);
         //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
         paquete->buffer->stream = malloc(paquete->buffer->size);
         //RECIBO EL STREAM
-        int c = recv(client, paquete->buffer->stream, paquete->buffer->size, 0);
+        int c = recv(client, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
         printf("Recibi cant bytes recibidos del stream %d\n", c);
 
         t_tareas_cPID *tareas_cPID_recibidas;
@@ -58,7 +58,8 @@ int main()
 
         printf("INICIO DE PATOTA CON PID: %d\n", tareas_cPID_recibidas->PID);
         printf("CANT TAREAS: %d\n", tareas_cPID_recibidas->cantTareas);
-        for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+        //for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+        for (int i = 0; i < 6; i++)
         {
             printf("-----TAREA %d-----\n", i + 1);
             printf("CODT: %d\n", tareas_cPID_recibidas->tareas[i].codigoTarea);
