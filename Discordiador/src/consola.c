@@ -39,7 +39,7 @@ void INICIAR_PATOTA(char **parametros)
                 patota_id++;
 
                 //ENVIAR TAREAS
-                printf("Enviando datos\n");
+                printf("Enviando datos...\n");
                 int bytesEnviados = send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
                 printf("Datos enviados! %d bytes\n", bytesEnviados);
 

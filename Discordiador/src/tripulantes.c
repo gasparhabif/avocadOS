@@ -35,47 +35,29 @@ void tripulante(void *tcb){
     void* d_Enviar = serializarTCB(tcb_tripulante);
     send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
 
-    if(strcmp(config->algoritmo, "FIFO")==0){
+    if(strcmp(config->algoritmo, "FIFO") == 0){
         
         pthread_mutex_lock(&mutex);
 
-        while(1 /*Hasta que no termine de ejecutar las tareas*/){            
-            
-            t_tarea *tarea_recibida = (t_tarea*) recibir_paquete(sockfd_tripulante_ram);
-            //CAMBIAR A ESTADO EXEC
+        while(1/*hay tareas por ejecutar?*/){
 
-            //PEDIR TAREA
- 
-
-            //RECIBIR TAREA
-
-
-            //REALIZAR TAREA
-            ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
-
-            //CAMBIAR ESTADO A BLOQUED? LO QUE EL MONGO ME DIGA?
-
-            pthread_mutex_unlock(&mutex);
-        };
-        
-    }
-    
-/*
-    while(ejecutandoTripulantes){
-        if(turno == tid){
-            //CAMBIAR A ESTADO EXEC
-            
-            //PEDIR TAREA
-
+            //CAMBIAR A ESTADO EXEC & PEDIR TAREA
 
             //RECIBIR TAREA
             t_tarea *tarea_recibida = (t_tarea*) recibir_paquete(sockfd_tripulante_ram);
-
+            
             //REALIZAR TAREA
             ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
+
+            //LÓGICA DE SABOTAJES
         }
+        
+        //LIBERO EL SEMAFORO
+        pthread_mutex_unlock(&mutex);     
     }
-*/
+    else if(strcmp(config->algoritmo, "RR") == 0){
+        //TODO
+    }
     
     close(sockfd_tripulante_mongo);
     close(sockfd_tripulante_ram);
@@ -86,9 +68,15 @@ void tripulante(void *tcb){
 
 int ejecutar_tarea (t_tarea *unaTarea, int sockfd_mongo){
 
+    // RETURN VALUE
+    // 0: fallo la ejecucion de la tarea
+    // 1: se ejecuto correctamente
+
     //void* d_enviar = serializar_tareas_mongo(unaTarea->codigoTarea, unaTarea->parametro);
 
     //send(sockfd_mongo, d_enviar, sizeof(d_enviar), 0);
+
+    //recibi
 
     return 1;
 
