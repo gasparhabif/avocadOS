@@ -31,35 +31,15 @@ int main()
         }
 
         log_info(logger, "Recibí una conexión en el socket %d", client);
-        //char *buffer = malloc(100);
 
-        //int msg_size = recv(client, buffer, 100, 0);
-        printf("Recibiendo...\n");
+        printf("Recibiendo tareas c/pid...\n");
 
-        t_paquete *paquete = malloc(sizeof(t_paquete));
-        paquete->buffer = malloc(sizeof(t_buffer));
-
-        //RECIBO EL CODIGO DE OPERACION
-        recv(client, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL);
-        printf("Recibido el COP %d\n", paquete->codigo_operacion);
-        //RECIBO EL TAMAÑO DEL STREAM
-        recv(client, &(paquete->buffer->size), sizeof(uint32_t), MSG_WAITALL);
-        printf("Recibido el buffer->size %d\n", paquete->buffer->size);
-        //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
-        paquete->buffer->stream = malloc(paquete->buffer->size);
-        //RECIBO EL STREAM
-        int c = recv(client, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-        printf("Recibi cant bytes recibidos del stream %d\n", c);
-
-        t_tareas_cPID *tareas_cPID_recibidas;
-        tareas_cPID_recibidas = deserializarTareas_cPID(paquete->buffer);
-        // t_tareas_cPID *tareas_cPID_recibidas = recibir_paquete(client);
-        //printf("Recibi %d bytes\n", sizeof(tareas_cPID_recibidas));
+        t_tareas_cPID *tareas_cPID_recibidas = recibir_paquete(client);
 
         printf("INICIO DE PATOTA CON PID: %d\n", tareas_cPID_recibidas->PID);
-        printf("CANT TAREAS: %d\n", tareas_cPID_recibidas->cantTareas);
-        //for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
-        for (int i = 0; i < 6; i++)
+        printf("CANT TAREAS: %d\n",              tareas_cPID_recibidas->cantTareas);
+        
+        for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
         {
             printf("-----TAREA %d-----\n", i + 1);
             printf("CODT: %d\n", tareas_cPID_recibidas->tareas[i].codigoTarea);
@@ -70,11 +50,10 @@ int main()
             printf("------------------\n\n");
         }
 
-        //log_info(logger, "Recibi una patota con PID: %d", tTareas->PID);
-        //void* paquete = serializarInt(tTareas->PID, PUNTERO_PCB);
+        //void *paquete = serializarInt(tTareas->PID, PUNTERO_PCB);
         //send(client, paquete, sizeof(paquete), 0);
 
-        //free(buffer);
+        free(tareas_cPID_recibidas);
         free(config);
     }
 }

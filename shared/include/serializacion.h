@@ -82,7 +82,7 @@ typedef struct
 void *serializarTCB(t_TCB *);
 void *serializarTarea(t_tarea);
 void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *, int);
-void *serializarInt(uint32_t, uint32_t);
+void *serializarInt(uint32_t, uint32_t, int *);
 
 //DEFINIDAS EN deserializacion.c
 t_TCB *deserializarTCB                (t_buffer *);

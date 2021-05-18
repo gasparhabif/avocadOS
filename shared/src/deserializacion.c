@@ -52,25 +52,17 @@ t_tarea *deserializarTarea(t_buffer *buffer)
 
 t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
 {
-
-    printf("Comenzando la deserealizacion...\n");
-
     t_tareas_cPID *tareas_cPID_recibidas = malloc(sizeof(t_tareas_cPID));
 
     void *stream = buffer->stream;
-
-    printf("Llego aca\n");
 
     memcpy(&(tareas_cPID_recibidas->PID), stream, sizeof(u_int32_t));
     stream += sizeof(u_int32_t);
     memcpy(&(tareas_cPID_recibidas->cantTareas), stream, sizeof(u_int8_t));
     stream += sizeof(u_int8_t);
 
-    tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas);
+    tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
     
-    printf("1. tareas_cPID_recibidas->PID %zu\n",        tareas_cPID_recibidas->PID);
-    printf("2. tareas_cPID_recibidas->cantTareas %zu\n", tareas_cPID_recibidas->cantTareas);
-
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
         memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(u_int8_t));

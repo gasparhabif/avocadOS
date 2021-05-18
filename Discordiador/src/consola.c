@@ -48,9 +48,10 @@ void INICIAR_PATOTA(char **parametros)
                 free(d_Enviar);
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
-                printf("Recibiendo datos\n");
-                int direccionPCB = (int)recibir_paquete(sockfd_ram);
-                printf("Pos recibida: %d\n", direccionPCB);
+                //printf("Recibiendo datos\n");
+                //int direccionPCB = (int)recibir_paquete(sockfd_ram);
+                //printf("Pos recibida: %d\n", direccionPCB);
+
 
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;
@@ -76,12 +77,18 @@ void INICIAR_PATOTA(char **parametros)
 
                 //CREO LOS THREADS DE LOS TRIPULANTES
                 //cuando hago el free de estoo?
+
                 pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
 
-                for (int i = 0; i < cantTripulantes; i++)
+                printf("Cant tripulantes %d\n", cantTripulantes);
+
+                for (int i = 0; i < cantTripulantes; i++){
+                    printf("Creando tripulante %d\n", i+1);
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *)&tripulantes_tcb[i]);
+                }
 
                 free(tripulantes_tcb);
+
             }
         }
 

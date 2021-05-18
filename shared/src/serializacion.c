@@ -130,19 +130,14 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     {
         memcpy(stream + offset, &unasTareas[i].codigoTarea, sizeof(uint8_t));
         offset += sizeof(uint8_t);
-        printf("%d\n", unasTareas[i].codigoTarea);
         memcpy(stream + offset, &unasTareas[i].parametro, sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        printf("%d\n", unasTareas[i].parametro);
         memcpy(stream + offset, &unasTareas[i].posX, sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        printf("%d\n", unasTareas[i].posX);
         memcpy(stream + offset, &unasTareas[i].posY, sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        printf("%d\n", unasTareas[i].posY);
         memcpy(stream + offset, &unasTareas[i].duracionTarea, sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        printf("%d\n", unasTareas[i].duracionTarea);
     }
 
     //CREAMOS EL PAQUETE
@@ -180,7 +175,7 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     //free(a_enviar);
 }
 
-void *serializarInt(uint32_t valor, uint32_t CODIGO_OPERACION)
+void *serializarInt(uint32_t valor, uint32_t CODIGO_OPERACION, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
@@ -188,6 +183,9 @@ void *serializarInt(uint32_t valor, uint32_t CODIGO_OPERACION)
 
     //CARGO EL SIZE DEL BUFFER
     buffer->size = sizeof(uint32_t);
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
 
     //CARGO EL STREAM DEL BUFFER
     void *stream = malloc(buffer->size);
