@@ -50,9 +50,12 @@ int main()
             printf("------------------\n\n");
         }
 
-        //void *paquete = serializarInt(tTareas->PID, PUNTERO_PCB);
-        //send(client, paquete, sizeof(paquete), 0);
+        printf("Enviando datos...\n");
+        int tamanioSerializacion;
+        void *paquete = serializarInt(11111, PUNTERO_PCB, &tamanioSerializacion);
+        printf("Se enviaron %d bytes\n", send(client, paquete, tamanioSerializacion, 0));
 
+        free(paquete);
         free(tareas_cPID_recibidas);
         free(config);
     }

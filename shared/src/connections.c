@@ -53,6 +53,9 @@ void* recibir_paquete(int sockfd)
     case COMENZAR_PATOTA:
         dRecibidos = deserializarTareas_cPID(paquete->buffer);
         break;
+    case PUNTERO_PCB:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
     case INICIAR_TRIPULANTE:
         dRecibidos = deserializarTCB(paquete->buffer);
         break;

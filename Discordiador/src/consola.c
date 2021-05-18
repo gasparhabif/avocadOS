@@ -48,9 +48,9 @@ void INICIAR_PATOTA(char **parametros)
                 free(d_Enviar);
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
-                //printf("Recibiendo datos\n");
-                //int direccionPCB = (int)recibir_paquete(sockfd_ram);
-                //printf("Pos recibida: %d\n", direccionPCB);
+                printf("Recibiendo datos\n");
+                int direccionPCB = (int) recibir_paquete(sockfd_ram);
+                printf("Pos recibida: %d\n", direccionPCB);
 
 
                 //CREO LOS TCB
@@ -64,8 +64,7 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;
-                    //TODO: traer el puntero de RAM
-                    tripulantes_tcb[i].puntero_PCB = 0;
+                    tripulantes_tcb[i].puntero_PCB = direccionPCB;
                 }
 
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola

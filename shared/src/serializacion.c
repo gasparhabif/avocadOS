@@ -1,6 +1,6 @@
 #include "serializacion.h"
 
-void *serializarTCB(t_TCB *unTCB)
+void *serializarTCB(t_TCB *unTCB, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
@@ -8,6 +8,9 @@ void *serializarTCB(t_TCB *unTCB)
 
     //CARGO EL SIZE DEL BUFFER
     buffer->size = sizeof(uint32_t) * 5 + sizeof(char);
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
 
     //CARGO EL STREAM DEL BUFFER
     void *stream = malloc(buffer->size);
@@ -54,7 +57,7 @@ void *serializarTCB(t_TCB *unTCB)
     //free(a_enviar);
 }
 
-void *serializarTarea(t_tarea unaTarea)
+void *serializarTarea(t_tarea unaTarea, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
@@ -62,6 +65,9 @@ void *serializarTarea(t_tarea unaTarea)
 
     //CARGO EL SIZE DEL BUFFER
     buffer->size = sizeof(t_tarea);
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
 
     //CARGO EL STREAM DEL BUFFER
     void *stream = malloc(sizeof(t_tarea));
@@ -197,7 +203,7 @@ void *serializarInt(uint32_t valor, uint32_t CODIGO_OPERACION, int *tamanioSeria
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
 
-    paquete->codigo_operacion = CODIGO_OPERACION;
+    paquete->codigo_operacion = PUNTERO_PCB;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR

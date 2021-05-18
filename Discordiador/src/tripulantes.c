@@ -12,12 +12,10 @@ void tripulante(void *tcb){
     tcb_tripulante = tcb;
     tcb_tripulante->TID = tid;
 
-
-/*
     //ABRO LA CONEXION
     sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram   = connect_to(config->ip_ram, config->puerto_ram);
-
+/*
     //SERIALIZO Y ENVIO EL TCB
     void* d_Enviar = serializarTCB(tcb_tripulante);
     send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);

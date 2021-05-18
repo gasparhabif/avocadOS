@@ -79,8 +79,8 @@ typedef struct
 } tareas_mongo;
 
 //DEFINIDAS EN serializacion.c
-void *serializarTCB(t_TCB *);
-void *serializarTarea(t_tarea);
+void *serializarTCB(t_TCB *unTCB, int *);
+void *serializarTarea(t_tarea, int *);
 void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *, int);
 void *serializarInt(uint32_t, uint32_t, int *);
 
