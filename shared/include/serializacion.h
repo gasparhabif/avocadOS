@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 //CODIGOS DE OPERACION
-#define COMENZAR_PATOTA 7
+#define COMENZAR_PATOTA 0
 #define PUNTERO_PCB 1
 #define INICIAR_TRIPULANTE 2
 #define SOLICITAR_TAREA 3

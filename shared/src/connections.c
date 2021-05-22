@@ -29,7 +29,14 @@ int init_server(int port)
     return boundary == 0 ? server : boundary;
 }
 
-void* recibir_paquete(int sockfd)
+void* recibir_paquete(int socket)
+{
+  int codOp;
+  return recibir_paquete_cCOP(socket, &codOp);
+}
+
+
+void* recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
 {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
@@ -37,6 +44,7 @@ void* recibir_paquete(int sockfd)
     //RECIBO EL CODIGO DE OPERACION
     recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL);
     printf("Recibido el COP: %d\n", paquete->codigo_operacion);
+    *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM
     recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), MSG_WAITALL);
     printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
