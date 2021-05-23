@@ -59,7 +59,8 @@ void INICIAR_PATOTA(char **parametros)
 
                 for (int i = 0; i < cantTripulantes; i++)
                 {
-                    //EL TID SE AGREGA CUANDO EL HILO ESTA CREADO YA QUE EL EL TID CORRESPONDE AL THREAD_ID
+                    tripulantes_tcb[i].TID = 0;
+                    //EL TID EN REALIDAD SE AGREGA CUANDO EL HILO ESTA CREADO YA QUE EL EL TID CORRESPONDE AL THREAD_ID
                     tripulantes_tcb[i].estado = 'n';
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
@@ -74,6 +75,16 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i - 3].posY = atoi(string_substring(parametros[i], 2, 1));
                 }
 
+                for (int i = 0; i < cantTripulantes; i++)
+                {
+                    printf("TID: %d\n",   tripulantes_tcb[i].TID);
+                    printf("EST: %c\n",   tripulantes_tcb[i].estado);
+                    printf("P_X: %d\n",   tripulantes_tcb[i].posX);
+                    printf("P_Y: %d\n",   tripulantes_tcb[i].posY);
+                    printf("P_I: %d\n",   tripulantes_tcb[i].proximaInstruccion);
+                    printf("P_P: %d\n\n", tripulantes_tcb[i].puntero_PCB);
+                }
+
                 //CREO LOS THREADS DE LOS TRIPULANTES
                 //cuando hago el free de estoo?
 
@@ -83,7 +94,7 @@ void INICIAR_PATOTA(char **parametros)
 
                 for (int i = 0; i < cantTripulantes; i++){
                     printf("Creando tripulante %d\n", i+1);
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *)&tripulantes_tcb[i]);
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) &tripulantes_tcb[i]);
                 }
 
                 free(tripulantes_tcb);

@@ -6,10 +6,10 @@ int main(int argc, char **argv)
 
 	//CREO EL LOGGER Y CONFIG
 	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
-	log_info(logger, "Se inicio el log del discordiador: Proceso ID %d", getpid());
+	log_info(logger, "Se inicio el log del discordiador");
 
 	config = get_cpu_config("../Discordiador/cfg/config.cfg");
-	log_info(logger, "\nObtuve IP de ram: %s, puerto: %i\nObtuve IP de MONGO: %s, puerto: %i", config->ip_ram, config->puerto_ram, config->ip_mongo, config->puerto_mongo);
+	log_info(logger, "Se cargo la config del Discordador");
 
 	//INICIALIZO EL PID
 	patota_id = 1;
@@ -97,41 +97,6 @@ int main(int argc, char **argv)
 		leido = readline(">");
 	}
 	free(leido);
-
-/*
-	//MANDO MENSAJES
-	char userOption = '\0';
-	char *msg;
-	system("clear");
-
-	while (userOption != 'E')
-	{
-
-		msg = malloc(MAX_DATA_SIZE);
-		puts("Mensaje a enviar:");
-		scanf("%s", msg);
-
-		fflush(stdin);
-
-		puts("Enviar mensaje a:");
-		puts("\t[m] i-Mongo-Store");
-		puts("\t[r] Mi-RAM-HQ");
-		puts("\t[E] EXIT");
-		scanf(" %c", &userOption);
-
-		if (userOption == 'm')
-		{
-			//enviar_mensaje(sockfd_mongo, msg);
-		}
-		else if (userOption == 'r')
-		{
-			//enviar_mensaje(sockfd_ram, msg);
-		}
-
-		free(msg);
-		system("clear");
-	}
-*/
 
 	ejecutandoTripulantes = 0;
 	ejecutandoPlanificador = 0;

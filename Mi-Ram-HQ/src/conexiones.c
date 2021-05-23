@@ -2,8 +2,6 @@
 
 void aceptar_conexiones(void *parametro){
 
-    printf("Abriendo conexiones");
-
     pthread_t recibir_mensajes_thread;
     int client;
     int server_instance = (int) parametro;
@@ -36,7 +34,6 @@ void recibir_mensaje(void *parametro){
     while(recibiendo_mensajes){
     
         datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
-        printf("COP recibido: %d\n", cop_recibido);
 
         switch (cop_recibido)
         {
@@ -44,20 +41,19 @@ void recibir_mensaje(void *parametro){
                 log_info(logger, "Comenzando una patota");
                 comenzar_patota(client, (t_tareas_cPID *) datos_recibidos);
                 break;
-
             case INICIAR_TRIPULANTE:
                 log_info(logger, "Iniciando un tripulante");
-                //TODO: crear hilo
+                iniciar_tripulante(datos_recibidos);
                 break;
-
             case SOLICITAR_TAREA:
                 log_info(logger, "Tarea solicitada");
+                solicitar_tarea(datos_recibidos);
                 break;
-
             default:
                 log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
                 break;
         }
+
         free(datos_recibidos);
     }
 }

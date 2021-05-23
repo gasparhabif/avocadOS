@@ -43,39 +43,39 @@ void* recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
 
     //RECIBO EL CODIGO DE OPERACION
     recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL);
-    printf("Recibido el COP: %d\n", paquete->codigo_operacion);
+    //printf("Recibido el COP: %d\n", paquete->codigo_operacion);
     *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM
     recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), MSG_WAITALL);
-    printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
+    //printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
     //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
     paquete->buffer->stream = malloc(paquete->buffer->size);
     //RECIBO EL STREAM
-    int bStream = recv(sockfd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-    printf("Recibi el stream: %d\n", bStream);
+    recv(sockfd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+    //printf("Recibi %d bytes de stream\n", bStream);
 
     void *dRecibidos;
 
     switch (paquete->codigo_operacion)
     {
-    case COMENZAR_PATOTA:
-        dRecibidos = deserializarTareas_cPID(paquete->buffer);
-        break;
-    case PUNTERO_PCB:
-        dRecibidos = deserializarInt(paquete->buffer);
-        break;
-    case INICIAR_TRIPULANTE:
-        dRecibidos = deserializarTCB(paquete->buffer);
-        break;
-    case SOLICITAR_TAREA:
-
-        break;
-    case ENVIAR_PROXIMA_TAREA:
-        dRecibidos = deserializarTarea(paquete->buffer);
-        break;
-    default:
-        //NO ENCONTRE NINGUN COP
-        break;
+        case COMENZAR_PATOTA:
+            dRecibidos = deserializarTareas_cPID(paquete->buffer);
+            break;
+        case PUNTERO_PCB:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case INICIAR_TRIPULANTE:
+            dRecibidos = deserializarTCB(paquete->buffer);
+            break;
+        case SOLICITAR_TAREA:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case ENVIAR_PROXIMA_TAREA:
+            dRecibidos = deserializarTarea(paquete->buffer);
+            break;
+        default:
+            //NO ENCONTRE NINGUN COP
+            break;
     }
 
     free(paquete->buffer->stream);

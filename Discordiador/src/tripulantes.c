@@ -1,6 +1,6 @@
 #include "proceso1.h"
 
-void tripulante(void *tcb){
+void tripulante(void *parametro){
 
     int tid = syscall(SYS_gettid);
     t_TCB *tcb_tripulante;
@@ -9,17 +9,24 @@ void tripulante(void *tcb){
     log_info(logger, "Se inicio el tripulante N°: %d", tid);
 
     //TRAIGO EL TCB
-    tcb_tripulante = tcb;
+    tcb_tripulante = (t_TCB *) parametro;
     tcb_tripulante->TID = tid;
+
+    printf("TID: %d\n", tcb_tripulante->TID);
+    printf("EST: %c\n", tcb_tripulante->estado);
+    printf("P_X: %d\n", tcb_tripulante->posX);
+    printf("P_Y: %d\n", tcb_tripulante->posY);
+    printf("P_I: %d\n", tcb_tripulante->proximaInstruccion);
+    printf("P_P: %d\n\n", tcb_tripulante->puntero_PCB);
 
     //ABRO LA CONEXION
     sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram   = connect_to(config->ip_ram, config->puerto_ram);
-/*
+
     //SERIALIZO Y ENVIO EL TCB
-    void* d_Enviar = serializarTCB(tcb_tripulante);
-    send(sockfd_ram, d_Enviar, sizeof(d_Enviar), 0);
-*/
+    int tamanioSerializacion;
+    void* d_Enviar = serializarTCB(tcb_tripulante, &tamanioSerializacion);
+    send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
 
 /*
     if(strcmp(config->algoritmo, "FIFO") == 0){
@@ -34,7 +41,8 @@ void tripulante(void *tcb){
             t_tarea *tarea_recibida = (t_tarea*) recibir_paquete(sockfd_tripulante_ram);
             
             //REALIZAR TAREA
-            ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo);
+            if(ejecutar_tarea(tarea_recibida, sockfd_tripulante_mongo) == 0)
+                printf("Error ejecutando una tarea");
 
             //LÓGICA DE SABOTAJES
         }
@@ -47,7 +55,7 @@ void tripulante(void *tcb){
     }
     
 //    close(sockfd_tripulante_mongo);
-//    close(sockfd_tripulante_ram);
+    close(sockfd_tripulante_ram);
 */
     return;
 
