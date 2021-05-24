@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <commons/log.h>
 
+#include "common_types.h"
 #include "configurator.h"
 #include "serializacion.h"
 #include "connections.h"
