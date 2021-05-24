@@ -7,6 +7,7 @@
 #include "shared_utils.h"
 #include <pthread.h>
 
-void *connection_handler(void *arg);
+void accept_connections(void *);
+void connection_handler(void *);
 
 #endif
