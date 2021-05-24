@@ -3,19 +3,25 @@
 int main()
 {
     system("clear");
-    t_store_conf *config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
 
+    // Inicializar logger y config
+    logger = log_create("logs/i-mongo-store.log", "i-Mongo-Store", 1, LOG_LEVEL_INFO);
+    log_info(logger, "Log iniciado");
+    config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
+    log_info(logger, "Configuración cargada");
+
+    // Inicializar servidor
     int server_instance = init_server(config->puerto);
 
     // Verificar instancia
     if (server_instance == -1)
     {
-        perror("Algo malió sal");
+        log_info(logger, "Error al inicializar servidor");
         return EXIT_FAILURE;
     }
 
     // Aceptar conexiones de los tripulantes
-    printf("Servidor escuchando en puerto %d\n", config->puerto);
+    log_info(logger, "Servidor escuchando en puerto %d", config->puerto);
     pthread_t accept_connections_thread;
     pthread_create(&accept_connections_thread, NULL, (void *)accept_connections, (void *)server_instance);
     pthread_join(accept_connections_thread, NULL);
@@ -40,10 +46,10 @@ void accept_connections(void *arg)
         unsigned int dir_size = sizeof(socklen_t);
         int client = accept(server_instance, (void *)&client_dir, &dir_size);
 
-        // Verificar conexión recibida
+        // Verificar conexión aceptada
         if (client == -1)
         {
-            perror("Error al aceptar conexión");
+            log_info(logger, "Error al aceptar conexión");
             break;
         }
 
@@ -57,7 +63,7 @@ void connection_handler(void *arg)
 {
     int client = (int)arg;
 
-    printf("Recibí una conexión en el socket %d\n", client);
+    log_info(logger, "Se conectó un tripulante en el socket %d", client);
 
     while (1)
     {

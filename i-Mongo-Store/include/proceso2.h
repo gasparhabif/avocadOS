@@ -7,6 +7,10 @@
 #include "shared_utils.h"
 #include <pthread.h>
 
+// Variables globales
+t_log *logger;
+t_store_conf *config;
+
 void accept_connections(void *);
 void connection_handler(void *);
 
