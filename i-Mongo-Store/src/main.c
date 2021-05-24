@@ -16,7 +16,7 @@ int main()
     // Verificar instancia
     if (server_instance == -1)
     {
-        log_info(logger, "Error al inicializar servidor");
+        log_error(logger, "Error al inicializar servidor");
         return EXIT_FAILURE;
     }
 
@@ -49,7 +49,7 @@ void accept_connections(void *arg)
         // Verificar conexión aceptada
         if (client == -1)
         {
-            log_info(logger, "Error al aceptar conexión");
+            log_error(logger, "Error al aceptar conexión");
             break;
         }
 
@@ -65,7 +65,13 @@ void connection_handler(void *arg)
 
     log_info(logger, "Se conectó un tripulante en el socket %d", client);
 
-    while (1)
+    t_tarea *tarea_a_ejecutar = recibir_paquete(client);
+
+    while (tarea_a_ejecutar != CLIENT_DISCONNECTED)
     {
+        log_info(logger, "Se recibió el código de tarea %d", tarea_a_ejecutar->codigoTarea);
+        tarea_a_ejecutar = recibir_paquete(client);
     }
+
+    log_error(logger, "El tripulante del socket %d se desconectó", client);
 }
