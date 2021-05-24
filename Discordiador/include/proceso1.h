@@ -39,16 +39,20 @@ int contar_caracteres_especiales(size_t, char *, char);
 void tripulante(void *);
 int ejecutar_tarea(t_tarea *, int);
 
+//DEFINIDAS EN sabotajes.c
+void sabotajes();
+
 //VARIABLES GLOBALES
-int sockfd_mongo;
-int sockfd_ram;
 t_log *logger;
 t_cpu_conf *config;
+int sockfd_mongo;
+int sockfd_ram;
 int patota_id;
 int ejecutandoTripulantes;
 int ejecutandoPlanificador;
+int escuchandoSabotajes;
 int planificando;
-int turno;
+int sabotaje;
 pthread_mutex_t mutex;
 
 #endif

@@ -3,12 +3,12 @@
 void INICIAR_PATOTA(char **parametros)
 {
 
-    static int cantParametros = 0;
+    static int cantParametros;
+    cantParametros = 0;
     while (parametros[cantParametros] != NULL)
         cantParametros++;
 
     //MANEJO DE ERRORES
-
     if (cantParametros < 3)
         printf("Error: INICIAR_PATOTA [CANT TRIPULANTES] [RUTA DE TAREAS] [POSICIONES]\n");
     else
@@ -23,6 +23,7 @@ void INICIAR_PATOTA(char **parametros)
         }
         else
         {
+            printf("Tripus: %d, Param: %d\n", cantTripulantes, cantParametros);
             if (cantTripulantes < (cantParametros - 3))
                 printf("Usted especifio mas tripulantes de los que desea crear\n");
             else
@@ -51,7 +52,6 @@ void INICIAR_PATOTA(char **parametros)
                 printf("Recibiendo datos\n");
                 int direccionPCB = (int) recibir_paquete(sockfd_ram);
                 printf("Pos recibida: %d\n", direccionPCB);
-
 
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;
@@ -86,22 +86,18 @@ void INICIAR_PATOTA(char **parametros)
                 }
 
                 //CREO LOS THREADS DE LOS TRIPULANTES
+                
                 //cuando hago el free de estoo?
-
                 pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
 
                 printf("Cant tripulantes %d\n", cantTripulantes);
 
                 for (int i = 0; i < cantTripulantes; i++){
                     printf("Creando tripulante %d\n", i+1);
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) &tripulantes_tcb[i]);
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) &(tripulantes_tcb[i]));
                 }
-
-                free(tripulantes_tcb);
-
             }
         }
-
         fclose(fpTareas);
     }
 }

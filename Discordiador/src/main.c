@@ -11,14 +11,13 @@ int main(int argc, char **argv)
 	config = get_cpu_config("../Discordiador/cfg/config.cfg");
 	log_info(logger, "Se cargo la config del Discordador");
 
-	//INICIALIZO EL PID
-	patota_id = 1;
-
 	//INICIALIZO VARIABLES CLAVE
-	ejecutandoTripulantes = 1;
+	patota_id              = 1;
+	ejecutandoTripulantes  = 1;
 	ejecutandoPlanificador = 1;
-	planificando = 1;
-
+	escuchandoSabotajes    = 1;
+	planificando           = 1;
+	sabotaje               = 0;
 	pthread_mutex_init(&mutex, NULL);
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
@@ -56,6 +55,10 @@ int main(int argc, char **argv)
 */
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
+	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
+	pthread_t thread_sabotajes;
+	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
+
 	//LECTURA DE CONSOLA
 	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
 
@@ -63,10 +66,13 @@ int main(int argc, char **argv)
 	char **parametros;
 	leido = readline(">");
 
-	while (strcmp(leido, "exit"))
+	while (strcmp(leido, "EXIT") && strcmp(leido, "exit"))
 	{
-
+		add_history(leido);
+		
 		parametros = string_split(leido, " ");
+
+		string_to_upper(parametros[0]);
 
 		if (strcmp(parametros[0], "INICIAR_PATOTA") == 0)
 			comando[0](parametros);
@@ -84,9 +90,6 @@ int main(int argc, char **argv)
 		{
 			if (strcmp(leido, ""))
 				printf("No reconozco ese comando\n");
-			//PLANIFICADOR MANUAL, solo para pruebas TRANQUILOS!
-			else
-				turno = atoi(leido);
 		}
 
 		free(leido);
@@ -97,7 +100,7 @@ int main(int argc, char **argv)
 
 	ejecutandoTripulantes = 0;
 	ejecutandoPlanificador = 0;
-	planificando = 0;
+	escuchandoSabotajes = 0;
 
 	system("clear");
 	close(sockfd_ram);

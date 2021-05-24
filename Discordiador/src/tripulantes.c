@@ -3,13 +3,13 @@
 void tripulante(void *parametro){
 
     int tid = syscall(SYS_gettid);
-    t_TCB *tcb_tripulante;
+    t_TCB *tcb_tripulante = malloc(sizeof(t_TCB));
     int sockfd_tripulante_mongo, sockfd_tripulante_ram;
 
     log_info(logger, "Se inicio el tripulante N°: %d", tid);
 
     //TRAIGO EL TCB
-    tcb_tripulante = (t_TCB *) parametro;
+    *tcb_tripulante = * (t_TCB *) parametro;
     tcb_tripulante->TID = tid;
 
     printf("TID: %d\n", tcb_tripulante->TID);
@@ -21,12 +21,13 @@ void tripulante(void *parametro){
 
     //ABRO LA CONEXION
     sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
-    sockfd_tripulante_ram   = connect_to(config->ip_ram, config->puerto_ram);
+    sockfd_tripulante_ram   = connect_to(config->ip_ram,   config->puerto_ram);
 
     //SERIALIZO Y ENVIO EL TCB
     int tamanioSerializacion;
     void* d_Enviar = serializarTCB(tcb_tripulante, &tamanioSerializacion);
     send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
+    free(tcb_tripulante);
 
 /*
     if(strcmp(config->algoritmo, "FIFO") == 0){
@@ -57,6 +58,7 @@ void tripulante(void *parametro){
 //    close(sockfd_tripulante_mongo);
     close(sockfd_tripulante_ram);
 */
+    
     return;
 
 }
@@ -75,4 +77,15 @@ int ejecutar_tarea (t_tarea *unaTarea, int sockfd_mongo){
 
     return 1;
 
+}
+
+void actualizarEstado(int socket, uint32_t tid, char nuevoEstado){
+
+    int bEnviar;
+
+    void d_enviar = serializar_ActulizacionEstado(tid, nuevoEstado, &bEnviar);
+
+    send(socket, d_enviar, bEnviar, 0);
+
+    return;
 }
