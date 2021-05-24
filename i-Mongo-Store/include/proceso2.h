@@ -14,4 +14,12 @@ t_store_conf *config;
 void accept_connections(void *);
 void connection_handler(void *);
 
+// Tareas (definidas en tareas.c)
+void generarOxigeno(int);
+void consumirOxigeno(int);
+void generarComida(int);
+void consumirComida(int);
+void generarBasura(int);
+void descartarBasura();
+
 #endif

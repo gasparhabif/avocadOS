@@ -62,14 +62,45 @@ void accept_connections(void *arg)
 void connection_handler(void *arg)
 {
     int client = (int)arg;
+    bool tareas_finalizadas = false;
 
     log_info(logger, "Se conectó un tripulante en el socket %d", client);
 
     t_tarea *tarea_a_ejecutar = recibir_paquete(client);
 
-    while (tarea_a_ejecutar != CLIENT_DISCONNECTED)
+    while (tarea_a_ejecutar != CLIENT_DISCONNECTED && !tareas_finalizadas)
     {
         log_info(logger, "Se recibió el código de tarea %d", tarea_a_ejecutar->codigoTarea);
+
+        switch (tarea_a_ejecutar->codigoTarea)
+        {
+        case FIN_TAREAS:
+            log_info(logger, "El tripulante del socket %d finalizó sus tareas", client);
+            tareas_finalizadas = true;
+            break;
+        case GENERAR_OXIGENO:
+            generarOxigeno(tarea_a_ejecutar->parametro);
+            break;
+        case CONSUMIR_OXIGENO:
+            consumirOxigeno(tarea_a_ejecutar->parametro);
+            break;
+        case GENERAR_COMIDA:
+            generarComida(tarea_a_ejecutar->parametro);
+            break;
+        case CONSUMIR_COMIDA:
+            consumirComida(tarea_a_ejecutar->parametro);
+            break;
+        case GENERAR_BASURA:
+            generarBasura(tarea_a_ejecutar->parametro);
+            break;
+        case DESCARTAR_BASURA:
+            descartarBasura();
+            break;
+        default:
+            log_error(logger, "Código de tarea desconocido");
+            break;
+        }
+
         tarea_a_ejecutar = recibir_paquete(client);
     }
 
