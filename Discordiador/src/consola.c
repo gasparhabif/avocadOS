@@ -61,7 +61,7 @@ void INICIAR_PATOTA(char **parametros)
                 {
                     tripulantes_tcb[i].TID = 0;
                     //EL TID EN REALIDAD SE AGREGA CUANDO EL HILO ESTA CREADO YA QUE EL EL TID CORRESPONDE AL THREAD_ID
-                    tripulantes_tcb[i].estado = 'n';
+                    tripulantes_tcb[i].estado = NEW;
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;

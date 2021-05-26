@@ -19,6 +19,7 @@ int main(int argc, char **argv)
 	planificando           = 1;
 	sabotaje               = 0;
 	pthread_mutex_init(&mutex, NULL);
+	sem_init(&s_multiprogramacion, 0, config->grado_multitarea);
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
@@ -102,6 +103,7 @@ int main(int argc, char **argv)
 	ejecutandoPlanificador = 0;
 	escuchandoSabotajes = 0;
 
+	sem_destroy(&s_multiprogramacion);
 	system("clear");
 	close(sockfd_ram);
 	close(sockfd_mongo);

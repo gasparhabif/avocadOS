@@ -10,16 +10,24 @@
 #define REALIZAR_TAREA       5
 #define MOVER_TRIPULANTE     6
 #define ACTUALIZAR_ESTADO    7
+#define SOLICITAR_POSICION   8
 
 //CODIGOS DE TAREAS
 #define FIN_TAREAS           0
-#define GENERAR_OXIGENO      1
-#define CONSUMIR_OXIGENO     2
-#define GENERAR_COMIDA       3
-#define CONSUMIR_COMIDA      4
-#define GENERAR_BASURA       5
-#define DESCARTAR_BASURA     6
-#define MOVER_POSICION       7
+#define MOVER_POSICION       1
+#define GENERAR_OXIGENO      2
+#define CONSUMIR_OXIGENO     3
+#define GENERAR_COMIDA       4
+#define CONSUMIR_COMIDA      5
+#define GENERAR_BASURA       6
+#define DESCARTAR_BASURA     7
+
+//ESTADOS
+#define NEW                 'N'
+#define READY               'R'
+#define EXEC                'E'
+#define BLOCKED             'B'
+#define EXIT                'X'
 
 //BUFFERS Y PAQUETE
 typedef struct
@@ -51,6 +59,13 @@ typedef struct
     u_int32_t puntero_PCB;
 } t_TCB;
 
+//BASICOS
+typedef struct
+{
+    u_int32_t posX;
+    u_int32_t posY;
+} t_posicion;
+
 //TAREAS
 typedef struct
 {
@@ -71,14 +86,14 @@ typedef struct
 //ACTUALIZACIONES
 typedef struct
 {
-    u_int32_t PID;
+    u_int32_t TID;
     u_int32_t posX;
     u_int32_t posY;
 } t_actualizar_posicion;
 
 typedef struct
 {
-    u_int32_t PID;
+    u_int32_t TID;
     char estado;
 } t_actualizar_estado;
 
