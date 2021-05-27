@@ -38,14 +38,16 @@ t_tarea *leer_tareas                 (FILE *, int *);
 int      contar_caracteres_especiales(size_t, char *, char);
 
 //DEFINIDAS EN tripulantes.c
-void     tripulante           (void *);
-t_tarea* solicitar_tarea      (int, uint32_t, int *, int *, int *, t_posicion);
-int      ejecutar_tarea       (t_tarea *, int *, int *, int);
-int      ejecutar_tiempos_CPU (int *);
-void     actualizar_estado    (int, uint32_t, char);
-void     mover_tripulante     (int, int, uint32_t, u_int32_t, u_int32_t);
-int      cantMovimientos      (int, int, int, int);
-
+void     tripulante          (void *parametro);
+t_tarea* solicitar_tarea     (int *finTareas);
+int      ejecutar_tarea      (t_tarea *unaTarea);
+int      ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado);
+void     actualizar_estado   (int socket, uint32_t tid, char nuevoEstado);
+void     mover_tripulante    (int cantMovimientos, u_int32_t posX, u_int32_t posY);
+void     mover_una_posicion  (u_int32_t posX, u_int32_t posY);
+int      cantMovimientos     (int xInicial, int yInicial, int xFinal, int yFinal);
+void     retardo_ciclo_cpu   ();
+    
 //DEFINIDAS EN sabotajes.c
 void sabotajes();
 
@@ -60,7 +62,8 @@ int ejecutandoPlanificador;
 int escuchandoSabotajes;
 int planificando;
 int sabotaje;
-pthread_mutex_t mutex;
+pthread_mutex_t mutex_exec;
+pthread_mutex_t mutex_block;
 sem_t s_multiprogramacion;
 
 #endif

@@ -18,7 +18,8 @@ int main(int argc, char **argv)
 	escuchandoSabotajes    = 1;
 	planificando           = 1;
 	sabotaje               = 0;
-	pthread_mutex_init(&mutex, NULL);
+	pthread_mutex_init(&mutex_exec, NULL);
+	pthread_mutex_init(&mutex_block, NULL);
 	sem_init(&s_multiprogramacion, 0, config->grado_multitarea);
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
@@ -87,6 +88,8 @@ int main(int argc, char **argv)
 			comando[4](parametros);
 		else if (strcmp(parametros[0], "OBTENER_BITACORA") == 0)
 			comando[5](parametros);
+		else if (strcmp(parametros[0], "CLEAR") == 0)
+			system("clear");
 		else
 		{
 			if (strcmp(leido, ""))

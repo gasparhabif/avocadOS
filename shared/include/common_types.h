@@ -10,7 +10,6 @@
 #define REALIZAR_TAREA       5
 #define MOVER_TRIPULANTE     6
 #define ACTUALIZAR_ESTADO    7
-#define SOLICITAR_POSICION   8
 
 //CODIGOS DE TAREAS
 #define FIN_TAREAS           0
@@ -26,7 +25,8 @@
 #define NEW                 'N'
 #define READY               'R'
 #define EXEC                'E'
-#define BLOCKED             'B'
+#define BLOCKED_IO          'B'
+#define BLOCKED_EMERGENCY   'Y'
 #define EXIT                'X'
 
 //BUFFERS Y PAQUETE
@@ -66,6 +66,13 @@ typedef struct
     u_int32_t posY;
 } t_posicion;
 
+typedef struct
+{
+    u_int32_t TID;
+    u_int32_t posX;
+    u_int32_t posY;
+} t_envio_posicion;
+
 //TAREAS
 typedef struct
 {
@@ -96,13 +103,5 @@ typedef struct
     u_int32_t TID;
     char estado;
 } t_actualizar_estado;
-
-//SABOTAJES
-typedef struct
-{
-    u_int32_t PID;
-    u_int32_t posX;
-    u_int32_t posY;
-} t_sabotajes;
 
 #endif

@@ -123,6 +123,10 @@ void INICIAR_PLANIFICACION(char **parametros)
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
+
+    //http://poincare.matf.bg.ac.rs/~ivana/courses/ps/sistemi_knjige/pomocno/apue/APUE/0201433079/ch12lev1sec8.html#:~:text=To%20send%20a%20signal%20to%20a%20thread%2C%20we%20call%20pthread_kill.&text=We%20can%20pass%20a%20signo,still%20kill%20the%20entire%20process.
+    //int pthread_kill(pthread_t thread, int signo);
+
     if (!planificando)
         printf("El planificador ya se encuentra pausado!\n");
     else
