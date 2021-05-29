@@ -281,7 +281,7 @@ void* serializar_envioPosicion(int tid, int posX, int posY, int *tamanioSerializ
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) * 3;
+    buffer->size = sizeof(uint32_t) + sizeof(t_posicion);
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);

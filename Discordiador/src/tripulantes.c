@@ -26,7 +26,7 @@ void tripulante(void *parametro){
     log_info(logger, "Tripulante en posicion X:%d Y:%d", pos_actual.posX, pos_actual.posY);
 
     //ABRO LA CONEXION
-    sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    //sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram   = connect_to(config->ip_ram,   config->puerto_ram);
     if(sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1){
         log_info(logger, "Muerte de tripulante por fallo de conexion");
@@ -40,6 +40,8 @@ void tripulante(void *parametro){
     free(tcb_tripulante);
     free(d_Enviar);
     log_info(logger, "Se envio el TCB");
+    
+    //ENVIAR EL TID AL MONGO 
 
     //CONTROL DE GRADO DE MULTIPROGRAMACION
     sem_wait(&s_multiprogramacion);
@@ -130,13 +132,13 @@ t_tarea* solicitar_tarea(int *finTareas){
         //CALCULO DEL TIEMPO QUE LA TAREA PERMANECERÁ MOVIENDOSE POR EL MAPA, EN EJECUCION Y BLOQUEADA
         if(tarea_recibida->codigoTarea == MOVER_POSICION){
             duracionMovimientos = cantMovimientos(pos_actual.posX, pos_actual.posY, tarea_recibida->posX, tarea_recibida->posY);
-            duracionEjecucion  = tarea_recibida->duracionTarea;
-            duracionBloqueado  = 0;
+            duracionEjecucion   = tarea_recibida->duracionTarea;
+            duracionBloqueado   = 0;
         }
         else{
             duracionMovimientos = cantMovimientos(pos_actual.posX, pos_actual.posY, tarea_recibida->posX, tarea_recibida->posY);
-            duracionEjecucion  = 1; //ENVIO DE TAREA AL MONGO
-            duracionBloqueado  = tarea_recibida->duracionTarea;
+            duracionEjecucion   = 1; //ENVIO DE TAREA AL MONGO
+            duracionBloqueado   = tarea_recibida->duracionTarea;
         }
     }
 

@@ -47,7 +47,7 @@ void recibir_mensaje(void *parametro){
                 break;
             case SOLICITAR_TAREA:
                 log_info(logger, "Tarea solicitada");
-                solicitar_tarea(datos_recibidos);
+                solicitar_tarea(client, datos_recibidos);
                 break;
             default:
                 log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);

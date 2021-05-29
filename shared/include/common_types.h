@@ -2,32 +2,37 @@
 #define COMMON_TYPES_H
 
 //CODIGOS DE OPERACION
-#define COMENZAR_PATOTA      0
-#define PUNTERO_PCB          1
-#define INICIAR_TRIPULANTE   2
-#define SOLICITAR_TAREA      3
-#define ENVIAR_PROXIMA_TAREA 4
-#define REALIZAR_TAREA       5
-#define MOVER_TRIPULANTE     6
-#define ACTUALIZAR_ESTADO    7
+#define COMENZAR_PATOTA             0
+#define PUNTERO_PCB                 1
+#define INICIAR_TRIPULANTE          2
+#define SOLICITAR_TAREA             3
+#define ENVIAR_PROXIMA_TAREA        4
+#define REALIZAR_TAREA              5
+#define MOVER_TRIPULANTE            6
+#define ACTUALIZAR_ESTADO           7
 
 //CODIGOS DE TAREAS
-#define FIN_TAREAS           0
-#define MOVER_POSICION       1
-#define GENERAR_OXIGENO      2
-#define CONSUMIR_OXIGENO     3
-#define GENERAR_COMIDA       4
-#define CONSUMIR_COMIDA      5
-#define GENERAR_BASURA       6
-#define DESCARTAR_BASURA     7
+#define FIN_TAREAS                  0
+#define MOVER_POSICION              1
+#define GENERAR_OXIGENO             2
+#define CONSUMIR_OXIGENO            3
+#define GENERAR_COMIDA              4
+#define CONSUMIR_COMIDA             5
+#define GENERAR_BASURA              6
+#define DESCARTAR_BASURA            7
 
 //ESTADOS
-#define NEW                 'N'
-#define READY               'R'
-#define EXEC                'E'
-#define BLOCKED_IO          'B'
-#define BLOCKED_EMERGENCY   'Y'
-#define EXIT                'X'
+#define NEW                        'N'
+#define READY                      'R'
+#define EXEC                       'E'
+#define BLOCKED_IO                 'B'
+#define BLOCKED_EMERGENCY          'Y'
+#define EXIT                       'X'
+//INICIO/FIN DE TAREAS MONGO
+#define INICIO_TAREA               'I'
+#define FIN_TAREA                  'F'
+#define INICIO_RESOLUCION_SABOTAJE 'S'
+#define FIN_RESOLUCION_SABOTAJE    'A'  
 
 //BUFFERS Y PAQUETE
 typedef struct
@@ -69,8 +74,13 @@ typedef struct
 typedef struct
 {
     u_int32_t TID;
-    u_int32_t posX;
-    u_int32_t posY;
+    char estado;
+} t_estado;
+
+typedef struct
+{
+    u_int32_t TID;
+    t_posicion pos;
 } t_envio_posicion;
 
 //TAREAS
