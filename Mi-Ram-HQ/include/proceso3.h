@@ -4,12 +4,20 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <stdbool.h>
+#include <pthread.h>
 #include "shared_utils.h"
 
-void *memoria;
 t_log *logger;
+int recibiendo_mensajes;
+int aceptando_conexiones;
 
-void iniciar_logger(void);
-void comenzar_patota(t_tareas_cPID *);
+//Definidas en router.c
+void comenzar_patota(int, t_tareas_cPID *);
+void iniciar_tripulante(t_TCB *);
+void solicitar_tarea(int, int *datos_recibidos);
+
+//Definidas en conexiones.c
+void aceptar_conexiones(void *);
+void recibir_mensaje(void *);
 
 #endif

@@ -1,4 +1,8 @@
 {
+"files.eol": "\n",
+}
+
+{
     "files.associations": {
         "proceso1.h": "c",
         "signal.h": "c",
