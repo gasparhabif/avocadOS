@@ -12,12 +12,12 @@ int main(int argc, char **argv)
 	log_info(logger, "Se cargo la config del Discordador");
 
 	//INICIALIZO VARIABLES CLAVE
-	patota_id              = 1;
-	ejecutandoTripulantes  = 1;
+	patota_id = 1;
+	ejecutandoTripulantes = 1;
 	ejecutandoPlanificador = 1;
-	escuchandoSabotajes    = 1;
-	planificando           = 1;
-	sabotaje               = 0;
+	escuchandoSabotajes = 1;
+	planificando = 1;
+	sabotaje = 0;
 	pthread_mutex_init(&mutex_exec, NULL);
 	pthread_mutex_init(&mutex_block, NULL);
 	sem_init(&s_multiprogramacion, 0, config->grado_multitarea);
@@ -26,11 +26,11 @@ int main(int argc, char **argv)
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
-//	log_info(logger, "Conectando a MONGO...");
-//	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+	log_info(logger, "Conectando a MONGO...");
+	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
-/*	char reconectOP;
+	char reconectOP;
 	system("clear");
 
 	while (sockfd_ram == -1 || sockfd_mongo == -1)
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 			system("clear");
 		}
 	}
-*/
+
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	while (strcmp(leido, "EXIT") && strcmp(leido, "exit"))
 	{
 		add_history(leido);
-		
+
 		parametros = string_split(leido, " ");
 
 		string_to_upper(parametros[0]);
