@@ -41,10 +41,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     paquete->buffer = malloc(sizeof(t_buffer));
 
     //RECIBO EL CODIGO DE OPERACION
-    if (recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL) <= 0)
-    {
-        return CLIENT_DISCONNECTED;
-    }
+    recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL) <= 0);
     //printf("Recibido el COP: %d\n", paquete->codigo_operacion);
     *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM
