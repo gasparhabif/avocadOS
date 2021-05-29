@@ -9,8 +9,6 @@
 #include <sys/socket.h>
 #include "serializacion.h"
 
-#define CLIENT_DISCONNECTED 400
-
 int connect_to(char *ip, int port);
 int init_server(int port);
 
