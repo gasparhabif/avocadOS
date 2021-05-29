@@ -78,19 +78,59 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
     }
 
     return tareas_cPID_recibidas;
+    
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(tarea_recibida);
 }
 
 int *deserializarInt(t_buffer *buffer)
 {
 
-    int *posicion_recibida = malloc(sizeof(int));
+    int *numero_recibido = malloc(sizeof(int));
 
     void *stream = buffer->stream;
 
-    memcpy(&(posicion_recibida), stream, sizeof(int));
+    memcpy(&(numero_recibido), stream, sizeof(int));
+
+    return numero_recibido;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(tarea_recibida);
+}
+
+t_estado* deserializar_ActulizacionEstado(t_buffer *buffer){
+    
+    t_estado *estado_recibido = malloc(sizeof(t_estado));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(estado_recibido->TID), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(estado_recibido->estado), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+
+    return estado_recibido;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(estado_recibido);
+}
+
+
+t_envio_posicion* deserializar_envioPosicion(t_buffer *buffer){
+ 
+    t_envio_posicion *posicion_recibida = malloc(sizeof(t_envio_posicion));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(posicion_recibida->TID), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(posicion_recibida->pos.posX), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(posicion_recibida->pos.posY), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
 
     return posicion_recibida;
 
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
-    //free(tarea_recibida);
+    //free(estado_recibido);
 }

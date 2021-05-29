@@ -8,29 +8,38 @@ enum CODIGOS_DE_OPERACION
     INICIAR_TRIPULANTE,
     SOLICITAR_TAREA,
     ENVIAR_PROXIMA_TAREA,
-    REALIZAR_TAREA
+    REALIZAR_TAREA,
+    MOVER_TRIPULANTE,
+    ACTUALIZAR_ESTADO
 };
 
 enum CODIGOS_DE_TAREAS
 {
-    FIN_TAREAS = 100,
+    FIN_TAREAS = 0,
+    MOVER_POSICION,
     GENERAR_OXIGENO,
     CONSUMIR_OXIGENO,
     GENERAR_COMIDA,
     CONSUMIR_COMIDA,
     GENERAR_BASURA,
     DESCARTAR_BASURA,
-    MOVER_POSICION // ¿De dónde sale esta tarea?
 };
 
 enum CODIGOS_DE_BITACORAS
 {
-    DESPLAZAMIENTO = 200,
-    INICIO_TAREA,
-    FIN_TAREA,
-    ATENCION_SABOTAJE,
-    RESOLUCION_SABOTAJE
+    INICIO_TAREA = 'I',
+    FIN_TAREA = 'F',
+    INICIO_RESOLUCION_SABOTAJE = 'S',
+    FIN_RESOLUCION_SABOTAJE = 'A'
 };
+
+//ESTADOS
+#define NEW 'N'
+#define READY 'R'
+#define EXEC 'E'
+#define BLOCKED_IO 'B'
+#define BLOCKED_EMERGENCY 'Y'
+#define EXIT 'X'
 
 //BUFFERS Y PAQUETE
 typedef struct
@@ -62,6 +71,25 @@ typedef struct
     u_int32_t puntero_PCB;
 } t_TCB;
 
+//BASICOS
+typedef struct
+{
+    u_int32_t posX;
+    u_int32_t posY;
+} t_posicion;
+
+typedef struct
+{
+    u_int32_t TID;
+    char estado;
+} t_estado;
+
+typedef struct
+{
+    u_int32_t TID;
+    t_posicion pos;
+} t_envio_posicion;
+
 //TAREAS
 typedef struct
 {
@@ -79,11 +107,18 @@ typedef struct
     t_tarea *tareas;
 } t_tareas_cPID;
 
-//RECEPCION DE TAREAS DEL MONGO
+//ACTUALIZACIONES
 typedef struct
 {
-    u_int8_t codigoTarea;
-    u_int32_t parametro;
-} tareas_mongo;
+    u_int32_t TID;
+    u_int32_t posX;
+    u_int32_t posY;
+} t_actualizar_posicion;
+
+typedef struct
+{
+    u_int32_t TID;
+    char estado;
+} t_actualizar_estado;
 
 #endif

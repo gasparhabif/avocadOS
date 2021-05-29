@@ -75,6 +75,12 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     case ENVIAR_PROXIMA_TAREA:
         dRecibidos = deserializarTarea(paquete->buffer);
         break;
+    case ACTUALIZAR_ESTADO:
+        dRecibidos = deserializar_ActulizacionEstado(paquete->buffer);
+        break;
+    case MOVER_TRIPULANTE:
+        dRecibidos = deserializar_envioPosicion(paquete->buffer);
+        break;
     default:
         //NO ENCONTRE NINGUN COP
         break;
