@@ -3,12 +3,12 @@
 void INICIAR_PATOTA(char **parametros)
 {
 
-    static int cantParametros = 0;
+    static int cantParametros;
+    cantParametros = 0;
     while (parametros[cantParametros] != NULL)
         cantParametros++;
 
     //MANEJO DE ERRORES
-
     if (cantParametros < 3)
         printf("Error: INICIAR_PATOTA [CANT TRIPULANTES] [RUTA DE TAREAS] [POSICIONES]\n");
     else
@@ -23,6 +23,7 @@ void INICIAR_PATOTA(char **parametros)
         }
         else
         {
+            printf("Tripus: %d, Param: %d\n", cantTripulantes, cantParametros);
             if (cantTripulantes < (cantParametros - 3))
                 printf("Usted especifio mas tripulantes de los que desea crear\n");
             else
@@ -39,7 +40,7 @@ void INICIAR_PATOTA(char **parametros)
                 patota_id++;
 
                 //ENVIAR TAREAS
-                printf("Enviando datos\n");
+                printf("Enviando datos...\n");
                 int bytesEnviados = send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
                 printf("Datos enviados! %d bytes\n", bytesEnviados);
 
@@ -49,7 +50,7 @@ void INICIAR_PATOTA(char **parametros)
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 printf("Recibiendo datos\n");
-                int direccionPCB = (int)recibir_paquete(sockfd_ram);
+                int direccionPCB = (int) recibir_paquete(sockfd_ram);
                 printf("Pos recibida: %d\n", direccionPCB);
 
                 //CREO LOS TCB
@@ -58,13 +59,13 @@ void INICIAR_PATOTA(char **parametros)
 
                 for (int i = 0; i < cantTripulantes; i++)
                 {
-                    //EL TID SE AGREGA CUANDO EL HILO ESTA CREADO YA QUE EL EL TID CORRESPONDE AL THREAD_ID
-                    tripulantes_tcb[i].estado = 'n';
+                    tripulantes_tcb[i].TID = 0;
+                    //EL TID EN REALIDAD SE AGREGA CUANDO EL HILO ESTA CREADO YA QUE EL EL TID CORRESPONDE AL THREAD_ID
+                    tripulantes_tcb[i].estado = NEW;
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;
-                    //TODO: traer el puntero de RAM
-                    tripulantes_tcb[i].puntero_PCB = 0;
+                    tripulantes_tcb[i].puntero_PCB = direccionPCB;
                 }
 
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola
@@ -74,17 +75,29 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i - 3].posY = atoi(string_substring(parametros[i], 2, 1));
                 }
 
+                for (int i = 0; i < cantTripulantes; i++)
+                {
+                    printf("TID: %d\n",   tripulantes_tcb[i].TID);
+                    printf("EST: %c\n",   tripulantes_tcb[i].estado);
+                    printf("P_X: %d\n",   tripulantes_tcb[i].posX);
+                    printf("P_Y: %d\n",   tripulantes_tcb[i].posY);
+                    printf("P_I: %d\n",   tripulantes_tcb[i].proximaInstruccion);
+                    printf("P_P: %d\n\n", tripulantes_tcb[i].puntero_PCB);
+                }
+
                 //CREO LOS THREADS DE LOS TRIPULANTES
+                
                 //cuando hago el free de estoo?
                 pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
 
-                for (int i = 0; i < cantTripulantes; i++)
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *)&tripulantes_tcb[i]);
+                printf("Cant tripulantes %d\n", cantTripulantes);
 
-                free(tripulantes_tcb);
+                for (int i = 0; i < cantTripulantes; i++){
+                    printf("Creando tripulante %d\n", i+1);
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) &(tripulantes_tcb[i]));
+                }
             }
         }
-
         fclose(fpTareas);
     }
 }
@@ -110,6 +123,10 @@ void INICIAR_PLANIFICACION(char **parametros)
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
+
+    //http://poincare.matf.bg.ac.rs/~ivana/courses/ps/sistemi_knjige/pomocno/apue/APUE/0201433079/ch12lev1sec8.html#:~:text=To%20send%20a%20signal%20to%20a%20thread%2C%20we%20call%20pthread_kill.&text=We%20can%20pass%20a%20signo,still%20kill%20the%20entire%20process.
+    //int pthread_kill(pthread_t thread, int signo);
+
     if (!planificando)
         printf("El planificador ya se encuentra pausado!\n");
     else
