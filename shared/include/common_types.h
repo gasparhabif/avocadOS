@@ -28,7 +28,7 @@
 #define BLOCKED_IO                 'B'
 #define BLOCKED_EMERGENCY          'Y'
 #define EXIT                       'X'
-//INICIO/FIN DE TAREAS MONGO
+//INICIO-FIN DE TAREAS MONGO
 #define INICIO_TAREA               'I'
 #define FIN_TAREA                  'F'
 #define INICIO_RESOLUCION_SABOTAJE 'S'

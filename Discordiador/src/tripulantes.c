@@ -84,7 +84,7 @@ void tripulante(void *parametro){
             actualizar_estado(sockfd_tripulante_ram, tid, BLOCKED_IO);
             pthread_mutex_lock(&mutex_block);
 
-            //ACA DEBERÍA MANDARLE LA TAREA AL MONGO , NO EN OTRO MOMENTO
+            //ACA DEBERÍA MANDARLE LA TAREA AL MONGO NO EN OTRO MOMENTO
 
             for(int i=0; i<duracionBloqueado; i++){
                 retardo_ciclo_cpu();
