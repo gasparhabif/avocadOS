@@ -12,7 +12,7 @@
 int connect_to(char *ip, int port);
 int init_server(int port);
 
-void* recibir_paquete(int socket);
-void* recibir_paquete_cCOP(int, int *);
+void *recibir_paquete(int socket);
+void *recibir_paquete_cCOP(int, int *);
 
 #endif
