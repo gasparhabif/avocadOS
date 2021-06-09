@@ -34,7 +34,7 @@ void     PAUSAR_PLANIFICACION        (char **);
 void     OBTENER_BITACORA            (char **);
 
 //DEFINIDAS EN utils.c
-t_tarea *leer_tareas                 (FILE *, int *);
+t_tarea *leer_tareas                 (FILE *, int *, int *);
 int      contar_caracteres_especiales(size_t, char *, char);
 
 //DEFINIDAS EN tripulantes.c

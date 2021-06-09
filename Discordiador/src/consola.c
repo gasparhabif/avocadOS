@@ -5,6 +5,7 @@ void INICIAR_PATOTA(char **parametros)
 
     static int cantParametros;
     cantParametros = 0;
+    
     while (parametros[cantParametros] != NULL)
         cantParametros++;
 
@@ -23,15 +24,20 @@ void INICIAR_PATOTA(char **parametros)
         }
         else
         {
-            printf("Tripus: %d, Param: %d\n", cantTripulantes, cantParametros);
+            printf("Tripulantes: %d, Param: %d\n", cantTripulantes, cantParametros);
             if (cantTripulantes < (cantParametros - 3))
                 printf("Usted especifio mas tripulantes de los que desea crear\n");
             else
             {
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 int cantTareas = 0;
-                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas);
+                int errorLeyendoTareas = 0;
+                
+                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas, &errorLeyendoTareas);
 
+                if(errorLeyendoTareas)
+                    return;
+                
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 printf("Serializando...\n");
                 int tamanioSerializacion;

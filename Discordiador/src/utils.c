@@ -1,6 +1,6 @@
 #include "proceso1.h"
 
-t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
+t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 {
 
     char *line = NULL;
@@ -42,10 +42,16 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
                     tareas[i].codigoTarea = CONSUMIR_COMIDA;
                 else if (strcmp(instruccion[0], "GENERAR_BASURA") == 0)
                     tareas[i].codigoTarea = GENERAR_BASURA;
-                else if (strcmp(data[0], "DESCARTAR_BASURA") == 0)
+                else if (strcmp(instruccion[0], "DESCARTAR_BASURA") == 0)
                     tareas[i].codigoTarea = DESCARTAR_BASURA;
                 else{
                     //INSTRUCCION NO RECONOCIDA
+                    log_info(logger, "Tarea %d no reconocida\n", i+1);
+                    *error = 1;
+                    free(instruccion);
+                    free(data);
+                    free(line);
+                    return tareas;
                 }
 
                 data = string_split(instruccion[1], ";");
@@ -62,6 +68,12 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
                 }
                 else{
                     //FALTAN PARAMETROS
+                    log_info(logger, "Faltan parametros en la instruccion %d\n", i+1);
+                    *error = 1;
+                    free(instruccion);
+                    free(data);
+                    free(line);
+                    return tareas;
                 }
             }
             else{
@@ -74,8 +86,7 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
 
                 if (cantParametros == 4)
                 {
-                    
-                    tareas[i].codigoTarea   = MOVER_POSICION;
+                    tareas[i].codigoTarea = MOVER_POSICION;
                     // Ya que estas tareas no tienen parametros
                     tareas[i].parametro = 0;
                     tareas[i].posX = atoi(data[1]);
@@ -85,6 +96,12 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
                 else
                 {
                     //INSTRUCCION NO RECONOCIDA, FALTAN PARAMETROS
+                    log_info(logger, "Faltan parametros en la instruccion %d\n", i+1);
+                    *error = 1;
+                    free(instruccion);
+                    free(data);
+                    free(line);
+                    return tareas;
                 }
             }
         }
@@ -97,6 +114,20 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas)
     }
 
     free(line);
+
+/*
+    for(int i=0; i<*cantTareas; i++){
+        printf("---------Tarea: %d---------\n", i);
+        printf("CODI: %d\n", tareas[i].codigoTarea);
+        printf("PARA: %d\n", tareas[i].parametro);
+        printf("POSX: %d\n", tareas[i].posX);
+        printf("POSY: %d\n", tareas[i].posY);
+        printf("DURA: %d\n", tareas[i].duracionTarea);
+        printf("---------------------------\n\n");
+        
+    }
+*/
+
     return tareas;
 }
 
