@@ -43,7 +43,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     //RECIBO EL CODIGO DE OPERACION
     if (recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL) <= 0)
     {
-        return CLIENT_DISCONNECTED;
+        //fallar de alguna forma
     }
     //printf("Recibido el COP: %d\n", paquete->codigo_operacion);
     *codigo_operacion = paquete->codigo_operacion;
@@ -56,35 +56,34 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     recv(sockfd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
     //printf("Recibi %d bytes de stream\n", bStream);
 
-    int codigo_operacion = paquete->codigo_operacion;
     void *dRecibidos;
-
-    switch (codigo_operacion)
+    
+    switch (*codigo_operacion)
     {
-    case COMENZAR_PATOTA:
-        dRecibidos = deserializarTareas_cPID(paquete->buffer);
-        break;
-    case PUNTERO_PCB:
-        dRecibidos = deserializarInt(paquete->buffer);
-        break;
-    case INICIAR_TRIPULANTE:
-        dRecibidos = deserializarTCB(paquete->buffer);
-        break;
-    case SOLICITAR_TAREA:
-        dRecibidos = deserializarInt(paquete->buffer);
-        break;
-    case ENVIAR_PROXIMA_TAREA:
-        dRecibidos = deserializarTarea(paquete->buffer);
-        break;
-    case ACTUALIZAR_ESTADO:
-        dRecibidos = deserializar_ActulizacionEstado(paquete->buffer);
-        break;
-    case MOVER_TRIPULANTE:
-        dRecibidos = deserializar_envioPosicion(paquete->buffer);
-        break;
-    default:
-        //NO ENCONTRE NINGUN COP
-        break;
+        case COMENZAR_PATOTA:
+            dRecibidos = deserializarTareas_cPID(paquete->buffer);
+            break;
+        case PUNTERO_PCB:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case INICIAR_TRIPULANTE:
+            dRecibidos = deserializarTCB(paquete->buffer);
+            break;
+        case SOLICITAR_TAREA:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case ENVIAR_PROXIMA_TAREA:
+            dRecibidos = deserializarTarea(paquete->buffer);
+            break;
+        case ACTUALIZAR_ESTADO:
+            dRecibidos = deserializar_ActulizacionEstado(paquete->buffer);
+            break;
+        case MOVER_TRIPULANTE:
+            dRecibidos = deserializar_envioPosicion(paquete->buffer);
+            break;
+        default:
+            //NO ENCONTRE NINGUN COP
+            break;
     }
 
     free(paquete->buffer->stream);
