@@ -47,6 +47,7 @@ void     mover_tripulante            (int cantMovimientos, u_int32_t posX, u_int
 void     mover_una_posicion          (u_int32_t posX, u_int32_t posY);
 int      cantMovimientos             (int xInicial, int yInicial, int xFinal, int yFinal);
 void     retardo_ciclo_cpu           ();
+void     retardo_ciclo_IO            ();
     
 //DEFINIDAS EN sabotajes.c
 void sabotajes();

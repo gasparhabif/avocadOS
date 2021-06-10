@@ -264,3 +264,8 @@ void retardo_ciclo_cpu(){
     sleep(config->retardo_ciclo_cpu);
     return;
 }
+
+void retardo_ciclo_IO(){
+    sleep(config->retardo_ciclo_cpu);
+    return;
+}
