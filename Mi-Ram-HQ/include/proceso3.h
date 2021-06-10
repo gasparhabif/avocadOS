@@ -8,6 +8,7 @@
 #include "shared_utils.h"
 
 t_log *logger;
+
 int recibiendo_mensajes;
 int aceptando_conexiones;
 
