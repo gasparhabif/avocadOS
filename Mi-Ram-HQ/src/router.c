@@ -17,6 +17,30 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     }
     printf("-----------------------------------------\n\n\n");
 
+    //CREO EL REGISTRO DE SEGMENTOS DEL PROCESO
+    t_list* registro_segmentos = list_create();
+
+    //CREO LA NUEVA FILA DE LA LISTA DE PROCESOS
+    t_registro_procesos *nuevo_proceso;
+
+    //LLENO LA FILA DE LA LISTA DE PROCESOS
+    nuevo_proceso->pid    = tareas_cPID_recibidas->pid;
+    nuevo_proceso->       = t_registro_procesos;
+    nuevo_proceso->indice =
+
+    //AÑADO LA FILA A LA LISTA DE PROCESOS
+    list_add(tabla_procesos, nuevo_proceso);
+
+    //SOLICITO ESPACIO EN MEMORIA PARA GUARDAR EL PCB
+
+    //GUARDO EL PCB EN EL REGISTRO DE SEGMENTOS
+
+    //SOLICITO ESPACIO EN MEMORIA PARA GUARDAR LAS TAREAS
+    
+    //GUARDO LAS TAREAS EN MEMORIA
+  
+
+/*
     //GUARDAR TAREAS EN MEMORIA
     void* tareas_recibidas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
 
@@ -34,6 +58,7 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     void *paquete = serializarInt((int) tareas_recibidas, PUNTERO_PCB, &tamanioSerializacion);
     printf("Se enviaron %d bytes\n\n", send(client, paquete, tamanioSerializacion, 0));
     free(paquete);
+*/
 }
 
 void iniciar_tripulante(t_TCB* tcb_recibido){

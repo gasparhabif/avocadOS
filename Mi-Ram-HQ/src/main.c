@@ -12,6 +12,12 @@ int main()
     t_ram_conf *config = get_ram_config("../Mi-Ram-HQ/cfg/config.cfg");
     log_info(logger, "Se cargo la config de la RAM");
 
+    //HAGO EL MALLOC
+    memoria = malloc(config->tamanio_memoria);
+
+    //CREO LA LISTA DE PROCESOS
+    tabla_procesos = list_create();
+
     //INICIO EL SERVER
     int server_instance;
     if ((server_instance = init_server(config->puerto)) == -1)
@@ -20,7 +26,7 @@ int main()
         return 1;
     }
     log_info(logger, "Se inicio el server");
-    
+
     //EMPIEZO A ESCUCHAR Y A RECIBIR
     recibiendo_mensajes  = 1;
     aceptando_conexiones = 1;
