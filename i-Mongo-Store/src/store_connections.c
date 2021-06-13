@@ -15,7 +15,7 @@ void discordiador_cxn_handler(void *arg)
     if (client == -1)
     {
         log_error(logger, "Error al aceptar conexión");
-        break;
+        return;
     }
 
     log_info(logger, "Se conectó el discordiador en el socket %d", client);
@@ -67,7 +67,7 @@ void tripulante_cxn_handler(void *arg)
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
-    while (datos_recibidos != CLIENT_DISCONNECTED && !tareas_finalizadas)
+    while (datos_recibidos >= 0 && !tareas_finalizadas)
     {
         log_info(logger, "Se recibió el código de operación %d", cod_operacion);
 
@@ -110,7 +110,7 @@ void tripulante_cxn_handler(void *arg)
         {
             switch (cod_operacion)
             {
-            case DESPLAZAMIENTO:
+            case MOVER_POSICION:
                 registrarDesplazamiento();
                 break;
             case INICIO_TAREA:
@@ -119,10 +119,10 @@ void tripulante_cxn_handler(void *arg)
             case FIN_TAREA:
                 registrarFinTarea();
                 break;
-            case ATENCION_SABOTAJE:
+            case INICIO_RESOLUCION_SABOTAJE:
                 registrarAtencionSabotaje();
                 break;
-            case RESOLUCION_SABOTAJE:
+            case FIN_RESOLUCION_SABOTAJE:
                 registrarResolucionSabotaje();
                 break;
             default:
