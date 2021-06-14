@@ -64,10 +64,10 @@ void tripulante_cxn_handler(void *arg)
     // Generar t_bitacora para el tripulante
     // ...
 
-    int cod_operacion;
+    int *cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
-    while (datos_recibidos >= 0 && !tareas_finalizadas)
+    while (!tareas_finalizadas)
     {
         log_info(logger, "Se recibió el código de operación %d", cod_operacion);
 
@@ -108,7 +108,7 @@ void tripulante_cxn_handler(void *arg)
         // Sino, registrar "algo" en bitácora
         else
         {
-            switch (cod_operacion)
+            switch (*cod_operacion)
             {
             case MOVER_POSICION:
                 registrarDesplazamiento();
@@ -126,7 +126,8 @@ void tripulante_cxn_handler(void *arg)
                 registrarResolucionSabotaje();
                 break;
             default:
-                log_error(logger, "Código de operacion desconocido");
+                log_error(logger, "Código de operacion desconocido: %d", *cod_operacion);
+                tareas_finalizadas = true;
                 break;
             }
         }
