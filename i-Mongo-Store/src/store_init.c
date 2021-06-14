@@ -5,25 +5,28 @@ bool file_exists(char *path)
     return access(path, F_OK) == 0;
 }
 
-void init_fs()
+void init_dirs()
 {
     // Crear directorio para FS
-    if (mkdir(config->punto_montaje, 0777) == -1)
-    {
-        perror("Algo malió sal con la función mkdir()");
-    }
+    mkdir(config->punto_montaje, 0777);
 
     // Crear directorio para Files
-    if (mkdir("/home/utnso/fs/Files", 0777) == -1)
-    {
-        perror("Algo malió sal con la función mkdir()");
-    }
+    files_dir = malloc(strlen(config->punto_montaje) + strlen("/Files"));
+    strcpy(files_dir, config->punto_montaje);
+    strcat(files_dir, "/Files");
+    mkdir("/home/utnso/fs/Files", 0777);
 
     // Crear directorio para Bitacoras
-    if (mkdir("/home/utnso/fs/Files/Bitacoras", 0777) == -1)
-    {
-        perror("Algo malió sal con la función mkdir()");
-    }
+    bitacoras_dir = malloc(strlen(files_dir) + strlen("/Bitacoras"));
+    strcpy(bitacoras_dir, files_dir);
+    strcat(bitacoras_dir, "/Bitacoras");
+    mkdir("/home/utnso/fs/Files/Bitacoras", 0777);
+}
+
+void init_fs()
+{
+    // Inicializar directorios
+    init_dirs();
 
     // Crear SuperBloque.ims vacío
     int superbloque_fd = open("/home/utnso/fs/SuperBloque.ims", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);

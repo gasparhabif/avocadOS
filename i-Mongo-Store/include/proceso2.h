@@ -16,6 +16,10 @@
 #include <unistd.h>
 #include <string.h>
 
+// Directorios de FS
+char *files_dir;
+char *bitacoras_dir;
+
 // Variables globales
 t_log *logger;
 t_store_conf *config;
@@ -42,6 +46,7 @@ void registrarResolucionSabotaje();
 
 // Inicialización del FS (definidas en store_init.c)
 bool file_exists(char *);
+void init_dirs();
 void init_fs();
 
 #endif
