@@ -23,19 +23,66 @@ void init_dirs()
     mkdir("/home/utnso/fs/Files/Bitacoras", 0777);
 }
 
+t_bitarray *init_bitmap(size_t blocks)
+{
+    char *puntero_a_bits = malloc(1);
+    t_bitarray *bitmap = bitarray_create_with_mode(puntero_a_bits, blocks / 8, LSB_FIRST);
+
+    for (int i = 0; i < blocks; i++)
+    {
+        bitarray_clean_bit(bitmap, i);
+    }
+
+    return bitmap;
+}
+
+char *bitarray_to_string(t_bitarray *bitarray)
+{
+    int bitarray_size = bitarray_get_max_bit(bitarray);
+    char *bitarray_string = malloc(2 * bitarray_size + 1);
+
+    for (int i = 0; i < bitarray_size; i++)
+    {
+        if (i == 0)
+        {
+            strcpy(bitarray_string, "[");
+        }
+
+        strcat(bitarray_string, bitarray_test_bit(bitarray, i) ? "1" : "0");
+        strcat(bitarray_string, i < bitarray_size - 1 ? "," : "]");
+    }
+
+    return bitarray_string;
+}
+
+void init_superbloque(uint32_t block_size, uint32_t blocks)
+{
+    // Crear archivo SuperBloque.ims
+    superbloque_path = malloc(strlen(config->punto_montaje) + strlen("/SuperBloque.ims"));
+    strcpy(superbloque_path, config->punto_montaje);
+    strcat(superbloque_path, "/SuperBloque.ims");
+    int superbloque_fd = open(superbloque_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+
+    // Crear t_config para SuperBloque.ims
+    t_config *superbloque_config = config_create(superbloque_path);
+    config_set_value(superbloque_config, "BLOCK_SIZE", string_itoa((int)block_size));
+    config_set_value(superbloque_config, "BLOCKS", string_itoa((int)blocks));
+    config_set_value(superbloque_config, "BITMAP", bitarray_to_string(init_bitmap((size_t)blocks)));
+    config_save(superbloque_config);
+
+    // Mover superbloque_config a un t_superbloque para mayor comodidad
+    // ...
+
+    close(superbloque_fd);
+}
+
 void init_fs()
 {
     // Inicializar directorios
     init_dirs();
 
-    // Crear SuperBloque.ims vacío
-    int superbloque_fd = open("/home/utnso/fs/SuperBloque.ims", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-
-    if (superbloque_fd == -1)
-    {
-        perror("Algo malió sal con la función open()");
-        return EXIT_FAILURE;
-    }
+    // Inicializar SuperBloque
+    init_superbloque(BLOCK_SIZE, BLOCKS);
 
     // Crear Oxigeno.ims de prueba
     int oxigeno_fd = open("/home/utnso/fs/Files/Oxigeno.ims", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -83,7 +130,6 @@ void init_fs()
 
     munmap(oxigeno_mapped_file, oxigeno_stats.st_size);
 
-    close(superbloque_fd);
     close(oxigeno_fd);
 
     return EXIT_SUCCESS;

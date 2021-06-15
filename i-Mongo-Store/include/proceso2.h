@@ -16,9 +16,16 @@
 #include <unistd.h>
 #include <string.h>
 
+// Constantes de FS (deberían venir de config)
+#define BLOCK_SIZE 4096
+#define BLOCKS 128
+
 // Directorios de FS
 char *files_dir;
 char *bitacoras_dir;
+
+// Paths de FS
+char *superbloque_path;
 
 // Variables globales
 t_log *logger;
@@ -47,6 +54,9 @@ void registrarResolucionSabotaje();
 // Inicialización del FS (definidas en store_init.c)
 bool file_exists(char *);
 void init_dirs();
+t_bitarray *init_bitmap(size_t);
+char *bitarray_to_string(t_bitarray *);
+void init_superbloque(uint32_t, uint32_t);
 void init_fs();
 
 #endif
