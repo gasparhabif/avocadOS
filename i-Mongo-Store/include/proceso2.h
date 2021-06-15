@@ -17,8 +17,8 @@
 #include <string.h>
 
 // Constantes de FS (deberían venir de config)
-#define BLOCK_SIZE 4096
-#define BLOCKS 128
+#define BLOCK_SIZE 64
+#define BLOCKS 64
 
 // Directorios de FS
 char *files_dir;
@@ -26,6 +26,7 @@ char *bitacoras_dir;
 
 // Paths de FS
 char *superbloque_path;
+char *blocks_path;
 
 // Variables globales
 t_log *logger;
@@ -57,6 +58,7 @@ void init_dirs();
 t_bitarray *init_bitmap(size_t);
 char *bitarray_to_string(t_bitarray *);
 void init_superbloque(uint32_t, uint32_t);
+void init_blocks(uint32_t bytes_count);
 void init_fs();
 
 #endif
