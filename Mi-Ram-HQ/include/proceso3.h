@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <commons/log.h>
+#include <commons/collections/list.h>
 #include <stdbool.h>
 #include <pthread.h>
 #include "shared_utils.h"
@@ -19,7 +20,7 @@ enum TIPO {
     PCB = 0,
     TCB,
     TAREAS
-}
+};
 
 typedef struct {
     u_int32_t pid;
@@ -29,11 +30,11 @@ typedef struct {
 
 typedef struct {
     u_int32_t segmento; // Identificador (numero) del segmento
-    void* base;     // Posicion inicio del segmento
+    void* base;         // Posicion inicio del segmento
     u_int32_t tamanio;  // Tamaño del contenido del segmento
-    TIPO tipo;          // Tipo del contenido del segmento
-    u_int32_t tid = -1; // Opcional
-    u_int8_t usado = 0; // Booleano para saber si el segmento puede sacarse
+    u_int8_t tipo;      // Tipo del contenido del segmento
+    u_int32_t tid;      // Opcional
+    u_int8_t usado; // Booleano para saber si el segmento puede sacarse
 } t_registro_segmentos;
 
 typedef struct {
@@ -55,8 +56,8 @@ void aceptar_conexiones(void *);
 void recibir_mensaje(void *);
 
 //Definidas en memoria.c
-int reservar_memoria    (int);
-int reservar_segmento_FF(int);
-int reservar_segmento_BF(int);
+void* reservar_memoria    (int);
+void* reservar_segmento_FF(int);
+void* reservar_segmento_BF(int);
 
 #endif

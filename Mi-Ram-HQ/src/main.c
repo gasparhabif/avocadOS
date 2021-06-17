@@ -17,16 +17,16 @@ int main()
 
     //CREO LA LISTA QUE ME INDICA QUE SEGMENTOS 
     tabla_estado_segmentos = list_create();
-    recorrido = 0;
     cantidad_segmentos = 0;
 
     //INDICO EL PRIMER SEGMENTO Y LO PONGO LIBRE
-    estado_segmentos primer_seg;
-    primer_seg.inicio = memoria;
-    primer_seg.limite = config->tamanio_memoria;
-    primer_seg.inicio = 0;
+    estado_segmentos *primer_seg = malloc(sizeof(estado_segmentos));
+    primer_seg->inicio  = (int) memoria;
+    primer_seg->limite  = config->tamanio_memoria;
+    primer_seg->ocupado = 0;
 
     list_add(tabla_estado_segmentos, primer_seg);
+    free(primer_seg);
 
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();

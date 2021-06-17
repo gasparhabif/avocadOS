@@ -61,11 +61,6 @@ typedef struct
     u_int32_t tareas;
 } t_PCB;
 
-typedef struct {
-    u_int8_t base;
-    u_int8_t desplazamiento;
-} direccion_logica;
-
 typedef struct
 {
     u_int32_t TID;
@@ -73,7 +68,7 @@ typedef struct
     u_int32_t posX;
     u_int32_t posY;
     u_int32_t proximaInstruccion;
-    direccion_logica puntero_PCB;
+    u_int32_t puntero_PCB;
 } t_TCB;
 
 //BASICOS
