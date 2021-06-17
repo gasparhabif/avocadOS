@@ -9,11 +9,24 @@ int main()
     log_info(logger, "Se inicio el log");
 
     //INICIO DEL CONFIG
-    t_ram_conf *config = get_ram_config("../Mi-Ram-HQ/cfg/config.cfg");
+    config = get_ram_config("../Mi-Ram-HQ/cfg/config.cfg");
     log_info(logger, "Se cargo la config de la RAM");
 
-    //HAGO EL MALLOC
+    //HAGO EL GRAN MALLOC
     memoria = malloc(config->tamanio_memoria);
+
+    //CREO LA LISTA QUE ME INDICA QUE SEGMENTOS 
+    tabla_estado_segmentos = list_create();
+    recorrido = 0;
+    cantidad_segmentos = 0;
+
+    //INDICO EL PRIMER SEGMENTO Y LO PONGO LIBRE
+    estado_segmentos primer_seg;
+    primer_seg.inicio = memoria;
+    primer_seg.limite = config->tamanio_memoria;
+    primer_seg.inicio = 0;
+
+    list_add(tabla_estado_segmentos, primer_seg);
 
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();
