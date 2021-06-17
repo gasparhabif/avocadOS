@@ -57,7 +57,10 @@ void recibir_mensaje(void *);
 
 //Definidas en memoria.c
 void* reservar_memoria    (int);
+
+//Definidas en segmentacion.c
 void* reservar_segmento_FF(int);
 void* reservar_segmento_BF(int);
+void  compactar();
 
 #endif
