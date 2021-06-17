@@ -50,8 +50,8 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     segmento_tareas->base     = pos_tareas;
     segmento_tareas->tamanio  = sizeof(t_PCB);
     segmento_tareas->tipo     = TAREAS;
-    segmento_tareas->tid         = -1;
-    segmento_tareas->usado       = 1;
+    segmento_tareas->tid      = -1;
+    segmento_tareas->usado    = 1;
     //AGREGO LOS SEGMENTOS A LA LISTA
     list_add(registro_segmentos, segmento_pcb);
     list_add(registro_segmentos, segmento_tareas);
