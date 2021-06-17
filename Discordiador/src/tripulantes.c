@@ -27,7 +27,7 @@ void tripulante(void *parametro)
     log_info(logger, "Tripulante en posicion X:%d Y:%d", pos_actual.posX, pos_actual.posY);
 
     //ABRO LA CONEXION
-    sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    //sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     if (sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1)
     {
@@ -89,11 +89,7 @@ void tripulante(void *parametro)
             actualizar_estado(sockfd_tripulante_ram, tid, BLOCKED_IO);
             pthread_mutex_lock(&mutex_block);
 
-            //ACA DEBERÍA MANDARLE LA TAREA AL MONGO , NO EN OTRO MOMENTO
-            int *tamanio_tarea;
-            void *tareaAEnviar = serializarTarea(tarea_recibida, &tamanio_tarea);
-            send(sockfd_tripulante_mongo, tareaAEnviar, tamanio_tarea, 0);
-            free(tareaAEnviar);
+            //ACA DEBERÍA MANDARLE LA TAREA AL MONGO NO EN OTRO MOMENTO
 
             for (int i = 0; i < duracionBloqueado; i++)
             {
@@ -126,20 +122,14 @@ t_tarea *solicitar_tarea(int *finTareas)
     log_info(logger, "Se solicito una tarea a la RAM");
 
     //PEDIR TAREA
-    int *tamanioSerializacion;
+    int tamanioSerializacion;
     void *solicitud_tarea = serializarInt(tid, SOLICITAR_TAREA, &tamanioSerializacion);
     send(sockfd_ram, solicitud_tarea, tamanioSerializacion, 0);
-    // free(solicitud_tarea);
+    free(solicitud_tarea);
 
     //RECIBIR TAREA
     t_tarea *tarea_recibida;
-    // tarea_recibida = (t_tarea*) recibir_paquete(sockfd_tripulante_ram);
-
-    tarea_recibida->codigoTarea = 2;
-    tarea_recibida->parametro = 12;
-    tarea_recibida->posX = 2;
-    tarea_recibida->posY = 3;
-    tarea_recibida->duracionTarea = 5;
+    tarea_recibida = (t_tarea *)recibir_paquete(sockfd_tripulante_ram);
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
@@ -191,7 +181,16 @@ int ejecutar_tarea(t_tarea *unaTarea)
         duracionEjecucion--;
     }
 
-    return (unaTarea->codigoTarea != MOVER_POSICION && duracionMovimientos == 0 && duracionEjecucion == 0);
+    if (unaTarea->codigoTarea != MOVER_POSICION && duracionMovimientos == 0 && duracionEjecucion == 0)
+    {
+        int bEnviados;
+        void *d_enviar = serializarTarea(unaTarea, &bEnviados);
+        send(sockfd_mongo, d_enviar, bEnviados, 0);
+
+        return 1;
+    }
+
+    return 0;
 }
 
 int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
@@ -230,7 +229,7 @@ void actualizar_estado(int socket, uint32_t tid, char nuevoEstado)
 
 void mover_tripulante(int cantMovimientos, u_int32_t posX, u_int32_t posY)
 {
-    printf("ENTRO A MOVER AL TRIPULANTE%n\n", cantMovimientos);
+
     for (int i = 0; i < cantMovimientos; i++)
     {
 
@@ -239,7 +238,6 @@ void mover_tripulante(int cantMovimientos, u_int32_t posX, u_int32_t posY)
         mover_una_posicion(posX, posY);
 
         int bEnviar;
-        printf("SERIALIZO EL MOVIMIENTO\n");
         void *d_enviar = serializar_envioPosicion(tid, posX, posY, &bEnviar);
         send(sockfd_tripulante_ram, d_enviar, bEnviar, 0);
         send(sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
@@ -283,6 +281,12 @@ int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal)
 }
 
 void retardo_ciclo_cpu()
+{
+    sleep(config->retardo_ciclo_cpu);
+    return;
+}
+
+void retardo_ciclo_IO()
 {
     sleep(config->retardo_ciclo_cpu);
     return;

@@ -16,13 +16,13 @@ enum CODIGOS_DE_OPERACION
 enum CODIGOS_DE_TAREAS
 {
     FIN_TAREAS = 0,
-    MOVER_POSICION,
     GENERAR_OXIGENO,
     CONSUMIR_OXIGENO,
     GENERAR_COMIDA,
     CONSUMIR_COMIDA,
     GENERAR_BASURA,
     DESCARTAR_BASURA,
+    MOVER_POSICION,
 };
 
 enum CODIGOS_DE_BITACORAS
@@ -34,12 +34,18 @@ enum CODIGOS_DE_BITACORAS
 };
 
 //ESTADOS
-#define NEW 'N'
-#define READY 'R'
-#define EXEC 'E'
-#define BLOCKED_IO 'B'
-#define BLOCKED_EMERGENCY 'Y'
-#define EXIT 'X'
+#define NEW                        'N'
+#define READY                      'R'
+#define EXEC                       'E'
+#define BLOCKED_IO                 'B'
+#define BLOCKED_EMERGENCY          'Y'
+#define EXIT                       'X'
+
+//INICIO-FIN DE TAREAS MONGO
+#define INICIO_TAREA               'I'
+#define FIN_TAREA                  'F'
+#define INICIO_RESOLUCION_SABOTAJE 'S'
+#define FIN_RESOLUCION_SABOTAJE    'A'  
 
 //BUFFERS Y PAQUETE
 typedef struct

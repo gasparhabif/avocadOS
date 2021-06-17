@@ -41,7 +41,10 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     paquete->buffer = malloc(sizeof(t_buffer));
 
     //RECIBO EL CODIGO DE OPERACION
-    recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL);
+    if (recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL) <= 0)
+    {
+        //fallar de alguna forma
+    }
     //printf("Recibido el COP: %d\n", paquete->codigo_operacion);
     *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM
@@ -55,7 +58,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
 
     void *dRecibidos;
 
-    switch (paquete->codigo_operacion)
+    switch (*codigo_operacion)
     {
     case COMENZAR_PATOTA:
         dRecibidos = deserializarTareas_cPID(paquete->buffer);

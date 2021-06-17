@@ -136,13 +136,13 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     {
         memcpy(stream + offset, &unasTareas[i].codigoTarea, sizeof(uint8_t));
         offset += sizeof(uint8_t);
-        memcpy(stream + offset, &unasTareas[i].parametro, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].parametro), sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        memcpy(stream + offset, &unasTareas[i].posX, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].posX), sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        memcpy(stream + offset, &unasTareas[i].posY, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].posY), sizeof(uint32_t));
         offset += sizeof(uint32_t);
-        memcpy(stream + offset, &unasTareas[i].duracionTarea, sizeof(uint32_t));
+        memcpy(stream + offset, &(unasTareas[i].duracionTarea), sizeof(uint32_t));
         offset += sizeof(uint32_t);
     }
 
@@ -277,8 +277,6 @@ void *serializar_ActulizacionEstado(uint32_t tid, char nuevoEstado, int *tamanio
 
 void *serializar_envioPosicion(int tid, int posX, int posY, int *tamanioSerializacion)
 {
-
-    printf("Estoy enviando la posicion\n");
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));

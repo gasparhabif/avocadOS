@@ -62,7 +62,7 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
     stream += sizeof(u_int8_t);
 
     tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
-    
+
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
         memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(u_int8_t));
@@ -78,7 +78,7 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
     }
 
     return tareas_cPID_recibidas;
-    
+
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
     //free(tarea_recibida);
 }
@@ -98,8 +98,9 @@ int *deserializarInt(t_buffer *buffer)
     //free(tarea_recibida);
 }
 
-t_estado* deserializar_ActulizacionEstado(t_buffer *buffer){
-    
+t_estado *deserializar_ActulizacionEstado(t_buffer *buffer)
+{
+
     t_estado *estado_recibido = malloc(sizeof(t_estado));
 
     void *stream = buffer->stream;
@@ -115,9 +116,9 @@ t_estado* deserializar_ActulizacionEstado(t_buffer *buffer){
     //free(estado_recibido);
 }
 
+t_envio_posicion *deserializar_envioPosicion(t_buffer *buffer)
+{
 
-t_envio_posicion* deserializar_envioPosicion(t_buffer *buffer){
- 
     t_envio_posicion *posicion_recibida = malloc(sizeof(t_envio_posicion));
 
     void *stream = buffer->stream;
