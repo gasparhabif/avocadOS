@@ -301,10 +301,7 @@ void *serializar_envioPosicion(int tid, int posX, int posY, int *tamanioSerializ
 
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
-
-    printf("Hasta aca si llego\n");
     paquete->codigo_operacion = MOVER_TRIPULANTE;
-    printf("El codigo aca es de: %d\n", paquete->codigo_operacion);
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR

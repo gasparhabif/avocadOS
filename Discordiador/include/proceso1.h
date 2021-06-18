@@ -40,7 +40,7 @@ int contar_caracteres_especiales(size_t, char *, char);
 //DEFINIDAS EN tripulantes.c
 void tripulante(void *parametro);
 t_tarea *solicitar_tarea(t_posicion pos_actual, int tid, int sockfd_tripulante_ram, int *finTareas,
-                         int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado);
+                         int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int sockfd_tripulante_mongo);
 int ejecutar_tarea(t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion,
                    int sockfd_tripulante_ram, int sockfd_tripulante_mongo, t_posicion *pos_actual, int tid);
 void mover_tripulante(int sockfd_tripulante_ram, int sockfd_tripulante_mongo, int movimientosPosibles,

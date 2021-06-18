@@ -52,7 +52,7 @@ void tripulante(void *parametro)
 
     //SOLICITO LA PRIMERA TAREA
     tarea_recibida = solicitar_tarea(pos_actual, tid, sockfd_tripulante_ram, &finTareas,
-                                     &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
+                                     &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, sockfd_tripulante_mongo);
 
     while (finTareas == 0)
     {
@@ -66,7 +66,7 @@ void tripulante(void *parametro)
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
         if (tareaPendiente == 0)
             tarea_recibida = solicitar_tarea(pos_actual, tid, sockfd_tripulante_ram, &finTareas,
-                                             &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
+                                             &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, sockfd_tripulante_mongo);
 
         if (finTareas == 0)
         {
@@ -91,7 +91,11 @@ void tripulante(void *parametro)
             actualizar_estado(sockfd_tripulante_ram, tid, BLOCKED_IO);
             pthread_mutex_lock(&mutex_block);
 
-            //ACA DEBERÍA MANDARLE LA TAREA AL MONGO NO EN OTRO MOMENTO
+            //ENVIO LA TAREA AL MONGO
+            int *bEnviar;
+            void *d_enviar = serializarTarea(tarea_recibida, &bEnviar);
+            send(sockfd_tripulante_ram, d_enviar, *bEnviar, 0);
+            free(d_enviar);
 
             for (int i = 0; i < duracionBloqueado; i++)
             {
@@ -119,22 +123,31 @@ void tripulante(void *parametro)
 }
 
 t_tarea *solicitar_tarea(t_posicion pos_actual, int tid, int sockfd_tripulante_ram, int *finTareas,
-                         int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado)
+                         int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int sockfd_tripulante_mongo)
 {
 
-    log_info(logger, "Se solicito una tarea a la RAM");
+    int *tamanioSerializacion;
+    void *comenzar_tarea = serializarInt(tid, REALIZAR_TAREA, &tamanioSerializacion);
+    send(sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
+    free(comenzar_tarea);
 
     //PEDIR TAREA
-    int tamanioSerializacion;
     void *solicitud_tarea = serializarInt(tid, SOLICITAR_TAREA, &tamanioSerializacion);
     send(sockfd_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
 
     //RECIBIR TAREA
-    t_tarea *tarea_recibida;
-    tarea_recibida = (t_tarea *)recibir_paquete(sockfd_tripulante_ram);
+    t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
+    //tarea_recibida = (t_tarea *)recibir_paquete(sockfd_tripulante_ram);
+
+    tarea_recibida->codigoTarea = 3;
+    tarea_recibida->parametro = 4;
+    tarea_recibida->posX = 2;
+    tarea_recibida->posY = 5;
+    tarea_recibida->duracionTarea = 5;
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
+    printf("Codigo de la Tarea recibida%d\n", tarea_recibida->codigoTarea);
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
         *finTareas = 1;
     else
@@ -224,7 +237,7 @@ int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
 void actualizar_estado(int socket, uint32_t tid, char nuevoEstado)
 {
 
-    int bEnviar;
+    int *bEnviar;
     void *d_enviar = serializar_ActulizacionEstado(tid, nuevoEstado, &bEnviar);
     send(socket, d_enviar, bEnviar, 0);
     free(d_enviar);
@@ -246,7 +259,7 @@ void mover_tripulante(int sockfd_tripulante_ram, int sockfd_tripulante_mongo, in
 
         mover_una_posicion(posX, posY, pos_actual);
 
-        int bEnviar;
+        int *bEnviar;
         void *d_enviar = serializar_envioPosicion(tid, posX, posY, &bEnviar);
         send(sockfd_tripulante_ram, d_enviar, bEnviar, 0);
         send(sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
@@ -292,6 +305,7 @@ int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal)
 void retardo_ciclo_cpu()
 {
     sleep(config->retardo_ciclo_cpu);
+    log_info(logger, "Un ciclo");
     return;
 }
 

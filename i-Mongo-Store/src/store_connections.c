@@ -75,6 +75,7 @@ void tripulante_cxn_handler(void *arg)
         if (cod_operacion == REALIZAR_TAREA)
         {
             t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
+            // TODO: Recibir la tarea en sí en lugar de la operacion
 
             switch (tarea_a_ejecutar->codigoTarea)
             {
@@ -105,12 +106,12 @@ void tripulante_cxn_handler(void *arg)
                 break;
             }
         }
-        // Sino, registrar "algo" en bitácora
+        // Sino, registrar "algo" en bitácora => Ese algo sera una operacion realizada por el tripulante
         else
         {
             switch (*cod_operacion)
             {
-            case MOVER_POSICION:
+            case MOVER_TRIPULANTE:
                 registrarDesplazamiento();
                 break;
             case INICIO_TAREA:
@@ -126,7 +127,7 @@ void tripulante_cxn_handler(void *arg)
                 registrarResolucionSabotaje();
                 break;
             default:
-                log_error(logger, "Código de operacion desconocido: %d", *cod_operacion);
+                log_error(logger, "Código de operacion desconocido: %d", cod_operacion);
                 tareas_finalizadas = true;
                 break;
             }
