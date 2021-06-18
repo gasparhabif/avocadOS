@@ -1,12 +1,11 @@
 #include "proceso1.h"
 
-int sockfd_tripulante_mongo, sockfd_tripulante_ram;
-int duracionMovimientos, duracionEjecucion, duracionBloqueado;
-t_posicion pos_actual;
-int tid;
-
 void tripulante(void *parametro)
 {
+    int sockfd_tripulante_mongo, sockfd_tripulante_ram;
+    int duracionMovimientos, duracionEjecucion, duracionBloqueado;
+    t_posicion pos_actual;
+    int tid;
 
     tid = syscall(SYS_gettid);
     t_TCB *tcb_tripulante = malloc(sizeof(t_TCB));
@@ -27,7 +26,7 @@ void tripulante(void *parametro)
     log_info(logger, "Tripulante en posicion X:%d Y:%d", pos_actual.posX, pos_actual.posY);
 
     //ABRO LA CONEXION
-    //sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     if (sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1)
     {
@@ -52,7 +51,8 @@ void tripulante(void *parametro)
     actualizar_estado(sockfd_ram, tid, READY);
 
     //SOLICITO LA PRIMERA TAREA
-    tarea_recibida = solicitar_tarea(&finTareas);
+    tarea_recibida = solicitar_tarea(pos_actual, tid, sockfd_tripulante_ram, &finTareas,
+                                     &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
 
     while (finTareas == 0)
     {
@@ -65,11 +65,13 @@ void tripulante(void *parametro)
 
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
         if (tareaPendiente == 0)
-            tarea_recibida = solicitar_tarea(&finTareas);
+            tarea_recibida = solicitar_tarea(pos_actual, tid, sockfd_tripulante_ram, &finTareas,
+                                             &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
 
         if (finTareas == 0)
         {
-            if (ejecutar_tarea(tarea_recibida))
+            if (ejecutar_tarea(tarea_recibida, &duracionMovimientos, &duracionEjecucion, sockfd_tripulante_ram,
+                               sockfd_tripulante_mongo, &pos_actual, tid))
                 block = 1;
 
             //CHEQUEO SI QUEDO ALGO POR EJECUTAR DE ESTA TAREA
@@ -116,7 +118,8 @@ void tripulante(void *parametro)
     return;
 }
 
-t_tarea *solicitar_tarea(int *finTareas)
+t_tarea *solicitar_tarea(t_posicion pos_actual, int tid, int sockfd_tripulante_ram, int *finTareas,
+                         int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado)
 {
 
     log_info(logger, "Se solicito una tarea a la RAM");
@@ -139,15 +142,17 @@ t_tarea *solicitar_tarea(int *finTareas)
         //CALCULO DEL TIEMPO QUE LA TAREA PERMANECERÁ MOVIENDOSE POR EL MAPA, EN EJECUCION Y BLOQUEADA
         if (tarea_recibida->codigoTarea == MOVER_POSICION)
         {
-            duracionMovimientos = cantMovimientos(pos_actual.posX, pos_actual.posY, tarea_recibida->posX, tarea_recibida->posY);
-            duracionEjecucion = tarea_recibida->duracionTarea;
-            duracionBloqueado = 0;
+            *duracionMovimientos = cantMovimientos(pos_actual.posX, pos_actual.posY,
+                                                   tarea_recibida->posX, tarea_recibida->posY);
+            *duracionBloqueado = 0;
+            *duracionEjecucion = tarea_recibida->duracionTarea;
         }
         else
         {
-            duracionMovimientos = cantMovimientos(pos_actual.posX, pos_actual.posY, tarea_recibida->posX, tarea_recibida->posY);
-            duracionEjecucion = 1; //ENVIO DE TAREA AL MONGO
-            duracionBloqueado = tarea_recibida->duracionTarea;
+            *duracionMovimientos = cantMovimientos(pos_actual.posX, pos_actual.posY,
+                                                   tarea_recibida->posX, tarea_recibida->posY);
+            *duracionEjecucion = 1; //ENVIO DE TAREA AL MONGO
+            *duracionBloqueado = tarea_recibida->duracionTarea;
         }
     }
 
@@ -156,25 +161,27 @@ t_tarea *solicitar_tarea(int *finTareas)
     return tarea_recibida;
 }
 
-int ejecutar_tarea(t_tarea *unaTarea)
+int ejecutar_tarea(t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion,
+                   int sockfd_tripulante_ram, int sockfd_tripulante_mongo, t_posicion *pos_actual, int tid)
 {
-
     int tiempoMovimientos = 0;
     int tiempoEjecutando = 0;
 
     if (strcmp(config->algoritmo, "FIFO") == 0)
     {
-        tiempoMovimientos = ejecutar_tiempos_CPU(duracionMovimientos, 0);
-        tiempoEjecutando = ejecutar_tiempos_CPU(duracionEjecucion, 0);
+        tiempoMovimientos = ejecutar_tiempos_CPU(*duracionMovimientos, 0);
+        tiempoEjecutando = ejecutar_tiempos_CPU(*duracionEjecucion, 0);
     }
     else if (strcmp(config->algoritmo, "RR") == 0)
     {
-        tiempoMovimientos = ejecutar_tiempos_CPU(duracionMovimientos, 0);
+        tiempoMovimientos = ejecutar_tiempos_CPU(*duracionMovimientos, 0);
         if (tiempoMovimientos < config->quantum)
-            tiempoEjecutando = ejecutar_tiempos_CPU(duracionEjecucion, tiempoMovimientos);
+            tiempoEjecutando = ejecutar_tiempos_CPU(*duracionEjecucion, tiempoMovimientos);
     }
 
-    mover_tripulante(tiempoMovimientos, unaTarea->posX, unaTarea->posY);
+    mover_tripulante(sockfd_tripulante_ram, sockfd_tripulante_mongo, tiempoMovimientos,
+                     unaTarea->posX, unaTarea->posY, duracionMovimientos, pos_actual, tid);
+
     for (int i = 0; i < tiempoEjecutando; i++)
     {
         retardo_ciclo_cpu();
@@ -227,15 +234,17 @@ void actualizar_estado(int socket, uint32_t tid, char nuevoEstado)
     return;
 }
 
-void mover_tripulante(int cantMovimientos, u_int32_t posX, u_int32_t posY)
+void mover_tripulante(int sockfd_tripulante_ram, int sockfd_tripulante_mongo, int movimientosPosibles,
+                      u_int32_t posX, u_int32_t posY, int *duracionMovimientos, t_posicion *pos_actual,
+                      int tid)
 {
 
-    for (int i = 0; i < cantMovimientos; i++)
+    for (int i = 0; i < movimientosPosibles; i++)
     {
 
         retardo_ciclo_cpu();
 
-        mover_una_posicion(posX, posY);
+        mover_una_posicion(posX, posY, pos_actual);
 
         int bEnviar;
         void *d_enviar = serializar_envioPosicion(tid, posX, posY, &bEnviar);
@@ -249,29 +258,29 @@ void mover_tripulante(int cantMovimientos, u_int32_t posX, u_int32_t posY)
     }
 }
 
-void mover_una_posicion(u_int32_t posX, u_int32_t posY)
+void mover_una_posicion(u_int32_t posX, u_int32_t posY, t_posicion *pos_actual)
 {
 
-    int movX = pos_actual.posX - posX;
-    int movY = pos_actual.posY - posY;
+    int movX = pos_actual->posX - posX;
+    int movY = pos_actual->posY - posY;
 
     if (movX != 0)
     {
         //REALIZAR UN MOVIMIENTO EN X
         //PUEDE SER PARA ATRAS O PARA ADELANTE
         if (movX > 0)
-            pos_actual.posX++;
+            pos_actual->posX++;
         else
-            pos_actual.posX--;
+            pos_actual->posX--;
     }
     else
     {
         //REALIZAR UN MOVIMIENTO EN Y
         //PUEDE SER PARA ATRAS O PARA ADELANTE
         if (movY > 0)
-            pos_actual.posY++;
+            pos_actual->posY++;
         else
-            pos_actual.posY--;
+            pos_actual->posY--;
     }
 }
 
