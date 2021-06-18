@@ -92,9 +92,9 @@ void tripulante(void *parametro)
             pthread_mutex_lock(&mutex_block);
 
             //ENVIO LA TAREA AL MONGO
-            int *bEnviar;
+            int bEnviar;
             void *d_enviar = serializarTarea(tarea_recibida, &bEnviar);
-            send(sockfd_tripulante_ram, d_enviar, *bEnviar, 0);
+            send(sockfd_tripulante_ram, d_enviar, bEnviar, 0);
             free(d_enviar);
 
             for (int i = 0; i < duracionBloqueado; i++)
@@ -126,7 +126,7 @@ t_tarea *solicitar_tarea(t_posicion pos_actual, int tid, int sockfd_tripulante_r
                          int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int sockfd_tripulante_mongo)
 {
 
-    int *tamanioSerializacion;
+    int tamanioSerializacion;
     void *comenzar_tarea = serializarInt(tid, REALIZAR_TAREA, &tamanioSerializacion);
     send(sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
     free(comenzar_tarea);
@@ -237,7 +237,7 @@ int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
 void actualizar_estado(int socket, uint32_t tid, char nuevoEstado)
 {
 
-    int *bEnviar;
+    int bEnviar;
     void *d_enviar = serializar_ActulizacionEstado(tid, nuevoEstado, &bEnviar);
     send(socket, d_enviar, bEnviar, 0);
     free(d_enviar);
@@ -259,7 +259,7 @@ void mover_tripulante(int sockfd_tripulante_ram, int sockfd_tripulante_mongo, in
 
         mover_una_posicion(posX, posY, pos_actual);
 
-        int *bEnviar;
+        int bEnviar;
         void *d_enviar = serializar_envioPosicion(tid, posX, posY, &bEnviar);
         send(sockfd_tripulante_ram, d_enviar, bEnviar, 0);
         send(sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
