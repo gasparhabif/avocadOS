@@ -11,7 +11,7 @@ void* reservar_memoria(int bytes){
             return reservar_segmento_BF(bytes);
     }
     else if(strcmp(config->esquema_memoria, "PAGINACION") == 0){
-
+            return reservar_pagina(bytes);
     }
 
     pthread_mutex_unlock(&acceso_memoria);
@@ -21,6 +21,8 @@ void* reservar_memoria(int bytes){
 
 t_registro_segmentos* guardar_tareas(int cantTareas, t_tarea *tareas_recibidas){
     
+    printf("Guardando tareas\n");
+
     //RESERVO EL SEGMENTO PARA LAS TAREAS 
     void *pos_tareas  = reservar_memoria(cantTareas * sizeof(t_tarea));
     

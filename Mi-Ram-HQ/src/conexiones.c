@@ -56,12 +56,7 @@ void recibir_mensaje(void *parametro)
             log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
             break;
         }
-
-        while (1)
-        {
-            sleep(100000000);
-        }
-
+        
         free(datos_recibidos);
     }
 }

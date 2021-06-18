@@ -34,7 +34,6 @@ enum CODIGOS_DE_BITACORAS
 };
 
 //ESTADOS
-<<<<<<< HEAD
 #define NEW                        'N'
 #define READY                      'R'
 #define EXEC                       'E'
@@ -47,14 +46,6 @@ enum CODIGOS_DE_BITACORAS
 #define FIN_TAREA                  'F'
 #define INICIO_RESOLUCION_SABOTAJE 'S'
 #define FIN_RESOLUCION_SABOTAJE    'A'  
-=======
-#define NEW               'N'
-#define READY             'R'
-#define EXEC              'E'
-#define BLOCKED_IO        'B'
-#define BLOCKED_EMERGENCY 'Y'
-#define EXIT              'X'
->>>>>>> mi-ram-hq
 
 //BUFFERS Y PAQUETE
 typedef struct

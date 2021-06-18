@@ -2,6 +2,8 @@
 
 void* reservar_segmento_FF(int bytes){
 
+    printf("Reservando memoria SEG-FF\n");
+
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento    = malloc(sizeof(estado_segmentos));
 
@@ -48,8 +50,9 @@ void* reservar_segmento_FF(int bytes){
     free(segmento_obtenido);
     free(nuevo_segmento);
     
+    //OJO: Entra en un ciclo
     compactar(SIGUSR1);
-    return reservar_segmento_BF(bytes);
+    return reservar_segmento_FF(bytes);
 }
 
 void* reservar_segmento_BF(int bytes){

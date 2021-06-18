@@ -31,11 +31,11 @@ typedef struct {
 
 typedef struct {
     u_int32_t segmento; // Identificador (numero) del segmento
-    void* base;         // Posicion inicio del segmento
+    void*     base;     // Posicion inicio del segmento
     u_int32_t tamanio;  // Tamaño del contenido del segmento
-    u_int8_t tipo;      // Tipo del contenido del segmento
+    u_int8_t  tipo;     // Tipo del contenido del segmento
     u_int32_t tid;      // Opcional
-    u_int8_t usado;     // Booleano para saber si el segmento puede sacarse
+    u_int8_t  usado;    // Booleano para saber si el segmento puede sacarse
 } t_registro_segmentos;
 
 typedef struct {

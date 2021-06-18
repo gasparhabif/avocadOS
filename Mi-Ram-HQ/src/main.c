@@ -31,7 +31,7 @@ int main()
     }
     else if(strcmp(config->esquema_memoria, "PAGINACION") == 0){
         tamanio_paginas = config->tamanio_pagina;
-        estado_frames   = malloc(tamanio_paginas);
+        estado_frames   = malloc(config->tamanio_memoria / tamanio_paginas);
     }
     else{
         log_info(logger, "Esquema mal indicado en el archivo de configuracion");

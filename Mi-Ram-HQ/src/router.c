@@ -2,33 +2,24 @@
 
 void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
+    /*
     printf("\n-----UNA NUEVA PATOTA ABORDA LA NAVE-----\n");
     printf("INICIO DE PATOTA CON PID: %d\n", tareas_cPID_recibidas->PID);
     printf("CANT TAREAS: %d\n", tareas_cPID_recibidas->cantTareas);
 
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
-<<<<<<< HEAD
-        printf("TAREA: %d\n", i + 1);
-        printf("CODT: %d\n", tareas_cPID_recibidas->tareas[i].codigoTarea);
-        printf("PARA: %d\n", tareas_cPID_recibidas->tareas[i].parametro);
-        printf("POSX: %d\n", tareas_cPID_recibidas->tareas[i].posX);
-        printf("POSY: %d\n", tareas_cPID_recibidas->tareas[i].posY);
-=======
         printf("TAREA: %d\n",  i + 1);
         printf("CODT: %d\n",   tareas_cPID_recibidas->tareas[i].codigoTarea);
         printf("PARA: %d\n",   tareas_cPID_recibidas->tareas[i].parametro);
         printf("POSX: %d\n",   tareas_cPID_recibidas->tareas[i].posX);
         printf("POSY: %d\n",   tareas_cPID_recibidas->tareas[i].posY);
->>>>>>> mi-ram-hq
         printf("DURA: %d\n\n", tareas_cPID_recibidas->tareas[i].duracionTarea);
     }
     printf("-----------------------------------------\n\n\n");
+    */
 
-<<<<<<< HEAD
-    //GUARDAR TAREAS EN MEMORIA
-    void *tareas_recibidas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
-=======
+    log_info(logger, "Una nueva patota aborda la nave");
     
     //GUARDO LAS TAREAS EN MEMORIA
     t_registro_segmentos* segmento_tareas = guardar_tareas(tareas_cPID_recibidas->cantTareas, tareas_cPID_recibidas->tareas);
@@ -37,16 +28,10 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     t_PCB *nuevo_pcb  = malloc(sizeof(t_PCB));
     nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
     nuevo_pcb->tareas = (int) segmento_tareas->base;
->>>>>>> mi-ram-hq
 
     //GUARDO EL PCB
     t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
 
-<<<<<<< HEAD
-    //LLENAR PCB
-    pcb->PID = tareas_cPID_recibidas->PID;
-    pcb->tareas = (int)tareas_recibidas;
-=======
     //CREO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
     t_list* registro_proceso = list_create();
 
@@ -57,16 +42,11 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     
     //AÑAFO EL PROCESO A LA LISTA DE PROCESOS
     list_add(tabla_procesos, registro_proceso);
->>>>>>> mi-ram-hq
 
     //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB
     printf("Enviando datos...\n");
     int tamanioSerializacion;
-<<<<<<< HEAD
-    void *paquete = serializarInt((int)tareas_recibidas, PUNTERO_PCB, &tamanioSerializacion);
-=======
     void *paquete = serializarInt((int) segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
->>>>>>> mi-ram-hq
     printf("Se enviaron %d bytes\n\n", send(client, paquete, tamanioSerializacion, 0));
     free(paquete);
 
@@ -102,7 +82,7 @@ void solicitar_tarea(int client, int *datos_recibidos)
     tareaDePrueba->posY = 4;
     tareaDePrueba->duracionTarea = 5;
 
-    int *bEnviar;
+    int bEnviar;
     void *d_enviar = serializarTarea(tareaDePrueba, &bEnviar);
     send(client, d_enviar, bEnviar, 0);
     free(d_enviar);

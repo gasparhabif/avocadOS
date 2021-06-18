@@ -117,7 +117,7 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 
 /*
     for(int i=0; i<*cantTareas; i++){
-        printf("---------Tarea: %d---------\n", i);
+        printf("---------Tarea: %d---------\n", i+1);
         printf("CODI: %d\n", tareas[i].codigoTarea);
         printf("PARA: %d\n", tareas[i].parametro);
         printf("POSX: %d\n", tareas[i].posX);
