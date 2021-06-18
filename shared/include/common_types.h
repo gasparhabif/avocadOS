@@ -27,19 +27,19 @@ enum CODIGOS_DE_TAREAS
 
 enum CODIGOS_DE_BITACORAS
 {
-    INICIO_TAREA = 'I',
-    FIN_TAREA = 'F',
+    INICIO_TAREA               = 'I',
+    FIN_TAREA                  = 'F',
     INICIO_RESOLUCION_SABOTAJE = 'S',
-    FIN_RESOLUCION_SABOTAJE = 'A'
+    FIN_RESOLUCION_SABOTAJE    = 'A'
 };
 
 //ESTADOS
-#define NEW 'N'
-#define READY 'R'
-#define EXEC 'E'
-#define BLOCKED_IO 'B'
+#define NEW               'N'
+#define READY             'R'
+#define EXEC              'E'
+#define BLOCKED_IO        'B'
 #define BLOCKED_EMERGENCY 'Y'
-#define EXIT 'X'
+#define EXIT              'X'
 
 //BUFFERS Y PAQUETE
 typedef struct
