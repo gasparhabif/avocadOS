@@ -41,24 +41,35 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     paquete->buffer = malloc(sizeof(t_buffer));
 
     //RECIBO EL CODIGO DE OPERACION
+<<<<<<< HEAD
     if (recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), MSG_WAITALL) <= 0)
     {
         //fallar de alguna forma
     }
     //printf("Recibido el COP: %d\n", paquete->codigo_operacion);
+=======
+
+    recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+    printf("Recibido el COP %d\n", paquete->codigo_operacion);
+    //ASIGNO EL COP
+>>>>>>> mi-ram-hq
     *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM
     recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), MSG_WAITALL);
-    //printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
+    printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
     //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
     paquete->buffer->stream = malloc(paquete->buffer->size);
     //RECIBO EL STREAM
     recv(sockfd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-    //printf("Recibi %d bytes de stream\n", bStream);
+    //printf("Recibi %d bytes de stream\n");
 
     void *dRecibidos;
 
+<<<<<<< HEAD
     switch (*codigo_operacion)
+=======
+    switch (paquete->codigo_operacion)
+>>>>>>> mi-ram-hq
     {
     case COMENZAR_PATOTA:
         dRecibidos = deserializarTareas_cPID(paquete->buffer);
@@ -82,7 +93,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
         dRecibidos = deserializar_envioPosicion(paquete->buffer);
         break;
     default:
-        //NO ENCONTRE NINGUN COP
+        printf("[ERROR] COP desconocido: %d", paquete->codigo_operacion);
         break;
     }
 

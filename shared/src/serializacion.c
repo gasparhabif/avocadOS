@@ -132,7 +132,9 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     memcpy(stream + offset, &cantTareas, sizeof(uint8_t));
     offset += sizeof(uint8_t);
 
-    for (int i = 0; i < cantTareas; i++)
+    // ERROR: En este for se esta de alguna manera alojando mas memoria de la necesaria
+    // for (int i = 0; i < cantTareas; i++)
+    for (int i = 0; i < 1; i++)
     {
         memcpy(stream + offset, &unasTareas[i].codigoTarea, sizeof(uint8_t));
         offset += sizeof(uint8_t);
@@ -146,8 +148,12 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
         offset += sizeof(uint32_t);
     }
 
+    // ERROR: Y luego no se puede hacer el malloc para paquete
+
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
+
+    printf("Ahora si creo el paq\n");
 
     buffer->stream = stream;
 

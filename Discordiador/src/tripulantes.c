@@ -26,13 +26,19 @@ void tripulante(void *parametro)
     log_info(logger, "Tripulante en posicion X:%d Y:%d", pos_actual.posX, pos_actual.posY);
 
     //ABRO LA CONEXION
+<<<<<<< HEAD
     sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     if (sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1)
     {
+=======
+    //sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
+    /*if(sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1){
+>>>>>>> mi-ram-hq
         log_info(logger, "Muerte de tripulante por fallo de conexion");
         return;
-    }
+    }*/
     log_info(logger, "El tripulante se conecto con RAM y con Mongo");
 
     //SERIALIZO Y ENVIO EL TCB

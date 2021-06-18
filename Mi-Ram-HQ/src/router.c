@@ -8,31 +8,71 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
+<<<<<<< HEAD
         printf("TAREA: %d\n", i + 1);
         printf("CODT: %d\n", tareas_cPID_recibidas->tareas[i].codigoTarea);
         printf("PARA: %d\n", tareas_cPID_recibidas->tareas[i].parametro);
         printf("POSX: %d\n", tareas_cPID_recibidas->tareas[i].posX);
         printf("POSY: %d\n", tareas_cPID_recibidas->tareas[i].posY);
+=======
+        printf("TAREA: %d\n",  i + 1);
+        printf("CODT: %d\n",   tareas_cPID_recibidas->tareas[i].codigoTarea);
+        printf("PARA: %d\n",   tareas_cPID_recibidas->tareas[i].parametro);
+        printf("POSX: %d\n",   tareas_cPID_recibidas->tareas[i].posX);
+        printf("POSY: %d\n",   tareas_cPID_recibidas->tareas[i].posY);
+>>>>>>> mi-ram-hq
         printf("DURA: %d\n\n", tareas_cPID_recibidas->tareas[i].duracionTarea);
     }
     printf("-----------------------------------------\n\n\n");
 
+<<<<<<< HEAD
     //GUARDAR TAREAS EN MEMORIA
     void *tareas_recibidas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
+=======
+    
+    //GUARDO LAS TAREAS EN MEMORIA
+    t_registro_segmentos* segmento_tareas = guardar_tareas(tareas_cPID_recibidas->cantTareas, tareas_cPID_recibidas->tareas);
+    
+    //CREO EL PCB Y LO CARGO
+    t_PCB *nuevo_pcb  = malloc(sizeof(t_PCB));
+    nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
+    nuevo_pcb->tareas = (int) segmento_tareas->base;
+>>>>>>> mi-ram-hq
 
-    //CREAR PCB
-    t_PCB *pcb = malloc(sizeof(t_PCB));
+    //GUARDO EL PCB
+    t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
 
+<<<<<<< HEAD
     //LLENAR PCB
     pcb->PID = tareas_cPID_recibidas->PID;
     pcb->tareas = (int)tareas_recibidas;
+=======
+    //CREO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
+    t_list* registro_proceso = list_create();
+
+    //CARGO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
+    list_add(registro_proceso, segmento_tareas);    
+    list_add(registro_proceso, segmento_pcb);
+    free(nuevo_pcb);
+    
+    //AÑAFO EL PROCESO A LA LISTA DE PROCESOS
+    list_add(tabla_procesos, registro_proceso);
+>>>>>>> mi-ram-hq
 
     //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB
     printf("Enviando datos...\n");
     int tamanioSerializacion;
+<<<<<<< HEAD
     void *paquete = serializarInt((int)tareas_recibidas, PUNTERO_PCB, &tamanioSerializacion);
+=======
+    void *paquete = serializarInt((int) segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
+>>>>>>> mi-ram-hq
     printf("Se enviaron %d bytes\n\n", send(client, paquete, tamanioSerializacion, 0));
     free(paquete);
+
+    free(tareas_cPID_recibidas);
+    free(segmento_pcb);
+    free(segmento_tareas);
 }
 
 void iniciar_tripulante(t_TCB *tcb_recibido)
@@ -46,6 +86,9 @@ void iniciar_tripulante(t_TCB *tcb_recibido)
     printf("PRI: %d\n", tcb_recibido->proximaInstruccion);
     printf("PCB: %d\n", tcb_recibido->puntero_PCB);
     printf("--------------------------------------\n\n\n");
+
+    void *tcb = reservar_memoria(sizeof(t_TCB));
+    memcpy(tcb, tcb_recibido, sizeof(t_TCB));
 }
 
 void solicitar_tarea(int client, int *datos_recibidos)

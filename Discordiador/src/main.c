@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
 		string_to_upper(parametros[0]);
 
-		if (strcmp(parametros[0], "INICIAR_PATOTA") == 0)
+		if (strcmp(parametros[0],      "INICIAR_PATOTA") == 0)
 			comando[0](parametros);
 		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES") == 0)
 			comando[1](parametros);
