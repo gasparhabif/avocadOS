@@ -47,7 +47,9 @@ void* reservar_segmento_FF(int bytes){
 
     free(segmento_obtenido);
     free(nuevo_segmento);
-    return (void *) -1;
+    
+    compactar(SIGUSR1);
+    return reservar_segmento_BF(bytes);
 }
 
 void* reservar_segmento_BF(int bytes){
@@ -111,12 +113,21 @@ void* reservar_segmento_BF(int bytes){
         }
     }
 
+    //SI NO SE PUDO ENCONTRAR UN SEGMENTO, COMPACTAR Y PROBAR DE NUEVO
+
     free(segmento_obtenido);
     free(nuevo_segmento);
-    return (void*) -1;
+    
+    compactar(SIGUSR1);
+    return reservar_segmento_BF(bytes);
 }
 
-void compactacion(){
+void compactar(int sig){
+
+    if(sig == SIGUSR1 && strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
+    {
+
+    }
 
     return;
 }
