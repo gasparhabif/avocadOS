@@ -16,21 +16,28 @@
 #include <unistd.h>
 #include <string.h>
 
-// Constantes de FS (deberían venir de config)
+// Constantes de FS
 #define BLOCK_SIZE 64
-#define BLOCKS 64
+#define BLOCKS 1024
 
-// Directorios de FS
-char *files_dir;
-char *bitacoras_dir;
+// Estructuras
+typedef struct
+{
+    uint32_t block_size;
+    uint32_t blocks;
+    t_bitarray *bitmap;
+} t_superbloque;
 
 // Paths de FS
-char *superbloque_path;
-char *blocks_path;
+char *files_dir_path;
+char *bitacoras_dir_path;
+char *superbloque_file_path;
+char *blocks_file_path;
 
 // Variables globales
 t_log *logger;
 t_store_conf *config;
+t_superbloque *superbloque;
 
 // Conexiones hacia el store (definidas en store_connections.c)
 void discordiador_cxn_handler(void *);
@@ -53,12 +60,12 @@ void registrarAtencionSabotaje();
 void registrarResolucionSabotaje();
 
 // Inicialización del FS (definidas en store_init.c)
+void init_paths();
 bool file_exists(char *);
-void init_dirs();
-t_bitarray *init_bitmap(size_t);
 char *bitarray_to_string(t_bitarray *);
-void init_superbloque(uint32_t, uint32_t);
-void init_blocks(uint32_t bytes_count);
+void clean_bitarray(t_bitarray *);
+void create_superbloque(uint32_t, uint32_t);
+void create_blocks(uint32_t);
 void init_fs();
 
 #endif
