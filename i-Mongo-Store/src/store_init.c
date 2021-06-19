@@ -98,6 +98,40 @@ void create_blocks(uint32_t blocks_count)
     close(blocks_fd);
 }
 
+void load_superbloque()
+{
+    // Crear t_config para obtener valores de SuperBloque.ims
+    t_config *superbloque_config = config_create(superbloque_file_path);
+
+    superbloque->block_size = (uint32_t)config_get_int_value(superbloque_config, "BLOCK_SIZE");
+    superbloque->blocks = (uint32_t)config_get_int_value(superbloque_config, "BLOCKS");
+    void *bit_pointer = malloc(1);
+    superbloque->bitmap = bitarray_create_with_mode(bit_pointer, superbloque->blocks / 8, LSB_FIRST);
+
+    char **loaded_bitmap = config_get_array_value(superbloque_config, "BITMAP");
+    for (int i = 0; i < superbloque->blocks; i++)
+    {
+        strcmp(loaded_bitmap[i], "1") == 0 ? bitarray_set_bit(superbloque->bitmap, i) : bitarray_clean_bit(superbloque->bitmap, i);
+    }
+
+    // TODO: Preguntar por qué no se puede destruir
+    // config_destroy(superbloque_config);
+    // TODO: Preguntar por qué no se puede liberar
+    // free(bit_pointer);
+}
+
+void print_superbloque()
+{
+    printf("Tamaño de bloque: %d\n", superbloque->block_size);
+    printf("Cantidad de bloques: %d\n", superbloque->blocks);
+    printf("Estado de bloques: ");
+    for (int i = 0; i < superbloque->blocks; i++)
+    {
+        printf("%d", bitarray_test_bit(superbloque->bitmap, i));
+    }
+    printf("\n");
+}
+
 void init_fs()
 {
     // Inicializar paths de archivos y directorios
@@ -106,7 +140,8 @@ void init_fs()
     // Verificar existencia de FS
     if (!file_exists(superbloque_file_path))
     {
-        log_info(logger, "El FS no existe. Creando FS desde cero...");
+        log_info(logger, "El FS no existe.");
+        log_info(logger, "Creando FS desde cero...");
         // Crear directorios
         mkdir(config->punto_montaje, 0777);
         mkdir(files_dir_path, 0777);
@@ -117,10 +152,18 @@ void init_fs()
 
         // Crear archivo Blocks.ims
         create_blocks(BLOCK_SIZE * BLOCKS);
+
         log_info(logger, "FS creado exitosamente.");
     }
     else
     {
         log_info(logger, "El FS ya existe.");
     }
+
+    // Cargar SuperBloque desde archivo
+    log_info(logger, "Cargando FS...");
+    load_superbloque();
+    log_info(logger, "FS cargado exitosamente en %s", config->punto_montaje);
+
+    print_superbloque();
 }

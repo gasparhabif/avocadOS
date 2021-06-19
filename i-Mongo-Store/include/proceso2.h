@@ -66,6 +66,8 @@ char *bitarray_to_string(t_bitarray *);
 void clean_bitarray(t_bitarray *);
 void create_superbloque(uint32_t, uint32_t);
 void create_blocks(uint32_t);
+void load_superbloque();
+void print_superbloque();
 void init_fs();
 
 #endif
