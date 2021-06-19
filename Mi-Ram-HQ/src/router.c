@@ -29,8 +29,12 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
     nuevo_pcb->tareas = (int) segmento_tareas->base;
 
+    printf("PCB creado\n");
+
     //GUARDO EL PCB
     t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
+
+    printf("PCB en memoria\n");
 
     //CREO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
     t_list* registro_proceso = list_create();
@@ -67,8 +71,10 @@ void iniciar_tripulante(t_TCB *tcb_recibido)
     printf("PCB: %d\n", tcb_recibido->puntero_PCB);
     printf("--------------------------------------\n\n\n");
 
-    void *tcb = reservar_memoria(sizeof(t_TCB));
-    memcpy(tcb, tcb_recibido, sizeof(t_TCB));
+    t_registro_segmentos* segmento_tcb = guardar_tcb(tcb_recibido);
+    list_add(registro_proceso, segmento_tcb);
+
+    free(tcb_recibido);
 }
 
 void solicitar_tarea(int client, int *datos_recibidos)

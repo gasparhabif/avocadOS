@@ -7,13 +7,19 @@ void* reservar_segmento_FF(int bytes){
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento    = malloc(sizeof(estado_segmentos));
 
+    printf("Cant segmentos: %d\n", cantidad_segmentos);
+
     for(int i = 0; i < cantidad_segmentos; i++){
+
+        printf("i: %d\n", i);
 
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
 
         //En el caso de que no este ocupado
         if(segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes){
+
+            printf("Entro en el segmento %d y esta libre\n", i);
             
             //Inicio el nuevo segmento
             nuevo_segmento->inicio     = segmento_obtenido->inicio;
@@ -30,7 +36,6 @@ void* reservar_segmento_FF(int bytes){
                 // En este caso podría ocurrir que los bytes entran perfectoen el 
                 // segmento obtenido, en tal caso no seria necesaria una modificacion 
                 // en la lista de segmentos
-
                 if(segmento_obtenido->limite != 0){
                     //Ajusto el libre
                     list_replace(tabla_estado_segmentos, i, nuevo_segmento);
@@ -51,8 +56,9 @@ void* reservar_segmento_FF(int bytes){
     free(nuevo_segmento);
     
     //OJO: Entra en un ciclo
-    compactar(SIGUSR1);
-    return reservar_segmento_FF(bytes);
+    //compactar(SIGUSR1);
+    //return reservar_segmento_FF(bytes);
+    return (void *) -1;
 }
 
 void* reservar_segmento_BF(int bytes){

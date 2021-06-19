@@ -40,21 +40,21 @@ void recibir_mensaje(void *parametro)
 
         switch (cop_recibido)
         {
-        case COMENZAR_PATOTA:
-            log_info(logger, "Comenzando una patota");
-            comenzar_patota(client, (t_tareas_cPID *)datos_recibidos);
-            break;
-        case INICIAR_TRIPULANTE:
-            log_info(logger, "Iniciando un tripulante");
-            iniciar_tripulante(datos_recibidos);
-            break;
-        case SOLICITAR_TAREA:
-            log_info(logger, "Tarea solicitada");
-            solicitar_tarea(client, datos_recibidos);
-            break;
-        default:
-            log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
-            break;
+            case COMENZAR_PATOTA:
+                log_info(logger, "Comenzando una patota");
+                comenzar_patota(client, (t_tareas_cPID *)datos_recibidos);
+                break;
+            case INICIAR_TRIPULANTE:
+                log_info(logger, "Iniciando un tripulante");
+                iniciar_tripulante(datos_recibidos);
+                break;
+            case SOLICITAR_TAREA:
+                log_info(logger, "Tarea solicitada");
+                solicitar_tarea(client, datos_recibidos);
+                break;
+            default:
+                log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
+                break;
         }
         
         free(datos_recibidos);

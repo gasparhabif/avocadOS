@@ -14,7 +14,8 @@ int main()
 
     //HAGO EL GRAN MALLOC
     memoria = malloc(config->tamanio_memoria);
-
+    log_info(logger, "%d bytes reservados en %p", config->tamanio_memoria, memoria);
+    
     //SI SE UTILIZA EL ESQUEMA DE SEGMENTACION LE INDICO QUE EN CASO DE RECIBIR
     //SIGUSR1 COMPACTE LA MEMORIA
     signal(SIGUSR1, compactar);
@@ -49,7 +50,9 @@ int main()
     primer_seg->ocupado = 0;
 
     list_add(tabla_estado_segmentos, primer_seg);
-    free(primer_seg);
+    //free(primer_seg);
+
+    cantidad_segmentos++;
 
     //INICIO EL SERVER
     int server_instance;
