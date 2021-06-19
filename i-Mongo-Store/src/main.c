@@ -11,7 +11,8 @@ int main()
     log_info(logger, "Configuración cargada");
 
     // Inicializar FS
-    // init_fs();
+    superbloque = malloc(sizeof(t_superbloque));
+    init_fs();
 
     // Inicializar servidor
     int server_instance = init_server(config->puerto);
@@ -36,6 +37,7 @@ int main()
 
     // ...
 
+    free(superbloque);
     free(config);
 
     return EXIT_SUCCESS;
