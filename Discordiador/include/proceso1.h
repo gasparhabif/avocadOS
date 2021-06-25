@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/txt.h>
@@ -43,11 +44,11 @@ void PAUSAR_PLANIFICACION (char **);
 void OBTENER_BITACORA     (char **);
 
 //DEFINIDAS EN utils.c
-t_tarea *leer_tareas                 (FILE *, int *, int *);
-int      contar_caracteres_especiales(size_t, char *, char);
-void     pausar                      ();
-int      eliminarTripulante         (t_list *, int);
-int      menor_tid_list              (t_list*);
+t_tarea *leer_tareas                  (FILE *, int *, int *);
+int      contar_caracteres_especiales (size_t, char *, char);
+void     pausar                       ();
+int      eliminarTripulante           (t_list *, int);
+int      menor_tid_list               (t_list*);
 
 //DEFINIDAS EN tripulantes.c
 void     tripulante           (void *parametro);
@@ -63,6 +64,8 @@ void     retardo_ciclo_IO     ();
 
 //DEFINIDAS EN sabotajes.c
 void     sabotajes            ();
+void     resolver_sabotaje    ();
+int      distancia_posiciones (t_posicion*, int, int);
 
 //VARIABLES GLOBALES
 t_log *logger;

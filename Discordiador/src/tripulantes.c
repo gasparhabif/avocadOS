@@ -19,10 +19,10 @@ void tripulante(void *parametro)
 
     //CREO EL TCB AUXILIAR CON EL QUE VOY A TRABAJAR EN LA PLANIFICACION, SABOTAJES Y MAS
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
-    admin->tid    = tid;
-    admin->estado = NEW;
-    admin->posX   = tcb_tripulante->posX;
-    admin->posY   = tcb_tripulante->posY;
+    admin->tid                 = tid;
+    admin->estado              = NEW;
+    admin->posX                = tcb_tripulante->posX;
+    admin->posY                = tcb_tripulante->posY;
 
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
