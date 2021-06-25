@@ -20,6 +20,14 @@ void tripulante(void *parametro)
     *tcb_tripulante = *(t_TCB *)parametro;
     tcb_tripulante->TID = tid;
 
+    //CREO EL TCB AUXILIAR CON EL QUE VOY A TRABAJAR EN LA PLANIFICACION, SABOTAJES Y MAS
+    t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
+    admin->tid    = tid;
+    admin->estado = NEW;
+    admin->posX   = tcb_tripulante->posX;
+    admin->posY   = tcb_tripulante->posY;
+
+    //BORRAR
     //CARGO MI POSICION
     pos_actual.posX = tcb_tripulante->posX;
     pos_actual.posY = tcb_tripulante->posY;
@@ -43,11 +51,11 @@ void tripulante(void *parametro)
 
     //ENVIAR EL TID AL MONGO
 
-    //CONTROL DE GRADO DE MULTIPROGRAMACION
-    sem_wait(&s_multiprogramacion);
+    //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
+    //recv();
 
     //CAMBIAR A ESTADO READY
-    actualizar_estado(sockfd_ram, tid, READY);
+    actualizar_estado(sockfd_ram, tid, READY, admin);
 
     //SOLICITO LA PRIMERA TAREA
     tarea_recibida = solicitar_tarea(pos_actual, tid, sockfd_tripulante_ram, &finTareas,
@@ -58,21 +66,22 @@ void tripulante(void *parametro)
     {
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
-        pthread_mutex_lock(&mutex_exec);
+        sem_wait(&s_multiprocesamiento);
 
         //CAMBIAR A ESTADO EXEC
-        actualizar_estado(sockfd_ram, tid, EXEC);
+        actualizar_estado(sockfd_ram, tid, EXEC, admin);
 
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
         if (tareaPendiente == 0)
             tarea_recibida = solicitar_tarea(pos_actual, tid, sockfd_tripulante_ram, &finTareas,
                                              &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, sockfd_tripulante_mongo);
 
+        //SI LA TAREA RECIBIDA NO ES LA ULTIMA
         if (finTareas == 0)
         {
-            if (ejecutar_tarea(tarea_recibida, &duracionMovimientos, &duracionEjecucion, sockfd_tripulante_ram,
-                               sockfd_tripulante_mongo, &pos_actual, tid))
-                block = 1;
+            //EJECUTO LA TAREA, SI DEBO BLOCKEAR EL TRIPULANTE LA VARIABLE BLOCK VALDRA 1
+            block = ejecutar_tarea(tarea_recibida, &duracionMovimientos, &duracionEjecucion, sockfd_tripulante_ram,
+                               sockfd_tripulante_mongo, &pos_actual, tid);
 
             //CHEQUEO SI QUEDO ALGO POR EJECUTAR DE ESTA TAREA
             if (duracionEjecucion == 0 && duracionBloqueado == 0)
@@ -83,12 +92,12 @@ void tripulante(void *parametro)
         else
             tareaPendiente = 0;
 
-        //LIBERO EL SEMAFORO (SIGNAL)
-        pthread_mutex_unlock(&mutex_exec);
+        //LIBERO EL SEMAFORO DE EXEC (SIGNAL)
+        sem_post(&s_multiprocesamiento);
 
         if (block)
         {
-            actualizar_estado(sockfd_tripulante_ram, tid, BLOCKED_IO);
+            actualizar_estado(sockfd_tripulante_ram, tid, BLOCKED_IO, admin);
             pthread_mutex_lock(&mutex_block);
 
             //ENVIO LA TAREA AL MONGO
@@ -105,19 +114,18 @@ void tripulante(void *parametro)
             block = 0;
 
             pthread_mutex_unlock(&mutex_block);
-            actualizar_estado(sockfd_tripulante_ram, tid, READY);
+            actualizar_estado(sockfd_tripulante_ram, tid, READY, admin);
         }
         else if (!tareaPendiente && finTareas)
-            actualizar_estado(sockfd_tripulante_ram, tid, EXIT);
+            actualizar_estado(sockfd_tripulante_ram, tid, EXIT, admin);
         else
-            actualizar_estado(sockfd_tripulante_ram, tid, READY);
+            actualizar_estado(sockfd_tripulante_ram, tid, READY, admin);
     }
-
-    //SALGO DE LOS ESTADOS: READY, RUNNING, EXEC
-    sem_post(&s_multiprogramacion);
 
     close(sockfd_tripulante_mongo);
     close(sockfd_tripulante_ram);
+
+    free(admin);
 
     return;
 }
@@ -178,7 +186,7 @@ int ejecutar_tarea(t_tarea *unaTarea, int *duracionMovimientos, int *duracionEje
                    int sockfd_tripulante_ram, int sockfd_tripulante_mongo, t_posicion *pos_actual, int tid)
 {
     int tiempoMovimientos = 0;
-    int tiempoEjecutando = 0;
+    int tiempoEjecutando  = 0;
 
     if (strcmp(config->algoritmo, "FIFO") == 0)
     {
@@ -202,13 +210,7 @@ int ejecutar_tarea(t_tarea *unaTarea, int *duracionMovimientos, int *duracionEje
     }
 
     if (unaTarea->codigoTarea != MOVER_POSICION && duracionMovimientos == 0 && duracionEjecucion == 0)
-    {
-        int bEnviados;
-        void *d_enviar = serializarTarea(unaTarea, &bEnviados);
-        send(sockfd_mongo, d_enviar, bEnviados, 0);
-
         return 1;
-    }
 
     return 0;
 }
@@ -234,13 +236,50 @@ int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
     return tiempoAEjecutar;
 }
 
-void actualizar_estado(int socket, uint32_t tid, char nuevoEstado)
+void actualizar_estado(int socket, uint32_t tid, char nuevoEstado, t_admin_tripulantes *admin)
 {
 
+    //ENVIO A LA RAM EL NUEVO ESTADO
     int bEnviar;
     void *d_enviar = serializar_ActulizacionEstado(tid, nuevoEstado, &bEnviar);
     send(socket, d_enviar, bEnviar, 0);
     free(d_enviar);
+
+    //ELIMINO EL TRIPULANTE DE LA LISTA EN LA QUE SE ENCUENTRE
+    switch (admin->estado)
+    {
+        case EXEC:
+            pthread_mutex_lock(&m_listaExec);
+            eliminarTripulante(exec, admin->tid);
+            pthread_mutex_unlock(&m_listaExec);
+            break;
+        case READY:
+            pthread_mutex_lock(&m_listaReady);
+            eliminarTripulante(ready, admin->tid);
+            pthread_mutex_unlock(&m_listaReady);
+            break;
+        default:
+            break;
+    }
+
+    admin->estado = nuevoEstado;
+
+    //AGREGO EL TRIPULANTE A LA NUEVA LISTA
+    switch (nuevoEstado)
+    {
+        case EXEC:
+            pthread_mutex_lock(&m_listaExec);
+            list_add(exec, admin);
+            pthread_mutex_unlock(&m_listaExec);
+            break;
+        case READY:
+            pthread_mutex_lock(&m_listaReady);
+            list_add(ready, admin);
+            pthread_mutex_unlock(&m_listaReady);
+            break;
+        default:
+            break;
+    }
 
     log_info(logger, "Tripulante en estado: %c", nuevoEstado);
 

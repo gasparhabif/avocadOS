@@ -140,3 +140,49 @@ int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
 
     return contador;
 }
+
+void pausar(){
+    if(planificando){
+        for (int i = 0; i < config->grado_multitarea; i++)
+            sem_post(&s_multiprocesamiento);     
+        pthread_mutex_unlock(&mutex_block);
+    }
+    else{
+        for (int i = 0; i < config->grado_multitarea; i++)
+            sem_wait(&s_multiprocesamiento);     
+        pthread_mutex_lock(&mutex_block);
+    }
+}
+
+int eliminarTripulante(t_list *lista, int tid){
+    
+    t_admin_tripulantes *aux_admin;
+    
+    for(int i=0; i<list_size(lista); i++){
+        aux_admin = list_get(lista, i);
+        if(aux_admin->tid == tid){
+            list_remove(exec, i);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int menor_tid_list(t_list* lista){
+
+    t_admin_tripulantes *aux_admin;
+
+    int tid_minimo = -1;
+    int index;
+
+    for(int i=0; i<list_size(lista); i++){
+        aux_admin = list_get(lista, i);
+        if(aux_admin->tid >= tid_minimo){
+            index = 1;
+            tid_minimo = aux_admin->tid;
+        }
+    }
+
+    return index;
+}

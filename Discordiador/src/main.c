@@ -12,15 +12,21 @@ int main(int argc, char **argv)
 	log_info(logger, "Se cargo la config del Discordador");
 
 	//INICIALIZO VARIABLES CLAVE
-	patota_id = 1;
-	ejecutandoTripulantes = 1;
+	patota_id              = 1;
+	ejecutandoTripulantes  = 1;
 	ejecutandoPlanificador = 1;
-	escuchandoSabotajes = 1;
-	planificando = 1;
-	sabotaje = 0;
-	pthread_mutex_init(&mutex_exec, NULL);
+	escuchandoSabotajes    = 1;
+	planificando           = 1;
 	pthread_mutex_init(&mutex_block, NULL);
-	sem_init(&s_multiprogramacion, 0, config->grado_multitarea);
+	sem_init(&s_multiprocesamiento, 0, config->grado_multitarea);
+
+	exec  = list_create();
+	ready = list_create();
+	bloq  = list_create();
+
+	pthread_mutex_init(&m_listaExec,  NULL);
+	pthread_mutex_init(&m_listaReady, NULL);
+	
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
@@ -105,7 +111,7 @@ int main(int argc, char **argv)
 	ejecutandoPlanificador = 0;
 	escuchandoSabotajes = 0;
 
-	sem_destroy(&s_multiprogramacion);
+	sem_destroy(&s_multiprocesamiento);
 	system("clear");
 	close(sockfd_ram);
 	close(sockfd_mongo);

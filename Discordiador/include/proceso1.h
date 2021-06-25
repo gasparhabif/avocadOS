@@ -23,42 +23,55 @@
 #include <semaphore.h>
 #include "shared_utils.h"
 
-#define MAX_DATA_SIZE 30
+//STRUCTS
+typedef struct
+{
+    u_int32_t tid;
+    char estado;
+    u_int32_t posX;
+    u_int32_t posY;
+    int sockfd_tripulante_ram;
+    int sockfd_tripulante_mongo;
+} t_admin_tripulantes;
 
 //DEFINIDAS EN consola.c
-void INICIAR_PATOTA(char **);
-void LISTAR_TRIPULANTES(char **);
-void EXPULSAR_TRIPULANTE(char **);
+void INICIAR_PATOTA       (char **);
+void LISTAR_TRIPULANTES   (char **);
+void EXPULSAR_TRIPULANTE  (char **);
 void INICIAR_PLANIFICACION(char **);
-void PAUSAR_PLANIFICACION(char **);
-void OBTENER_BITACORA(char **);
+void PAUSAR_PLANIFICACION (char **);
+void OBTENER_BITACORA     (char **);
 
 //DEFINIDAS EN utils.c
-t_tarea *leer_tareas(FILE *, int *, int *);
-int contar_caracteres_especiales(size_t, char *, char);
+t_tarea *leer_tareas                 (FILE *, int *, int *);
+int      contar_caracteres_especiales(size_t, char *, char);
+void     pausar                      ();
+int      eliminarTripulante         (t_list *, int);
+int      menor_tid_list              (t_list*);
 
 //DEFINIDAS EN tripulantes.c
-void tripulante(void *parametro);
-t_tarea *solicitar_tarea(t_posicion pos_actual, int tid, int sockfd_tripulante_ram, int *finTareas,
-                         int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int sockfd_tripulante_mongo);
-int ejecutar_tarea(t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion,
-                   int sockfd_tripulante_ram, int sockfd_tripulante_mongo, t_posicion *pos_actual, int tid);
-void mover_tripulante(int sockfd_tripulante_ram, int sockfd_tripulante_mongo, int movimientosPosibles,
-                      u_int32_t posX, u_int32_t posY, int *duracionMovimientos, t_posicion *pos_actual,
-                      int tid);
-int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado);
-void actualizar_estado(int socket, uint32_t tid, char nuevoEstado);
-void mover_una_posicion(u_int32_t posX, u_int32_t posY, t_posicion *pos_actual);
-int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal);
-void retardo_ciclo_cpu();
-void retardo_ciclo_IO();
+void     tripulante           (void *parametro);
+t_tarea *solicitar_tarea      (t_posicion pos_actual, int tid, int sockfd_tripulante_ram, int *finTareas,
+                               int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int sockfd_tripulante_mongo);
+int      ejecutar_tarea       (t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion,
+                               int sockfd_tripulante_ram, int sockfd_tripulante_mongo, t_posicion *pos_actual, int tid);
+void     mover_tripulante     (int sockfd_tripulante_ram, int sockfd_tripulante_mongo, int movimientosPosibles,
+                               u_int32_t posX, u_int32_t posY, int *duracionMovimientos, t_posicion *pos_actual,
+                               int tid);
+int      ejecutar_tiempos_CPU (int duracionEjecucion, int tEjecutado);
+void     actualizar_estado    (int socket, uint32_t tid, char nuevoEstado, t_admin_tripulantes*);
+void     mover_una_posicion   (u_int32_t posX, u_int32_t posY, t_posicion *pos_actual);
+int      cantMovimientos      (int xInicial, int yInicial, int xFinal, int yFinal);
+void     retardo_ciclo_cpu    ();
+void     retardo_ciclo_IO     ();
 
 //DEFINIDAS EN sabotajes.c
-void sabotajes();
+void     sabotajes            ();
 
 //VARIABLES GLOBALES
 t_log *logger;
 t_cpu_conf *config;
+
 int sockfd_mongo;
 int sockfd_ram;
 int patota_id;
@@ -66,9 +79,18 @@ int ejecutandoTripulantes;
 int ejecutandoPlanificador;
 int escuchandoSabotajes;
 int planificando;
-int sabotaje;
-pthread_mutex_t mutex_exec;
+
+sem_t s_multiprocesamiento;
 pthread_mutex_t mutex_block;
-sem_t s_multiprogramacion;
+
+t_list *exec;
+int cant_exec;
+t_list *ready;
+int cant_ready;
+t_list *bloq;
+int cant_bloq;
+
+pthread_mutex_t m_listaExec;
+pthread_mutex_t m_listaReady;
 
 #endif

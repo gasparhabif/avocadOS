@@ -57,7 +57,7 @@ void INICIAR_PATOTA(char **parametros)
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 printf("Recibiendo datos\n");
                 int direccionPCB = (int) recibir_paquete(sockfd_ram);
-                printf("Pos recibida: %p\n", direccionPCB);
+                printf("Pos recibida: %d\n", direccionPCB);
 
                 //CREO LOS TCB
                 t_TCB *tripulantes_tcb;
@@ -123,22 +123,25 @@ void INICIAR_PLANIFICACION(char **parametros)
     else
     {
         log_info(logger, "Iniciando planificacion...\n");
+        printf("Iniciando planificacion...\n");
         planificando = 1;
+        for (int i = 0; i < config->grado_multitarea; i++)
+            sem_post(&s_multiprocesamiento);     
+        pthread_mutex_unlock(&mutex_block);
+        pausar();
     }
 }
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
-
-    //http://poincare.matf.bg.ac.rs/~ivana/courses/ps/sistemi_knjige/pomocno/apue/APUE/0201433079/ch12lev1sec8.html#:~:text=To%20send%20a%20signal%20to%20a%20thread%2C%20we%20call%20pthread_kill.&text=We%20can%20pass%20a%20signo,still%20kill%20the%20entire%20process.
-    //int pthread_kill(pthread_t thread, int signo);
-
     if (!planificando)
         printf("El planificador ya se encuentra pausado!\n");
     else
     {
+        log_info(logger, "Pausando planificacion...\n");
         printf("Pausando planificacion...\n");
         planificando = 0;
+        pausar();
     }
 }
 
