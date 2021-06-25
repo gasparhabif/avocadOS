@@ -51,16 +51,12 @@ int      menor_tid_list              (t_list*);
 
 //DEFINIDAS EN tripulantes.c
 void     tripulante           (void *parametro);
-t_tarea *solicitar_tarea      (t_posicion pos_actual, int tid, int sockfd_tripulante_ram, int *finTareas,
-                               int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int sockfd_tripulante_mongo);
-int      ejecutar_tarea       (t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion,
-                               int sockfd_tripulante_ram, int sockfd_tripulante_mongo, t_posicion *pos_actual, int tid);
-void     mover_tripulante     (int sockfd_tripulante_ram, int sockfd_tripulante_mongo, int movimientosPosibles,
-                               u_int32_t posX, u_int32_t posY, int *duracionMovimientos, t_posicion *pos_actual,
-                               int tid);
+t_tarea *solicitar_tarea      (t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado);
+int      ejecutar_tarea       (t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
+void     mover_tripulante     (t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY, int movimientosPosibles, int *duracionMovimientos);
 int      ejecutar_tiempos_CPU (int duracionEjecucion, int tEjecutado);
-void     actualizar_estado    (int socket, uint32_t tid, char nuevoEstado, t_admin_tripulantes*);
-void     mover_una_posicion   (u_int32_t posX, u_int32_t posY, t_posicion *pos_actual);
+void     actualizar_estado    (t_admin_tripulantes *admin, char nuevoEstado);
+void     mover_una_posicion   (t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY);
 int      cantMovimientos      (int xInicial, int yInicial, int xFinal, int yFinal);
 void     retardo_ciclo_cpu    ();
 void     retardo_ciclo_IO     ();

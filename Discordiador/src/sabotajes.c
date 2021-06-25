@@ -40,8 +40,6 @@ void sabotajes()
         
 
         //MUEVO EL TRIPULANTE A LA POSICION DEL SABOTAJE
-
-
-        //
+        
     }
 }
