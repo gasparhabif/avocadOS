@@ -37,6 +37,8 @@ int main()
 
     // ...
 
+    free(superbloque->bitmap->bitarray);
+    free(superbloque->bitmap);
     free(superbloque);
     free(config);
 

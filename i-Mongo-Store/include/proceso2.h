@@ -33,6 +33,9 @@ char *files_dir_path;
 char *bitacoras_dir_path;
 char *superbloque_file_path;
 char *blocks_file_path;
+char *oxigeno_file_path;
+char *comida_file_path;
+char *basura_file_path;
 
 // Variables globales
 t_log *logger;
@@ -62,7 +65,6 @@ void registrarResolucionSabotaje();
 // Inicialización del FS (definidas en store_init.c)
 void init_paths();
 bool file_exists(char *);
-char *bitarray_to_string(t_bitarray *);
 void clean_bitarray(t_bitarray *);
 void create_superbloque(uint32_t, uint32_t);
 void create_blocks(uint32_t);
