@@ -10,9 +10,11 @@ int main()
     config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
     log_info(logger, "Configuración cargada");
 
-    // Inicializar FS
-    superbloque = malloc(sizeof(t_superbloque));
-    init_fs();
+    // Inicializar SuperBloque
+    superbloque = init_superbloque();
+
+    // Cargar copia de Blocks
+    blocks = load_blocks();
 
     // Inicializar servidor
     int server_instance = init_server(config->puerto);
@@ -37,6 +39,7 @@ int main()
 
     // ...
 
+    free(blocks);
     free(superbloque->bitmap->bitarray);
     free(superbloque->bitmap);
     free(superbloque);

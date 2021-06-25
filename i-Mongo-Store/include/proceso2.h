@@ -41,6 +41,7 @@ char *basura_file_path;
 t_log *logger;
 t_store_conf *config;
 t_superbloque *superbloque;
+char *blocks;
 
 // Conexiones hacia el store (definidas en store_connections.c)
 void discordiador_cxn_handler(void *);
@@ -66,10 +67,12 @@ void registrarResolucionSabotaje();
 void init_paths();
 bool file_exists(char *);
 void clean_bitarray(t_bitarray *);
-void create_superbloque(uint32_t, uint32_t);
-void create_blocks(uint32_t);
-void load_superbloque();
+t_superbloque *create_superbloque(uint32_t, uint32_t);
+t_superbloque *load_superbloque();
+t_superbloque *init_superbloque();
 void print_superbloque();
-void init_fs();
+void create_blocks(uint32_t);
+char *load_blocks();
+void sync_blocks();
 
 #endif
