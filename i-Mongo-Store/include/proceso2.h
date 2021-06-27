@@ -49,6 +49,7 @@ void accept_tripulantes(void *);
 void tripulante_cxn_handler(void *);
 
 // Tareas de ES (definidas en tareas.c)
+void ejecutarTarea(t_tarea*);
 void generarOxigeno(int);
 void consumirOxigeno(int);
 void generarComida(int);

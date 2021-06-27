@@ -118,6 +118,8 @@ t_superbloque *init_superbloque()
     // Inicializar paths de archivos y directorios
     init_paths();
 
+    printf("LLEGUE\n");
+
     // Verificar existencia de FS
     if (!file_exists(superbloque_file_path))
     {

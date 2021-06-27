@@ -46,9 +46,9 @@ void sabotajes()
         //MUEVO EL TRIPULANTE A LA POSICION DEL SABOTAJE
         //mover_tripulante(tripulante_elegido, unSabotaje->posX, unSabotaje->posY, ))
         
-        //INVOCO AL FSCK
+        //INVOCO AL FSCK Y REGISTRO EN BITACORA
         int tamanioSerializacion;
-        void *dEnviar = serializarInt(tripulante_elegido->tid, ALERTA_SABOTAJE, &tamanioSerializacion);
+        void *dEnviar = serializarInt(tripulante_elegido->tid, INICIO_RESOLUCION_SABOTAJE, &tamanioSerializacion);
         send(tripulante_elegido->sockfd_tripulante_mongo, dEnviar, tamanioSerializacion, 0);
         free(dEnviar);
 

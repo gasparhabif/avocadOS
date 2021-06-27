@@ -12,7 +12,8 @@ enum CODIGOS_DE_OPERACION
     MOVER_TRIPULANTE,
     ACTUALIZAR_ESTADO,
     ELIMINAR_TRIPULANTE,
-    ALERTA_SABOTAJE
+    ALERTA_SABOTAJE,
+    SOLICITAR_BITACORA
 };
 
 enum CODIGOS_DE_TAREAS
@@ -42,12 +43,6 @@ enum CODIGOS_DE_BITACORAS
 #define BLOCKED_IO                 'B'
 #define BLOCKED_EMERGENCY          'Y'
 #define EXIT                       'X'
-
-//INICIO-FIN DE TAREAS MONGO
-#define INICIO_TAREA               'I'
-#define FIN_TAREA                  'F'
-#define INICIO_RESOLUCION_SABOTAJE 'S'
-#define FIN_RESOLUCION_SABOTAJE    'A'  
 
 //BUFFERS Y PAQUETE
 typedef struct

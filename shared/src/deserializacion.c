@@ -135,3 +135,6 @@ t_envio_posicion *deserializar_envioPosicion(t_buffer *buffer)
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
     //free(estado_recibido);
 }
+
+
+//TODO: deserealizar_envioSabotaje

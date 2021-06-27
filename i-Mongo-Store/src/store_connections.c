@@ -64,52 +64,16 @@ void tripulante_cxn_handler(void *arg)
     // Generar t_bitacora para el tripulante
     // ...
 
-    int *cod_operacion;
+    int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
     while (!tareas_finalizadas)
     {
-        log_info(logger, "Se recibió el código de operación %d", cod_operacion);
+        // log_info(logger, "Se recibió el código de operación %d", cod_operacion);
+        log_info(logger, "Socket %d -  Código %d", client, cod_operacion);
 
         // Verificar si es tarea de ES
-        if (cod_operacion == REALIZAR_TAREA)
-        {
-            t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
-            // TODO: Recibir la tarea en sí en lugar de la operacion
-
-            switch (tarea_a_ejecutar->codigoTarea)
-            {
-            case FIN_TAREAS:
-                log_info(logger, "El tripulante del socket %d finalizó sus tareas", client);
-                tareas_finalizadas = true;
-                break;
-            case GENERAR_OXIGENO:
-                generarOxigeno(tarea_a_ejecutar->parametro);
-                break;
-            case CONSUMIR_OXIGENO:
-                consumirOxigeno(tarea_a_ejecutar->parametro);
-                break;
-            case GENERAR_COMIDA:
-                generarComida(tarea_a_ejecutar->parametro);
-                break;
-            case CONSUMIR_COMIDA:
-                consumirComida(tarea_a_ejecutar->parametro);
-                break;
-            case GENERAR_BASURA:
-                generarBasura(tarea_a_ejecutar->parametro);
-                break;
-            case DESCARTAR_BASURA:
-                descartarBasura();
-                break;
-            default:
-                log_error(logger, "Código de tarea desconocido");
-                break;
-            }
-        }
-        // Sino, registrar "algo" en bitácora => Ese algo sera una operacion realizada por el tripulante
-        else
-        {
-            switch (*cod_operacion)
+            switch (cod_operacion)
             {
             case MOVER_TRIPULANTE:
                 registrarDesplazamiento();
@@ -126,15 +90,22 @@ void tripulante_cxn_handler(void *arg)
             case FIN_RESOLUCION_SABOTAJE:
                 registrarResolucionSabotaje();
                 break;
+            case ENVIAR_PROXIMA_TAREA:;
+                t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
+                // TODO: Recibir la tarea en sí en lugar de la operacion
+                ejecutarTarea(tarea_a_ejecutar);
+                break;
             default:
-                log_error(logger, "Código de operacion desconocido: %d", cod_operacion);
+                // log_error(logger, "Código de operacion desconocido: %d", cod_operacion);
+                log_error(logger, "Socket %d - Código %d desconocido", client, cod_operacion);
                 tareas_finalizadas = true;
                 break;
             }
-        }
+        
 
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 
     log_error(logger, "El tripulante del socket %d se desconectó", client);
 }
+

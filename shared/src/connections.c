@@ -80,8 +80,9 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
         case MOVER_TRIPULANTE:
             dRecibidos = deserializar_envioPosicion(paquete->buffer);
             break;
-        default:
-            printf("[ERROR] COP desconocido: %d", paquete->codigo_operacion);
+        case ALERTA_SABOTAJE:
+            dRecibidos = deserializar_envioPosicion(paquete->buffer);
+            //TODO       deserializar_envioSabotaje
             break;
     }
 

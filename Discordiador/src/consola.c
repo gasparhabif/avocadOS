@@ -147,4 +147,5 @@ void PAUSAR_PLANIFICACION(char **parametros)
 
 void OBTENER_BITACORA(char **parametros)
 {
+    
 }
