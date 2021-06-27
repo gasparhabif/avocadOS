@@ -49,6 +49,7 @@ int      contar_caracteres_especiales (size_t, char *, char);
 void     pausar                       ();
 int      eliminarTripulante           (t_list *, int);
 int      menor_tid_list               (t_list*);
+int      mayor_tid_list               (t_list*);
 
 //DEFINIDAS EN tripulantes.c
 void     tripulante           (void *parametro);
@@ -79,17 +80,17 @@ int ejecutandoPlanificador;
 int escuchandoSabotajes;
 int planificando;
 
-sem_t s_multiprocesamiento;
+sem_t           s_multiprocesamiento;
 pthread_mutex_t mutex_block;
 
 t_list *exec;
-int cant_exec;
 t_list *ready;
-int cant_ready;
 t_list *bloq;
-int cant_bloq;
 
 pthread_mutex_t m_listaExec;
 pthread_mutex_t m_listaReady;
+
+sem_t           pause_exec;
+pthread_mutex_t pause_block;
 
 #endif

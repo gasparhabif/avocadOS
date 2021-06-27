@@ -4,6 +4,7 @@ void sabotajes()
 {
     
     t_admin_tripulantes *aux_admin;
+    t_admin_tripulantes *tripulante_elegido;
     t_posicion *unSabotaje;
     int index;
     int distancia = -1;
@@ -40,10 +41,16 @@ void sabotajes()
                 index = i;
         }
 
+        tripulante_elegido = list_get(bloq, index);
+
         //MUEVO EL TRIPULANTE A LA POSICION DEL SABOTAJE
-        //mover_tripulante()
+        //mover_tripulante(tripulante_elegido, unSabotaje->posX, unSabotaje->posY, ))
         
         //INVOCO AL FSCK
+        int tamanioSerializacion;
+        void *dEnviar = serializarInt(tripulante_elegido->tid, ALERTA_SABOTAJE, &tamanioSerializacion);
+        send(tripulante_elegido->sockfd_tripulante_mongo, dEnviar, tamanioSerializacion, 0);
+        free(dEnviar);
 
         //RESUELVO EL SABOTAJE 
         resolver_sabotaje();

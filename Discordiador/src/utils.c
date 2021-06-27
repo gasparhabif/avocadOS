@@ -144,24 +144,24 @@ int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
 void pausar(){
     if(planificando){
         for (int i = 0; i < config->grado_multitarea; i++)
-            sem_post(&s_multiprocesamiento);     
-        pthread_mutex_unlock(&mutex_block);
+            sem_post(&pause_exec);     
+        pthread_mutex_unlock(&pause_block);
     }
     else{
         for (int i = 0; i < config->grado_multitarea; i++)
-            sem_wait(&s_multiprocesamiento);     
-        pthread_mutex_lock(&mutex_block);
+            sem_wait(&pause_exec);     
+        pthread_mutex_lock(&pause_block);
     }
 }
 
 int eliminarTripulante(t_list *lista, int tid){
     
     t_admin_tripulantes *aux_admin;
-    
+
     for(int i=0; i<list_size(lista); i++){
         aux_admin = list_get(lista, i);
         if(aux_admin->tid == tid){
-            list_remove(exec, i);
+            list_remove(lista, i);
             return 1;
         }
     }
@@ -173,14 +173,35 @@ int menor_tid_list(t_list* lista){
 
     t_admin_tripulantes *aux_admin;
 
-    int tid_minimo = -1;
+    int tid_minimo;
+    int index;
+
+    aux_admin  = list_get(lista, 0);
+    tid_minimo = aux_admin->tid;
+
+    for(int i=1; i<list_size(lista); i++){
+        aux_admin = list_get(lista, i);
+        if(aux_admin->tid <= tid_minimo){
+            index = i;
+            tid_minimo = aux_admin->tid;
+        }
+    }
+
+    return index;
+}
+
+int mayor_tid_list(t_list* lista){
+
+    t_admin_tripulantes *aux_admin;
+
+    int tid_maximo = -1;
     int index;
 
     for(int i=0; i<list_size(lista); i++){
         aux_admin = list_get(lista, i);
-        if(aux_admin->tid >= tid_minimo){
-            index = 1;
-            tid_minimo = aux_admin->tid;
+        if(aux_admin->tid >= tid_maximo){
+            index = i;
+            tid_maximo = aux_admin->tid;
         }
     }
 

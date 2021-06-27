@@ -1,3 +1,5 @@
+// valgrind --tool=memcheck --leak-check=yes --show-possibly-lost=no --show-reachable=no --num-callers=20 ./proceso1
+
 #include "proceso1.h"
 
 int main(int argc, char **argv)
@@ -27,10 +29,12 @@ int main(int argc, char **argv)
 	pthread_mutex_init(&m_listaExec,  NULL);
 	pthread_mutex_init(&m_listaReady, NULL);
 	
+	pthread_mutex_init(&pause_block, NULL);
+	sem_init(&pause_exec, 0, config->grado_multitarea);
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
-	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
+	//sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
 	//sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
@@ -39,7 +43,7 @@ int main(int argc, char **argv)
 	char reconectOP;
 	system("clear");
 
-	while (sockfd_ram == -1 || sockfd_mongo == -1)
+	/*while (sockfd_ram == -1 || sockfd_mongo == -1)
 	{
 		system("clear");
 		printf("Error de conexion ¿desea reconectar? [s|n]\n");
@@ -60,11 +64,13 @@ int main(int argc, char **argv)
 			system("clear");
 		}
 	}
+	*/
+
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
-	pthread_t thread_sabotajes;
-	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
+	//pthread_t thread_sabotajes;
+	//pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
 
 	//LECTURA DE CONSOLA
 	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
@@ -72,7 +78,6 @@ int main(int argc, char **argv)
 	char *leido;
 	char **parametros;
 	leido = readline(">");
-
 	while (strcmp(leido, "EXIT") && strcmp(leido, "exit"))
 	{
 		add_history(leido);

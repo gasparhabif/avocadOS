@@ -28,7 +28,7 @@ void tripulante(void *parametro)
 
     //ABRO LA CONEXION
     //admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
-    admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
+    //admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     /*if(sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1){
         log_info(logger, "Muerte de tripulante por fallo de conexion");
         return;
@@ -143,7 +143,7 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     tarea_recibida->duracionTarea = 5;
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
-    printf("Codigo de la Tarea recibida%d\n", tarea_recibida->codigoTarea);
+    printf("Codigo de la Tarea recibida %d\n", tarea_recibida->codigoTarea);
 
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
         *finTareas = 1;
@@ -236,11 +236,13 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     {
         case EXEC:
             pthread_mutex_lock(&m_listaExec);
+            log_info(logger, "Sale de EXEC: %d", admin->tid);
             eliminarTripulante(exec, admin->tid);
             pthread_mutex_unlock(&m_listaExec);
             break;
         case READY:
             pthread_mutex_lock(&m_listaReady);
+            log_info(logger, "Sale de READY: %d", admin->tid);
             eliminarTripulante(ready, admin->tid);
             pthread_mutex_unlock(&m_listaReady);
             break;
@@ -255,11 +257,13 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     {
         case EXEC:
             pthread_mutex_lock(&m_listaExec);
+            log_info(logger, "Entra a EXEC: %d", admin->tid);
             list_add(exec, admin);
             pthread_mutex_unlock(&m_listaExec);
             break;
         case READY:
             pthread_mutex_lock(&m_listaReady);
+            log_info(logger, "Entra a READY: %d", admin->tid);
             list_add(ready, admin);
             pthread_mutex_unlock(&m_listaReady);
             break;
@@ -327,13 +331,24 @@ int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal)
 
 void retardo_ciclo_cpu()
 {
-    sleep(config->retardo_ciclo_cpu);
-    log_info(logger, "Un ciclo");
+    for (int i = 0; i < config->retardo_ciclo_cpu; i++)
+    {
+        sem_wait(&pause_exec);
+        sleep(1);
+        sem_post(&pause_exec);
+    }
+
     return;
 }
 
 void retardo_ciclo_IO()
 {
-    sleep(config->retardo_ciclo_cpu);
+    for (int i = 0; i < config->retardo_ciclo_cpu; i++)
+    {
+        pthread_mutex_lock(&pause_exec);
+        sleep(1);
+        pthread_mutex_unlock(&pause_exec);
+    }
+    
     return;
 }
