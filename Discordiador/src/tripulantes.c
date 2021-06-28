@@ -77,12 +77,12 @@ void tripulante(void *parametro)
             //EJECUTO LA TAREA, SI DEBO BLOCKEAR EL TRIPULANTE LA VARIABLE BLOCK VALDRA 1
             block = ejecutar_tarea(admin, tarea_recibida, &duracionMovimientos, &duracionEjecucion);
 
-            printf("Block: %d\n", block);
+            //printf("Block: %d\n", block);
 
-            printf("Duracion movimientos: %d\nDuracion ejecucion: %d\nDuracion bloqueado: %d\n", duracionMovimientos, duracionEjecucion, duracionBloqueado);
+            //printf("Duracion movimientos: %d\nDuracion ejecucion: %d\nDuracion bloqueado: %d\n", duracionMovimientos, duracionEjecucion, duracionBloqueado);
 
             //CHEQUEO SI QUEDO ALGO POR EJECUTAR DE ESTA TAREA
-            if (duracionEjecucion == 0 && duracionBloqueado == 0)
+            if (duracionMovimientos == 0 && duracionEjecucion == 0 && duracionBloqueado == 0)
                 tareaPendiente = 0;
             else
                 tareaPendiente = 1;
@@ -111,6 +111,7 @@ void tripulante(void *parametro)
                 retardo_ciclo_cpu();
             }
             duracionBloqueado = 0;
+            tareaPendiente = 0;
 
             pthread_mutex_unlock(&mutex_block);
             actualizar_estado(admin, READY);
@@ -153,8 +154,6 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     tarea_recibida->duracionTarea = 5;
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
-    printf("Codigo de la Tarea recibida %d\n", tarea_recibida->codigoTarea);
-
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
         *finTareas = 1;
     else
@@ -162,16 +161,15 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
         //CALCULO DEL TIEMPO QUE LA TAREA PERMANECERÁ MOVIENDOSE POR EL MAPA, EN EJECUCION Y BLOQUEADA
         if (tarea_recibida->codigoTarea == MOVER_POSICION)
         {
-            *duracionMovimientos = cantMovimientos(admin->posX, admin->posY, tarea_recibida->posX, tarea_recibida->posY);
             *duracionBloqueado = 0;
             *duracionEjecucion = tarea_recibida->duracionTarea;
         }
         else
         {
-            *duracionMovimientos = cantMovimientos(admin->posX, admin->posY, tarea_recibida->posX, tarea_recibida->posY);
             *duracionEjecucion = 1; //ENVIO DE TAREA AL MONGO
             *duracionBloqueado = tarea_recibida->duracionTarea;
         }
+        *duracionMovimientos = cantMovimientos(admin->posX, admin->posY, tarea_recibida->posX, tarea_recibida->posY);
     }
 
     log_info(logger, "Tarea recibida:\nDuracion movimientos: %d\nDuracion ejecucion:   %d\nDuracion bloqueado:   %d\n", *duracionMovimientos, *duracionEjecucion, *duracionBloqueado);
@@ -197,6 +195,8 @@ int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionM
     }
 
     mover_tripulante(admin, unaTarea->posX, unaTarea->posY, tiempoMovimientos, duracionMovimientos);
+
+    //printf("Tiempo ejecucion %d", tiempoEjecutando);
 
     for (int i = 0; i < tiempoEjecutando; i++)
     {
@@ -336,7 +336,7 @@ void mover_una_posicion(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t po
 
 int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal)
 {
-    return (xFinal - xInicial) + (yFinal - yInicial);
+    return fabs((xFinal - xInicial)) + fabs((yFinal - yInicial));
 }
 
 void retardo_ciclo_cpu()

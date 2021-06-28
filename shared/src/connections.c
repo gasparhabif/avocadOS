@@ -81,8 +81,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
             dRecibidos = deserializar_envioPosicion(paquete->buffer);
             break;
         case ALERTA_SABOTAJE:
-            dRecibidos = deserializar_envioPosicion(paquete->buffer);
-            //TODO       deserializar_envioSabotaje
+            dRecibidos = deserealizar_posicion(paquete->buffer);
             break;
     }
 

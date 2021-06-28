@@ -136,5 +136,17 @@ t_envio_posicion *deserializar_envioPosicion(t_buffer *buffer)
     //free(estado_recibido);
 }
 
+t_posicion *deserealizar_posicion(t_buffer *buffer){
 
-//TODO: deserealizar_envioSabotaje
+    t_posicion *pos_recibida = malloc(sizeof(t_posicion));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(pos_recibida->posX), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+    memcpy(&(pos_recibida->posX), stream, sizeof(u_int32_t));
+    stream += sizeof(u_int32_t);
+
+    return pos_recibida;
+
+}

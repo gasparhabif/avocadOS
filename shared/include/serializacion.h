@@ -24,6 +24,7 @@ t_tareas_cPID*    deserializarTareas_cPID        (t_buffer *);
 int*              deserializarInt                (t_buffer *);
 t_estado*         deserializar_ActulizacionEstado(t_buffer *);
 t_envio_posicion* deserializar_envioPosicion     (t_buffer *);
+t_posicion*       deserealizar_posicion          (t_buffer *);
 
 
 #endif
