@@ -41,7 +41,6 @@ int main(int argc, char **argv)
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
 	char reconectOP;
-	system("clear");
 
 	/*while (sockfd_ram == -1 || sockfd_mongo == -1)
 	{

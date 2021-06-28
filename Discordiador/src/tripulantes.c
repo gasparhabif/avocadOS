@@ -27,7 +27,7 @@ void tripulante(void *parametro)
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
     //ABRO LA CONEXION
-    admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    //admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     //admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     /*if(sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1){
         log_info(logger, "Muerte de tripulante por fallo de conexion");
@@ -40,16 +40,20 @@ void tripulante(void *parametro)
     send(admin->sockfd_tripulante_ram, d_Enviar, tamanioSerializacion, 0);
     free(tcb_tripulante);
     free(d_Enviar);
-    log_info(logger, "Se envio el TCB");
+    log_info(logger, "Se envio el TCB a la RAM");
 
-    //TODO: ENVIAR EL TID AL MONGO y posicion inicial
+    //ENVIO EL TID Y LA POSICION INICIAL AL MONGO
+    void *enviar_tidYpos = serializar_envioPosicion(admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
+    send(admin->sockfd_tripulante_mongo, enviar_tidYpos, tamanioSerializacion, 0);
+    free(enviar_tidYpos);
+    log_info(logger, "Se envio el TID y la posicion al i-mongo-store");
 
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
     //recv();
 
     //CAMBIAR A ESTADO READY
     actualizar_estado(admin, READY);
-
+    
     //SOLICITO LA PRIMERA TAREA
     tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
     tareaPendiente = 1;
@@ -73,6 +77,10 @@ void tripulante(void *parametro)
             //EJECUTO LA TAREA, SI DEBO BLOCKEAR EL TRIPULANTE LA VARIABLE BLOCK VALDRA 1
             block = ejecutar_tarea(admin, tarea_recibida, &duracionMovimientos, &duracionEjecucion);
 
+            printf("Block: %d\n", block);
+
+            printf("Duracion movimientos: %d\nDuracion ejecucion: %d\nDuracion bloqueado: %d\n", duracionMovimientos, duracionEjecucion, duracionBloqueado);
+
             //CHEQUEO SI QUEDO ALGO POR EJECUTAR DE ESTA TAREA
             if (duracionEjecucion == 0 && duracionBloqueado == 0)
                 tareaPendiente = 0;
@@ -87,6 +95,7 @@ void tripulante(void *parametro)
 
         if (block)
         {
+            block=0;
             actualizar_estado(admin, BLOCKED_IO);
             pthread_mutex_lock(&mutex_block);
 
@@ -96,12 +105,12 @@ void tripulante(void *parametro)
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
             free(d_enviar);
 
-            for (int i = 0; i < duracionBloqueado; i++)
+            for (int i = duracionBloqueado; i > 0; i--)
             {
+                log_info(logger, "Ciclo bloqueado");
                 retardo_ciclo_cpu();
-                duracionBloqueado--;
             }
-            block = 0;
+            duracionBloqueado = 0;
 
             pthread_mutex_unlock(&mutex_block);
             actualizar_estado(admin, READY);
@@ -139,8 +148,8 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
 
     tarea_recibida->codigoTarea = 3;
     tarea_recibida->parametro = 4;
-    tarea_recibida->posX = 2;
-    tarea_recibida->posY = 5;
+    tarea_recibida->posX = 3;
+    tarea_recibida->posY = 4;
     tarea_recibida->duracionTarea = 5;
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
@@ -165,7 +174,7 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
         }
     }
 
-    log_info(logger, "Tarea recibida");
+    log_info(logger, "Tarea recibida:\nDuracion movimientos: %d\nDuracion ejecucion:   %d\nDuracion bloqueado:   %d\n", *duracionMovimientos, *duracionEjecucion, *duracionBloqueado);
 
     return tarea_recibida;
 }
@@ -189,14 +198,14 @@ int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionM
 
     mover_tripulante(admin, unaTarea->posX, unaTarea->posY, tiempoMovimientos, duracionMovimientos);
 
-
     for (int i = 0; i < tiempoEjecutando; i++)
     {
+        log_info(logger, "Ciclo ejecucion");
         retardo_ciclo_cpu();
-        duracionEjecucion--;
+        (*duracionEjecucion)--;
     }
 
-    if (unaTarea->codigoTarea != MOVER_POSICION && duracionMovimientos == 0 && duracionEjecucion == 0)
+    if (unaTarea->codigoTarea != MOVER_POSICION && *duracionMovimientos == 0 && *duracionEjecucion == 0)
         return 1;
 
     return 0;
