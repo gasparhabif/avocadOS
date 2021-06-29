@@ -110,6 +110,13 @@ typedef struct
     t_tarea *tareas;
 } t_tareas_cPID;
 
+typedef struct
+{
+    u_int32_t tid;
+    u_int8_t tamanioTarea;
+    char *tarea;
+} t_tareas_cNOMBRE;
+
 //ACTUALIZACIONES
 typedef struct
 {

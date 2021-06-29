@@ -27,21 +27,29 @@
 //STRUCTS
 typedef struct
 {
+    u_int32_t pid;
     u_int32_t tid;
-    char estado;
+    char      estado;
     u_int32_t posX;
     u_int32_t posY;
-    int sockfd_tripulante_ram;
-    int sockfd_tripulante_mongo;
+    int       sockfd_tripulante_ram;
+    int       sockfd_tripulante_mongo;
+    pthread_t threadTripulante;
 } t_admin_tripulantes;
 
+typedef struct
+{
+    t_TCB               tcbTripulante;
+    t_admin_tripulantes admin;
+} t_parametros_tripulantes;
+
 //DEFINIDAS EN consola.c
-void INICIAR_PATOTA       (char **);
-void LISTAR_TRIPULANTES   (char **);
-void EXPULSAR_TRIPULANTE  (char **);
-void INICIAR_PLANIFICACION(char **);
-void PAUSAR_PLANIFICACION (char **);
-void OBTENER_BITACORA     (char **);
+void INICIAR_PATOTA        (char **);
+void LISTAR_TRIPULANTES    (char **);
+void EXPULSAR_TRIPULANTE   (char **);
+void INICIAR_PLANIFICACION (char **);
+void PAUSAR_PLANIFICACION  (char **);
+void OBTENER_BITACORA      (char **);
 
 //DEFINIDAS EN utils.c
 t_tarea *leer_tareas                  (FILE *, int *, int *);
@@ -89,6 +97,7 @@ t_list *bloq;
 
 pthread_mutex_t m_listaExec;
 pthread_mutex_t m_listaReady;
+pthread_mutex_t m_listaBlock;
 
 sem_t           pause_exec;
 pthread_mutex_t pause_block;

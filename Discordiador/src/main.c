@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 	system("clear");
 
 	//CREO EL LOGGER Y CONFIG
-	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 0, LOG_LEVEL_INFO);
+	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
 	log_info(logger, "Se inicio el log del discordiador");
 
 	config = get_cpu_config("../Discordiador/cfg/config.cfg");

@@ -43,7 +43,6 @@ void INICIAR_PATOTA(char **parametros)
                 int tamanioSerializacion;
                 void *d_Enviar = serializarTareas_cPID(tareas, patota_id, &tamanioSerializacion, cantTareas);
                 //printf("Serializacion completada, %d bytes se enviaran\n", tamanioSerializacion);
-                patota_id++;
 
                 //ENVIAR TAREAS
                 //printf("Enviando datos...\n");
@@ -98,10 +97,16 @@ void INICIAR_PATOTA(char **parametros)
                 //cuando hago el free de estoo?
                 pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
 
-                for (int i = 0; i < cantTripulantes; i++)
+                t_admin_tripulantes *admin = malloc(sizeof(pthread_t) * cantTripulantes);
+
+                for (int i = 0; i < cantTripulantes; i++){
+
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) &(tripulantes_tcb[i]));
+                }
             
                 printf("Iniciando %d tripulantes\n", cantTripulantes);
+
+                patota_id++;
             
             }
         }
@@ -111,6 +116,7 @@ void INICIAR_PATOTA(char **parametros)
 
 void LISTAR_TRIPULANTES(char **parametros)
 {
+
 }
 
 void EXPULSAR_TRIPULANTE(char **parametros)

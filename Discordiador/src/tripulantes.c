@@ -132,7 +132,7 @@ void tripulante(void *parametro)
 
 t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado)
 {
-
+    //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
     int tamanioSerializacion;
     void *comenzar_tarea = serializarInt(admin->tid, INICIO_TAREA, &tamanioSerializacion);
     send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
