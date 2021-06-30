@@ -97,11 +97,20 @@ void INICIAR_PATOTA(char **parametros)
                 //cuando hago el free de estoo?
                 pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
 
-                t_admin_tripulantes *admin = malloc(sizeof(pthread_t) * cantTripulantes);
-
                 for (int i = 0; i < cantTripulantes; i++){
+                    
+                    //CREO LA ESTRUCTURA DE ADMINISTACION DEL TRIPULANTE Y LE ASIGNO INFORMACION QUE DESPUES NO LE VOY A PODER ASIGNAR                    
+                    t_admin_tripulantes *admin             = malloc(sizeof(t_admin_tripulantes));
+                    admin->pid               = patota_id;
+                    admin->threadTripulante  = threads_tripulantes[i];
 
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) &(tripulantes_tcb[i]));
+                    //CREO LOS PARAMETROS PARA EL TRIPULANTE A CREAR
+                    t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(parametros_tripulante));
+                    parametros_tripulante->tcbTripulante = tripulantes_tcb[i];
+                    parametros_tripulante->admin         = admin;
+
+                    //CREO EL TRIPULANTE
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) parametros_tripulante);
                 }
             
                 printf("Iniciando %d tripulantes\n", cantTripulantes);
@@ -109,18 +118,80 @@ void INICIAR_PATOTA(char **parametros)
                 patota_id++;
             
             }
+            
+            fclose(fpTareas);
         }
-        fclose(fpTareas);
     }
 }
 
 void LISTAR_TRIPULANTES(char **parametros)
 {
+    char *hora = malloc(128);
+    strftime(hora,128,"%d/%m/%y %H:%M:%S",tlocal);
 
+    printf("--------------------------------------------------------------------------------\n");
+    
+    printf("Estado de la nave: %s\n", hora);
+    free(hora);
+
+    t_admin_tripulantes *aux_admin;
+
+    for (int i = 0; i < list_size(ready); i++)
+    {
+        aux_admin = list_get(ready, i);
+        printf("Patota: %d\t",     aux_admin->pid);
+        printf("Tripulante: %d\t", aux_admin->tid);
+        printf("Status: %c\t",     aux_admin->estado);
+        printf("Pos X: %d\t",      aux_admin->posX);
+        printf("Pos Y: %d\n",      aux_admin->posY);
+    }
+
+    for (int i = 0; i < list_size(exec); i++)
+    {
+        aux_admin = list_get(exec, i);
+        printf("Patota: %d\t",     aux_admin->pid);
+        printf("Tripulante: %d\t", aux_admin->tid);
+        printf("Status: %c\t",     aux_admin->estado);
+        printf("Pos X: %d\t",      aux_admin->posX);
+        printf("Pos Y: %d\n",      aux_admin->posY);
+    }
+
+    for (int i = 0; i < list_size(bloq_IO); i++)
+    {
+        aux_admin = list_get(bloq_IO, i);
+        printf("Patota: %d\t",     aux_admin->pid);
+        printf("Tripulante: %d\t", aux_admin->tid);
+        printf("Status: %c\t",     aux_admin->estado);
+        printf("Pos X: %d\t",      aux_admin->posX);
+        printf("Pos Y: %d\n",      aux_admin->posY);
+    }
+
+    printf("--------------------------------------------------------------------------------\n");
+    
 }
 
 void EXPULSAR_TRIPULANTE(char **parametros)
 {
+    pthread_t thread_eliminar;
+
+    //SACO AL TRIPULANTE DE LA LISTA EN LA QUE SE ENCUENTRE (SI EXISTE)
+    if(matarTripulante(atoi(parametros[1]), &thread_eliminar)){
+
+        //ELIMINO AL TRIPULANTE DE LA MEMORIA
+        int bEnviar;
+        void *dEnviar = serializarInt(atoi(parametros[1]), ELIMINAR_TRIPULANTE, &bEnviar);
+        send(sockfd_ram, dEnviar, bEnviar, 0);
+        free(dEnviar);
+
+        //ELIMINO EL THREAD
+        pthread_cancel(thread_eliminar);
+
+        //DOY EL AVISO
+        printf("Se elimino al tripulante %d\n", atoi(parametros[1]));
+        log_info(logger, "Se elimino al tripulante %d\n", atoi(parametros[1]));
+    }
+    else
+        printf("El tripulante %d no existe\n", atoi(parametros[1]));
 }
 
 void INICIAR_PLANIFICACION(char **parametros)
@@ -132,9 +203,6 @@ void INICIAR_PLANIFICACION(char **parametros)
         log_info(logger, "Iniciando planificacion...\n");
         printf("Iniciando planificacion...\n");
         planificando = 1;
-        for (int i = 0; i < config->grado_multitarea; i++)
-            sem_post(&s_multiprocesamiento);     
-        pthread_mutex_unlock(&mutex_block);
         pausar();
     }
 }

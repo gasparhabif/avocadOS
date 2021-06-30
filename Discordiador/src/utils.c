@@ -207,3 +207,43 @@ int mayor_tid_list(t_list* lista){
 
     return index;
 }
+
+int matarTripulante(int tid, pthread_t *threadEliminar){
+    
+    t_admin_tripulantes *aux_admin;
+
+    for (int i = 0; i < list_size(ready); i++)
+    {
+        aux_admin = list_get(ready, i);
+        if (aux_admin->tid == tid)
+        {
+            *threadEliminar = aux_admin->threadTripulante;
+            list_remove(ready, i);
+            return 1;
+        }
+    }
+
+    for (int i = 0; i < list_size(exec); i++)
+    {
+        aux_admin = list_get(exec, i);
+        if (aux_admin->tid == tid)
+        {
+            *threadEliminar = aux_admin->threadTripulante;
+            list_remove(exec, i);
+            return 1;
+        }
+    }
+
+    for (int i = 0; i < list_size(bloq_IO); i++)
+    {
+        aux_admin = list_get(bloq_IO, i);
+        if (aux_admin->tid == tid)
+        {
+            *threadEliminar = aux_admin->threadTripulante;
+            list_remove(bloq_IO, i);
+            return 1;
+        }
+    }
+
+    return 0;
+}

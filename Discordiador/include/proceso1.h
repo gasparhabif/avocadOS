@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/txt.h>
@@ -39,8 +40,8 @@ typedef struct
 
 typedef struct
 {
-    t_TCB               tcbTripulante;
-    t_admin_tripulantes admin;
+    t_TCB                tcbTripulante;
+    t_admin_tripulantes *admin;
 } t_parametros_tripulantes;
 
 //DEFINIDAS EN consola.c
@@ -58,6 +59,7 @@ void     pausar                       ();
 int      eliminarTripulante           (t_list *, int);
 int      menor_tid_list               (t_list*);
 int      mayor_tid_list               (t_list*);
+int      matarTripulante              (int, pthread_t *);
 
 //DEFINIDAS EN tripulantes.c
 void     tripulante           (void *parametro);
@@ -94,12 +96,15 @@ pthread_mutex_t mutex_block;
 t_list *exec;
 t_list *ready;
 t_list *bloq;
+t_list *bloq_IO;
 
 pthread_mutex_t m_listaExec;
 pthread_mutex_t m_listaReady;
-pthread_mutex_t m_listaBlock;
+pthread_mutex_t m_listaBlockIO;
 
 sem_t           pause_exec;
 pthread_mutex_t pause_block;
+
+struct tm *tlocal;
 
 #endif

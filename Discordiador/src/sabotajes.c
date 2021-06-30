@@ -2,7 +2,6 @@
 
 void sabotajes()
 {
-    
     t_admin_tripulantes *aux_admin;
     t_admin_tripulantes *tripulante_elegido;
     t_posicion *unSabotaje;
@@ -58,6 +57,8 @@ void sabotajes()
         //DESBLOQUEO TRIPULANTES
 
     }
+
+    return;
 }
 
 void resolver_sabotaje(){

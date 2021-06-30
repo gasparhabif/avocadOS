@@ -150,8 +150,6 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
 
-    printf("Ahora si creo el paq\n");
-
     buffer->stream = stream;
 
     // Cantidad de Tareas * Tamaño Tareas + Cant Tareas + PID + Size del Stream

@@ -37,12 +37,12 @@ enum CODIGOS_DE_BITACORAS
 };
 
 //ESTADOS
-#define NEW                        'N'
-#define READY                      'R'
-#define EXEC                       'E'
-#define BLOCKED_IO                 'B'
-#define BLOCKED_EMERGENCY          'Y'
-#define EXIT                       'X'
+#define NEW                      'N'
+#define READY                    'R'
+#define EXEC                     'E'
+#define BLOCKED_IO               'B'
+#define BLOCKED_EMERGENCY        'Y'
+#define EXIT                     'X'
 
 //BUFFERS Y PAQUETE
 typedef struct

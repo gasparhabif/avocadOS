@@ -13,16 +13,37 @@ void tripulante(void *parametro)
 
     log_info(logger, "Se inicio el tripulante N°:%d", tid);
 
+    //TRAIGO LOS PARAMETROS
+    t_parametros_tripulantes *parametros_recibidos = malloc(sizeof(t_parametros_tripulantes));
+    *parametros_recibidos = *(t_parametros_tripulantes *) parametro;
+
     //TRAIGO EL TCB Y LO COMPLETO
-    *tcb_tripulante = *(t_TCB *)parametro;
+    *tcb_tripulante = parametros_recibidos->tcbTripulante;
     tcb_tripulante->TID = tid;
+
+    /*
+    printf("TID:    %d\n", tcb_tripulante->TID);
+    printf("ESTADO: %d\n", tcb_tripulante->estado);
+    printf("POSX:   %d\n", tcb_tripulante->posX);
+    printf("POSY:   %d\n", tcb_tripulante->posY);
+    */
 
     //CREO EL TCB AUXILIAR CON EL QUE VOY A TRABAJAR EN LA PLANIFICACION, SABOTAJES Y MAS
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
-    admin->tid                 = tid;
-    admin->estado              = NEW;
-    admin->posX                = tcb_tripulante->posX;
-    admin->posY                = tcb_tripulante->posY;
+    admin = parametros_recibidos->admin;
+
+    admin->tid    = tid;
+    admin->estado = NEW;
+    admin->posX   = tcb_tripulante->posX;
+    admin->posY   = tcb_tripulante->posY;
+
+    /*
+    printf("PID:    %d\n", admin->pid);
+    printf("TID:    %d\n", admin->tid);
+    printf("ESTADO: %d\n", admin->estado);
+    printf("POSX:   %d\n", admin->posX);
+    printf("POSY:   %d\n", admin->posY);
+    */
 
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
@@ -256,7 +277,11 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
             eliminarTripulante(ready, admin->tid);
             pthread_mutex_unlock(&m_listaReady);
             break;
-        default:
+        case BLOCKED_IO:
+            pthread_mutex_lock(&m_listaBlockIO);
+            log_info(logger, "Sale de BLOCK_IO: %d", admin->tid);
+            eliminarTripulante(bloq_IO, admin->tid);
+            pthread_mutex_unlock(&m_listaBlockIO);
             break;
     }
 
@@ -276,6 +301,12 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
             log_info(logger, "Entra a READY: %d", admin->tid);
             list_add(ready, admin);
             pthread_mutex_unlock(&m_listaReady);
+            break;
+        case BLOCKED_IO:
+            pthread_mutex_lock(&m_listaBlockIO);
+            log_info(logger, "Entra a BLOCK_IO: %d", admin->tid);
+            list_add(bloq_IO, admin);
+            pthread_mutex_unlock(&m_listaBlockIO);
             break;
         default:
             break;

@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 	system("clear");
 
 	//CREO EL LOGGER Y CONFIG
-	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 1, LOG_LEVEL_INFO);
+	logger = log_create("logs/discordiador.log", "DISCORDIADOR", 0, LOG_LEVEL_INFO);
 	log_info(logger, "Se inicio el log del discordiador");
 
 	config = get_cpu_config("../Discordiador/cfg/config.cfg");
@@ -22,15 +22,20 @@ int main(int argc, char **argv)
 	pthread_mutex_init(&mutex_block, NULL);
 	sem_init(&s_multiprocesamiento, 0, config->grado_multitarea);
 
-	exec  = list_create();
-	ready = list_create();
-	bloq  = list_create();
+	exec    = list_create();
+	ready   = list_create();
+	bloq    = list_create();
+	bloq_IO = list_create();
 
 	pthread_mutex_init(&m_listaExec,  NULL);
 	pthread_mutex_init(&m_listaReady, NULL);
+	pthread_mutex_init(&m_listaBlockIO, NULL);
 	
 	pthread_mutex_init(&pause_block, NULL);
 	sem_init(&pause_exec, 0, config->grado_multitarea);
+
+	time_t tiempo = time(0);
+    tlocal = localtime(&tiempo);
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
