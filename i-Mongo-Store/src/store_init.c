@@ -2,40 +2,16 @@
 
 void init_paths()
 {
-    // Directorio de Files
-    files_dir_path = malloc(strlen(config->punto_montaje) + strlen("/Files"));
-    strcpy(files_dir_path, config->punto_montaje);
-    strcat(files_dir_path, "/Files");
+    // Directorios
+    files_dir_path = string_from_format("%s/Files", config->punto_montaje);
+    bitacoras_dir_path = string_from_format("%s/Bitacoras", files_dir_path);
 
-    // Directorio de Bitacoras
-    bitacoras_dir_path = malloc(strlen(files_dir_path) + strlen("/Bitacoras"));
-    strcpy(bitacoras_dir_path, files_dir_path);
-    strcat(bitacoras_dir_path, "/Bitacoras");
-
-    // Archivo SuperBloque.ims
-    superbloque_file_path = malloc(strlen(config->punto_montaje) + strlen("/SuperBloque.ims"));
-    strcpy(superbloque_file_path, config->punto_montaje);
-    strcat(superbloque_file_path, "/SuperBloque.ims");
-
-    // Archivo Blocks.ims
-    blocks_file_path = malloc(strlen(config->punto_montaje) + strlen("/Blocks.ims"));
-    strcpy(blocks_file_path, config->punto_montaje);
-    strcat(blocks_file_path, "/Blocks.ims");
-
-    // Archivo Oxigeno.ims
-    oxigeno_file_path = malloc(strlen(files_dir_path) + strlen("/Oxigeno.ims"));
-    strcpy(oxigeno_file_path, files_dir_path);
-    strcat(oxigeno_file_path, "/Oxigeno.ims");
-
-    // Archivo Comida.ims
-    comida_file_path = malloc(strlen(files_dir_path) + strlen("/Comida.ims"));
-    strcpy(comida_file_path, files_dir_path);
-    strcat(comida_file_path, "/Comida.ims");
-
-    // Archivo Basura.ims
-    basura_file_path = malloc(strlen(files_dir_path) + strlen("/Basura.ims"));
-    strcpy(basura_file_path, files_dir_path);
-    strcat(basura_file_path, "/Basura.ims");
+    // Archivos
+    superbloque_file_path = string_from_format("%s/SuperBloque.ims", config->punto_montaje);
+    blocks_file_path = string_from_format("%s/Blocks.ims", config->punto_montaje);
+    oxigeno_file_path = string_from_format("%s/Oxigeno.ims", files_dir_path);
+    comida_file_path = string_from_format("%s/Comida.ims", files_dir_path);
+    basura_file_path = string_from_format("%s/Basura.ims", files_dir_path);
 }
 
 bool file_exists(char *path)

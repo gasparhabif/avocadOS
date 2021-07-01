@@ -1,5 +1,44 @@
 #include "proceso2.h"
 
+// Selector de tareas
+void ejecutarTarea(t_tarea *tarea_a_ejecutar)
+{
+    switch (tarea_a_ejecutar->codigoTarea)
+    {
+    case FIN_TAREAS:
+        finTareas();
+        break;
+    case GENERAR_OXIGENO:
+        generarOxigeno(tarea_a_ejecutar->parametro);
+        break;
+    case CONSUMIR_OXIGENO:
+        consumirOxigeno(tarea_a_ejecutar->parametro);
+        break;
+    case GENERAR_COMIDA:
+        generarComida(tarea_a_ejecutar->parametro);
+        break;
+    case CONSUMIR_COMIDA:
+        consumirComida(tarea_a_ejecutar->parametro);
+        break;
+    case GENERAR_BASURA:
+        generarBasura(tarea_a_ejecutar->parametro);
+        break;
+    case DESCARTAR_BASURA:
+        descartarBasura();
+        break;
+    default:
+        tareaNormal();
+        break;
+    }
+}
+
+// FIN DE TAREAS
+void finTareas()
+{
+    log_info(logger, "El tripulante finalizó sus tareas");
+    // ...
+}
+
 // TAREAS DE ENTRADA/SALIDA
 void generarOxigeno(int cantidad)
 {
@@ -37,6 +76,13 @@ void descartarBasura()
     // ...
 }
 
+// TAREA NORMAL
+void tareaNormal()
+{
+    log_info(logger, "Se solicitó realizar una tarea normal");
+    // ...
+}
+
 // REGISTRO DE BITÁCORA
 void registrarDesplazamiento()
 {
@@ -66,35 +112,4 @@ void registrarResolucionSabotaje()
 {
     log_info(logger, "Registrando RESOLUCIÓN DE SABOTAJE...");
     // ...
-}
-
-void ejecutarTarea(t_tarea *tarea_a_ejecutar) {
-    switch (tarea_a_ejecutar->codigoTarea)
-    {
-                case FIN_TAREAS:
-                    // TODO: Registrar en bitácora
-                    log_info(logger, "El tripulante finalizó sus tareas");
-                    break;
-                case GENERAR_OXIGENO:
-                    generarOxigeno(tarea_a_ejecutar->parametro);
-                    break;
-                case CONSUMIR_OXIGENO:
-                    consumirOxigeno(tarea_a_ejecutar->parametro);
-                    break;
-                case GENERAR_COMIDA:
-                    generarComida(tarea_a_ejecutar->parametro);
-                    break;
-                case CONSUMIR_COMIDA:
-                    consumirComida(tarea_a_ejecutar->parametro);
-                    break;
-                case GENERAR_BASURA:
-                    generarBasura(tarea_a_ejecutar->parametro);
-                    break;
-                case DESCARTAR_BASURA:
-                    descartarBasura();
-                    break;
-                default:
-                    log_error(logger, "Código de tarea desconocido");
-                    break;
-    }
 }

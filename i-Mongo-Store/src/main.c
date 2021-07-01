@@ -32,7 +32,6 @@ int main()
     // pthread_t discordiador_cnx_thread;
     // pthread_create(&discordiador_cnx_thread, NULL, (void *)discordiador_cxn_handler, (void *)server_instance);
 
-
     // Aceptar conexiones de los tripulantes
     pthread_t tripulantes_cxns_thread;
     pthread_create(&tripulantes_cxns_thread, NULL, (void *)accept_tripulantes, (void *)server_instance);
