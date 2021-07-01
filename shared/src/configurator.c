@@ -60,13 +60,13 @@ t_cpu_conf *get_cpu_config(char *path)
 
 static void llenar_campos_cpu(char *response[CANTIDAD_CAMPOS_CPU])
 {
-    response[IP_RAM] = "IP_MI_RAM_HQ";
-    response[PUERTO_RAM] = "PUERTO_MI_RAM_HQ";
-    response[IP_MONGO] = "IP_I_MONGO_STORE";
-    response[PUERTO_MONGO] = "PUERTO_I_MONGO_STORE";
-    response[GRADO_MULTITAREA] = "GRADO_MULTITAREA";
-    response[ALGORITMO] = "ALGORITMO";
-    response[QUANTUM] = "QUANTUM";
+    response[IP_RAM]            = "IP_MI_RAM_HQ";
+    response[PUERTO_RAM]        = "PUERTO_MI_RAM_HQ";
+    response[IP_MONGO]          = "IP_I_MONGO_STORE";
+    response[PUERTO_MONGO]      = "PUERTO_I_MONGO_STORE";
+    response[GRADO_MULTITAREA]  = "GRADO_MULTITAREA";
+    response[ALGORITMO]         = "ALGORITMO";
+    response[QUANTUM]           = "QUANTUM";
     response[DURACION_SABOTAJE] = "DURACION_SABOTAJE";
     response[RETARDO_CICLO_CPU] = "RETARDO_CICLO_CPU";
 }

@@ -45,6 +45,11 @@ void tripulante(void *parametro)
     printf("POSY:   %d\n", admin->posY);
     */
 
+    //DEVUELVO LA MEMORIA DE LOS PARAMETROS RECIBIDOS
+    free(parametros_recibidos);
+
+    //LOGEO EL INICIO
+
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
     //ABRO LA CONEXION

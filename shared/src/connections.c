@@ -31,7 +31,7 @@ int init_server(int port)
 
 void *recibir_paquete(int socket)
 {
-    int codOp;
+    int codOp = 0;
     return recibir_paquete_cCOP(socket, &codOp);
 }
 

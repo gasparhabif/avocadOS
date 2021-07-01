@@ -34,9 +34,6 @@ int main(int argc, char **argv)
 	pthread_mutex_init(&pause_block, NULL);
 	sem_init(&pause_exec, 0, config->grado_multitarea);
 
-	time_t tiempo = time(0);
-    tlocal = localtime(&tiempo);
-
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	//sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
@@ -91,7 +88,7 @@ int main(int argc, char **argv)
 		string_to_upper(parametros[0]);
 
 		if (strcmp(parametros[0],      "INICIAR_PATOTA") == 0)
-			comando[0](parametros);
+			INICIAR_PATOTA(parametros);//comando[0](parametros);
 		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES") == 0)
 			comando[1](parametros);
 		else if (strcmp(parametros[0], "EXPULSAR_TRIPULANTE") == 0)

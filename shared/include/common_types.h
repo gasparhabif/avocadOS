@@ -96,7 +96,7 @@ typedef struct
 //TAREAS
 typedef struct
 {
-    u_int8_t codigoTarea;
+    u_int8_t  codigoTarea;
     u_int32_t parametro;
     u_int32_t posX;
     u_int32_t posY;

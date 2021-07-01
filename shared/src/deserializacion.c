@@ -33,16 +33,16 @@ t_tarea *deserializarTarea(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
-    memcpy(&(tarea_recibida->codigoTarea), stream, sizeof(u_int8_t));
-    stream += sizeof(u_int8_t);
-    memcpy(&(tarea_recibida->parametro), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(tarea_recibida->posX), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(tarea_recibida->posY), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(tarea_recibida->duracionTarea), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
+    memcpy(&(tarea_recibida->codigoTarea), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(tarea_recibida->parametro), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tarea_recibida->posX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tarea_recibida->posY), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tarea_recibida->duracionTarea), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
 
     return tarea_recibida;
 
@@ -56,25 +56,25 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
-    memcpy(&(tareas_cPID_recibidas->PID), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(tareas_cPID_recibidas->cantTareas), stream, sizeof(u_int8_t));
-    stream += sizeof(u_int8_t);
+    memcpy(&(tareas_cPID_recibidas->PID), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tareas_cPID_recibidas->cantTareas), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
 
     tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
 
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
-        memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(u_int8_t));
-        stream += sizeof(u_int8_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].parametro), stream, sizeof(u_int32_t));
-        stream += sizeof(u_int32_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].posX), stream, sizeof(u_int32_t));
-        stream += sizeof(u_int32_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].posY), stream, sizeof(u_int32_t));
-        stream += sizeof(u_int32_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].duracionTarea), stream, sizeof(u_int32_t));
-        stream += sizeof(u_int32_t);
+        memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(uint8_t));
+        stream += sizeof(uint8_t);
+        memcpy(&(tareas_cPID_recibidas->tareas[i].parametro), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(tareas_cPID_recibidas->tareas[i].posX), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(tareas_cPID_recibidas->tareas[i].posY), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(tareas_cPID_recibidas->tareas[i].duracionTarea), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
     }
 
     return tareas_cPID_recibidas;
@@ -105,10 +105,10 @@ t_estado *deserializar_ActulizacionEstado(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
-    memcpy(&(estado_recibido->TID), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(estado_recibido->estado), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
+    memcpy(&(estado_recibido->TID), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(estado_recibido->estado), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
 
     return estado_recibido;
 
@@ -123,12 +123,12 @@ t_envio_posicion *deserializar_envioPosicion(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
-    memcpy(&(posicion_recibida->TID), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(posicion_recibida->pos.posX), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(posicion_recibida->pos.posY), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
+    memcpy(&(posicion_recibida->TID), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(posicion_recibida->pos.posX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(posicion_recibida->pos.posY), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
 
     return posicion_recibida;
 
@@ -142,10 +142,10 @@ t_posicion *deserealizar_posicion(t_buffer *buffer){
 
     void *stream = buffer->stream;
 
-    memcpy(&(pos_recibida->posX), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
-    memcpy(&(pos_recibida->posX), stream, sizeof(u_int32_t));
-    stream += sizeof(u_int32_t);
+    memcpy(&(pos_recibida->posX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pos_recibida->posX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
 
     return pos_recibida;
 
