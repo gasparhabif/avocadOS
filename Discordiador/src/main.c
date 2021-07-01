@@ -19,6 +19,8 @@ int main(int argc, char **argv)
 	ejecutandoPlanificador = 1;
 	escuchandoSabotajes    = 1;
 	planificando           = 1;
+	sabotaje               = 0;
+
 	pthread_mutex_init(&mutex_block, NULL);
 	sem_init(&s_multiprocesamiento, 0, config->grado_multitarea);
 
@@ -29,6 +31,7 @@ int main(int argc, char **argv)
 
 	pthread_mutex_init(&m_listaExec,  NULL);
 	pthread_mutex_init(&m_listaReady, NULL);
+	pthread_mutex_init(&m_listaBlock, NULL);
 	pthread_mutex_init(&m_listaBlockIO, NULL);
 	
 	pthread_mutex_init(&pause_block, NULL);
@@ -42,9 +45,9 @@ int main(int argc, char **argv)
 	//sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
-	char reconectOP;
+	/*char reconectOP;
 
-	/*while (sockfd_ram == -1 || sockfd_mongo == -1)
+	while (sockfd_ram == -1 || sockfd_mongo == -1)
 	{
 		system("clear");
 		printf("Error de conexion ¿desea reconectar? [s|n]\n");
@@ -72,6 +75,7 @@ int main(int argc, char **argv)
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
 	//pthread_t thread_sabotajes;
 	//pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
+	//pthread_detach(thread_sabotajes);
 
 	//LECTURA DE CONSOLA
 	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
@@ -88,7 +92,7 @@ int main(int argc, char **argv)
 		string_to_upper(parametros[0]);
 
 		if (strcmp(parametros[0],      "INICIAR_PATOTA") == 0)
-			INICIAR_PATOTA(parametros);//comando[0](parametros);
+			comando[0](parametros);
 		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES") == 0)
 			comando[1](parametros);
 		else if (strcmp(parametros[0], "EXPULSAR_TRIPULANTE") == 0)

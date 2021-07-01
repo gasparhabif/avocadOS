@@ -112,9 +112,9 @@ void INICIAR_PATOTA(char **parametros)
                     pthread_detach(threads_tripulantes[i]);                   
                 }
 
-                printf("Iniciando %d tripulantes\n", cantTripulantes);
-
                 patota_id++;
+                
+                printf("Iniciando %d tripulantes\n", cantTripulantes);
             
             }
             
@@ -137,43 +137,61 @@ void LISTAR_TRIPULANTES(char **parametros)
 
     t_admin_tripulantes *aux_admin;
     
-    pthread_mutex_lock(&m_listaReady);
-    for (int i = 0; i < list_size(ready); i++)
-    {
-        
-        aux_admin = list_get(ready, i);
-        printf("Patota: %d\t",     aux_admin->pid);
-        printf("Tripulante: %d\t", aux_admin->tid);
-        printf("Status: %c\t",     aux_admin->estado);
-        printf("Pos X: %d\t",      aux_admin->posX);
-        printf("Pos Y: %d\n",      aux_admin->posY);
-    }
-    pthread_mutex_unlock(&m_listaReady);
+    if(sabotaje){
 
-    pthread_mutex_lock(&m_listaExec);
-    for (int i = 0; i < list_size(exec); i++)
-    {
-        aux_admin = list_get(exec, i);
-        printf("Patota: %d\t",     aux_admin->pid);
-        printf("Tripulante: %d\t", aux_admin->tid);
-        printf("Status: %c\t",     aux_admin->estado);
-        printf("Pos X: %d\t",      aux_admin->posX);
-        printf("Pos Y: %d\n",      aux_admin->posY);
-    }
-    pthread_mutex_unlock(&m_listaExec);
+        pthread_mutex_lock(&m_listaBlock);
+        for (int i = 0; i < list_size(bloq); i++)
+        {
+            
+            aux_admin = list_get(bloq, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: BLOQ E\t");
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaBlock);
 
-    pthread_mutex_lock(&m_listaBlockIO);
-    for (int i = 0; i < list_size(bloq_IO); i++)
-    {
-        
-        aux_admin = list_get(bloq_IO, i);
-        printf("Patota: %d\t",     aux_admin->pid);
-        printf("Tripulante: %d\t", aux_admin->tid);
-        printf("Status: %c\t",     aux_admin->estado);
-        printf("Pos X: %d\t",      aux_admin->posX);
-        printf("Pos Y: %d\n",      aux_admin->posY);
     }
-    pthread_mutex_unlock(&m_listaBlockIO);
+    else{
+        pthread_mutex_lock(&m_listaReady);
+        for (int i = 0; i < list_size(ready); i++)
+        {
+            
+            aux_admin = list_get(ready, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: %c\t",     aux_admin->estado);
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaReady);
+
+        pthread_mutex_lock(&m_listaExec);
+        for (int i = 0; i < list_size(exec); i++)
+        {
+            aux_admin = list_get(exec, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: %c\t",     aux_admin->estado);
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaExec);
+
+        pthread_mutex_lock(&m_listaBlockIO);
+        for (int i = 0; i < list_size(bloq_IO); i++)
+        {
+            
+            aux_admin = list_get(bloq_IO, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: %c\t",     aux_admin->estado);
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaBlockIO);
+    }
 
     printf("--------------------------------------------------------------------------------\n");
     
