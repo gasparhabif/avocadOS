@@ -7,6 +7,8 @@ void sabotajes()
     t_posicion *unSabotaje;
     int index;
     int distancia = -1;
+    int bEnviar;
+    void *d_enviar;
 
     while(escuchandoSabotajes){
 
@@ -16,6 +18,10 @@ void sabotajes()
         //PAUSO LA PLANIFICACION
         planificando = 0;
         pausar();
+
+        //DOY EL AVISO CORRESPONDIENTE DE COMIENZO
+        printf("\n\n----------------------\nATENDIENDO UN SABOTAJE\n----------------------\n\n");
+        log_info(logger, "ATENDIENDO UN SABOTAJE");
 
         //MUEVO LOS TRIPULANTES A LA LISTA DE BLOQ
         for (int i = 0; i < list_size(exec); i++)
@@ -36,25 +42,74 @@ void sabotajes()
         for (int i = 0; i < list_size(bloq); i++)
         {
             aux_admin = list_get(bloq, i);
+
+            //LE AVISO A RAM PARA QUE CAMBIE EL ESTADO
+            d_enviar = serializar_ActulizacionEstado(aux_admin->tid, BLOCKED_EMERGENCY, &bEnviar);
+            send(aux_admin->sockfd_tripulante_ram, d_enviar, bEnviar, 0);
+            free(d_enviar);
+
+            //CHEQUEO LA DISTANCIA DE CADA TRIPULANTE CON EL SABOTAJE
             if(distancia == -1 || distancia_posiciones(unSabotaje, aux_admin->posX, aux_admin->posY) < distancia)
                 index = i;
         }
 
         tripulante_elegido = list_get(bloq, index);
 
-        //MUEVO EL TRIPULANTE A LA POSICION DEL SABOTAJE
-        //mover_tripulante(tripulante_elegido, unSabotaje->posX, unSabotaje->posY, ))
+        //REGISTRO EN BITACORA EL TRIPULANTE ELEGIDO PARA REALIZAR EL SABOTAJE
+        d_enviar = serializarInt(tripulante_elegido->tid, INICIO_RESOLUCION_SABOTAJE, &bEnviar);
+        send(tripulante_elegido->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
+        free(d_enviar);
         
-        //INVOCO AL FSCK Y REGISTRO EN BITACORA
-        int tamanioSerializacion;
-        void *dEnviar = serializarInt(tripulante_elegido->tid, INICIO_RESOLUCION_SABOTAJE, &tamanioSerializacion);
-        send(tripulante_elegido->sockfd_tripulante_mongo, dEnviar, tamanioSerializacion, 0);
-        free(dEnviar);
+        //MUEVO EL TRIPULANTE A LA POSICION DEL SABOTAJE
+        int movs = cantMovimientos(tripulante_elegido->posX, tripulante_elegido->posY, unSabotaje->posX, unSabotaje->posY);
+        bEnviar = movs;
+        mover_tripulante(tripulante_elegido, unSabotaje->posX, unSabotaje->posY, movs, &bEnviar);
+
+        //INVOCO AL PROTOCOLO FSCK
+        d_enviar = serializarInt(tripulante_elegido->tid, INICIO_PROTOCOLO_FSCK, &bEnviar);
+        send(sockfd_mongo, d_enviar, bEnviar, 0);
+        free(d_enviar);
 
         //RESUELVO EL SABOTAJE 
         resolver_sabotaje();
 
+        //AVISO DE FIN DE RESOLUCION DE SABOTAJE AL MONGO
+        d_enviar = serializarInt(tripulante_elegido->tid, FIN_RESOLUCION_SABOTAJE, &bEnviar);
+        send(tripulante_elegido->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
+        free(d_enviar);
+
         //DESBLOQUEO TRIPULANTES
+        for (int i = 0; i < list_size(bloq); i++)
+        {
+            aux_admin = list_get(bloq, i);
+
+            //LE AVISO A RAM PARA QUE CAMBIE EL ESTADO
+            d_enviar = serializar_ActulizacionEstado(aux_admin->tid, aux_admin->estado, &bEnviar);
+            send(aux_admin->sockfd_tripulante_ram, d_enviar, bEnviar, 0);
+            free(d_enviar);
+
+            //PONGO LOS TRIPULANTES EN LA COLA QUE PERTENECEN
+            switch (aux_admin->estado)
+            {
+            case READY:
+                eliminarTripulante(bloq, aux_admin->tid);
+                list_add(ready, aux_admin);
+                break;
+            
+            case EXEC:
+                eliminarTripulante(bloq, aux_admin->tid);
+                list_add(exec, aux_admin);
+                break;
+            }
+        }
+
+        //RETOMO LA PLANIFICACION
+        planificando = 1;
+        pausar();
+
+        //DOY EL AVISO CORRESPONDIENTE DE FIN
+        printf("\n\n--------------------------\nFIN RESOLUCION DE SABOTAJE\n--------------------------\n\n");
+        log_info(logger, "FIN RESOLUCION DE SABOTAJE");
 
     }
 

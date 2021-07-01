@@ -13,7 +13,8 @@ enum CODIGOS_DE_OPERACION
     ACTUALIZAR_ESTADO,
     ELIMINAR_TRIPULANTE,
     ALERTA_SABOTAJE,
-    SOLICITAR_BITACORA
+    SOLICITAR_BITACORA,
+    INICIO_PROTOCOLO_FSCK
 };
 
 enum CODIGOS_DE_TAREAS
@@ -96,7 +97,7 @@ typedef struct
 //TAREAS
 typedef struct
 {
-    u_int8_t codigoTarea;
+    u_int8_t  codigoTarea;
     u_int32_t parametro;
     u_int32_t posX;
     u_int32_t posY;

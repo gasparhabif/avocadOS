@@ -62,7 +62,7 @@ int      mayor_tid_list               (t_list*);
 int      matarTripulante              (int, pthread_t *);
 
 //DEFINIDAS EN tripulantes.c
-void     tripulante           (void *parametro);
+void     tripulante           (t_parametros_tripulantes *parametro);
 t_tarea *solicitar_tarea      (t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado);
 int      ejecutar_tarea       (t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
 void     mover_tripulante     (t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY, int movimientosPosibles, int *duracionMovimientos);
@@ -89,6 +89,7 @@ int ejecutandoTripulantes;
 int ejecutandoPlanificador;
 int escuchandoSabotajes;
 int planificando;
+int sabotaje;
 
 sem_t           s_multiprocesamiento;
 pthread_mutex_t mutex_block;
@@ -100,6 +101,7 @@ t_list *bloq_IO;
 
 pthread_mutex_t m_listaExec;
 pthread_mutex_t m_listaReady;
+pthread_mutex_t m_listaBlock;
 pthread_mutex_t m_listaBlockIO;
 
 sem_t           pause_exec;

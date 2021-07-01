@@ -55,12 +55,11 @@ void INICIAR_PATOTA(char **parametros)
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
-                int direccionPCB = (int) recibir_paquete(sockfd_ram);
+                //int direccionPCB = (int) recibir_paquete(sockfd_ram);
                 //printf("Pos recibida: %d\n", direccionPCB);
 
                 //CREO LOS TCB
-                t_TCB *tripulantes_tcb;
-                tripulantes_tcb = malloc(sizeof(t_TCB) * cantTripulantes);
+                t_TCB tripulantes_tcb[cantTripulantes];
 
                 for (int i = 0; i < cantTripulantes; i++)
                 {
@@ -70,7 +69,7 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;
-                    tripulantes_tcb[i].puntero_PCB = direccionPCB;
+                    tripulantes_tcb[i].puntero_PCB = /*direccionPCB*/20;
                 }
 
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola
@@ -93,29 +92,29 @@ void INICIAR_PATOTA(char **parametros)
                 */
 
                 //CREO LOS THREADS DE LOS TRIPULANTES
-                
-                //cuando hago el free de estoo?
-                pthread_t *threads_tripulantes = malloc(sizeof(pthread_t) * cantTripulantes);
+                pthread_t threads_tripulantes[cantTripulantes];
 
                 for (int i = 0; i < cantTripulantes; i++){
                     
                     //CREO LA ESTRUCTURA DE ADMINISTACION DEL TRIPULANTE Y LE ASIGNO INFORMACION QUE DESPUES NO LE VOY A PODER ASIGNAR                    
-                    t_admin_tripulantes *admin             = malloc(sizeof(t_admin_tripulantes));
-                    admin->pid               = patota_id;
-                    admin->threadTripulante  = threads_tripulantes[i];
+                    t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
+                    admin->pid                 = patota_id;
+                    admin->threadTripulante    = threads_tripulantes[i];
 
                     //CREO LOS PARAMETROS PARA EL TRIPULANTE A CREAR
-                    t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(parametros_tripulante));
-                    parametros_tripulante->tcbTripulante = tripulantes_tcb[i];
-                    parametros_tripulante->admin         = admin;
+                    t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(t_parametros_tripulantes));
+                    //parametros_tripulante->tcbTripulante            = malloc(sizeof(t_TCB));
+                    parametros_tripulante->tcbTripulante            = tripulantes_tcb[i];
+                    parametros_tripulante->admin                    = admin;
 
                     //CREO EL TRIPULANTE
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) parametros_tripulante);
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *) parametros_tripulante);
+                    pthread_detach(threads_tripulantes[i]);                   
                 }
-            
-                printf("Iniciando %d tripulantes\n", cantTripulantes);
 
                 patota_id++;
+                
+                printf("Iniciando %d tripulantes\n", cantTripulantes);
             
             }
             
@@ -126,6 +125,8 @@ void INICIAR_PATOTA(char **parametros)
 
 void LISTAR_TRIPULANTES(char **parametros)
 {
+	time_t tiempo = time(0);
+    tlocal = localtime(&tiempo);
     char *hora = malloc(128);
     strftime(hora,128,"%d/%m/%y %H:%M:%S",tlocal);
 
@@ -135,35 +136,61 @@ void LISTAR_TRIPULANTES(char **parametros)
     free(hora);
 
     t_admin_tripulantes *aux_admin;
+    
+    if(sabotaje){
 
-    for (int i = 0; i < list_size(ready); i++)
-    {
-        aux_admin = list_get(ready, i);
-        printf("Patota: %d\t",     aux_admin->pid);
-        printf("Tripulante: %d\t", aux_admin->tid);
-        printf("Status: %c\t",     aux_admin->estado);
-        printf("Pos X: %d\t",      aux_admin->posX);
-        printf("Pos Y: %d\n",      aux_admin->posY);
+        pthread_mutex_lock(&m_listaBlock);
+        for (int i = 0; i < list_size(bloq); i++)
+        {
+            
+            aux_admin = list_get(bloq, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: BLOQ E\t");
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaBlock);
+
     }
+    else{
+        pthread_mutex_lock(&m_listaReady);
+        for (int i = 0; i < list_size(ready); i++)
+        {
+            
+            aux_admin = list_get(ready, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: %c\t",     aux_admin->estado);
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaReady);
 
-    for (int i = 0; i < list_size(exec); i++)
-    {
-        aux_admin = list_get(exec, i);
-        printf("Patota: %d\t",     aux_admin->pid);
-        printf("Tripulante: %d\t", aux_admin->tid);
-        printf("Status: %c\t",     aux_admin->estado);
-        printf("Pos X: %d\t",      aux_admin->posX);
-        printf("Pos Y: %d\n",      aux_admin->posY);
-    }
+        pthread_mutex_lock(&m_listaExec);
+        for (int i = 0; i < list_size(exec); i++)
+        {
+            aux_admin = list_get(exec, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: %c\t",     aux_admin->estado);
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaExec);
 
-    for (int i = 0; i < list_size(bloq_IO); i++)
-    {
-        aux_admin = list_get(bloq_IO, i);
-        printf("Patota: %d\t",     aux_admin->pid);
-        printf("Tripulante: %d\t", aux_admin->tid);
-        printf("Status: %c\t",     aux_admin->estado);
-        printf("Pos X: %d\t",      aux_admin->posX);
-        printf("Pos Y: %d\n",      aux_admin->posY);
+        pthread_mutex_lock(&m_listaBlockIO);
+        for (int i = 0; i < list_size(bloq_IO); i++)
+        {
+            
+            aux_admin = list_get(bloq_IO, i);
+            printf("Patota: %d\t",     aux_admin->pid);
+            printf("Tripulante: %d\t", aux_admin->tid);
+            printf("Status: %c\t",     aux_admin->estado);
+            printf("Pos X: %d\t",      aux_admin->posX);
+            printf("Pos Y: %d\n",      aux_admin->posY);
+        }
+        pthread_mutex_unlock(&m_listaBlockIO);
     }
 
     printf("--------------------------------------------------------------------------------\n");

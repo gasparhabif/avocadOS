@@ -1,11 +1,11 @@
 #include "proceso1.h"
 
-void tripulante(void *parametro)
+void tripulante(t_parametros_tripulantes *parametro)
 {
     int duracionMovimientos, duracionEjecucion, duracionBloqueado;
     int tid;
     tid = syscall(SYS_gettid);
-    t_TCB *tcb_tripulante = malloc(sizeof(t_TCB));
+    t_TCB tcb_tripulante;
     t_tarea *tarea_recibida;
     int tamanioSerializacion;
     int finTareas = 0, tareaPendiente = 0;
@@ -15,17 +15,19 @@ void tripulante(void *parametro)
 
     //TRAIGO LOS PARAMETROS
     t_parametros_tripulantes *parametros_recibidos = malloc(sizeof(t_parametros_tripulantes));
-    *parametros_recibidos = *(t_parametros_tripulantes *) parametro;
+    parametros_recibidos = parametro;
 
     //TRAIGO EL TCB Y LO COMPLETO
-    *tcb_tripulante = parametros_recibidos->tcbTripulante;
-    tcb_tripulante->TID = tid;
+    tcb_tripulante = parametros_recibidos->tcbTripulante;
+    tcb_tripulante.TID = tid;
 
     /*
-    printf("TID:    %d\n", tcb_tripulante->TID);
-    printf("ESTADO: %d\n", tcb_tripulante->estado);
-    printf("POSX:   %d\n", tcb_tripulante->posX);
-    printf("POSY:   %d\n", tcb_tripulante->posY);
+    printf("---------------TCB----------------\n");
+    printf("TID:    %d\n", tcb_tripulante.TID);
+    printf("ESTADO: %d\n", tcb_tripulante.estado);
+    printf("POSX:   %d\n", tcb_tripulante.posX);
+    printf("POSY:   %d\n", tcb_tripulante.posY);
+    printf("---------------TCB----------------\n\n");
     */
 
     //CREO EL TCB AUXILIAR CON EL QUE VOY A TRABAJAR EN LA PLANIFICACION, SABOTAJES Y MAS
@@ -34,16 +36,23 @@ void tripulante(void *parametro)
 
     admin->tid    = tid;
     admin->estado = NEW;
-    admin->posX   = tcb_tripulante->posX;
-    admin->posY   = tcb_tripulante->posY;
+    admin->posX   = tcb_tripulante.posX;
+    admin->posY   = tcb_tripulante.posY;
 
     /*
+    printf("---------------ADMIN----------------\n");
     printf("PID:    %d\n", admin->pid);
     printf("TID:    %d\n", admin->tid);
     printf("ESTADO: %d\n", admin->estado);
     printf("POSX:   %d\n", admin->posX);
     printf("POSY:   %d\n", admin->posY);
+    printf("---------------ADMIN----------------\n");
     */
+
+    //DEVUELVO LA MEMORIA DE LOS PARAMETROS RECIBIDOS
+    free(parametros_recibidos);
+
+    //LOGEO EL INICIO
 
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
@@ -59,7 +68,6 @@ void tripulante(void *parametro)
     //SERIALIZO Y ENVIO EL TCB
     void *d_Enviar = serializarTCB(tcb_tripulante, &tamanioSerializacion);
     send(admin->sockfd_tripulante_ram, d_Enviar, tamanioSerializacion, 0);
-    free(tcb_tripulante);
     free(d_Enviar);
     log_info(logger, "Se envio el TCB a la RAM");
 
@@ -76,8 +84,8 @@ void tripulante(void *parametro)
     actualizar_estado(admin, READY);
     
     //SOLICITO LA PRIMERA TAREA
-    tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
-    tareaPendiente = 1;
+    //tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
+    //tareaPendiente = 1;
 
     while (finTareas == 0)
     {
@@ -211,18 +219,19 @@ int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionM
     else if (strcmp(config->algoritmo, "RR") == 0)
     {
         tiempoMovimientos = ejecutar_tiempos_CPU(*duracionMovimientos, 0);
-        if (tiempoMovimientos < config->quantum)
+        if (tiempoMovimientos < config->quantum){
             tiempoEjecutando = ejecutar_tiempos_CPU(*duracionEjecucion, tiempoMovimientos);
+            log_info(logger, "Tiempo ejecutado: %d", tiempoEjecutando);
+        }
     }
 
     mover_tripulante(admin, unaTarea->posX, unaTarea->posY, tiempoMovimientos, duracionMovimientos);
 
-    //printf("Tiempo ejecucion %d", tiempoEjecutando);
-
     for (int i = 0; i < tiempoEjecutando; i++)
     {
-        log_info(logger, "Ciclo ejecucion");
+        
         retardo_ciclo_cpu();
+        log_info(logger, "Ciclo ejecucion");
         (*duracionEjecucion)--;
     }
 
@@ -234,7 +243,6 @@ int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionM
 
 int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
 {
-
     int tiempoAEjecutar = 0;
 
     if (duracionEjecucion != 0)
@@ -243,10 +251,22 @@ int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
             tiempoAEjecutar = duracionEjecucion;
         else if (strcmp(config->algoritmo, "RR") == 0)
         {
-            if (duracionEjecucion > config->quantum)
-                tiempoAEjecutar = config->quantum - tEjecutado;
-            else
-                tiempoAEjecutar = duracionEjecucion - tEjecutado;
+            if(tEjecutado == 0){
+                if (duracionEjecucion > config->quantum)
+                    tiempoAEjecutar = config->quantum;
+                else
+                    tiempoAEjecutar = duracionEjecucion;
+            }
+            else{
+                if (duracionEjecucion > config->quantum)
+                    tiempoAEjecutar = config->quantum - tEjecutado;
+                else{
+                    if((duracionEjecucion + tEjecutado) <= config->quantum)
+                        tiempoAEjecutar = duracionEjecucion;
+                    else
+                        tiempoAEjecutar = duracionEjecucion - tEjecutado;
+                }
+            }
         }
     }
 
@@ -267,19 +287,19 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     {
         case EXEC:
             pthread_mutex_lock(&m_listaExec);
-            log_info(logger, "Sale de EXEC: %d", admin->tid);
+            //log_info(logger, "Sale de EXEC: %d", admin->tid);
             eliminarTripulante(exec, admin->tid);
             pthread_mutex_unlock(&m_listaExec);
             break;
         case READY:
             pthread_mutex_lock(&m_listaReady);
-            log_info(logger, "Sale de READY: %d", admin->tid);
+            //log_info(logger, "Sale de READY: %d", admin->tid);
             eliminarTripulante(ready, admin->tid);
             pthread_mutex_unlock(&m_listaReady);
             break;
         case BLOCKED_IO:
             pthread_mutex_lock(&m_listaBlockIO);
-            log_info(logger, "Sale de BLOCK_IO: %d", admin->tid);
+            //log_info(logger, "Sale de BLOCK_IO: %d", admin->tid);
             eliminarTripulante(bloq_IO, admin->tid);
             pthread_mutex_unlock(&m_listaBlockIO);
             break;
@@ -292,19 +312,19 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     {
         case EXEC:
             pthread_mutex_lock(&m_listaExec);
-            log_info(logger, "Entra a EXEC: %d", admin->tid);
+            //log_info(logger, "Entra a EXEC: %d", admin->tid);
             list_add(exec, admin);
             pthread_mutex_unlock(&m_listaExec);
             break;
         case READY:
             pthread_mutex_lock(&m_listaReady);
-            log_info(logger, "Entra a READY: %d", admin->tid);
+            //log_info(logger, "Entra a READY: %d", admin->tid);
             list_add(ready, admin);
             pthread_mutex_unlock(&m_listaReady);
             break;
         case BLOCKED_IO:
             pthread_mutex_lock(&m_listaBlockIO);
-            log_info(logger, "Entra a BLOCK_IO: %d", admin->tid);
+            //log_info(logger, "Entra a BLOCK_IO: %d", admin->tid);
             list_add(bloq_IO, admin);
             pthread_mutex_unlock(&m_listaBlockIO);
             break;
