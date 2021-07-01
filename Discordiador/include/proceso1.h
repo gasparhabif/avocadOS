@@ -40,7 +40,7 @@ typedef struct
 
 typedef struct
 {
-    t_TCB                tcbTripulante;
+    t_TCB               tcbTripulante;
     t_admin_tripulantes *admin;
 } t_parametros_tripulantes;
 
@@ -62,7 +62,7 @@ int      mayor_tid_list               (t_list*);
 int      matarTripulante              (int, pthread_t *);
 
 //DEFINIDAS EN tripulantes.c
-void     tripulante           (void *parametro);
+void     tripulante           (t_parametros_tripulantes *parametro);
 t_tarea *solicitar_tarea      (t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado);
 int      ejecutar_tarea       (t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
 void     mover_tripulante     (t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY, int movimientosPosibles, int *duracionMovimientos);

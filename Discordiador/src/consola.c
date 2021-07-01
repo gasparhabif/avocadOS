@@ -59,8 +59,7 @@ void INICIAR_PATOTA(char **parametros)
                 //printf("Pos recibida: %d\n", direccionPCB);
 
                 //CREO LOS TCB
-                t_TCB *tripulantes_tcb;
-                tripulantes_tcb = malloc(sizeof(t_TCB) * cantTripulantes);
+                t_TCB tripulantes_tcb[cantTripulantes];
 
                 for (int i = 0; i < cantTripulantes; i++)
                 {
@@ -103,12 +102,13 @@ void INICIAR_PATOTA(char **parametros)
                     admin->threadTripulante    = threads_tripulantes[i];
 
                     //CREO LOS PARAMETROS PARA EL TRIPULANTE A CREAR
-                    t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(parametros_tripulante));
+                    t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(t_parametros_tripulantes));
+                    //parametros_tripulante->tcbTripulante            = malloc(sizeof(t_TCB));
                     parametros_tripulante->tcbTripulante            = tripulantes_tcb[i];
                     parametros_tripulante->admin                    = admin;
 
                     //CREO EL TRIPULANTE
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (void *) parametros_tripulante);
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *) parametros_tripulante);
                     pthread_detach(threads_tripulantes[i]);                   
                 }
 

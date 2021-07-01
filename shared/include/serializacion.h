@@ -9,7 +9,7 @@
 #include "common_types.h"
 
 //DEFINIDAS EN serializacion.c
-void*             serializarTCB                  (t_TCB *, int *);
+void*             serializarTCB                  (t_TCB , int *);
 void*             serializarTarea                (t_tarea *, int *);
 void*             serializarTareas_cPID          (t_tarea *unasTareas, int patotaID, int *, int);
 void*             serializarInt                  (uint32_t, uint8_t, int *);
