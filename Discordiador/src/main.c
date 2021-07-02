@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
-	//sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
+	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
 	//sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
