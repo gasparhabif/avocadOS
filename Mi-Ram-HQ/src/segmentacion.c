@@ -2,24 +2,16 @@
 
 void* reservar_segmento_FF(int bytes){
 
-    printf("Reservando memoria SEG-FF\n");
-
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento    = malloc(sizeof(estado_segmentos));
 
-    printf("Cant segmentos: %d\n", cantidad_segmentos);
-
-    for(int i = 0; i < cantidad_segmentos; i++){
-
-        printf("i: %d\n", i);
+    for(int i = 0; i < list_size(tabla_estado_segmentos); i++){
 
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
 
         //En el caso de que no este ocupado
         if(segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes){
-
-            printf("Entro en el segmento %d y esta libre\n", i);
             
             //Inicio el nuevo segmento
             nuevo_segmento->inicio     = segmento_obtenido->inicio;
@@ -32,7 +24,7 @@ void* reservar_segmento_FF(int bytes){
 
             //Chequeo que no me este pasando de la memoria reservada
             if(segmento_obtenido->inicio + bytes < (int) memoria + config->tamanio_memoria){
-                
+
                 // En este caso podría ocurrir que los bytes entran perfectoen el 
                 // segmento obtenido, en tal caso no seria necesaria una modificacion 
                 // en la lista de segmentos
@@ -43,17 +35,11 @@ void* reservar_segmento_FF(int bytes){
                     //Añado el nuevo segmento a la lista
                     list_add_in_index(tabla_estado_segmentos, i+1, segmento_obtenido);
                 }
-            
-                cantidad_segmentos++;
-
-                free(segmento_obtenido);
+                
                 return (void *) nuevo_segmento->inicio;
             }
         }
     }
-
-    free(segmento_obtenido);
-    free(nuevo_segmento);
     
     //OJO: Entra en un ciclo
     //compactar(SIGUSR1);
@@ -69,7 +55,7 @@ void* reservar_segmento_BF(int bytes){
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento    = malloc(sizeof(estado_segmentos));
 
-    for(int i = 0; i < cantidad_segmentos; i++){
+    for(int i = 0; i < list_size(tabla_estado_segmentos); i++){
 
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
@@ -114,8 +100,6 @@ void* reservar_segmento_BF(int bytes){
                 //Añado el nuevo segmento a la lista
                 list_add_in_index(tabla_estado_segmentos, pos_seg, segmento_obtenido);
             }
-            
-            cantidad_segmentos++;
 
             free(segmento_obtenido);
             return (void *) nuevo_segmento->inicio;

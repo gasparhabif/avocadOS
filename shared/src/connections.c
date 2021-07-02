@@ -69,7 +69,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
             dRecibidos = deserializarTCB(paquete->buffer);
             break;
         case SOLICITAR_TAREA:
-            dRecibidos = deserializarInt(paquete->buffer);
+            dRecibidos = deserealizar_pidYtid(paquete->buffer);
             break;
         case ENVIAR_PROXIMA_TAREA:
             dRecibidos = deserializarTarea(paquete->buffer);
@@ -82,6 +82,9 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
             break;
         case ALERTA_SABOTAJE:
             dRecibidos = deserealizar_posicion(paquete->buffer);
+            break;
+        case ESTRUCTURAS_EN_MEMORIA:
+            dRecibidos = deserializarInt(paquete->buffer);
             break;
     }
 

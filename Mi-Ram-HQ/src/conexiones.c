@@ -41,22 +41,32 @@ void recibir_mensaje(void *parametro)
         switch (cop_recibido)
         {
             case COMENZAR_PATOTA:
-                log_info(logger, "Comenzando una patota");
+                log_info(logger, "El discordiador %d comenzo una patota", client);
                 comenzar_patota(client, (t_tareas_cPID *)datos_recibidos);
                 break;
             case INICIAR_TRIPULANTE:
-                log_info(logger, "Iniciando un tripulante");
-                iniciar_tripulante(datos_recibidos);
+                log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
+                iniciar_tripulante(client, datos_recibidos);
                 break;
             case SOLICITAR_TAREA:
-                log_info(logger, "Tarea solicitada");
+                log_info(logger, "El tripulante %d solicito una tarea", client);
                 solicitar_tarea(client, datos_recibidos);
+                break;
+            case MOVER_TRIPULANTE:
+                log_info(logger, "El tripulante %d ha realizado un movimiento", client);
+                break;
+            case ACTUALIZAR_ESTADO:
+                log_info(logger, "El tripulante %d actualizo su estado", client);
+                break;
+            case ELIMINAR_TRIPULANTE:
+                log_info(logger, "El tripulante %d quiere abandonar la nave", client);
+                //¿LO MANDA EL DISCORDIADOR O EL TRIPULANTE QUE QUIERE MORIR?
                 break;
             default:
                 log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
                 break;
         }
-        
-        free(datos_recibidos);
     }
+
+    return;
 }
