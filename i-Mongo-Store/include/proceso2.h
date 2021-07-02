@@ -78,4 +78,7 @@ void create_blocks(uint32_t);
 char *load_blocks();
 void sync_blocks();
 
+// Bitácoras utils (definidas en bitacoras_utils.c)
+void create_bitacora(char *);
+
 #endif

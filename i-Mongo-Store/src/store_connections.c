@@ -60,20 +60,24 @@ void tripulante_cxn_handler(void *arg)
     t_envio_posicion *tripulante = recibir_paquete(client);
     log_info(logger, "Se conectó el tripulante TID: %d - Posición inicial: %d|%d", tripulante->TID, tripulante->pos.posX, tripulante->pos.posY);
 
-    char *tid = string_itoa(tripulante->TID);
-
     // Archivo Tripulante#.ims
+    char *tid = string_itoa(tripulante->TID);
     char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
-    int bitacora_fd = open(bitacora_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+
+    if (!file_exists(bitacora_file_path))
+    {
+        create_bitacora(bitacora_file_path);
+    }
+
+    // while (1)
+    // {
+    // }
 
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
     while (!tareas_finalizadas)
     {
-        // log_info(logger, "Se recibió el código de operación %d", cod_operacion);
-        log_info(logger, "Socket %d -  Código %d", client, cod_operacion);
-
         switch (cod_operacion)
         {
         case MOVER_TRIPULANTE:
@@ -96,7 +100,7 @@ void tripulante_cxn_handler(void *arg)
             ejecutarTarea(tarea_a_ejecutar);
             break;
         default:
-            log_error(logger, "Socket %d - Código %d desconocido", client, cod_operacion);
+            log_error(logger, "Código %d desconocido", cod_operacion);
             tareas_finalizadas = true;
             break;
         }
@@ -104,8 +108,9 @@ void tripulante_cxn_handler(void *arg)
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 
-    log_error(logger, "El tripulante del socket %d se desconectó", client);
+    log_error(logger, "El tripulante %d se desconectó", tripulante->TID);
 
-    close(bitacora_fd);
     free(bitacora_file_path);
+    free(tid);
+    free(tripulante);
 }
