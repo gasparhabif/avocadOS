@@ -1,23 +1,25 @@
 #include "serializacion.h"
 
-t_TCB *deserializarTCB(t_buffer *buffer)
+t_TCBcPID *deserializarTCB(t_buffer *buffer)
 {
 
-    t_TCB *TCB_recibido = malloc(sizeof(t_TCB));
+    t_TCBcPID *TCB_recibido = malloc(sizeof(t_TCBcPID));
 
     void *stream = buffer->stream;
 
-    memcpy(&(TCB_recibido->TID), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(TCB_recibido->tcb.TID), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_recibido->estado), stream, sizeof(char));
+    memcpy(&(TCB_recibido->tcb.estado), stream, sizeof(char));
     stream += sizeof(char);
-    memcpy(&(TCB_recibido->posX), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->tcb.posX), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_recibido->posY), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->tcb.posY), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_recibido->proximaInstruccion), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->tcb.proximaInstruccion), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(TCB_recibido->puntero_PCB), stream, sizeof(uint32_t));
+    memcpy(&(TCB_recibido->tcb.puntero_PCB), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
 
     return TCB_recibido;
@@ -144,9 +146,24 @@ t_posicion *deserealizar_posicion(t_buffer *buffer){
 
     memcpy(&(pos_recibida->posX), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(pos_recibida->posX), stream, sizeof(uint32_t));
+    memcpy(&(pos_recibida->posY), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
 
     return pos_recibida;
+
+}
+
+t_pidYtid *deserealizar_pidYtid(t_buffer *buffer){
+
+    t_pidYtid *pid_tid_recibidos = malloc(sizeof(t_pidYtid));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(pid_tid_recibidos->pid), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pid_tid_recibidos->tid), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    return pid_tid_recibidos;
 
 }

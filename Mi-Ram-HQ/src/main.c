@@ -28,7 +28,6 @@ int main()
     //      EN EL CASO DE LA SEGMENTACION ES UNA LISTA CON EL INICIO Y TAMANIO DE CADA SEGMENTO Y UN BIT QUE INDICA SI EL MISMO ESTA OCUPADO O NO
     if(strcmp(config->esquema_memoria, "SEGMENTACION") == 0){
         tabla_estado_segmentos = list_create();
-        cantidad_segmentos = 0;
     }
     else if(strcmp(config->esquema_memoria, "PAGINACION") == 0){
         tamanio_paginas = config->tamanio_pagina;
@@ -39,9 +38,8 @@ int main()
         exit(0);
     }
     
-    //CREO LA LISTA DE PROCESOS Y LA LISTA DE ESTADOS DE LOS SEGMENTOS
-    tabla_procesos         = list_create();
-    tabla_estado_segmentos = list_create();
+    //CREO LA LISTA DE PROCESOS
+    tabla_procesos = list_create();
 
     //INDICO EL PRIMER SEGMENTO Y LO PONGO LIBRE
     estado_segmentos *primer_seg = malloc(sizeof(estado_segmentos));
@@ -51,8 +49,6 @@ int main()
 
     list_add(tabla_estado_segmentos, primer_seg);
     //free(primer_seg);
-
-    cantidad_segmentos++;
 
     //INICIO EL SERVER
     int server_instance;
@@ -70,8 +66,6 @@ int main()
     //CREO EL HILO QUE ESCUCHA CONEXIONES
     pthread_t accept_connections_thread;
     pthread_create(&accept_connections_thread, NULL, (void *)aceptar_conexiones, (void *) server_instance);
-
-    //Esto es para que ejecute el thread, sino no ejecuta porque se corta muy rapido el main
     pthread_join(accept_connections_thread, NULL);
 
     free(memoria);

@@ -12,6 +12,7 @@ enum CODIGOS_DE_OPERACION
     MOVER_TRIPULANTE,
     ACTUALIZAR_ESTADO,
     ELIMINAR_TRIPULANTE,
+    ESTRUCTURAS_EN_MEMORIA,
     ALERTA_SABOTAJE,
     SOLICITAR_BITACORA,
     INICIO_PROTOCOLO_FSCK
@@ -74,6 +75,19 @@ typedef struct
     u_int32_t proximaInstruccion;
     u_int32_t puntero_PCB;
 } t_TCB;
+
+typedef struct
+{
+    int pid;
+    t_TCB tcb;
+} t_TCBcPID;
+
+typedef struct
+{
+    u_int32_t pid;
+    u_int32_t tid;
+} t_pidYtid;
+
 
 //BASICOS
 typedef struct

@@ -15,7 +15,6 @@ t_ram_conf *config;
 int recibiendo_mensajes;
 int aceptando_conexiones;
 void *memoria;
-int cantidad_segmentos;
 
 enum TIPO {
     PCB = 0,
@@ -24,17 +23,11 @@ enum TIPO {
 };
 
 typedef struct {
-    u_int32_t pid;
-    t_list* registros;
-    u_int32_t indice;
-} t_registro_procesos;
-
-typedef struct {
     u_int32_t segmento; // Identificador (numero) del segmento
     void*     base;     // Posicion inicio del segmento
     u_int32_t tamanio;  // Tamaño del contenido del segmento
     u_int8_t  tipo;     // Tipo del contenido del segmento
-    u_int32_t tid;      // Opcional
+    u_int32_t id;      // Opcional
     u_int8_t  usado;    // Booleano para saber si el segmento puede sacarse
 } t_registro_segmentos;
 
@@ -52,14 +45,14 @@ t_list*         tabla_estado_segmentos;
 u_int8_t*       estado_frames;
 u_int32_t       tamanio_paginas;
 
-//Definidas en router.c
-void comenzar_patota      (int, t_tareas_cPID *);
-void iniciar_tripulante   (t_TCB *);
-void solicitar_tarea      (int, int *datos_recibidos);
-
 //Definidas en conexiones.c
 void aceptar_conexiones   (void *);
 void recibir_mensaje      (void *);
+
+//Definidas en router.c
+void comenzar_patota      (int, t_tareas_cPID *);
+void iniciar_tripulante   (int, t_TCBcPID *);
+void solicitar_tarea      (int, t_pidYtid *);
 
 //Definidas en memoria.c
 void*                 reservar_memoria(int);
@@ -71,5 +64,12 @@ t_registro_segmentos* guardar_tcb     (t_TCB);
 void* reservar_segmento_FF(int);
 void* reservar_segmento_BF(int);
 void  compactar           (int);
+
+//Definidas en utils.c
+t_list*               buscar_lista_proceso (int);
+t_PCB*                buscar_pcb_proceso   (t_list *, int);
+t_registro_segmentos *buscar_registro_tcb  (t_list *, int);
+int                   traer_tarea          (void *, t_list*, int, t_tarea *);
+int                   cant_tareas          (t_list* lista_proceso);
 
 #endif

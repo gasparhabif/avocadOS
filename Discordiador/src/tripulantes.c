@@ -60,7 +60,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     //admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     /*if(sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1){
-        log_info(logger, "Muerte de tripulante por fallo de conexion");
+        log_info(logger, "Tripulante abandona la nave por fallo de conexion");
         return;
     }*/
     log_info(logger, "El tripulante se conecto con RAM y con Mongo");
@@ -78,14 +78,13 @@ void tripulante(t_parametros_tripulantes *parametro)
     log_info(logger, "Se envio el TID y la posicion al i-mongo-store");
 
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
-    //recv();
+    if(!((int) recibir_paquete(admin->sockfd_tripulante_ram))){
+        log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
+        return;
+    }
 
     //CAMBIAR A ESTADO READY
     actualizar_estado(admin, READY);
-    
-    //SOLICITO LA PRIMERA TAREA
-    //tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
-    //tareaPendiente = 1;
 
     while (finTareas == 0)
     {
@@ -151,10 +150,16 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
     }
 
+    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, &tamanioSerializacion);
+    send(sockfd_ram, dEnviar, tamanioSerializacion, 0);
+    free(dEnviar);
+
     close(admin->sockfd_tripulante_mongo);
     close(admin->sockfd_tripulante_ram);
 
     free(admin);
+
+    log_info(logger, "Termine mis tareas en la nave, adios");
 
     return;
 }

@@ -1,13 +1,13 @@
 #include "serializacion.h"
 
-void *serializarTCB(t_TCB unTCB, int *tamanioSerializacion)
+void *serializarTCB(int pid, t_TCB unTCB, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) * 5 + sizeof(char);
+    buffer->size = sizeof(t_TCB) + sizeof(int);
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
@@ -16,6 +16,8 @@ void *serializarTCB(t_TCB unTCB, int *tamanioSerializacion)
     void *stream = malloc(buffer->size);
     int offset = 0;
 
+    memcpy(stream + offset, &pid, sizeof(int));
+    offset += sizeof(int);
     memcpy(stream + offset, &unTCB.TID, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(stream + offset, &unTCB.estado, sizeof(char));
@@ -350,6 +352,53 @@ void *serializar_envioSabotaje(uint32_t posX, uint32_t posY, int *tamanioSeriali
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
     paquete->codigo_operacion = ALERTA_SABOTAJE;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void *a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
+}
+
+void *serializar_pidYtid(uint32_t pid, uint32_t tid, int *tamanioSerializacion)
+{
+
+    //CREO EL BUFFER
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    //CARGO EL SIZE DEL BUFFER
+    buffer->size = sizeof(uint32_t) *2;
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    void *stream = malloc(buffer->size);
+    int offset = 0;
+
+    memcpy(stream + offset, &pid, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, &tid, sizeof(uint32_t));
+
+    buffer->stream = stream;
+
+    //CREAMOS EL PAQUETE
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    paquete->codigo_operacion = SOLICITAR_TAREA;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR
