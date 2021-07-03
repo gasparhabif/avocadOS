@@ -46,8 +46,7 @@ void INICIAR_PATOTA(char **parametros)
 
                 //ENVIAR TAREAS
                 //printf("Enviando datos...\n");
-                int bytesEnviados = send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
-                //printf("Datos enviados! %d bytes\n", bytesEnviados);
+                send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
 
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
@@ -57,6 +56,12 @@ void INICIAR_PATOTA(char **parametros)
                 //printf("Recibiendo datos\n");
                 int direccionPCB = (int) recibir_paquete(sockfd_ram);
                 //printf("Pos recibida: %p\n", direccionPCB);
+
+                if(!direccionPCB){
+                    log_info(logger, "Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes");
+                    printf("Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes\n");
+                    return;
+                }
 
                 //CREO LOS TCB
                 t_TCB tripulantes_tcb[cantTripulantes];

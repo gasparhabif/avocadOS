@@ -44,7 +44,7 @@ void sabotajes()
             aux_admin = list_get(bloq, i);
 
             //LE AVISO A RAM PARA QUE CAMBIE EL ESTADO
-            d_enviar = serializar_ActulizacionEstado(aux_admin->tid, BLOCKED_EMERGENCY, &bEnviar);
+            d_enviar = serializar_ActulizacionEstado(aux_admin->pid, aux_admin->tid, BLOCKED_EMERGENCY, &bEnviar);
             send(aux_admin->sockfd_tripulante_ram, d_enviar, bEnviar, 0);
             free(d_enviar);
 
@@ -84,7 +84,7 @@ void sabotajes()
             aux_admin = list_get(bloq, i);
 
             //LE AVISO A RAM PARA QUE CAMBIE EL ESTADO
-            d_enviar = serializar_ActulizacionEstado(aux_admin->tid, aux_admin->estado, &bEnviar);
+            d_enviar = serializar_ActulizacionEstado(aux_admin->pid, aux_admin->tid, aux_admin->estado, &bEnviar);
             send(aux_admin->sockfd_tripulante_ram, d_enviar, bEnviar, 0);
             free(d_enviar);
 

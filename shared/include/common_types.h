@@ -98,12 +98,14 @@ typedef struct
 
 typedef struct
 {
+    u_int32_t PID;
     u_int32_t TID;
     char estado;
 } t_estado;
 
 typedef struct
 {
+    u_int32_t PID;
     u_int32_t TID;
     t_posicion pos;
 } t_envio_posicion;

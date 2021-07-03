@@ -63,7 +63,7 @@ void recibir_mensaje(void *parametro)
                 //¿LO MANDA EL DISCORDIADOR O EL TRIPULANTE QUE QUIERE MORIR?
                 break;
             default:
-                log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
+                log_info(logger, "AAA Llego un codigo de operacion desconocido: %d", cop_recibido);
                 break;
         }
     }

@@ -21,36 +21,50 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 
     log_info(logger, "Una nueva patota aborda la nave");
 
+    int tamanioSerializacion;
+    void *paquete;
+
     //GUARDO LAS TAREAS EN MEMORIA
     t_registro_segmentos* segmento_tareas = guardar_tareas(tareas_cPID_recibidas->cantTareas, tareas_cPID_recibidas->tareas);
     
-    log_info(logger, "Tareas en memoria");
+    if(segmento_tareas->base != (void *) -1){
 
-    //CREO EL PCB Y LO CARGO
-    t_PCB *nuevo_pcb  = malloc(sizeof(t_PCB));
-    nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
-    nuevo_pcb->tareas = (int) segmento_tareas->base;
+        log_info(logger, "Tareas en memoria");
 
-    //GUARDO EL PCB
-    t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
+        //CREO EL PCB Y LO CARGO
+        t_PCB *nuevo_pcb  = malloc(sizeof(t_PCB));
+        nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
+        nuevo_pcb->tareas = (int) segmento_tareas->base;
 
-    log_info(logger, "PCB en memoria");
+        //GUARDO EL PCB
+        t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
 
-    //CREO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
-    t_list* registro_proceso = list_create();
+        if(segmento_pcb->base != (void *) -1){
 
-    //CARGO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
-    list_add(registro_proceso, segmento_tareas);    
-    list_add(registro_proceso, segmento_pcb);
+            log_info(logger, "PCB en memoria");
 
-    free(nuevo_pcb);
-    
-    //AÑADO EL PROCESO A LA LISTA DE PROCESOS
-    list_add(tabla_procesos, registro_proceso);
+            //CREO EL REGISTRO DE SEGMENTOS
+            t_list* registro_proceso = list_create();
 
-    //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB
-    int tamanioSerializacion;
-    void *paquete = serializarInt((int) segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
+            //CARGO EL REGISTRO DE SEGMENTOS
+            list_add(registro_proceso, segmento_tareas);    
+            list_add(registro_proceso, segmento_pcb);
+
+            free(nuevo_pcb);
+            
+            //AÑADO EL PROCESO A LA LISTA DE PROCESOS
+            list_add(tabla_procesos, registro_proceso);
+
+            //CREO EL PAQUETE A ENVIAR
+            paquete = serializarInt((int) segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
+        }
+        else
+            paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
+    }
+    else
+        paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
+
+    //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB      
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
 
