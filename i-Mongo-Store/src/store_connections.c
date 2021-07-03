@@ -60,19 +60,23 @@ void tripulante_cxn_handler(void *arg)
     t_envio_posicion *tripulante = recibir_paquete(client);
     log_info(logger, "Se conectó el tripulante TID: %d - Posición inicial: %d|%d", tripulante->TID, tripulante->pos.posX, tripulante->pos.posY);
 
-    // Archivo Tripulante#.ims
+    // Obtener path
     char *tid = string_itoa(tripulante->TID);
-    char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
-    // char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
+    // char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
+    char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
 
     if (!file_exists(bitacora_file_path))
     {
         create_bitacora(bitacora_file_path);
     }
 
-    // while (1)
-    // {
-    // }
+    // Cargar Tripulante#.ims
+    t_bitacora *bitacora = load_bitacora(bitacora_file_path);
+    log_info(logger, "Se cargó Tripulante%s.ims", tid);
+
+    while (1)
+    {
+    }
 
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);

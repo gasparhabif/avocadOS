@@ -17,8 +17,8 @@
 #include <string.h>
 
 // Constantes de FS
-#define BLOCK_SIZE 64
-#define BLOCKS 1024
+#define BLOCK_SIZE 8
+#define BLOCKS 16
 
 // Estructuras
 typedef struct
@@ -27,6 +27,12 @@ typedef struct
     uint32_t blocks;
     t_bitarray *bitmap;
 } t_superbloque;
+
+typedef struct
+{
+    int size;
+    char *blocks;
+} t_bitacora;
 
 // Paths de FS
 char *files_dir_path;
@@ -86,5 +92,6 @@ void sync_blocks();
 
 // Bitácoras utils (definidas en bitacoras_utils.c)
 void create_bitacora(char *);
+t_bitacora *load_bitacora(char *);
 
 #endif

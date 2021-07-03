@@ -87,9 +87,9 @@ t_superbloque *load_superbloque()
 
 void print_superbloque()
 {
-    printf("Tamaño de bloque: %d\n", superbloque->block_size);
-    printf("Cantidad de bloques: %d\n", superbloque->blocks);
-    printf("Estado de bloques: ");
+    // printf("Tamaño de bloque: %d\n", superbloque->block_size);
+    // printf("Cantidad de bloques: %d\n", superbloque->blocks);
+    printf("Bitmap: ");
     for (int i = 0; i < superbloque->blocks; i++)
     {
         printf("%d", bitarray_test_bit(superbloque->bitmap, i));

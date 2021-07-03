@@ -12,3 +12,17 @@ void create_bitacora(char *bitacora_file_path)
     config_destroy(bitacora_config);
     close(bitacora_fd);
 }
+
+t_bitacora *load_bitacora(char *bitacora_file_path)
+{
+    t_bitacora *bitacora_aux = malloc(sizeof(t_bitacora));
+
+    t_config *bitacora_config = config_create(bitacora_file_path);
+    bitacora_aux->size = config_get_int_value(bitacora_config, "SIZE");
+    char *bitacora_blocks_aux = config_get_string_value(bitacora_config, "BLOCKS");
+    bitacora_aux->blocks = string_new();
+    strcpy(bitacora_aux->blocks, bitacora_blocks_aux);
+    config_destroy(bitacora_config);
+
+    return bitacora_aux;
+}
