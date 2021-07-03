@@ -11,6 +11,10 @@ void tripulante(t_parametros_tripulantes *parametro)
     int finTareas = 0, tareaPendiente = 0;
     int block = 0;
 
+    //SETEO LA CANCELACION INMEDIATA
+    //pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    //pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+
     log_info(logger, "Se inicio el tripulante N°:%d", tid);
 
     //TRAIGO LOS PARAMETROS
@@ -93,7 +97,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     //CAMBIAR A ESTADO READY
     actualizar_estado(admin, READY);
 
-    while (finTareas == 0 && tareaPendiente == 0)
+    while (finTareas == 0)
     {
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
@@ -153,7 +157,7 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
     }
 
-    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, &tamanioSerializacion);
+    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &tamanioSerializacion);
     send(sockfd_ram, dEnviar, tamanioSerializacion, 0);
     free(dEnviar);
 
@@ -176,7 +180,7 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     free(comenzar_tarea);
 
     //PEDIR TAREA
-    void *solicitud_tarea = serializar_pidYtid(admin->pid, admin->tid, &tamanioSerializacion);
+    void *solicitud_tarea = serializar_pidYtid(admin->pid, admin->tid, SOLICITAR_TAREA, &tamanioSerializacion);
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
 

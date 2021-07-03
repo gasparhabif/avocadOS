@@ -114,7 +114,7 @@ void INICIAR_PATOTA(char **parametros)
 
                     //CREO EL TRIPULANTE
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *) parametros_tripulante);
-                    pthread_detach(threads_tripulantes[i]);                   
+                    //pthread_detach(threads_tripulantes[i]);                   
                 }
 
                 patota_id++;
@@ -217,6 +217,7 @@ void EXPULSAR_TRIPULANTE(char **parametros)
 
         //ELIMINO EL THREAD
         pthread_cancel(thread_eliminar);
+        pthread_join(thread_eliminar, NULL);
 
         //DOY EL AVISO
         printf("Se elimino al tripulante %d\n", atoi(parametros[1]));

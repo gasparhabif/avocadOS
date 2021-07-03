@@ -377,7 +377,7 @@ void *serializar_envioSabotaje(uint32_t posX, uint32_t posY, int *tamanioSeriali
     //free(a_enviar);
 }
 
-void *serializar_pidYtid(uint32_t pid, uint32_t tid, int *tamanioSerializacion)
+void *serializar_pidYtid(uint32_t pid, uint32_t tid, uint8_t COD_OP, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
@@ -401,7 +401,7 @@ void *serializar_pidYtid(uint32_t pid, uint32_t tid, int *tamanioSerializacion)
 
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
-    paquete->codigo_operacion = SOLICITAR_TAREA;
+    paquete->codigo_operacion = COD_OP;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR

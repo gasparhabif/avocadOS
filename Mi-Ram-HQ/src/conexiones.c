@@ -54,16 +54,18 @@ void recibir_mensaje(void *parametro)
                 break;
             case MOVER_TRIPULANTE:
                 log_info(logger, "El tripulante %d ha realizado un movimiento", client);
+                mover_tripulante(datos_recibidos);
                 break;
             case ACTUALIZAR_ESTADO:
                 log_info(logger, "El tripulante %d actualizo su estado", client);
+                actualizar_estado(datos_recibidos);
                 break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
                 //¿LO MANDA EL DISCORDIADOR O EL TRIPULANTE QUE QUIERE MORIR?
                 break;
             default:
-                log_info(logger, "AAA Llego un codigo de operacion desconocido: %d", cop_recibido);
+                log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
                 break;
         }
     }

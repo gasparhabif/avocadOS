@@ -53,6 +53,8 @@ void recibir_mensaje      (void *);
 void comenzar_patota      (int, t_tareas_cPID *);
 void iniciar_tripulante   (int, t_TCBcPID *);
 void solicitar_tarea      (int, t_pidYtid *);
+void mover_tripulante     (t_envio_posicion *);
+void actualizar_estado    (t_estado *);
 
 //Definidas en memoria.c
 void*                 reservar_memoria(int);

@@ -132,3 +132,59 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
     free(tarea_buscada);
     free(pid_tid_recibidos);
 }
+
+void mover_tripulante(t_envio_posicion *pos_recibida){
+
+    //ENCUENTRO LA LISTA DEL PROCESO
+    t_list* lista_proceso  = buscar_lista_proceso(pos_recibida->PID);
+
+    //BUSCO EL REGISTRO DEL SEGMENTO DEL TCB
+    t_registro_segmentos* seg_tcb = buscar_registro_tcb(lista_proceso, pos_recibida->TID);
+
+    //CREO UN TCB PARA TRAERLO DE MEMORIA Y TRABAJARLO
+    t_TCB *tcb = malloc(sizeof(t_TCB));
+
+    //ME COPIO EL TCB DE MEMORIA
+    memcpy(tcb, seg_tcb->base, sizeof(t_TCB));
+
+    //MODIFICO LA POSICION
+    tcb->posX = pos_recibida->pos.posX;
+    tcb->posY = pos_recibida->pos.posY;
+
+    //LLEVO EL TCB NUEVAMENTE A MEMORIA
+    memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
+
+    //LIBERO LA MEMORIA
+    free(pos_recibida);
+    free(tcb);
+
+    return;
+}
+
+void actualizar_estado(t_estado *estadoRecibido){
+
+    //ENCUENTRO LA LISTA DEL PROCESO
+    t_list* lista_proceso  = buscar_lista_proceso(estadoRecibido->PID);
+
+    //BUSCO EL REGISTRO DEL SEGMENTO DEL TCB
+    t_registro_segmentos* seg_tcb = buscar_registro_tcb(lista_proceso, estadoRecibido->TID);
+
+    //CREO UN TCB PARA TRAERLO DE MEMORIA Y TRABAJARLO
+    t_TCB *tcb = malloc(sizeof(t_TCB));
+
+    //ME COPIO EL TCB DE MEMORIA
+    memcpy(tcb, seg_tcb->base, sizeof(t_TCB));
+
+    //MODIFICO EL ESTADO
+    tcb->estado = estadoRecibido->estado;
+
+    //LLEVO EL TCB NUEVAMENTE A MEMORIA
+    memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
+
+    //LIBERO LA MEMORIA
+    free(estadoRecibido);
+    free(tcb);
+
+    return;
+
+}
