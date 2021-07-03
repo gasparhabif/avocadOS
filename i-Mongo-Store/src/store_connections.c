@@ -47,7 +47,7 @@ void accept_tripulantes(void *arg)
 
         pthread_t connection_thread;
         pthread_create(&connection_thread, NULL, (void *)tripulante_cxn_handler, (void *)client);
-        // Acá no ejecuto pthread_join() porque sino no crea nuevos threads hasta que no termine el último
+        pthread_detach(connection_thread);
     }
 }
 
@@ -63,6 +63,7 @@ void tripulante_cxn_handler(void *arg)
     // Archivo Tripulante#.ims
     char *tid = string_itoa(tripulante->TID);
     char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
+    // char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
 
     if (!file_exists(bitacora_file_path))
     {
@@ -86,19 +87,20 @@ void tripulante_cxn_handler(void *arg)
         case INICIO_TAREA:
             registrarInicioTarea();
             break;
-        case FIN_TAREA:
-            registrarFinTarea();
-            break;
+
         case INICIO_RESOLUCION_SABOTAJE:
             registrarAtencionSabotaje();
             break;
+        // case INICIO_PROTOCOLO_FSCK:
+        //     break;
         case FIN_RESOLUCION_SABOTAJE:
             registrarResolucionSabotaje();
             break;
-        case ENVIAR_PROXIMA_TAREA:;
+        case ENVIAR_PROXIMA_TAREA:; // EJECUTAR_TAREA
             t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
             ejecutarTarea(tarea_a_ejecutar);
             break;
+
         default:
             log_error(logger, "Código %d desconocido", cod_operacion);
             tareas_finalizadas = true;

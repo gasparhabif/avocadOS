@@ -19,6 +19,13 @@ bool file_exists(char *path)
     return access(path, F_OK) == 0;
 }
 
+void create_dirs()
+{
+    mkdir(config->punto_montaje, 0777);
+    mkdir(files_dir_path, 0777);
+    mkdir(bitacoras_dir_path, 0777);
+}
+
 void clean_bitarray(t_bitarray *bitarray)
 {
     int bitarray_size = bitarray_get_max_bit(bitarray);
@@ -31,94 +38,49 @@ void clean_bitarray(t_bitarray *bitarray)
     }
 }
 
-t_superbloque *create_superbloque(uint32_t block_size, uint32_t blocks)
+void create_superbloque(uint32_t block_size, uint32_t blocks)
 {
-    t_superbloque *new_superbloque = malloc(sizeof(t_superbloque));
-
-    new_superbloque->block_size = block_size;
-    new_superbloque->blocks = blocks;
-    void *bit_pointer = malloc(new_superbloque->blocks / 8);
-    new_superbloque->bitmap = bitarray_create_with_mode(bit_pointer, new_superbloque->blocks / 8, LSB_FIRST);
-    clean_bitarray(new_superbloque->bitmap);
+    void *bit_pointer = malloc(blocks / 8);
+    t_bitarray *bitmap = bitarray_create_with_mode(bit_pointer, blocks / 8, LSB_FIRST);
+    clean_bitarray(bitmap);
 
     // Crear archivo SuperBloque.ims
     int superbloque_fd = open(superbloque_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    int superbloque_file_size = 2 * sizeof(uint32_t) + new_superbloque->bitmap->size;
+    int superbloque_file_size = 2 * sizeof(uint32_t) + bitmap->size;
     ftruncate(superbloque_fd, superbloque_file_size);
 
     // Mapear archivo
     void *superbloque_file = mmap(NULL, superbloque_file_size, PROT_READ | PROT_WRITE, MAP_SHARED, superbloque_fd, SEEK_SET);
 
     // Copiar valores en archivo mapeado
-    memcpy(superbloque_file, &(new_superbloque->block_size), sizeof(uint32_t));
-    memcpy(superbloque_file + sizeof(uint32_t), &(new_superbloque->blocks), sizeof(uint32_t));
-    memcpy(superbloque_file + 2 * sizeof(uint32_t), new_superbloque->bitmap->bitarray, new_superbloque->bitmap->size);
+    memcpy(superbloque_file, &(block_size), sizeof(uint32_t));
+    memcpy(superbloque_file + sizeof(uint32_t), &(blocks), sizeof(uint32_t));
+    memcpy(superbloque_file + 2 * sizeof(uint32_t), bitmap->bitarray, bitmap->size);
 
     munmap(superbloque_file, superbloque_file_size);
     close(superbloque_fd);
-
-    return new_superbloque;
 }
 
 t_superbloque *load_superbloque()
 {
-    t_superbloque *existing_superbloque = malloc(sizeof(t_superbloque));
-
     // Abrir archivo SuperBloque.ims
-    int superbloque_fd = open(superbloque_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    superbloque_fd = open(superbloque_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
     // Obtener tamaño
     struct stat superbloque_stat;
     fstat(superbloque_fd, &superbloque_stat);
+    superbloque_file_size = superbloque_stat.st_size;
 
     // Mapear archivo
-    void *superbloque_file = mmap(NULL, superbloque_stat.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, superbloque_fd, SEEK_SET);
+    superbloque_file = mmap(NULL, superbloque_file_size, PROT_READ | PROT_WRITE, MAP_SHARED, superbloque_fd, SEEK_SET);
 
     // Copiar valores de archivo mapeado
-    memcpy(&(existing_superbloque->block_size), superbloque_file, sizeof(uint32_t));
-    memcpy(&(existing_superbloque->blocks), superbloque_file + sizeof(uint32_t), sizeof(uint32_t));
-    void *bit_pointer = malloc(existing_superbloque->blocks / 8);
-    memcpy(bit_pointer, superbloque_file + 2 * sizeof(uint32_t), existing_superbloque->blocks / 8);
-    existing_superbloque->bitmap = bitarray_create_with_mode(bit_pointer, existing_superbloque->blocks / 8, LSB_FIRST);
-
-    munmap(superbloque_file, superbloque_stat.st_size);
-    close(superbloque_fd);
-
-    return existing_superbloque;
-}
-
-t_superbloque *init_superbloque()
-{
-    t_superbloque *superbloque_aux;
-
-    // Inicializar paths de archivos y directorios
-    init_paths();
-
-    printf("LLEGUE\n");
-
-    // Verificar existencia de FS
-    if (!file_exists(superbloque_file_path))
-    {
-        log_info(logger, "El FS no existe. Creando FS desde cero...");
-
-        // Crear directorios
-        mkdir(config->punto_montaje, 0777);
-        mkdir(files_dir_path, 0777);
-        mkdir(bitacoras_dir_path, 0777);
-
-        // Crear SuperBloque.ims
-        superbloque_aux = create_superbloque(BLOCK_SIZE, BLOCKS);
-
-        // Crear Blocks.ims
-        create_blocks(superbloque_aux->block_size * superbloque_aux->blocks);
-    }
-    else
-    {
-        log_info(logger, "El FS ya existe. Cargando FS...");
-        superbloque_aux = load_superbloque();
-    }
-
-    log_info(logger, "FS iniciado exitosamente.");
+    t_superbloque *superbloque_aux = malloc(sizeof(t_superbloque));
+    memcpy(&(superbloque_aux->block_size), superbloque_file, sizeof(uint32_t));
+    memcpy(&(superbloque_aux->blocks), superbloque_file + sizeof(uint32_t), sizeof(uint32_t));
+    void *bit_pointer = malloc(superbloque_aux->blocks / 8);
+    memcpy(bit_pointer, superbloque_file + 2 * sizeof(uint32_t), superbloque_aux->blocks / 8);
+    superbloque_aux->bitmap = bitarray_create_with_mode(bit_pointer, superbloque_aux->blocks / 8, LSB_FIRST);
 
     return superbloque_aux;
 }
@@ -135,64 +97,50 @@ void print_superbloque()
     printf("\n");
 }
 
-void create_blocks(uint32_t blocks_count)
+void create_blocks()
 {
+    uint32_t blocks_file_size = BLOCK_SIZE * BLOCKS;
+
     // Crear archivo Blocks.ims
     int blocks_fd = open(blocks_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    ftruncate(blocks_fd, blocks_count);
+    ftruncate(blocks_fd, blocks_file_size);
 
     // Mapear archivo
-    char *blocks_file = mmap(NULL, blocks_count, PROT_READ | PROT_WRITE, MAP_SHARED, blocks_fd, SEEK_SET);
+    blocks_file = mmap(NULL, blocks_file_size, PROT_READ | PROT_WRITE, MAP_SHARED, blocks_fd, SEEK_SET);
 
-    for (int i = 0; i < blocks_count; i++)
+    for (int i = 0; i < blocks_file_size; i++)
     {
-        blocks_file[i] = '-';
+        blocks_file[i] = i % BLOCK_SIZE == 0 ? '|' : '-';
     }
 
-    munmap(blocks_file, blocks_count);
+    munmap(blocks_file, blocks_file_size);
     close(blocks_fd);
 }
 
 char *load_blocks()
 {
     // Abrir archivo Blocks.ims
-    int blocks_fd = open(blocks_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    blocks_fd = open(blocks_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
     // Obtener tamaño
     struct stat blocks_stat;
     fstat(blocks_fd, &blocks_stat);
-
-    char *blocks_aux = malloc(blocks_stat.st_size);
+    blocks_file_size = blocks_stat.st_size;
 
     // Mapear archivo
-    char *blocks_file = mmap(NULL, blocks_stat.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, blocks_fd, SEEK_SET);
+    blocks_file = mmap(NULL, blocks_file_size, PROT_READ | PROT_WRITE, MAP_SHARED, blocks_fd, SEEK_SET);
 
     // Copiar valores de archivo mapeado
-    memcpy(blocks_aux, blocks_file, blocks_stat.st_size);
-
-    munmap(blocks_file, blocks_stat.st_size);
-    close(blocks_fd);
+    char *blocks_aux = malloc(blocks_file_size);
+    memcpy(blocks_aux, blocks_file, blocks_file_size);
 
     return blocks_aux;
 }
 
 void sync_blocks()
 {
-    // Abrir archivo Blocks.ims
-    int blocks_fd = open(blocks_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-
-    // Obtener tamaño
-    struct stat blocks_stat;
-    fstat(blocks_fd, &blocks_stat);
-
-    // Mapear archivo
-    char *blocks_file = mmap(NULL, blocks_stat.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, blocks_fd, SEEK_SET);
-
-    for (int i = 0; i < strlen(blocks); i++)
+    for (int i = 0; i < blocks_file_size; i++)
     {
-        blocks_file[i] = blocks[i];
+        blocks_file[i] = blocks_file_copy[i];
     }
-
-    munmap(blocks_file, blocks_stat.st_size);
-    close(blocks_fd);
 }
