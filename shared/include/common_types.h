@@ -98,12 +98,14 @@ typedef struct
 
 typedef struct
 {
+    u_int32_t PID;
     u_int32_t TID;
     char estado;
 } t_estado;
 
 typedef struct
 {
+    u_int32_t PID;
     u_int32_t TID;
     t_posicion pos;
 } t_envio_posicion;
@@ -124,13 +126,6 @@ typedef struct
     u_int8_t cantTareas;
     t_tarea *tareas;
 } t_tareas_cPID;
-
-typedef struct
-{
-    u_int32_t tid;
-    u_int8_t tamanioTarea;
-    char *tarea;
-} t_tareas_cNOMBRE;
 
 //ACTUALIZACIONES
 typedef struct

@@ -21,36 +21,50 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 
     log_info(logger, "Una nueva patota aborda la nave");
 
+    int tamanioSerializacion;
+    void *paquete;
+
     //GUARDO LAS TAREAS EN MEMORIA
     t_registro_segmentos* segmento_tareas = guardar_tareas(tareas_cPID_recibidas->cantTareas, tareas_cPID_recibidas->tareas);
     
-    log_info(logger, "Tareas en memoria");
+    if(segmento_tareas->base != (void *) -1){
 
-    //CREO EL PCB Y LO CARGO
-    t_PCB *nuevo_pcb  = malloc(sizeof(t_PCB));
-    nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
-    nuevo_pcb->tareas = (int) segmento_tareas->base;
+        log_info(logger, "Tareas en memoria");
 
-    //GUARDO EL PCB
-    t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
+        //CREO EL PCB Y LO CARGO
+        t_PCB *nuevo_pcb  = malloc(sizeof(t_PCB));
+        nuevo_pcb->PID    = tareas_cPID_recibidas->PID;
+        nuevo_pcb->tareas = (int) segmento_tareas->base;
 
-    log_info(logger, "PCB en memoria");
+        //GUARDO EL PCB
+        t_registro_segmentos* segmento_pcb = guardar_pcb(nuevo_pcb);
 
-    //CREO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
-    t_list* registro_proceso = list_create();
+        if(segmento_pcb->base != (void *) -1){
 
-    //CARGO EL REGISTRO DE SEGMENTOS/PAGINAS DEL PROCESO
-    list_add(registro_proceso, segmento_tareas);    
-    list_add(registro_proceso, segmento_pcb);
+            log_info(logger, "PCB en memoria");
 
-    free(nuevo_pcb);
-    
-    //AÑADO EL PROCESO A LA LISTA DE PROCESOS
-    list_add(tabla_procesos, registro_proceso);
+            //CREO EL REGISTRO DE SEGMENTOS
+            t_list* registro_proceso = list_create();
 
-    //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB
-    int tamanioSerializacion;
-    void *paquete = serializarInt((int) segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
+            //CARGO EL REGISTRO DE SEGMENTOS
+            list_add(registro_proceso, segmento_tareas);    
+            list_add(registro_proceso, segmento_pcb);
+
+            free(nuevo_pcb);
+            
+            //AÑADO EL PROCESO A LA LISTA DE PROCESOS
+            list_add(tabla_procesos, registro_proceso);
+
+            //CREO EL PAQUETE A ENVIAR
+            paquete = serializarInt((int) segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
+        }
+        else
+            paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
+    }
+    else
+        paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
+
+    //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB      
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
 
@@ -117,4 +131,60 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
 
     free(tarea_buscada);
     free(pid_tid_recibidos);
+}
+
+void mover_tripulante(t_envio_posicion *pos_recibida){
+
+    //ENCUENTRO LA LISTA DEL PROCESO
+    t_list* lista_proceso  = buscar_lista_proceso(pos_recibida->PID);
+
+    //BUSCO EL REGISTRO DEL SEGMENTO DEL TCB
+    t_registro_segmentos* seg_tcb = buscar_registro_tcb(lista_proceso, pos_recibida->TID);
+
+    //CREO UN TCB PARA TRAERLO DE MEMORIA Y TRABAJARLO
+    t_TCB *tcb = malloc(sizeof(t_TCB));
+
+    //ME COPIO EL TCB DE MEMORIA
+    memcpy(tcb, seg_tcb->base, sizeof(t_TCB));
+
+    //MODIFICO LA POSICION
+    tcb->posX = pos_recibida->pos.posX;
+    tcb->posY = pos_recibida->pos.posY;
+
+    //LLEVO EL TCB NUEVAMENTE A MEMORIA
+    memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
+
+    //LIBERO LA MEMORIA
+    free(pos_recibida);
+    free(tcb);
+
+    return;
+}
+
+void actualizar_estado(t_estado *estadoRecibido){
+
+    //ENCUENTRO LA LISTA DEL PROCESO
+    t_list* lista_proceso  = buscar_lista_proceso(estadoRecibido->PID);
+
+    //BUSCO EL REGISTRO DEL SEGMENTO DEL TCB
+    t_registro_segmentos* seg_tcb = buscar_registro_tcb(lista_proceso, estadoRecibido->TID);
+
+    //CREO UN TCB PARA TRAERLO DE MEMORIA Y TRABAJARLO
+    t_TCB *tcb = malloc(sizeof(t_TCB));
+
+    //ME COPIO EL TCB DE MEMORIA
+    memcpy(tcb, seg_tcb->base, sizeof(t_TCB));
+
+    //MODIFICO EL ESTADO
+    tcb->estado = estadoRecibido->estado;
+
+    //LLEVO EL TCB NUEVAMENTE A MEMORIA
+    memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
+
+    //LIBERO LA MEMORIA
+    free(estadoRecibido);
+    free(tcb);
+
+    return;
+
 }

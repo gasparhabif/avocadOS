@@ -107,6 +107,8 @@ t_estado *deserializar_ActulizacionEstado(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
+    memcpy(&(estado_recibido->PID), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
     memcpy(&(estado_recibido->TID), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
     memcpy(&(estado_recibido->estado), stream, sizeof(uint32_t));
@@ -125,6 +127,8 @@ t_envio_posicion *deserializar_envioPosicion(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
+    memcpy(&(posicion_recibida->PID), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
     memcpy(&(posicion_recibida->TID), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
     memcpy(&(posicion_recibida->pos.posX), stream, sizeof(uint32_t));

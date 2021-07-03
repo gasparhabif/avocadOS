@@ -1,6 +1,6 @@
 #include "serializacion.h"
 
-void *serializarTCB(int pid, t_TCB unTCB, int *tamanioSerializacion)
+void *serializarTCB(uint32_t pid, t_TCB unTCB, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
@@ -16,8 +16,8 @@ void *serializarTCB(int pid, t_TCB unTCB, int *tamanioSerializacion)
     void *stream = malloc(buffer->size);
     int offset = 0;
 
-    memcpy(stream + offset, &pid, sizeof(int));
-    offset += sizeof(int);
+    memcpy(stream + offset, &pid, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
     memcpy(stream + offset, &unTCB.TID, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(stream + offset, &unTCB.estado, sizeof(char));
@@ -134,7 +134,6 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     memcpy(stream + offset, &cantTareas, sizeof(uint8_t));
     offset += sizeof(uint8_t);
 
-    // for (int i = 0; i < cantTareas; i++)
     for (int i = 0; i < cantTareas; i++)
     {
         memcpy(stream + offset, &unasTareas[i].codigoTarea, sizeof(uint8_t));
@@ -229,14 +228,14 @@ void *serializarInt(uint32_t valor, uint8_t CODIGO_OPERACION, int *tamanioSerial
     //free(a_enviar);
 }
 
-void *serializar_ActulizacionEstado(uint32_t tid, char nuevoEstado, int *tamanioSerializacion)
+void *serializar_ActulizacionEstado(uint32_t pid, uint32_t tid, char nuevoEstado, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) + sizeof(char);
+    buffer->size = sizeof(uint32_t) * 2 + sizeof(char);
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
@@ -245,6 +244,8 @@ void *serializar_ActulizacionEstado(uint32_t tid, char nuevoEstado, int *tamanio
     void *stream = malloc(buffer->size);
     int offset = 0;
 
+    memcpy(stream + offset, &pid, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
     memcpy(stream + offset, &tid, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(stream + offset, &nuevoEstado, sizeof(char));
@@ -278,14 +279,14 @@ void *serializar_ActulizacionEstado(uint32_t tid, char nuevoEstado, int *tamanio
     //free(a_enviar);
 }
 
-void *serializar_envioPosicion(int tid, int posX, int posY, int *tamanioSerializacion)
+void *serializar_envioPosicion(uint32_t pid, uint32_t tid, uint32_t posX, uint32_t posY, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) + sizeof(t_posicion);
+    buffer->size = sizeof(uint32_t) * 2 + sizeof(t_posicion);
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
@@ -294,6 +295,8 @@ void *serializar_envioPosicion(int tid, int posX, int posY, int *tamanioSerializ
     void *stream = malloc(buffer->size);
     int offset = 0;
 
+    memcpy(stream + offset, &pid, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
     memcpy(stream + offset, &tid, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(stream + offset, &posX, sizeof(uint32_t));
@@ -374,7 +377,7 @@ void *serializar_envioSabotaje(uint32_t posX, uint32_t posY, int *tamanioSeriali
     //free(a_enviar);
 }
 
-void *serializar_pidYtid(uint32_t pid, uint32_t tid, int *tamanioSerializacion)
+void *serializar_pidYtid(uint32_t pid, uint32_t tid, uint8_t COD_OP, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
@@ -398,7 +401,7 @@ void *serializar_pidYtid(uint32_t pid, uint32_t tid, int *tamanioSerializacion)
 
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
-    paquete->codigo_operacion = SOLICITAR_TAREA;
+    paquete->codigo_operacion = COD_OP;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR

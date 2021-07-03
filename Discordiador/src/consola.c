@@ -46,8 +46,7 @@ void INICIAR_PATOTA(char **parametros)
 
                 //ENVIAR TAREAS
                 //printf("Enviando datos...\n");
-                int bytesEnviados = send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
-                //printf("Datos enviados! %d bytes\n", bytesEnviados);
+                send(sockfd_ram, d_Enviar, tamanioSerializacion, 0);
 
                 //LIBERO LA MEMORIA DE LAS TAREAS
                 free(tareas);
@@ -57,6 +56,12 @@ void INICIAR_PATOTA(char **parametros)
                 //printf("Recibiendo datos\n");
                 int direccionPCB = (int) recibir_paquete(sockfd_ram);
                 //printf("Pos recibida: %p\n", direccionPCB);
+
+                if(!direccionPCB){
+                    log_info(logger, "Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes");
+                    printf("Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes\n");
+                    return;
+                }
 
                 //CREO LOS TCB
                 t_TCB tripulantes_tcb[cantTripulantes];
@@ -109,7 +114,7 @@ void INICIAR_PATOTA(char **parametros)
 
                     //CREO EL TRIPULANTE
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *) parametros_tripulante);
-                    pthread_detach(threads_tripulantes[i]);                   
+                    //pthread_detach(threads_tripulantes[i]);                   
                 }
 
                 patota_id++;
@@ -212,6 +217,7 @@ void EXPULSAR_TRIPULANTE(char **parametros)
 
         //ELIMINO EL THREAD
         pthread_cancel(thread_eliminar);
+        pthread_join(thread_eliminar, NULL);
 
         //DOY EL AVISO
         printf("Se elimino al tripulante %d\n", atoi(parametros[1]));

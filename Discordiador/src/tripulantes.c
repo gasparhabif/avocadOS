@@ -11,6 +11,10 @@ void tripulante(t_parametros_tripulantes *parametro)
     int finTareas = 0, tareaPendiente = 0;
     int block = 0;
 
+    //SETEO LA CANCELACION INMEDIATA
+    //pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    //pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+
     log_info(logger, "Se inicio el tripulante N°:%d", tid);
 
     //TRAIGO LOS PARAMETROS
@@ -53,17 +57,15 @@ void tripulante(t_parametros_tripulantes *parametro)
     free(parametros_recibidos);
 
     //LOGEO EL INICIO
-
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
-    //ABRO LA CONEXION
-    //admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    //ABRO LA CONEXION CON LA RAM
     admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
-    /*if(sockfd_tripulante_mongo == -1 || sockfd_tripulante_ram == -1){
-        log_info(logger, "Tripulante abandona la nave por fallo de conexion");
+    if(admin->sockfd_tripulante_ram == -1){
+        log_info(logger, "Tripulante abandona la nave por fallo de conexion con Mi-RAM-HQ");
         return;
-    }*/
-    log_info(logger, "El tripulante se conecto con RAM y con Mongo");
+    }
+    log_info(logger, "El tripulante se conecto con Mi-RAM-HQ");
 
     //SERIALIZO Y ENVIO EL TCB
     void *d_Enviar = serializarTCB(admin->pid, tcb_tripulante, &tamanioSerializacion);
@@ -71,17 +73,26 @@ void tripulante(t_parametros_tripulantes *parametro)
     free(d_Enviar);
     log_info(logger, "Se envio el TCB a la RAM");
 
-    //ENVIO EL TID Y LA POSICION INICIAL AL MONGO
-    void *enviar_tidYpos = serializar_envioPosicion(admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
-    send(admin->sockfd_tripulante_mongo, enviar_tidYpos, tamanioSerializacion, 0);
-    free(enviar_tidYpos);
-    log_info(logger, "Se envio el TID y la posicion al i-mongo-store");
-
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
     if(!((int) recibir_paquete(admin->sockfd_tripulante_ram))){
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         return;
     }
+
+    /*
+    admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+    if(admin->sockfd_tripulante_mongo == -1){
+        log_info(logger, "Tripulante abandona la nave por fallo de conexion con i-Mongo-Store");
+        return;
+    }
+    log_info(logger, "El tripulante se conecto con i-Mongo-Store");
+    */
+
+    //ENVIO EL TID Y LA POSICION INICIAL AL MONGO
+    void *enviar_tidYpos = serializar_envioPosicion(admin->pid, admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
+    send(admin->sockfd_tripulante_mongo, enviar_tidYpos, tamanioSerializacion, 0);
+    free(enviar_tidYpos);
+    log_info(logger, "Se envio el TID y la posicion al i-mongo-store");
 
     //CAMBIAR A ESTADO READY
     actualizar_estado(admin, READY);
@@ -104,10 +115,6 @@ void tripulante(t_parametros_tripulantes *parametro)
         {
             //EJECUTO LA TAREA, SI DEBO BLOCKEAR EL TRIPULANTE LA VARIABLE BLOCK VALDRA 1
             block = ejecutar_tarea(admin, tarea_recibida, &duracionMovimientos, &duracionEjecucion);
-
-            //printf("Block: %d\n", block);
-
-            //printf("Duracion movimientos: %d\nDuracion ejecucion: %d\nDuracion bloqueado: %d\n", duracionMovimientos, duracionEjecucion, duracionBloqueado);
 
             //CHEQUEO SI QUEDO ALGO POR EJECUTAR DE ESTA TAREA
             if (duracionMovimientos == 0 && duracionEjecucion == 0 && duracionBloqueado == 0)
@@ -150,7 +157,7 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
     }
 
-    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, &tamanioSerializacion);
+    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &tamanioSerializacion);
     send(sockfd_ram, dEnviar, tamanioSerializacion, 0);
     free(dEnviar);
 
@@ -173,7 +180,7 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     free(comenzar_tarea);
 
     //PEDIR TAREA
-    void *solicitud_tarea = serializar_pidYtid(admin->pid, admin->tid, &tamanioSerializacion);
+    void *solicitud_tarea = serializar_pidYtid(admin->pid, admin->tid, SOLICITAR_TAREA, &tamanioSerializacion);
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
 
@@ -283,7 +290,7 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
 
     //ENVIO A LA RAM EL NUEVO ESTADO
     int bEnviar;
-    void *d_enviar = serializar_ActulizacionEstado(admin->tid, nuevoEstado, &bEnviar);
+    void *d_enviar = serializar_ActulizacionEstado(admin->pid, admin->tid, nuevoEstado, &bEnviar);
     send(admin->sockfd_tripulante_ram, d_enviar, bEnviar, 0);
     free(d_enviar);
 
@@ -353,7 +360,7 @@ void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY
         mover_una_posicion(admin, posX, posY);
 
         int bEnviar;
-        void *d_enviar = serializar_envioPosicion(admin->tid, posX, posY, &bEnviar);
+        void *d_enviar = serializar_envioPosicion(admin->pid, admin->tid, posX, posY, &bEnviar);
         send(admin->sockfd_tripulante_ram,   d_enviar, bEnviar, 0);
         send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
         free(d_enviar);

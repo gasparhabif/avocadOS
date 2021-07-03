@@ -47,12 +47,12 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     //ASIGNO EL COP
     *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM
-    recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), MSG_WAITALL);
+    recv(sockfd, &(paquete->buffer->size), sizeof(uint32_t), 0);
     //printf("Recibido el buffer->size %zu\n", paquete->buffer->size);
     //RESERVO LA MEMORIA PARA RECIBIR AL STREAM
     paquete->buffer->stream = malloc(paquete->buffer->size);
     //RECIBO EL STREAM
-    recv(sockfd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+    recv(sockfd, paquete->buffer->stream, paquete->buffer->size, 0);
     //printf("Recibi %d bytes de stream\n");
 
     void *dRecibidos;

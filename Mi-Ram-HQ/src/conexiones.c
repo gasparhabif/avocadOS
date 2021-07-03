@@ -54,9 +54,11 @@ void recibir_mensaje(void *parametro)
                 break;
             case MOVER_TRIPULANTE:
                 log_info(logger, "El tripulante %d ha realizado un movimiento", client);
+                mover_tripulante(datos_recibidos);
                 break;
             case ACTUALIZAR_ESTADO:
                 log_info(logger, "El tripulante %d actualizo su estado", client);
+                actualizar_estado(datos_recibidos);
                 break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
