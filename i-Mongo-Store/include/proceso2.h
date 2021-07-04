@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <commons/bitarray.h>
+#include <commons/bitarray.h>
+#include <commons/collections/list.h>
 #include <stdbool.h>
 #include "shared_utils.h"
 #include <pthread.h>
@@ -30,8 +32,9 @@ typedef struct
 
 typedef struct
 {
+    char *path;
     int size;
-    char *blocks;
+    t_list *blocks;
 } t_bitacora;
 
 // Paths de FS
@@ -93,5 +96,12 @@ void sync_blocks();
 // Bitácoras utils (definidas en bitacoras_utils.c)
 void create_bitacora(char *);
 t_bitacora *load_bitacora(char *);
+void update_bitacora(t_bitacora *);
+void registrar_bitacora(t_bitacora *, char *);
+char *blocks_list_to_string(t_list *);
+
+// SuperBloque utils (definidas en superbloque_utils.c)
+int get_free_block();
+void set_block(int);
 
 #endif

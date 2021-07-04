@@ -74,6 +74,8 @@ void tripulante_cxn_handler(void *arg)
     t_bitacora *bitacora = load_bitacora(bitacora_file_path);
     log_info(logger, "Se cargó Tripulante%s.ims", tid);
 
+    registrar_bitacora(bitacora, "HELLO, WORLD!");
+
     while (1)
     {
     }
