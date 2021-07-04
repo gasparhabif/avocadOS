@@ -46,16 +46,29 @@ void registrar_bitacora(t_bitacora *bitacora, char *msg)
 {
     int bytes_to_write = strlen(msg);
     int next_byte_to_write = 0;
+
     while (bytes_to_write != 0)
     {
-        int free_block = get_free_block();
-        set_block(free_block);
-        list_add(bitacora->blocks, free_block);
+        int last_block;
+        int last_block_offset = bitacora->size % superbloque->block_size;
+        int free_bytes_last_block = superbloque->block_size - last_block_offset;
 
-        int blocks_file_offset = free_block * superbloque->block_size;
-        for (int i = 0; i < superbloque->block_size && bytes_to_write > 0; i++)
+        if (!list_is_empty(bitacora->blocks) && last_block_offset > 0)
         {
-            blocks_file[blocks_file_offset + i] = msg[next_byte_to_write];
+            last_block = list_get(bitacora->blocks, list_size(bitacora->blocks) - 1);
+        }
+        else
+        {
+            last_block = get_free_block();
+            set_block(last_block);
+            list_add(bitacora->blocks, last_block);
+        }
+
+        int blocks_file_offset = last_block * superbloque->block_size + last_block_offset;
+
+        for (int i = 0; i < free_bytes_last_block && bytes_to_write > 0; i++)
+        {
+            blocks_file_copy[blocks_file_offset + i] = msg[next_byte_to_write];
             next_byte_to_write++;
             bytes_to_write--;
             bitacora->size++;

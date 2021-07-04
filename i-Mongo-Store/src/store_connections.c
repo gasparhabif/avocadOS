@@ -75,6 +75,9 @@ void tripulante_cxn_handler(void *arg)
     log_info(logger, "Se cargó Tripulante%s.ims", tid);
 
     registrar_bitacora(bitacora, "HELLO, WORLD!");
+    // printf("Blocks file A: %s\n", blocks_file);
+    // sync_blocks();
+    // printf("Blocks file D: %s\n", blocks_file);
 
     while (1)
     {
