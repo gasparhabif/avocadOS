@@ -80,4 +80,9 @@ int                   eliminar_tcb         (t_list *, int);
 int                   eliminar_pcbOtareas  (t_list *, int);
 int                   obtener_PID          (void *);
 
+//Definidas en serializacionPaginacion.c
+void *serializar_PCB(t_PCB *);
+void *serializar_TCB(t_TCB *);
+void *serializar_TAREA(t_tarea *);
+
 #endif

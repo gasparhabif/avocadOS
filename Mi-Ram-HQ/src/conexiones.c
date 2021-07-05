@@ -38,41 +38,45 @@ void recibir_mensaje(void *parametro)
 
         datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
 
-        switch (cop_recibido)
-        {
-            case COMENZAR_PATOTA:
-                log_info(logger, "El discordiador %d comenzo una patota", client);
-                comenzar_patota(client, (t_tareas_cPID *)datos_recibidos);
-                break;
-            case INICIAR_TRIPULANTE:
-                log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
-                iniciar_tripulante(client, datos_recibidos);
-                break;
-            case SOLICITAR_TAREA:
-                log_info(logger, "El tripulante %d solicito una tarea", client);
-                solicitar_tarea(client, datos_recibidos);
-                break;
-            case MOVER_TRIPULANTE:
-                log_info(logger, "El tripulante %d ha realizado un movimiento", client);
-                mover_tripulante(datos_recibidos);
-                break;
-            case ACTUALIZAR_ESTADO:
-                log_info(logger, "El tripulante %d actualizo su estado", client);
-                actualizar_estado(datos_recibidos);
-                break;
-            case ELIMINAR_TRIPULANTE:
-                log_info(logger, "El tripulante %d quiere abandonar la nave", client);
-                eliminar_tripulante(datos_recibidos);
-                //¿LO MANDA EL DISCORDIADOR O EL TRIPULANTE QUE QUIERE MORIR?
-                break;
-            case SOLICITAR_LISTA:
-                log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
-                solicitar_tripulantes(client);
-                //free(datos_recibidos);
-                break;
-            default:
-                log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
-                break;
+        if(cop_recibido != ELIMINAR_TRIPULANTE){
+
+            switch (cop_recibido)
+            {
+                case COMENZAR_PATOTA:
+                    log_info(logger, "El discordiador %d comenzo una patota", client);
+                    comenzar_patota(client, (t_tareas_cPID *)datos_recibidos);
+                    break;
+                case INICIAR_TRIPULANTE:
+                    log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
+                    iniciar_tripulante(client, datos_recibidos);
+                    break;
+                case SOLICITAR_TAREA:
+                    log_info(logger, "El tripulante %d solicito una tarea", client);
+                    solicitar_tarea(client, datos_recibidos);
+                    break;
+                case MOVER_TRIPULANTE:
+                    log_info(logger, "El tripulante %d ha realizado un movimiento", client);
+                    mover_tripulante(datos_recibidos);
+                    break;
+                case ACTUALIZAR_ESTADO:
+                    log_info(logger, "El tripulante %d actualizo su estado", client);
+                    actualizar_estado(datos_recibidos);
+                    break;
+                case SOLICITAR_LISTA:
+                    log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
+                    solicitar_tripulantes(client);
+                    //free(datos_recibidos);
+                    break;
+                default:
+                    log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
+                    break;
+            }
+        }
+        else{
+            //EL TRIPULANTE DA EL AVISO QUE QUIERE MORIR
+            log_info(logger, "El tripulante %d quiere abandonar la nave", client);
+            eliminar_tripulante(datos_recibidos);
+            break;
         }
     }
 

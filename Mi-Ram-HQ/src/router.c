@@ -192,7 +192,7 @@ void actualizar_estado(t_estado *estadoRecibido){
 void eliminar_tripulante(t_pidYtid *tibCpid_recibido){
 
     //ENCUENTRO LA LISTA DEL PROCESO
-    t_list* lista_proceso  = buscar_lista_proceso(tibCpid_recibido->pid);
+    t_list* lista_proceso = buscar_lista_proceso(tibCpid_recibido->pid);
 
     //SI QUEDA UN SOLO TRIPULANTE ELIMINO LAS TAREAS Y EL PCB
     //SI QUEDA MAS DE UN TRIPULANTE, ELIMINO UNICAMENTE EL TCB
