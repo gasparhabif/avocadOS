@@ -9,6 +9,7 @@ static void verificar_algoritmo_valido(char *);
 static void verificar_esquema_valido(char *);
 static void verificar_swap_valido(int, int);
 static void verificar_reemplazo_valido(char *);
+static void verificar_criterio_seleccion(char *);
 
 static void verificar_existencia_campos(char **campos, t_config *config)
 {
@@ -60,13 +61,13 @@ t_cpu_conf *get_cpu_config(char *path)
 
 static void llenar_campos_cpu(char *response[CANTIDAD_CAMPOS_CPU])
 {
-    response[IP_RAM]            = "IP_MI_RAM_HQ";
-    response[PUERTO_RAM]        = "PUERTO_MI_RAM_HQ";
-    response[IP_MONGO]          = "IP_I_MONGO_STORE";
-    response[PUERTO_MONGO]      = "PUERTO_I_MONGO_STORE";
-    response[GRADO_MULTITAREA]  = "GRADO_MULTITAREA";
-    response[ALGORITMO]         = "ALGORITMO";
-    response[QUANTUM]           = "QUANTUM";
+    response[IP_RAM] = "IP_MI_RAM_HQ";
+    response[PUERTO_RAM] = "PUERTO_MI_RAM_HQ";
+    response[IP_MONGO] = "IP_I_MONGO_STORE";
+    response[PUERTO_MONGO] = "PUERTO_I_MONGO_STORE";
+    response[GRADO_MULTITAREA] = "GRADO_MULTITAREA";
+    response[ALGORITMO] = "ALGORITMO";
+    response[QUANTUM] = "QUANTUM";
     response[DURACION_SABOTAJE] = "DURACION_SABOTAJE";
     response[RETARDO_CICLO_CPU] = "RETARDO_CICLO_CPU";
 }
@@ -90,7 +91,6 @@ t_store_conf *get_store_config(char *path)
     llenar_campos_store(campos_store);
     verificar_existencia_campos(campos_store, basicConfig);
 
-    // TODO: Check existing file or create it
     response->punto_montaje = config_get_string_value(basicConfig, campos_store[PUNTO_MONTAJE]);
     response->puerto = config_get_int_value(basicConfig, campos_store[STORE_PUERTO]);
     response->tiempo_sincronizacion = config_get_int_value(basicConfig, campos_store[TIEMPO_SINCRONIZACION]);
@@ -121,11 +121,13 @@ t_ram_conf *get_ram_config(char *path)
     response->tamanio_swap = config_get_int_value(basicConfig, campos_ram[TAMANIO_SWAP]);
     response->path_swap = config_get_string_value(basicConfig, campos_ram[PATH_SWAP]);
     response->algoritmo_reemplazo = config_get_string_value(basicConfig, campos_ram[ALGORITMO_REEMPLAZO]);
+    response->criterio_seleccion = config_get_string_value(basicConfig, campos_ram[CRITERIO_SELECCION]);
     response->puerto = config_get_int_value(basicConfig, campos_ram[RAM_PUERTO]);
 
     verificar_esquema_valido(response->esquema_memoria);
     verificar_swap_valido(response->tamanio_swap, response->tamanio_pagina);
     verificar_reemplazo_valido(response->algoritmo_reemplazo);
+    verificar_criterio_seleccion(response->criterio_seleccion);
 
     free(basicConfig);
 
@@ -163,6 +165,17 @@ static void verificar_reemplazo_valido(char *reemplazo)
     }
 }
 
+static void verificar_criterio_seleccion(char *criterio)
+{
+    if (!string_equals_ignore_case("FF", criterio) && !string_equals_ignore_case("BF", criterio))
+    {
+        printf("Error, el criterio de selección %s especificado en el archivo de configuración no es válido.\n", reemplazo);
+        printf("\t-> (Criterios de Selección Válidos: FF - BF)\n");
+        exit(0);
+        // log error
+    }
+}
+
 static void llenar_campos_ram(char *response[CANTIDAD_CAMPOS_RAM])
 {
     response[TAMANIO_MEMORIA] = "TAMANIO_MEMORIA";
@@ -171,5 +184,6 @@ static void llenar_campos_ram(char *response[CANTIDAD_CAMPOS_RAM])
     response[TAMANIO_SWAP] = "TAMANIO_SWAP";
     response[PATH_SWAP] = "PATH_SWAP";
     response[ALGORITMO_REEMPLAZO] = "ALGORITMO_REEMPLAZO";
+    response[CRITERIO_SELECCION] = "CRITERIO_SELECCION";
     response[RAM_PUERTO] = "PUERTO";
 }
