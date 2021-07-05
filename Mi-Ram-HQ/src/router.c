@@ -188,3 +188,93 @@ void actualizar_estado(t_estado *estadoRecibido){
     return;
 
 }
+
+void eliminar_tripulante(t_pidYtid *tibCpid_recibido){
+
+    //ENCUENTRO LA LISTA DEL PROCESO
+    t_list* lista_proceso  = buscar_lista_proceso(tibCpid_recibido->pid);
+
+    //SI QUEDA UN SOLO TRIPULANTE ELIMINO LAS TAREAS Y EL PCB
+    //SI QUEDA MAS DE UN TRIPULANTE, ELIMINO UNICAMENTE EL TCB
+    if(cant_tripulantes(lista_proceso) == 1){
+
+        int baseAEliminar;
+
+        baseAEliminar = eliminar_pcbOtareas(lista_proceso, TAREAS);
+        liberar_memoria(baseAEliminar);
+
+        baseAEliminar = eliminar_pcbOtareas(lista_proceso, PCB);
+        liberar_memoria(baseAEliminar);
+
+    }
+        
+    //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
+    int baseTCB = eliminar_tcb(lista_proceso, tibCpid_recibido->tid);
+
+    //LIBERO EL SEGMENTO EN LA MEMORIA
+    liberar_memoria(baseTCB);
+
+    //LIBERO LA MEMORIA
+    free(tibCpid_recibido);
+
+}
+
+void solicitar_tripulantes(int client){
+
+    int cantTotalTripulantes = 0;
+    t_list *tablaUnProceso;
+    int n = 0;
+
+    //OBTENGO LA CANTIDAD TOTAL DE TRIPULANTES Y RESERVO UN ESPACIO PARA COPIARLOS
+    for(int i=0; i < list_size(tabla_procesos); i++){
+        t_list *tablaUnProceso = list_get(tabla_procesos, i);
+        cantTotalTripulantes += cant_tripulantes(tablaUnProceso);
+    }
+
+    t_TCBmostrar *tcbs_enviar = malloc(cantTotalTripulantes * sizeof(t_TCBmostrar));
+
+    //BUSCO TODOS LOS TRIPULANTES EN LA NAVE
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos)); 
+    t_TCB                *tcb_aux = malloc(sizeof(t_TCB));
+
+    //RECORRO LA LISTA DE PROCESOS
+    for(int i=0; i < list_size(tabla_procesos); i++){
+        tablaUnProceso = list_get(tabla_procesos, i);
+
+        //RECORRO LOS SEGMENTO DE CADA PROCESO
+        for(int j=0; j < list_size(tablaUnProceso); j++){
+            reg_seg = list_get(tablaUnProceso, j);
+
+            //SI ENCUNETRO UN SEGMENTO QUE SEA EL TCB
+            if(reg_seg->tipo == TCB){
+
+                //ME COPIO EL TCB EN UN ESPACIO DE MEMORIA AUXILIAR (PARA TRABAJARLO)
+                memcpy(tcb_aux, (void *) reg_seg->base, sizeof(t_TCB));
+
+                //COPIO LOS DATOS QUE NECESITO
+                tcbs_enviar[n].PID                = obtener_PID((void *) tcb_aux->puntero_PCB);
+                tcbs_enviar[n].TID                = tcb_aux->TID;
+                tcbs_enviar[n].estado             = tcb_aux->estado;
+                tcbs_enviar[n].posX               = tcb_aux->posX;
+                tcbs_enviar[n].posY               = tcb_aux->posY;
+                tcbs_enviar[n].proximaInstruccion = tcb_aux->proximaInstruccion;
+                n++;
+            }
+        }
+    }
+
+    printf("Encontre todos los tripulantes\n");
+
+    //DEVUELVO MEMORIA QUE NO NECESITO
+    //free(reg_seg);
+    //free(tcb_aux);
+
+    //LE DEVUELVO AL DISCODIADOR LA INFORMACION SOLICITADA
+    int tamanioSerializacion;
+    void *d_enviar = serializar_tcbMostrar(cantTotalTripulantes, tcbs_enviar, &tamanioSerializacion);
+    send(client, d_enviar, tamanioSerializacion, 0);
+    free(tcbs_enviar);
+    free(d_enviar);
+
+    return;
+}

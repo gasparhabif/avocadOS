@@ -115,6 +115,24 @@ void* reservar_segmento_BF(int bytes){
     return reservar_segmento_BF(bytes);
 }
 
+void liberar_memoria_segmentacion (int baseDelSegmento){
+    
+    estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
+
+    for(int i = 0; i < list_size(tabla_estado_segmentos); i++){
+
+        //Agarro el segmento en la posicion i
+        segmento_obtenido = list_get(tabla_estado_segmentos, i);
+
+        if(segmento_obtenido->inicio == baseDelSegmento)
+            segmento_obtenido->ocupado = 0;
+    }
+
+    free(segmento_obtenido);
+
+    return;
+}
+
 void compactar(int sig){
 
     if(sig == SIGUSR1 && strcmp(config->esquema_memoria, "SEGMENTACION") == 0)

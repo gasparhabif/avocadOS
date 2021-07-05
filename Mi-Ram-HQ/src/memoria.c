@@ -26,6 +26,17 @@ void* reservar_memoria(int bytes){
     return posicion;
 }
 
+void liberar_memoria (int liberar){
+        
+    pthread_mutex_lock(&acceso_memoria);
+
+    if(strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
+        liberar_memoria_segmentacion(liberar);
+    else if(strcmp(config->esquema_memoria, "PAGINACION") == 0){}
+
+    pthread_mutex_unlock(&acceso_memoria);
+}
+
 t_registro_segmentos* guardar_tareas(int cantTareas, t_tarea *tareas_recibidas){
 
     //RESERVO EL SEGMENTO PARA LAS TAREAS 
@@ -38,12 +49,10 @@ t_registro_segmentos* guardar_tareas(int cantTareas, t_tarea *tareas_recibidas){
     t_registro_segmentos *segmento_tareas = malloc(sizeof(t_registro_segmentos));
 
     //LLENO EL SEGMENTO DE LAS TAREAS
-    segmento_tareas->segmento = 2;
     segmento_tareas->base     = pos_tareas;
     segmento_tareas->tamanio  = sizeof(t_tarea) * cantTareas;
     segmento_tareas->tipo     = TAREAS;
     segmento_tareas->id       = cantTareas;
-    segmento_tareas->usado    = 1;
 
     return segmento_tareas;
 }
@@ -60,12 +69,10 @@ t_registro_segmentos* guardar_pcb(t_PCB *pcb_recibido){
     t_registro_segmentos *segmento_pcb = malloc(sizeof(t_registro_segmentos));
     
     //LLENO EL SEGMENTO DEL PCB
-    segmento_pcb->segmento = 1;
     segmento_pcb->base     = pcb;
     segmento_pcb->tamanio  = sizeof(t_PCB);
     segmento_pcb->tipo     = PCB;
     segmento_pcb->id       = pcb_recibido->PID;
-    segmento_pcb->usado    = 1;
 
     return segmento_pcb;
 }
@@ -82,12 +89,10 @@ t_registro_segmentos* guardar_tcb(t_TCB tcb_recibido){
     t_registro_segmentos *segmento_tcb = malloc(sizeof(t_registro_segmentos));
     
     //LLENO EL SEGMENTO DEL PCB
-    segmento_tcb->segmento = 0; //TODO
     segmento_tcb->base     = tcb;
     segmento_tcb->tamanio  = sizeof(t_TCB);
     segmento_tcb->tipo     = TCB;
     segmento_tcb->id       = tcb_recibido.TID;
-    segmento_tcb->usado    = 1;
 
     return segmento_tcb;
 

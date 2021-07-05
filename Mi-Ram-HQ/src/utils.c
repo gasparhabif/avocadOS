@@ -105,3 +105,76 @@ int traer_tarea(void *tareas, t_list* lista_proceso, int tid, t_tarea *tarea_bus
     }
 
 }
+
+int cant_tripulantes (t_list *lista_proceso){
+
+    int cantTripulantes = 0;
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
+
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        reg_seg = list_get(lista_proceso, i);
+
+        if(reg_seg->tipo == TCB)
+            cantTripulantes++;
+    }
+
+    //free(reg_seg);
+
+    return cantTripulantes;    
+}
+
+int eliminar_tcb(t_list *lista_proceso, int tid){
+
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
+    int base;
+
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        reg_seg = list_get(lista_proceso, i);
+
+        if(reg_seg->tipo == TCB && reg_seg->id == tid){
+            base = (int) reg_seg->base;
+            free(reg_seg);
+            list_remove(lista_proceso, i);
+            return base;
+        }
+
+    }
+
+    free(reg_seg);
+
+    return -1;
+
+}
+
+int eliminar_pcbOtareas(t_list *lista_proceso, int queBorrar){
+
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
+    int base;
+
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        reg_seg = list_get(lista_proceso, i);
+
+        if(reg_seg->tipo == queBorrar){
+            base = (int) reg_seg->base;
+            free(reg_seg);
+            list_remove(lista_proceso, i);
+            return base;
+        }
+    }
+
+    free(reg_seg);
+
+    return -1;
+}
+
+int obtener_PID(void *pcb){
+    int pid;
+    t_PCB *pcb_aux = malloc(sizeof(t_PCB));
+    memcpy(pcb_aux, pcb, sizeof(t_PCB));
+    pid = pcb_aux->PID;
+    free(pcb_aux);
+    return pid;
+}

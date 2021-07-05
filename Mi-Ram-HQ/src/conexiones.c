@@ -62,7 +62,13 @@ void recibir_mensaje(void *parametro)
                 break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
+                eliminar_tripulante(datos_recibidos);
                 //¿LO MANDA EL DISCORDIADOR O EL TRIPULANTE QUE QUIERE MORIR?
+                break;
+            case SOLICITAR_LISTA:
+                log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
+                solicitar_tripulantes(client);
+                //free(datos_recibidos);
                 break;
             default:
                 log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);

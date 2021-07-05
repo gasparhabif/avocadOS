@@ -130,6 +130,16 @@ void INICIAR_PATOTA(char **parametros)
 
 void LISTAR_TRIPULANTES(char **parametros)
 {
+    //SOLICITO LOS TRIPULANTES DE LA MEMORIA RAM
+    int tamanioSerializacion;
+    void *paquete = serializarInt(1, SOLICITAR_LISTA, &tamanioSerializacion);   
+    send(sockfd_ram, paquete, tamanioSerializacion, 0);
+    free(paquete);
+
+    //RECIBO LOS TRIPULANTES DE LA RAM
+    t_ListaTripulantes *tripulantesRecibidos = (t_ListaTripulantes *) recibir_paquete(sockfd_ram);
+
+    //LISTO LOS TRIPULANTES
 	time_t tiempo = time(0);
     tlocal = localtime(&tiempo);
     char *hora = malloc(128);
@@ -139,7 +149,21 @@ void LISTAR_TRIPULANTES(char **parametros)
     
     printf("Estado de la nave: %s\n", hora);
     free(hora);
+    printf("Actualmente hay %d tripulantes en la nave\n", tripulantesRecibidos->cantTripulantes);
 
+    for (int i = 0; i < tripulantesRecibidos->cantTripulantes; i++)
+    {
+        printf("Patota: %d\t",     tripulantesRecibidos->tripulantes[i].PID);
+        printf("Tripulante: %d\t", tripulantesRecibidos->tripulantes[i].TID);
+        printf("Status: %c\t",     tripulantesRecibidos->tripulantes[i].estado);
+        printf("Pos X: %d\t",      tripulantesRecibidos->tripulantes[i].posX);
+        printf("Pos Y: %d\n",      tripulantesRecibidos->tripulantes[i].posY);
+        printf("Nro. Inst: %d\n",  tripulantesRecibidos->tripulantes[i].proximaInstruccion);
+    }
+    
+
+
+    /*
     t_admin_tripulantes *aux_admin;
     
     if(sabotaje){
@@ -197,6 +221,7 @@ void LISTAR_TRIPULANTES(char **parametros)
         }
         pthread_mutex_unlock(&m_listaBlockIO);
     }
+    */
 
     printf("--------------------------------------------------------------------------------\n");
     

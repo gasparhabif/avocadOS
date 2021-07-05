@@ -3,7 +3,7 @@
 
 enum CODIGOS_DE_OPERACION
 {
-    COMENZAR_PATOTA = 0,
+    COMENZAR_PATOTA = 1,
     PUNTERO_PCB,
     INICIAR_TRIPULANTE,
     SOLICITAR_TAREA,
@@ -13,6 +13,8 @@ enum CODIGOS_DE_OPERACION
     ACTUALIZAR_ESTADO,
     ELIMINAR_TRIPULANTE,
     ESTRUCTURAS_EN_MEMORIA,
+    SOLICITAR_LISTA,
+    LISTA_TRIPULANTES,
     ALERTA_SABOTAJE,
     SOLICITAR_BITACORA,
     INICIO_PROTOCOLO_FSCK
@@ -88,6 +90,21 @@ typedef struct
     u_int32_t tid;
 } t_pidYtid;
 
+typedef struct
+{
+    u_int32_t PID;
+    u_int32_t TID;
+    char estado;
+    u_int32_t posX;
+    u_int32_t posY;
+    u_int32_t proximaInstruccion;
+} t_TCBmostrar;
+
+typedef struct
+{
+    u_int32_t cantTripulantes;
+    t_TCBmostrar *tripulantes;
+} t_ListaTripulantes;
 
 //BASICOS
 typedef struct
