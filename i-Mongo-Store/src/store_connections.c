@@ -68,16 +68,15 @@ void tripulante_cxn_handler(void *arg)
     if (!file_exists(bitacora_file_path))
     {
         create_bitacora(bitacora_file_path);
+        log_info(logger, "Se creó Tripulante%s.ims", tid);
     }
 
     // Cargar Tripulante#.ims
     t_bitacora *bitacora = load_bitacora(bitacora_file_path);
     log_info(logger, "Se cargó Tripulante%s.ims", tid);
 
-    registrar_bitacora(bitacora, "HELLO, WORLD!");
-    // printf("Blocks file A: %s\n", blocks_file);
-    // sync_blocks();
-    // printf("Blocks file D: %s\n", blocks_file);
+    // Probar acá
+    // ...
 
     while (1)
     {

@@ -42,8 +42,19 @@ void finTareas()
 // TAREAS DE ENTRADA/SALIDA
 void generarOxigeno(int cantidad)
 {
-    log_info(logger, "Se solicitó GENERAR_OXIGENO. Cantidad: %d", cantidad);
+    if (!file_exists(oxigeno_file_path))
+    {
+        create_recurso(oxigeno_file_path, "O");
+        log_info(logger, "Se creó Oxigeno.ims");
+    }
+
+    t_recurso *oxigeno = load_recurso(oxigeno_file_path);
+    log_info(logger, "Se cargó Oxigeno.ims");
+    agregar_recurso(oxigeno, cantidad);
+
     // ...
+
+    log_info(logger, "Se solicitó GENERAR_OXIGENO. Cantidad: %d", cantidad);
 }
 
 void consumirOxigeno(int cantidad)
@@ -54,8 +65,19 @@ void consumirOxigeno(int cantidad)
 
 void generarComida(int cantidad)
 {
-    log_info(logger, "Se solicitó GENERAR_COMIDA. Cantidad: %d", cantidad);
+    if (!file_exists(comida_file_path))
+    {
+        create_recurso(comida_file_path, "C");
+        log_info(logger, "Se creó Comida.ims");
+    }
+
+    t_recurso *comida = load_recurso(comida_file_path);
+    log_info(logger, "Se cargó Comida.ims");
+    agregar_recurso(comida, cantidad);
+
     // ...
+
+    log_info(logger, "Se solicitó GENERAR_COMIDA. Cantidad: %d", cantidad);
 }
 
 void consumirComida(int cantidad)
@@ -66,8 +88,19 @@ void consumirComida(int cantidad)
 
 void generarBasura(int cantidad)
 {
-    log_info(logger, "Se solicitó GENERAR_BASURA. Cantidad: %d", cantidad);
+    if (!file_exists(basura_file_path))
+    {
+        create_recurso(basura_file_path, "B");
+        log_info(logger, "Se creó Basura.ims");
+    }
+
+    t_recurso *basura = load_recurso(basura_file_path);
+    log_info(logger, "Se cargó Basura.ims");
+    agregar_recurso(basura, cantidad);
+
     // ...
+
+    log_info(logger, "Se solicitó GENERAR_BASURA. Cantidad: %d", cantidad);
 }
 
 void descartarBasura()

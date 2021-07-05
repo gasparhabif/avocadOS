@@ -37,6 +37,15 @@ typedef struct
     t_list *blocks;
 } t_bitacora;
 
+typedef struct
+{
+    char *path;
+    int size;
+    int block_count;
+    t_list *blocks;
+    char *caracter_llenado;
+} t_recurso;
+
 // Paths de FS
 char *files_dir_path;
 char *bitacoras_dir_path;
@@ -103,5 +112,12 @@ char *blocks_list_to_string(t_list *);
 // SuperBloque utils (definidas en superbloque_utils.c)
 int get_free_block();
 void set_block(int);
+
+// Recursos utils (definidas en recursos_utils.c)
+void create_recurso(char *, char *);
+t_recurso *load_recurso(char *);
+void print_recurso(t_recurso *);
+void update_recurso(t_recurso *);
+void agregar_recurso(t_recurso *, int);
 
 #endif
