@@ -7,15 +7,10 @@ void* reservar_memoria(int bytes){
     pthread_mutex_lock(&acceso_memoria);
 
     if(strcmp(config->esquema_memoria, "SEGMENTACION") == 0){
-
-        posicion = reservar_segmento_FF(bytes);
-
-        /*
         if(strcmp(config->criterio_seleccion, "FF") == 0)
             posicion = reservar_segmento_FF(bytes);
         if(strcmp(config->criterio_seleccion, "BF") == 0)
             posicion = reservar_segmento_BF(bytes);
-        */
     }
     else if(strcmp(config->esquema_memoria, "PAGINACION") == 0){
             

@@ -169,7 +169,7 @@ static void verificar_criterio_seleccion(char *criterio)
 {
     if (!string_equals_ignore_case("FF", criterio) && !string_equals_ignore_case("BF", criterio))
     {
-        printf("Error, el criterio de selección %s especificado en el archivo de configuración no es válido.\n", reemplazo);
+        printf("Error, el criterio de selección %s especificado en el archivo de configuración no es válido.\n", criterio);
         printf("\t-> (Criterios de Selección Válidos: FF - BF)\n");
         exit(0);
         // log error
