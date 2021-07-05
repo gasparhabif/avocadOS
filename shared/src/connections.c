@@ -92,6 +92,9 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
         case LISTA_TRIPULANTES:
             dRecibidos = deserealizarTCBmostrar(paquete->buffer);
             break;
+        case ELIMINAR_TRIPULANTE:
+            dRecibidos = deserealizar_pidYtid(paquete->buffer);
+            break;
     }
 
     free(paquete->buffer->stream);

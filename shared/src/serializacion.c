@@ -382,7 +382,7 @@ void *serializar_pidYtid(uint32_t pid, uint32_t tid, uint8_t COD_OP, int *tamani
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) *2;
+    buffer->size = sizeof(uint32_t) * 2;
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);

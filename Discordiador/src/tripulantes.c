@@ -157,8 +157,9 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
     }
 
-    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &tamanioSerializacion);
-    send(sockfd_ram, dEnviar, tamanioSerializacion, 0);
+    int bEnviar;
+    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
+    send(admin->sockfd_tripulante_ram, dEnviar, bEnviar, 0);
     free(dEnviar);
 
     close(admin->sockfd_tripulante_mongo);

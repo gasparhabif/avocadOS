@@ -124,9 +124,9 @@ void liberar_memoria_segmentacion (int baseDelSegmento){
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
 
-        if(segmento_obtenido->inicio == baseDelSegmento){
+        if((int) segmento_obtenido->inicio == baseDelSegmento){
             segmento_obtenido->ocupado = 0;
-            free(segmento_obtenido);
+            list_replace(tabla_estado_segmentos, i, segmento_obtenido);
             return;
         }
     }

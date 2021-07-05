@@ -76,7 +76,7 @@ void recibir_mensaje(void *parametro)
             //EL TRIPULANTE DA EL AVISO QUE QUIERE MORIR
             log_info(logger, "El tripulante %d quiere abandonar la nave", client);
             eliminar_tripulante(datos_recibidos);
-            break;
+            return;
         }
     }
 

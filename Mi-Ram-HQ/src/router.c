@@ -189,33 +189,33 @@ void actualizar_estado(t_estado *estadoRecibido){
 
 }
 
-void eliminar_tripulante(t_pidYtid *tibCpid_recibido){
+void eliminar_tripulante(t_pidYtid *pidCtid_recibido){
 
     //ENCUENTRO LA LISTA DEL PROCESO
-    t_list* lista_proceso = buscar_lista_proceso(tibCpid_recibido->pid);
+    t_list* unProceso = buscar_lista_proceso(pidCtid_recibido->pid);
 
     //SI QUEDA UN SOLO TRIPULANTE ELIMINO LAS TAREAS Y EL PCB
     //SI QUEDA MAS DE UN TRIPULANTE, ELIMINO UNICAMENTE EL TCB
-    if(cant_tripulantes(lista_proceso) == 1){
+    if(cant_tripulantes(unProceso) == 1){
 
         int baseAEliminar;
 
-        baseAEliminar = eliminar_pcbOtareas(lista_proceso, TAREAS);
+        baseAEliminar = eliminar_pcbOtareas(unProceso, TAREAS);
         liberar_memoria(baseAEliminar);
 
-        baseAEliminar = eliminar_pcbOtareas(lista_proceso, PCB);
+        baseAEliminar = eliminar_pcbOtareas(unProceso, PCB);
         liberar_memoria(baseAEliminar);
 
     }
         
     //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
-    int baseTCB = eliminar_tcb(lista_proceso, tibCpid_recibido->tid);
+    int baseTCB = eliminar_tcb(unProceso, pidCtid_recibido->tid);
 
     //LIBERO EL SEGMENTO EN LA MEMORIA
     liberar_memoria(baseTCB);
 
     //LIBERO LA MEMORIA
-    free(tibCpid_recibido);
+    free(pidCtid_recibido);
 
 }
 
@@ -262,8 +262,6 @@ void solicitar_tripulantes(int client){
             }
         }
     }
-
-    printf("Encontre todos los tripulantes\n");
 
     //DEVUELVO MEMORIA QUE NO NECESITO
     //free(reg_seg);
