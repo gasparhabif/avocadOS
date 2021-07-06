@@ -38,10 +38,11 @@ void tripulante(t_parametros_tripulantes *parametro)
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
     admin = parametros_recibidos->admin;
 
-    admin->tid    = tid;
-    admin->estado = NEW;
-    admin->posX   = tcb_tripulante.posX;
-    admin->posY   = tcb_tripulante.posY;
+    admin->tid       = tid;
+    admin->estado    = NEW;
+    admin->posX      = tcb_tripulante.posX;
+    admin->posY      = tcb_tripulante.posY;
+    admin->debeMorir = 0;
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -50,6 +51,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     printf("ESTADO: %d\n", admin->estado);
     printf("POSX:   %d\n", admin->posX);
     printf("POSY:   %d\n", admin->posY);
+    printf("MUERTE: %d\n", admin->debeMorir);
     printf("---------------ADMIN----------------\n");
     */
 
@@ -107,10 +109,16 @@ void tripulante(t_parametros_tripulantes *parametro)
         actualizar_estado(admin, EXEC);
 
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
-        if (tareaPendiente == 0)
-            tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
-        
-        //SI LA TAREA RECIBIDA NO ES LA ULTIMA
+        if (tareaPendiente == 0){
+            //ANTES DE SOLICITAR UNA TAREA CHEQUEO SI EL TRIPULANTE DEBE MORIR
+            if(admin->debeMorir)
+                finTareas = 1;
+            else
+                tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
+        }
+
+
+        //SI LA TAREA RECIBIDA NO ES LA ULTIMA (o no se solicito el fin del tripulante)
         if (finTareas == 0)
         {
             //EJECUTO LA TAREA, SI DEBO BLOCKEAR EL TRIPULANTE LA VARIABLE BLOCK VALDRA 1
@@ -161,6 +169,8 @@ void tripulante(t_parametros_tripulantes *parametro)
     void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
     send(admin->sockfd_tripulante_ram, dEnviar, bEnviar, 0);
     free(dEnviar);
+
+    matarTripulante(admin->tid);
 
     close(admin->sockfd_tripulante_mongo);
     close(admin->sockfd_tripulante_ram);

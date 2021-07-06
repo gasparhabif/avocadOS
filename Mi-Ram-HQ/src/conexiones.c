@@ -67,6 +67,21 @@ void recibir_mensaje(void *parametro)
                     solicitar_tripulantes(client);
                     //free(datos_recibidos);
                     break;
+                case IMPRIMIR_SEGMENTACION:
+
+                    
+                    
+                    printf("------------------------------------------------------------------\n");
+                    for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+                    {
+                        estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
+                        printf("SEG N°: %d\t", i);
+                        printf("Inicio: %d\t", reg_seg->inicio);
+                        printf("Tamaño: %d\t", reg_seg->limite);
+                        printf("Ocupado: %d\n", reg_seg->ocupado);
+                    }
+                    printf("------------------------------------------------------------------\n");
+                    break;
                 default:
                     log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
                     break;

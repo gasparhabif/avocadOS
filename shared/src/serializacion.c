@@ -481,6 +481,63 @@ void* serializar_tcbMostrar(uint32_t cantTotalTripulantes, t_TCBmostrar* tcbs_en
 
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
     //free(a_enviar);
+}
+
+void* serializar_bitacora(t_bitacora *unaBitacora, int *tamanioSerializacion){
+
+    //CREO EL BUFFER Y LE RESERVO LA MEMORIA
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    //CARGO EL SIZE DEL BUFFER
+    buffer->size = 0;
+
+    buffer->size += sizeof(uint32_t) * 2 + unaBitacora->tamanioAcciones;
+
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    buffer->stream = malloc(buffer->size);
+
+    int offset = 0;
+
+    memcpy(buffer->stream + offset, &(unaBitacora->cantAcciones), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(buffer->stream + offset, &(unaBitacora->tamanioAcciones), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+
+    for (int i = 0; i < unaBitacora->cantAcciones; i++)
+    {
+        memcpy(buffer->stream + offset, &(unaBitacora->acciones[i].tamanioAccion), sizeof(u_int32_t));
+        offset += sizeof(u_int32_t);
+        memcpy(buffer->stream + offset, &(unaBitacora->acciones[i].accion), sizeof(unaBitacora->acciones[i].tamanioAccion));
+        offset += sizeof(unaBitacora->acciones[i].tamanioAccion);
+    }
+
+    //CREAMOS EL PAQUETE
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = BITACORA_TRIPULANTE;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void *a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    //DEVUELVO LA MEMORIA UTILIZADA
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
 
 
 }

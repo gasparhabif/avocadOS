@@ -95,6 +95,15 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
         case ELIMINAR_TRIPULANTE:
             dRecibidos = deserealizar_pidYtid(paquete->buffer);
             break;
+        case SOLICITAR_BITACORA:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case BITACORA_TRIPULANTE:
+            dRecibidos = deserializar_bitacora(paquete->buffer);
+            break;
+        case IMPRIMIR_SEGMENTACION:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
     }
 
     free(paquete->buffer->stream);

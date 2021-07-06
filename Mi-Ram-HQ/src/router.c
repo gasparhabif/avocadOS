@@ -200,19 +200,31 @@ void eliminar_tripulante(t_pidYtid *pidCtid_recibido){
 
         int baseAEliminar;
 
+        //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
+        baseAEliminar = eliminar_tcb(unProceso, pidCtid_recibido->tid);
+
+        //LIBERO EL SEGMENTO EN LA MEMORIA
+        liberar_memoria(baseAEliminar   );
+
+        //ELIMINO LAS TAREAS DE LA MEMORIA
         baseAEliminar = eliminar_pcbOtareas(unProceso, TAREAS);
         liberar_memoria(baseAEliminar);
 
+        //ELIMINO EL PCB DE LA MEMORIA
         baseAEliminar = eliminar_pcbOtareas(unProceso, PCB);
         liberar_memoria(baseAEliminar);
 
-    }
-        
-    //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
-    int baseTCB = eliminar_tcb(unProceso, pidCtid_recibido->tid);
+        //ELIMINO EL PROCESO DE LA TABLA DE PROCESOS
+        eliminar_proceso(pidCtid_recibido->pid);
 
-    //LIBERO EL SEGMENTO EN LA MEMORIA
-    liberar_memoria(baseTCB);
+    }
+    else{
+        //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
+        int baseTCB = eliminar_tcb(unProceso, pidCtid_recibido->tid);
+
+        //LIBERO EL SEGMENTO EN LA MEMORIA
+        liberar_memoria(baseTCB);
+    }
 
     //LIBERO LA MEMORIA
     free(pidCtid_recibido);

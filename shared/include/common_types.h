@@ -17,7 +17,9 @@ enum CODIGOS_DE_OPERACION
     LISTA_TRIPULANTES,
     ALERTA_SABOTAJE,
     SOLICITAR_BITACORA,
-    INICIO_PROTOCOLO_FSCK
+    BITACORA_TRIPULANTE,
+    INICIO_PROTOCOLO_FSCK,
+    IMPRIMIR_SEGMENTACION
 };
 
 enum CODIGOS_DE_TAREAS
@@ -157,5 +159,17 @@ typedef struct
     u_int32_t TID;
     char estado;
 } t_actualizar_estado;
+
+//ENVIO DE BITACORAS
+typedef struct{
+   int tamanioAccion;
+   char *accion;
+} t_accion;
+
+typedef struct{
+   int cantAcciones;
+   int tamanioAcciones;
+   t_accion *acciones;
+} t_bitacora;
 
 #endif

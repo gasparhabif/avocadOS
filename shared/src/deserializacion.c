@@ -204,3 +204,28 @@ t_ListaTripulantes* deserealizarTCBmostrar (t_buffer *buffer){
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
     //free(tarea_recibida);
 }
+
+t_bitacora* deserializar_bitacora (t_buffer *buffer){
+
+    t_bitacora *bitacoraRecibida = malloc(sizeof(t_bitacora));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(bitacoraRecibida->cantAcciones), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(bitacoraRecibida->tamanioAcciones), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    bitacoraRecibida->acciones = malloc(bitacoraRecibida->tamanioAcciones);
+
+    for (int i = 0; i < bitacoraRecibida->cantAcciones; i++)
+    {
+        memcpy(&(bitacoraRecibida->acciones[i].tamanioAccion), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(bitacoraRecibida->acciones[i].accion), stream, sizeof(bitacoraRecibida->acciones[i].tamanioAccion));
+        stream += sizeof(bitacoraRecibida->acciones[i].tamanioAccion);
+    }
+
+    return bitacoraRecibida;
+
+}

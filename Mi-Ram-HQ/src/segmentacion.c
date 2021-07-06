@@ -143,18 +143,20 @@ void compactar(int sig){
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
         estado_segmentos *estado = malloc(sizeof(estado_segmentos));
+        int posBuscada;
+        int tamanioSegmento;
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
             estado = list_get(tabla_estado_segmentos, i);
 
-            if(estado->ocupado == 0 && i < list_size(tabla_estado_segmentos)){
+            if(estado->ocupado == 0 && i < list_size(tabla_estado_segmentos)-1){
 
-                int pos = buscar_siguiente_segmento_ocupado(i);
+                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento);
 
-                //memcpy(estado->base)
+                memcpy((void *) estado->inicio, (void *) posBuscada, tamanioSegmento);
 
-                actualizar_registro_segmento(pos);
+                actualizar_registro_segmento(posBuscada, estado->inicio);
             }
         }
 
@@ -164,13 +166,17 @@ void compactar(int sig){
         int index_ultimo = ultimo_ocupado(&bytesOcupados, &pos_libertad);
         
         //ELIMINO TODOS LOS SEGMENTOS NO USADOS QUE SE ENCUENTREN AL FINAL
-        for (int i = index_ultimo; i < tabla_estado_segmentos; i++)
+        for (int i = index_ultimo; i < list_size(tabla_estado_segmentos); i++)
             list_remove(tabla_estado_segmentos, i);
         
         //PONGO AL FINAL UN SEGMENTO GRANDE LIBRE
-        estado->base    = pos_libertad;
+        estado->inicio  = pos_libertad;
         estado->limite  = config->tamanio_memoria - bytesOcupados;
         estado->ocupado = 0;
+
+        list_add(tabla_estado_segmentos, estado);
+
+        free(estado);
         
         pthread_mutex_unlock(&acceso_memoria);
     }
@@ -188,15 +194,17 @@ int ultimo_ocupado(int *bytesOcupado, int *pos_libertad){
             estado = list_get(tabla_estado_segmentos, i);
 
             if(estado->ocupado == 0){
-                *pos_libertad = estado->base;
+                *pos_libertad = estado->inicio;
                 return i;
             }
             else
                 *bytesOcupado += estado->limite;
-    }        
+    }   
+
+    return -1;     
 }
 
-int buscar_siguiente_segmento_ocupado(i){
+int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento){
     
     estado_segmentos *estado = malloc(sizeof(estado_segmentos));
 
@@ -205,9 +213,10 @@ int buscar_siguiente_segmento_ocupado(i){
         estado = list_get(tabla_estado_segmentos, j);
 
         if(estado->ocupado == 1){
-            estado->ocupado == 0;
+            *tamanioSegmento = estado->limite;
+            estado->ocupado = 0;
             list_replace(tabla_estado_segmentos, j, estado);
-            return estado->base;
+            return estado->inicio;
         }
     }
 
@@ -228,8 +237,8 @@ void actualizar_registro_segmento(int posBuscada, int posNueva){
             reg_seg = list_get(tablaUnProceso, j);
 
             //VERIFICO SI EL SEGMENTO ES EL SOLICITADO
-            if(reg_seg->base == posBuscada){
-                reg_seg->base = posNueva;
+            if(reg_seg->base == (void *) posBuscada){
+                reg_seg->base = (void *) posNueva;
                 list_replace(tablaUnProceso, j, reg_seg);
                 return;
             }

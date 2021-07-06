@@ -64,10 +64,15 @@ t_registro_segmentos* guardar_pcb     (t_PCB *);
 t_registro_segmentos* guardar_tcb     (t_TCB);
 
 //Definidas en segmentacion.c
-void* reservar_segmento_FF         (int);
-void* reservar_segmento_BF         (int);         
-void  liberar_memoria_segmentacion (int);
-void  compactar                    (int);
+void* reservar_segmento_FF              (int);
+void* reservar_segmento_BF              (int);         
+void  liberar_memoria_segmentacion      (int);
+void  compactar                         (int);
+int   ultimo_ocupado                    (int *, int *);
+int   buscar_siguiente_segmento_ocupado (int, int *);
+void  actualizar_registro_segmento      (int, int);
+
+
 
 //Definidas en utils.c
 t_list*               buscar_lista_proceso (int);
@@ -79,6 +84,8 @@ int                   cant_tripulantes     (t_list *);
 int                   eliminar_tcb         (t_list *, int);
 int                   eliminar_pcbOtareas  (t_list *, int);
 int                   obtener_PID          (void *);
+void                  eliminar_proceso     (int);
+int                   obtener_PIDproceso   (t_list *);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);

@@ -104,7 +104,6 @@ void INICIAR_PATOTA(char **parametros)
                     //CREO LA ESTRUCTURA DE ADMINISTACION DEL TRIPULANTE Y LE ASIGNO INFORMACION QUE DESPUES NO LE VOY A PODER ASIGNAR                    
                     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
                     admin->pid                 = patota_id;
-                    admin->threadTripulante    = threads_tripulantes[i];
 
                     //CREO LOS PARAMETROS PARA EL TRIPULANTE A CREAR
                     t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(t_parametros_tripulantes));
@@ -114,7 +113,7 @@ void INICIAR_PATOTA(char **parametros)
 
                     //CREO EL TRIPULANTE
                     pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *) parametros_tripulante);
-                    //pthread_detach(threads_tripulantes[i]);                   
+                    pthread_detach(threads_tripulantes[i]);                   
                 }
 
                 patota_id++;
@@ -157,71 +156,9 @@ void LISTAR_TRIPULANTES(char **parametros)
         printf("Tripulante: %d\t", tripulantesRecibidos->tripulantes[i].TID);
         printf("Status: %c\t",     tripulantesRecibidos->tripulantes[i].estado);
         printf("Pos X: %d\t",      tripulantesRecibidos->tripulantes[i].posX);
-        printf("Pos Y: %d\n",      tripulantesRecibidos->tripulantes[i].posY);
+        printf("Pos Y: %d\t",      tripulantesRecibidos->tripulantes[i].posY);
         printf("Nro. Inst: %d\n",  tripulantesRecibidos->tripulantes[i].proximaInstruccion);
     }
-    
-
-
-    /*
-    t_admin_tripulantes *aux_admin;
-    
-    if(sabotaje){
-
-        pthread_mutex_lock(&m_listaBlock);
-        for (int i = 0; i < list_size(bloq); i++)
-        {
-            
-            aux_admin = list_get(bloq, i);
-            printf("Patota: %d\t",     aux_admin->pid);
-            printf("Tripulante: %d\t", aux_admin->tid);
-            printf("Status: BLOQ E\t");
-            printf("Pos X: %d\t",      aux_admin->posX);
-            printf("Pos Y: %d\n",      aux_admin->posY);
-        }
-        pthread_mutex_unlock(&m_listaBlock);
-
-    }
-    else{
-        pthread_mutex_lock(&m_listaReady);
-        for (int i = 0; i < list_size(ready); i++)
-        {
-            
-            aux_admin = list_get(ready, i);
-            printf("Patota: %d\t",     aux_admin->pid);
-            printf("Tripulante: %d\t", aux_admin->tid);
-            printf("Status: %c\t",     aux_admin->estado);
-            printf("Pos X: %d\t",      aux_admin->posX);
-            printf("Pos Y: %d\n",      aux_admin->posY);
-        }
-        pthread_mutex_unlock(&m_listaReady);
-
-        pthread_mutex_lock(&m_listaExec);
-        for (int i = 0; i < list_size(exec); i++)
-        {
-            aux_admin = list_get(exec, i);
-            printf("Patota: %d\t",     aux_admin->pid);
-            printf("Tripulante: %d\t", aux_admin->tid);
-            printf("Status: %c\t",     aux_admin->estado);
-            printf("Pos X: %d\t",      aux_admin->posX);
-            printf("Pos Y: %d\n",      aux_admin->posY);
-        }
-        pthread_mutex_unlock(&m_listaExec);
-
-        pthread_mutex_lock(&m_listaBlockIO);
-        for (int i = 0; i < list_size(bloq_IO); i++)
-        {
-            
-            aux_admin = list_get(bloq_IO, i);
-            printf("Patota: %d\t",     aux_admin->pid);
-            printf("Tripulante: %d\t", aux_admin->tid);
-            printf("Status: %c\t",     aux_admin->estado);
-            printf("Pos X: %d\t",      aux_admin->posX);
-            printf("Pos Y: %d\n",      aux_admin->posY);
-        }
-        pthread_mutex_unlock(&m_listaBlockIO);
-    }
-    */
 
     printf("--------------------------------------------------------------------------------\n");
     
@@ -229,24 +166,16 @@ void LISTAR_TRIPULANTES(char **parametros)
 
 void EXPULSAR_TRIPULANTE(char **parametros)
 {
-    pthread_t thread_eliminar;
 
     //SACO AL TRIPULANTE DE LA LISTA EN LA QUE SE ENCUENTRE (SI EXISTE)
-    if(matarTripulante(atoi(parametros[1]), &thread_eliminar)){
+    if(existeTripulante(atoi(parametros[1]))){
 
-        //ELIMINO AL TRIPULANTE DE LA MEMORIA
-        int bEnviar;
-        void *dEnviar = serializarInt(atoi(parametros[1]), ELIMINAR_TRIPULANTE, &bEnviar);
-        send(sockfd_ram, dEnviar, bEnviar, 0);
-        free(dEnviar);
-
-        //ELIMINO EL THREAD
-        pthread_cancel(thread_eliminar);
-        pthread_join(thread_eliminar, NULL);
+        //LE DOY EL AVISO DE MUERTE AL TRIPULANTE
+        avisoDeMuerte(atoi(parametros[1]));
 
         //DOY EL AVISO
-        printf("Se elimino al tripulante %d\n", atoi(parametros[1]));
-        log_info(logger, "Se elimino al tripulante %d\n", atoi(parametros[1]));
+        printf("Se le dio el aviso de muerte al tripulante %d\n", atoi(parametros[1]));
+        log_info(logger, "Se le dio el aviso de muerte al tripulante %d\n", atoi(parametros[1]));
     }
     else
         printf("El tripulante %d no existe\n", atoi(parametros[1]));
@@ -280,5 +209,28 @@ void PAUSAR_PLANIFICACION(char **parametros)
 
 void OBTENER_BITACORA(char **parametros)
 {
+    //SOLICITO LA BITACORA DE UN TRIPULANTE
+    int bEnviar;
+    void *dEnviar = serializarInt(atoi(parametros[1]), SOLICITAR_BITACORA, &bEnviar);
+    send(sockfd_mongo, dEnviar, bEnviar, 0);
+    free(dEnviar);
+
+    //RECIBO LA BITACORA DEL MONGO
+    t_bitacora *bitacoraRecibida = (t_bitacora *) recibir_paquete(sockfd_mongo);
+
+    //IMPRIMO LA BITACORA
+    printf("------------------------------------------------------------------------------------\n");
+    printf("Esta es la bitacora del tripulante %d\n", atoi(parametros[1]));
+    for (int i = 0; i < bitacoraRecibida->cantAcciones; i++)
+        printf("ACCION N°%d %s\n", i, bitacoraRecibida->acciones[i].accion);
+    printf("------------------------------------------------------------------------------------\n");
     
+}
+
+void IMPRIMIR_SEGMENTOS(char **parametros)
+{
+    int bEnviar;
+    void *dEnviar = serializarInt(0, IMPRIMIR_SEGMENTACION, &bEnviar);
+    send(sockfd_ram, dEnviar, bEnviar, 0);
+    free(dEnviar);
 }
