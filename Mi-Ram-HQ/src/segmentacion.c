@@ -138,8 +138,101 @@ void compactar(int sig){
 
     if(sig == SIGUSR1 && strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
     {
+        pthread_mutex_lock(&acceso_memoria);
+        
+        log_info(logger, "COMENZANDO LA COMPACTACION");
 
+        estado_segmentos *estado = malloc(sizeof(estado_segmentos));
+
+        for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+        {
+            estado = list_get(tabla_estado_segmentos, i);
+
+            if(estado->ocupado == 0 && i < list_size(tabla_estado_segmentos)){
+
+                int pos = buscar_siguiente_segmento_ocupado(i);
+
+                //memcpy(estado->base)
+
+                actualizar_registro_segmento(pos);
+            }
+        }
+
+        //RECORRO LOS ESTADOS Y CUANDO ENCUENTRO EL PRIMERO EN 0, ELIMINO TODOS A PARTIR DE AHI Y ME QUEDO CON UNO GRANDE
+        int bytesOcupados;
+        int pos_libertad;
+        int index_ultimo = ultimo_ocupado(&bytesOcupados, &pos_libertad);
+        
+        //ELIMINO TODOS LOS SEGMENTOS NO USADOS QUE SE ENCUENTREN AL FINAL
+        for (int i = index_ultimo; i < tabla_estado_segmentos; i++)
+            list_remove(tabla_estado_segmentos, i);
+        
+        //PONGO AL FINAL UN SEGMENTO GRANDE LIBRE
+        estado->base    = pos_libertad;
+        estado->limite  = config->tamanio_memoria - bytesOcupados;
+        estado->ocupado = 0;
+        
+        pthread_mutex_unlock(&acceso_memoria);
     }
 
     return;
+}
+
+int ultimo_ocupado(int *bytesOcupado, int *pos_libertad){
+
+    estado_segmentos *estado = malloc(sizeof(estado_segmentos));
+    *bytesOcupado = 0;
+
+    for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+    {
+            estado = list_get(tabla_estado_segmentos, i);
+
+            if(estado->ocupado == 0){
+                *pos_libertad = estado->base;
+                return i;
+            }
+            else
+                *bytesOcupado += estado->limite;
+    }        
+}
+
+int buscar_siguiente_segmento_ocupado(i){
+    
+    estado_segmentos *estado = malloc(sizeof(estado_segmentos));
+
+    for (int j = i; j < list_size(tabla_estado_segmentos); j++)
+    {
+        estado = list_get(tabla_estado_segmentos, j);
+
+        if(estado->ocupado == 1){
+            estado->ocupado == 0;
+            list_replace(tabla_estado_segmentos, j, estado);
+            return estado->base;
+        }
+    }
+
+    return -1;
+}
+
+void actualizar_registro_segmento(int posBuscada, int posNueva){
+    
+    t_list *tablaUnProceso;
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
+
+    //RECORRO LA LISTA DE PROCESOS
+    for(int i=0; i < list_size(tabla_procesos); i++){
+        tablaUnProceso = list_get(tabla_procesos, i);
+
+        //RECORRO LOS SEGMENTO DE CADA PROCESO
+        for(int j=0; j < list_size(tablaUnProceso); j++){
+            reg_seg = list_get(tablaUnProceso, j);
+
+            //VERIFICO SI EL SEGMENTO ES EL SOLICITADO
+            if(reg_seg->base == posBuscada){
+                reg_seg->base = posNueva;
+                list_replace(tablaUnProceso, j, reg_seg);
+                return;
+            }
+        }
+    }
 }
