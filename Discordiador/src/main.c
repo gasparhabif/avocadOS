@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 			comando[4](parametros);
 		else if (strcmp(parametros[0], "OBTENER_BITACORA") == 0)
 			comando[5](parametros);
-		else if (strcmp(parametros[0], "IMPRMIR_SEGMENTOS") == 0)
+		else if (strcmp(parametros[0], "IMPRIMIR_SEGMENTOS") == 0)
 			comando[6](parametros);
 		else if (strcmp(parametros[0], "CLEAR") == 0)
 			system("clear");

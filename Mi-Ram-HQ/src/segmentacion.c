@@ -101,7 +101,7 @@ void* reservar_segmento_BF(int bytes){
                 list_add_in_index(tabla_estado_segmentos, pos_seg, segmento_obtenido);
             }
 
-            free(segmento_obtenido);
+            //free(segmento_obtenido);
             return (void *) nuevo_segmento->inicio;
         }
     }

@@ -36,7 +36,8 @@ enum CODIGOS_DE_TAREAS
 
 enum CODIGOS_DE_BITACORAS
 {
-    INICIO_TAREA               = 'I',
+    INICIO_TAREA               = 'I', //Notificacion de inicio para la bitacora
+    EJECUTAR_TAREA             = 'E', //Notificacion para ejecutar la tarea (no se manda para tareas normales)
     FIN_TAREA                  = 'F',
     INICIO_RESOLUCION_SABOTAJE = 'S',
     FIN_RESOLUCION_SABOTAJE    = 'A'
@@ -145,6 +146,19 @@ typedef struct
     u_int8_t cantTareas;
     t_tarea *tareas;
 } t_tareas_cPID;
+
+typedef struct
+{
+    u_int32_t tid;
+    u_int8_t  codigoTarea;
+} t_inicio_tarea;
+
+typedef struct
+{
+    u_int32_t tid;
+    u_int8_t  codigoTarea;
+    u_int32_t parametro;
+} t_ejecutar_tarea;
 
 //ACTUALIZACIONES
 typedef struct

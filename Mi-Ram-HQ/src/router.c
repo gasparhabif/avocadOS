@@ -204,15 +204,18 @@ void eliminar_tripulante(t_pidYtid *pidCtid_recibido){
         baseAEliminar = eliminar_tcb(unProceso, pidCtid_recibido->tid);
 
         //LIBERO EL SEGMENTO EN LA MEMORIA
-        liberar_memoria(baseAEliminar   );
+        liberar_memoria(baseAEliminar);
+        log_info(logger, "Se elimino el trpulante N°%d", pidCtid_recibido->tid);
 
         //ELIMINO LAS TAREAS DE LA MEMORIA
         baseAEliminar = eliminar_pcbOtareas(unProceso, TAREAS);
         liberar_memoria(baseAEliminar);
+        log_info(logger, "Se eliminaron las tareas de la patota N°%d", pidCtid_recibido->pid);
 
         //ELIMINO EL PCB DE LA MEMORIA
         baseAEliminar = eliminar_pcbOtareas(unProceso, PCB);
         liberar_memoria(baseAEliminar);
+        log_info(logger, "Se elimino el PCB de la patota N°%d", pidCtid_recibido->pid);
 
         //ELIMINO EL PROCESO DE LA TABLA DE PROCESOS
         eliminar_proceso(pidCtid_recibido->pid);
@@ -224,6 +227,7 @@ void eliminar_tripulante(t_pidYtid *pidCtid_recibido){
 
         //LIBERO EL SEGMENTO EN LA MEMORIA
         liberar_memoria(baseTCB);
+        log_info(logger, "Se elimino el trpulante N°%d", pidCtid_recibido->tid);
     }
 
     //LIBERO LA MEMORIA

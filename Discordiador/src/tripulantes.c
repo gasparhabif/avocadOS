@@ -144,7 +144,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
             //ENVIO LA TAREA AL MONGO
             int bEnviar;
-            void *d_enviar = serializarTarea(tarea_recibida, &bEnviar);
+            void *d_enviar = serializar_ejecutarTarea(admin->tid, tarea_recibida->codigoTarea, tarea_recibida->parametro, &bEnviar);
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
             free(d_enviar);
 
@@ -184,13 +184,8 @@ void tripulante(t_parametros_tripulantes *parametro)
 
 t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado)
 {
-    //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
-    int tamanioSerializacion;
-    void *comenzar_tarea = serializarInt(admin->tid, INICIO_TAREA, &tamanioSerializacion);
-    send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
-    free(comenzar_tarea);
-
     //PEDIR TAREA
+    int tamanioSerializacion;
     void *solicitud_tarea = serializar_pidYtid(admin->pid, admin->tid, SOLICITAR_TAREA, &tamanioSerializacion);
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
@@ -205,6 +200,12 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     tarea_recibida->posY = 4;
     tarea_recibida->duracionTarea = 5;
 */
+    
+    //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
+    void *comenzar_tarea = serializar_inicioTarea(admin->tid, tarea_recibida->codigoTarea, &tamanioSerializacion);
+    send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
+    free(comenzar_tarea);
+
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
         *finTareas = 1;

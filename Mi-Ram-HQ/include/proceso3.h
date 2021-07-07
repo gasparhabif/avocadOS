@@ -88,8 +88,11 @@ void                  eliminar_proceso     (int);
 int                   obtener_PIDproceso   (t_list *);
 
 //Definidas en serializacionPaginacion.c
-void *serializar_PCB(t_PCB *);
-void *serializar_TCB(t_TCB *);
-void *serializar_TAREA(t_tarea *);
+void*    serializar_PCB     (t_PCB *);
+void*    serializar_TCB     (t_TCB *);
+void*    serializar_TAREA   (t_tarea *);
+t_PCB*   deserializar_PCB   (void *);
+t_TCB*   deserializar_TCB   (void *);
+t_tarea* deserializar_TAREA (void *);
 
 #endif
