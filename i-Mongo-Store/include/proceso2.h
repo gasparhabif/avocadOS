@@ -119,5 +119,6 @@ t_recurso *load_recurso(char *);
 void print_recurso(t_recurso *);
 void update_recurso(t_recurso *);
 void agregar_recurso(t_recurso *, int);
+void eliminar_recurso(t_recurso *, int);
 
 #endif

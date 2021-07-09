@@ -96,3 +96,29 @@ void agregar_recurso(t_recurso *recurso, int cantidad)
 
     update_recurso(recurso);
 }
+
+void eliminar_recurso(t_recurso *recurso, int cantidad)
+{
+    int bytes_to_delete = cantidad < recurso->size ? cantidad : recurso->size;
+
+    while (bytes_to_delete != 0)
+    {
+        int last_block = list_get(recurso->blocks, list_size(recurso->blocks) - 1);
+        int block_bytes_count = recurso->size % superbloque->block_size;
+        int byte_to_delete = last_block * superbloque->block_size - 1;
+        byte_to_delete += block_bytes_count == 0 ? superbloque->block_size : block_bytes_count;
+
+        blocks_file_copy[byte_to_delete] = '-';
+        bytes_to_delete--;
+        recurso->size--;
+
+        if (recurso->size % superbloque->block_size == 0)
+        {
+            int block_to_free = list_remove(recurso->blocks, list_size(recurso->blocks) - 1);
+            clean_block(block_to_free);
+            recurso->block_count--;
+        }
+    }
+
+    update_recurso(recurso);
+}

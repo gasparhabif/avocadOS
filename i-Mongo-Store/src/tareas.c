@@ -52,14 +52,23 @@ void generarOxigeno(int cantidad)
     log_info(logger, "Se cargó Oxigeno.ims");
     agregar_recurso(oxigeno, cantidad);
 
+    // TODO: Liberar recurso
     // ...
-
-    log_info(logger, "Se solicitó GENERAR_OXIGENO. Cantidad: %d", cantidad);
 }
 
 void consumirOxigeno(int cantidad)
 {
-    log_info(logger, "Se solicitó CONSUMIR_OXIGENO. Cantidad: %d", cantidad);
+    if (!file_exists(oxigeno_file_path))
+    {
+        log_info(logger, "El archivo Oxigeno.ims no existe");
+        return;
+    }
+
+    t_recurso *oxigeno = load_recurso(oxigeno_file_path);
+    log_info(logger, "Se cargó Oxigeno.ims");
+    eliminar_recurso(oxigeno, cantidad);
+
+    // TODO: Liberar recurso
     // ...
 }
 
@@ -75,14 +84,23 @@ void generarComida(int cantidad)
     log_info(logger, "Se cargó Comida.ims");
     agregar_recurso(comida, cantidad);
 
+    // TODO: Liberar recurso
     // ...
-
-    log_info(logger, "Se solicitó GENERAR_COMIDA. Cantidad: %d", cantidad);
 }
 
 void consumirComida(int cantidad)
 {
-    log_info(logger, "Se solicitó CONSUMIR_COMIDA. Cantidad: %d", cantidad);
+    if (!file_exists(comida_file_path))
+    {
+        log_info(logger, "El archivo Comida.ims no existe");
+        return;
+    }
+
+    t_recurso *comida = load_recurso(comida_file_path);
+    log_info(logger, "Se cargó Comida.ims");
+    eliminar_recurso(comida, cantidad);
+
+    // TODO: Liberar recurso
     // ...
 }
 
@@ -98,14 +116,25 @@ void generarBasura(int cantidad)
     log_info(logger, "Se cargó Basura.ims");
     agregar_recurso(basura, cantidad);
 
+    // TODO: Liberar recurso
     // ...
-
-    log_info(logger, "Se solicitó GENERAR_BASURA. Cantidad: %d", cantidad);
 }
 
 void descartarBasura()
 {
-    log_info(logger, "Se solicitó DESCARTAR_BASURA");
+    if (!file_exists(basura_file_path))
+    {
+        log_info(logger, "El archivo Basura.ims no existe");
+        return;
+    }
+
+    t_recurso *basura = load_recurso(basura_file_path);
+    log_info(logger, "Se cargó Basura.ims");
+    eliminar_recurso(basura, basura->size);
+
+    // TODO: Eliminar archivo
+
+    // TODO: Liberar recurso
     // ...
 }
 
