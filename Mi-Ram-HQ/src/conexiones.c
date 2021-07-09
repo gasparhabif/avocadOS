@@ -35,14 +35,58 @@ void recibir_mensaje(void *parametro)
     void *datos_recibidos;
     int recibiendo_mensajes = 1;
 
-    while (recibiendo_mensajes)
+    if (strcmp(config->esquema_memoria, "PAGINACION"))
     {
-
-        datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
-
-
-        switch (cop_recibido)
+        while (recibiendo_mensajes)
         {
+            datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
+            switch (cop_recibido)
+            {
+            case COMENZAR_PATOTA:
+                log_info(logger, "El discordiador %d comenzo una patota", client);
+                comenzar_patota_paginada(client, (t_tareas_cPID *)datos_recibidos);
+                break;
+            case INICIAR_TRIPULANTE:
+                log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
+                iniciar_tripulante_paginada(client, datos_recibidos);
+                break;
+            case SOLICITAR_TAREA:
+                log_info(logger, "El tripulante %d solicito una tarea", client);
+                solicitar_tarea_paginada(client, datos_recibidos);
+                break;
+            case MOVER_TRIPULANTE:
+                log_info(logger, "El tripulante %d ha realizado un movimiento", client);
+                mover_tripulante_paginada(datos_recibidos);
+                break;
+            case ACTUALIZAR_ESTADO:
+                log_info(logger, "El tripulante %d actualizo su estado", client);
+                actualizar_estado_paginada(datos_recibidos);
+                break;
+            case SOLICITAR_LISTA:
+                log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
+                solicitar_tripulantes_paginada(client);
+                //free(datos_recibidos);
+                break;
+            case ELIMINAR_TRIPULANTE:
+                log_info(logger, "El tripulante %d quiere abandonar la nave", client);
+                eliminar_tripulante_paginado(datos_recibidos);
+                recibiendo_mensajes = 0;
+                break;
+            default:
+                log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
+                break;
+            }
+        }
+    }
+    else // Segmentacion
+    {
+        while (recibiendo_mensajes)
+        {
+            printf("Entre al while\n");
+            datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
+            printf("Recibi el cop: %d\n", cop_recibido);
+            switch (cop_recibido)
+            {
             case COMENZAR_PATOTA:
                 log_info(logger, "El discordiador %d comenzo una patota", client);
                 comenzar_patota(client, (t_tareas_cPID *)datos_recibidos);
@@ -90,6 +134,7 @@ void recibir_mensaje(void *parametro)
             default:
                 log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
                 break;
+            }
         }
     }
 

@@ -39,6 +39,20 @@ typedef struct
     u_int8_t ocupado;
 } estado_segmentos;
 
+typedef struct
+{
+    u_int8_t tipo; // Tipo del contenido
+    u_int32_t offset;
+    u_int32_t tamanio;
+    u_int8_t modificado;
+} t_tabla_paginas_proceso;
+
+typedef struct
+{
+    u_int32_t pid;
+    t_list *paginas;
+} t_pagina_proceso;
+
 t_list *tabla_procesos;
 pthread_mutex_t acceso_memoria;
 pthread_mutex_t m_segmentos;
@@ -48,12 +62,14 @@ t_list *tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION
 u_int8_t *estado_frames;
 u_int32_t tamanio_paginas;
+t_list *tabla_paginas;
+int maxima_cantidad_paginas;
 
 //Definidas en conexiones.c
 void aceptar_conexiones(void *);
 void recibir_mensaje(void *);
 
-//Definidas en router.c
+//Definidas en router_segmentacion.c
 void comenzar_patota(int, t_tareas_cPID *);
 void iniciar_tripulante(int, t_TCBcPID *);
 void solicitar_tarea(int, t_pidYtid *);
@@ -61,6 +77,15 @@ void mover_tripulante(t_envio_posicion *);
 void actualizar_estado(t_estado *);
 void eliminar_tripulante(t_pidYtid *);
 void solicitar_tripulantes(int);
+
+//Definidas en router_paginacion.c
+void comenzar_patota_paginada(int, t_tareas_cPID *);
+void iniciar_tripulante_paginada(int, t_TCBcPID *);
+void solicitar_tarea_paginada(int, t_pidYtid *);
+void mover_tripulante_paginada(t_envio_posicion *);
+void actualizar_estado_paginada(t_estado *);
+void solicitar_tripulantes_paginada(int);
+void eliminar_tripulante_paginado(t_pidYtid *);
 
 //Definidas en memoria.c
 void *reservar_memoria(int);
