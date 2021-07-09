@@ -11,6 +11,4 @@
 #include "serializacion.h"
 #include "connections.h"
 
-char *mi_funcion_compartida();
-
 #endif
