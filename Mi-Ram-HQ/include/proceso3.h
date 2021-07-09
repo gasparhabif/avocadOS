@@ -14,7 +14,6 @@
 t_log *logger;
 t_ram_conf *config;
 
-int recibiendo_mensajes;
 int aceptando_conexiones;
 void *memoria;
 
@@ -42,6 +41,8 @@ typedef struct
 
 t_list *tabla_procesos;
 pthread_mutex_t acceso_memoria;
+pthread_mutex_t m_segmentos;
+pthread_mutex_t m_procesos;
 //GESTION DE MEMORIA EN LA SEGMENTACIOS
 t_list *tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION

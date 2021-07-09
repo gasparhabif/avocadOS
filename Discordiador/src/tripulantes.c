@@ -172,12 +172,14 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     matarTripulante(admin->tid);
 
-    close(admin->sockfd_tripulante_mongo);
+    //close(admin->sockfd_tripulante_mongo);
     close(admin->sockfd_tripulante_ram);
 
     free(admin);
 
     log_info(logger, "Termine mis tareas en la nave, adios");
+
+    pthread_exit(0);
 
     return;
 }
