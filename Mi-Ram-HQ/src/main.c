@@ -20,9 +20,15 @@ int main()
     //SIGUSR1 COMPACTE LA MEMORIA
     signal(SIGUSR1, compactar);
 
+    //INICIO EL MAPA
+    /*
+    nivel_gui_inicializar();
+    level = nivel_crear("AmongOS");
+    nivel_gui_dibujar(level);
+    */
+
     //INICIO LOS SEMAFOROS
     pthread_mutex_init(&acceso_memoria, NULL);
-    pthread_mutex_init(&m_segmentos, NULL);
     pthread_mutex_init(&m_procesos, NULL);
 
     //CREO ESTRUCTURAS PARA CONOCER EL ESTADO DE LA MEMORIA:
@@ -68,6 +74,9 @@ int main()
     pthread_t accept_connections_thread;
     pthread_create(&accept_connections_thread, NULL, (void *)aceptar_conexiones, (void *) server_instance);
     pthread_join(accept_connections_thread, NULL);
+
+    nivel_destruir(level);
+    nivel_gui_terminar();
 
     free(memoria);
     free(config);

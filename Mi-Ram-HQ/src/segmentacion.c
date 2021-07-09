@@ -150,19 +150,25 @@ void compactar(int sig){
         
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
+        pthread_mutex_lock(&acceso_memoria);
+        pthread_mutex_lock(&m_procesos);
+
         estado_segmentos *estado = malloc(sizeof(estado_segmentos));
         int posBuscada;
         int tamanioSegmento;
+        int indexEncontrado;
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
             estado = list_get(tabla_estado_segmentos, i);
 
-            if(estado->ocupado == 0 && i < list_size(tabla_estado_segmentos)-1){
+            if(estado->ocupado == 0 && i < (list_size(tabla_estado_segmentos)-1)){
 
-                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento);
+                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento, &indexEncontrado);
 
                 memcpy((void *) estado->inicio, (void *) posBuscada, tamanioSegmento);
+
+                i = indexEncontrado;
 
                 actualizar_registro_segmento(posBuscada, estado->inicio);
             }
@@ -187,6 +193,7 @@ void compactar(int sig){
         free(estado);
         
         pthread_mutex_unlock(&acceso_memoria);
+        pthread_mutex_unlock(&m_procesos);
     }
 
     return;
@@ -212,7 +219,7 @@ int ultimo_ocupado(int *bytesOcupado, int *pos_libertad){
     return -1;     
 }
 
-int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento){
+int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento, int *indexEncontrado){
     
     estado_segmentos *estado = malloc(sizeof(estado_segmentos));
 
@@ -222,6 +229,7 @@ int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento){
 
         if(estado->ocupado == 1){
             *tamanioSegmento = estado->limite;
+            *indexEncontrado = j;
             estado->ocupado = 0;
             list_replace(tabla_estado_segmentos, j, estado);
             return estado->inicio;
