@@ -61,23 +61,15 @@ void* reservar_segmento_BF(int bytes){
 
     for(int i = 0; i < list_size(tabla_estado_segmentos); i++){
 
-//        printf("Segmento: %d\n", i);
-
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
 
-//        printf("Inicio: %d\tLimite: %d\tOcupado: %d\n", segmento_obtenido->inicio, segmento_obtenido->limite, segmento_obtenido->ocupado);
-
         //En el caso de que no este ocupado y la cantidad de byres entre
         if(segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes){
-        
-//            printf("Encontre un candidato\n");
 
             //En el caso de que sea el primer segmento o que sea menor al menor ya tomado
             if ((pos_seg == -1) || segmento_obtenido->limite < tamanio_minimo)
             {
-//                printf("Encontre un minimo\n");
-
                 //Tomo un registro de este segmento libre
                 inicio_minimo  = segmento_obtenido->inicio;
                 tamanio_minimo = segmento_obtenido->limite;
@@ -95,6 +87,7 @@ void* reservar_segmento_BF(int bytes){
         nuevo_segmento->ocupado = 1;
 
         //Modifico el segmento libre
+        segmento_obtenido = list_get(tabla_estado_segmentos, pos_seg);
         segmento_obtenido->inicio += bytes;
         segmento_obtenido->limite -= bytes;
 
@@ -104,7 +97,6 @@ void* reservar_segmento_BF(int bytes){
             // En este caso podría ocurrir que los bytes entran perfectoen el 
             // segmento obtenido, en tal caso no seria necesaria una modificacion 
             // en la lista de segmentos
-
             if(segmento_obtenido->limite != 0){
                 //Ajusto el libre
                 list_replace(tabla_estado_segmentos, pos_seg, nuevo_segmento);
@@ -117,20 +109,7 @@ void* reservar_segmento_BF(int bytes){
             }
 
             //free(segmento_obtenido);
-/*
-            printf("Se reservo la posicion %p\n", (void *) nuevo_segmento->inicio);
 
-            printf("------------------------------------------------------------------\n");
-            for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
-            {
-                estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
-                printf("SEG N°: %d\t", i);
-                printf("Inicio: %d\t", reg_seg->inicio);
-                printf("Tamaño: %d\t", reg_seg->limite);
-                printf("Ocupado: %d\n", reg_seg->ocupado);
-            }
-            printf("------------------------------------------------------------------\n");
-*/
             return (void *) nuevo_segmento->inicio;
         }
     }
