@@ -79,9 +79,13 @@ void actualizar_registro_segmento(int, int);
 
 //Definidas en paginacion.c
 void generar_archivo_swap();
+void realizar_swap();
+void swap_por_Clock();
+void swap_por_LRU();
 
 //Definidas en utils.c
-t_list *buscar_lista_proceso(int);
+t_list *
+buscar_lista_proceso(int);
 t_PCB *buscar_pcb_proceso(t_list *, int);
 t_registro_segmentos *buscar_registro_tcb(t_list *, int);
 int traer_tarea(void *, t_list *, int, t_tarea *);

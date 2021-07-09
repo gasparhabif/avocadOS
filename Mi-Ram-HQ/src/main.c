@@ -29,29 +29,23 @@ int main()
     if (strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
     {
         tabla_estado_segmentos = list_create();
+
+        //CREO LA LISTA DE PROCESOS
+        tabla_procesos = list_create();
+
+        //INDICO EL PRIMER SEGMENTO Y LO PONGO LIBRE
+        estado_segmentos *primer_seg = malloc(sizeof(estado_segmentos));
+        primer_seg->inicio = (int)memoria;
+        primer_seg->limite = config->tamanio_memoria;
+        primer_seg->ocupado = 0;
+
+        list_add(tabla_estado_segmentos, primer_seg);
     }
     else if (strcmp(config->esquema_memoria, "PAGINACION") == 0)
     {
         tamanio_paginas = config->tamanio_pagina;
         estado_frames = malloc(config->tamanio_memoria / tamanio_paginas);
-        generar_archivo_swap();
     }
-    else
-    {
-        log_info(logger, "Esquema mal indicado en el archivo de configuracion");
-        exit(0);
-    }
-
-    //CREO LA LISTA DE PROCESOS
-    tabla_procesos = list_create();
-
-    //INDICO EL PRIMER SEGMENTO Y LO PONGO LIBRE
-    estado_segmentos *primer_seg = malloc(sizeof(estado_segmentos));
-    primer_seg->inicio = (int)memoria;
-    primer_seg->limite = config->tamanio_memoria;
-    primer_seg->ocupado = 0;
-
-    list_add(tabla_estado_segmentos, primer_seg);
     //free(primer_seg);
 
     //INICIO EL SERVER
