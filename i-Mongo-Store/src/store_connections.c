@@ -76,17 +76,12 @@ void tripulante_cxn_handler(void *arg)
     log_info(logger, "Se cargó Tripulante%s.ims", tid);
 
     // Probar acá
-    // generarComida(8);
-    // consumirComida(4);
     // generarBasura(25);
-    // generarComida(6);
-    // consumirComida(4);
     // descartarBasura();
-    // generarOxigeno(6);
     // ...
 
-    sync_blocks();
-    print_superbloque();
+    // sync_blocks();
+    // print_superbloque();
 
     while (1)
     {

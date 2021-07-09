@@ -131,8 +131,7 @@ void descartarBasura()
     t_recurso *basura = load_recurso(basura_file_path);
     log_info(logger, "Se cargó Basura.ims");
     eliminar_recurso(basura, basura->size);
-
-    // TODO: Eliminar archivo
+    remove(basura->path);
 
     // TODO: Liberar recurso
     // ...
