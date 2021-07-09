@@ -25,7 +25,7 @@ void* reservar_segmento_FF(int bytes){
             //Chequeo que no me este pasando de la memoria reservada
             if(segmento_obtenido->inicio + bytes < (int) memoria + config->tamanio_memoria){
 
-                // En este caso podría ocurrir que los bytes entran perfectoen el 
+                // En este caso podría ocurrir que los bytes entran perfecto en el 
                 // segmento obtenido, en tal caso no seria necesaria una modificacion 
                 // en la lista de segmentos
                 if(segmento_obtenido->limite != 0){
@@ -34,6 +34,10 @@ void* reservar_segmento_FF(int bytes){
 
                     //Añado el nuevo segmento a la lista
                     list_add_in_index(tabla_estado_segmentos, i+1, segmento_obtenido);
+                }
+                else{
+                    nuevo_segmento->ocupado = 1;
+                    list_replace(tabla_estado_segmentos, i, nuevo_segmento);
                 }
                 
                 return (void *) nuevo_segmento->inicio;
@@ -51,21 +55,29 @@ void* reservar_segmento_BF(int bytes){
 
     uint32_t          inicio_minimo;
     uint32_t          tamanio_minimo    = -1;
-    uint32_t          pos_seg           = 0;
+    uint32_t          pos_seg           = -1;
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento    = malloc(sizeof(estado_segmentos));
 
     for(int i = 0; i < list_size(tabla_estado_segmentos); i++){
 
+//        printf("Segmento: %d\n", i);
+
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
+
+//        printf("Inicio: %d\tLimite: %d\tOcupado: %d\n", segmento_obtenido->inicio, segmento_obtenido->limite, segmento_obtenido->ocupado);
 
         //En el caso de que no este ocupado y la cantidad de byres entre
         if(segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes){
         
+//            printf("Encontre un candidato\n");
+
             //En el caso de que sea el primer segmento o que sea menor al menor ya tomado
-            if (pos_seg || segmento_obtenido->limite < tamanio_minimo)
+            if ((pos_seg == -1) || segmento_obtenido->limite < tamanio_minimo)
             {
+//                printf("Encontre un minimo\n");
+
                 //Tomo un registro de este segmento libre
                 inicio_minimo  = segmento_obtenido->inicio;
                 tamanio_minimo = segmento_obtenido->limite;
@@ -79,7 +91,7 @@ void* reservar_segmento_BF(int bytes){
     {
         //Inicio el nuevo segmento
         nuevo_segmento->inicio  = inicio_minimo;
-        nuevo_segmento->limite  = tamanio_minimo;
+        nuevo_segmento->limite  = bytes;
         nuevo_segmento->ocupado = 1;
 
         //Modifico el segmento libre
@@ -98,10 +110,27 @@ void* reservar_segmento_BF(int bytes){
                 list_replace(tabla_estado_segmentos, pos_seg, nuevo_segmento);
 
                 //Añado el nuevo segmento a la lista
-                list_add_in_index(tabla_estado_segmentos, pos_seg, segmento_obtenido);
+                list_add_in_index(tabla_estado_segmentos, pos_seg + 1, segmento_obtenido);
+            }
+            else{
+                list_replace(tabla_estado_segmentos, pos_seg, nuevo_segmento);
             }
 
             //free(segmento_obtenido);
+/*
+            printf("Se reservo la posicion %p\n", (void *) nuevo_segmento->inicio);
+
+            printf("------------------------------------------------------------------\n");
+            for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+            {
+                estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
+                printf("SEG N°: %d\t", i);
+                printf("Inicio: %d\t", reg_seg->inicio);
+                printf("Tamaño: %d\t", reg_seg->limite);
+                printf("Ocupado: %d\n", reg_seg->ocupado);
+            }
+            printf("------------------------------------------------------------------\n");
+*/
             return (void *) nuevo_segmento->inicio;
         }
     }
