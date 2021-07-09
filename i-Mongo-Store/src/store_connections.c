@@ -47,7 +47,7 @@ void accept_tripulantes(void *arg)
 
         pthread_t connection_thread;
         pthread_create(&connection_thread, NULL, (void *)tripulante_cxn_handler, (void *)client);
-        // Acá no ejecuto pthread_join() porque sino no crea nuevos threads hasta que no termine el último
+        pthread_detach(connection_thread);
     }
 }
 
@@ -56,56 +56,76 @@ void tripulante_cxn_handler(void *arg)
     int client = (int)arg;
     bool tareas_finalizadas = false;
 
-    log_info(logger, "Se conectó un tripulante en el socket %d", client);
+    // Recibir tripulante y su posición inicial
+    t_envio_posicion *tripulante = recibir_paquete(client);
+    log_info(logger, "Se conectó el tripulante TID: %d - Posición inicial: %d|%d", tripulante->TID, tripulante->pos.posX, tripulante->pos.posY);
 
-    // Recibir ID del tripulante
+    // Obtener path
+    char *tid = string_itoa(tripulante->TID);
+    // char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
+    char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
+
+    if (!file_exists(bitacora_file_path))
+    {
+        create_bitacora(bitacora_file_path);
+        log_info(logger, "Se creó Tripulante%s.ims", tid);
+    }
+
+    // Cargar Tripulante#.ims
+    t_bitacora *bitacora = load_bitacora(bitacora_file_path);
+    log_info(logger, "Se cargó Tripulante%s.ims", tid);
+
+    // Probar acá
+    // generarBasura(25);
+    // descartarBasura();
     // ...
 
-    // Generar t_bitacora para el tripulante
-    // ...
+    // sync_blocks();
+    // print_superbloque();
+
+    while (1)
+    {
+    }
 
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
     while (!tareas_finalizadas)
     {
-        // log_info(logger, "Se recibió el código de operación %d", cod_operacion);
-        log_info(logger, "Socket %d -  Código %d", client, cod_operacion);
+        switch (cod_operacion)
+        {
+        case MOVER_TRIPULANTE:
+            registrarDesplazamiento();
+            break;
+        case INICIO_TAREA:
+            registrarInicioTarea();
+            break;
 
-        // Verificar si es tarea de ES
-            switch (cod_operacion)
-            {
-            case MOVER_TRIPULANTE:
-                registrarDesplazamiento();
-                break;
-            case INICIO_TAREA:
-                registrarInicioTarea();
-                break;
-            case FIN_TAREA:
-                registrarFinTarea();
-                break;
-            case INICIO_RESOLUCION_SABOTAJE:
-                registrarAtencionSabotaje();
-                break;
-            case FIN_RESOLUCION_SABOTAJE:
-                registrarResolucionSabotaje();
-                break;
-            case ENVIAR_PROXIMA_TAREA:;
-                t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
-                // TODO: Recibir la tarea en sí en lugar de la operacion
-                ejecutarTarea(tarea_a_ejecutar);
-                break;
-            default:
-                // log_error(logger, "Código de operacion desconocido: %d", cod_operacion);
-                log_error(logger, "Socket %d - Código %d desconocido", client, cod_operacion);
-                tareas_finalizadas = true;
-                break;
-            }
-        
+        case INICIO_RESOLUCION_SABOTAJE:
+            registrarAtencionSabotaje();
+            break;
+        // case INICIO_PROTOCOLO_FSCK:
+        //     break;
+        case FIN_RESOLUCION_SABOTAJE:
+            registrarResolucionSabotaje();
+            break;
+        case ENVIAR_PROXIMA_TAREA:; // EJECUTAR_TAREA
+            t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
+            ejecutarTarea(tarea_a_ejecutar);
+            break;
+
+        default:
+            log_error(logger, "Código %d desconocido", cod_operacion);
+            tareas_finalizadas = true;
+            break;
+        }
 
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 
-    log_error(logger, "El tripulante del socket %d se desconectó", client);
-}
+    log_error(logger, "El tripulante %d se desconectó", tripulante->TID);
 
+    free(bitacora_file_path);
+    free(tid);
+    free(tripulante);
+}

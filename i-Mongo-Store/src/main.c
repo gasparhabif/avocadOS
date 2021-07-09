@@ -4,17 +4,38 @@ int main()
 {
     system("clear");
 
-    // Inicializar logger y config
+    // Iniciar logger
     logger = log_create("logs/i-mongo-store.log", "i-Mongo-Store", 1, LOG_LEVEL_INFO);
-    log_info(logger, "Log iniciado");
+    log_info(logger, "Se inició el log");
+
+    // Cargar config
     config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
-    log_info(logger, "Configuración cargada");
+    log_info(logger, "Se cargó la configuración");
 
-    // Inicializar SuperBloque
-    superbloque = init_superbloque();
+    // Iniciar FS
+    init_paths();
 
-    // Cargar copia de Blocks
-    blocks = load_blocks();
+    if (!file_exists(superbloque_file_path))
+    {
+        log_info(logger, "El FS no existe. Creando FS desde cero...");
+
+        create_dirs();
+        log_info(logger, "Se crearon los directorios");
+        create_superbloque(BLOCK_SIZE, BLOCKS);
+        log_info(logger, "Se creó SuperBloque.ims");
+        create_blocks();
+        log_info(logger, "Se creó Blocks.ims");
+
+        log_info(logger, "Se creó el FS");
+    }
+
+    // Cargar SuperBloque.ims
+    superbloque = load_superbloque();
+    log_info(logger, "Se cargó SuperBloque.ims");
+
+    // Cargar Blocks.ims
+    blocks_file_copy = load_blocks();
+    log_info(logger, "Se cargó Blocks.ims");
 
     // Inicializar servidor
     int server_instance = init_server(config->puerto);
@@ -26,27 +47,28 @@ int main()
         return EXIT_FAILURE;
     }
 
-    log_info(logger, "Servidor escuchando en puerto %d", config->puerto);
-
     // Aceptar conexión del Discordiador
     // pthread_t discordiador_cnx_thread;
     // pthread_create(&discordiador_cnx_thread, NULL, (void *)discordiador_cxn_handler, (void *)server_instance);
 
-
     // Aceptar conexiones de los tripulantes
+    log_info(logger, "Esperando tripulantes en el puerto %d", config->puerto);
     pthread_t tripulantes_cxns_thread;
     pthread_create(&tripulantes_cxns_thread, NULL, (void *)accept_tripulantes, (void *)server_instance);
     pthread_join(tripulantes_cxns_thread, NULL);
 
     // ...
 
-    free(blocks);
+    free(blocks_file_copy);
     free(superbloque->bitmap->bitarray);
     free(superbloque->bitmap);
     free(superbloque);
     free(config);
 
+    munmap(blocks_file, blocks_file_size);
+    munmap(superbloque_file, superbloque_file_size);
+    close(blocks_fd);
+    close(superbloque_fd);
+
     return EXIT_SUCCESS;
 }
-
-// INICIAR_PATOTA 3 ./unasTareas.txt 2|5 7|9
