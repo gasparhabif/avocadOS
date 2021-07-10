@@ -1,6 +1,6 @@
 #include "proceso3.h"
 
-void solicitar_paginas(int cantidad, int pid)
+int solicitar_paginas(int cantidad, int pid)
 {
     t_pagina_proceso *paginas_proceso = malloc(sizeof(t_pagina_proceso));
     paginas_proceso->paginas = list_create();
@@ -18,10 +18,46 @@ void solicitar_paginas(int cantidad, int pid)
         // TODO: Una vez que este hecho el swapping y no se logre reservar la
         // cantidad de paginas -> Informar al discoridador
         log_info(logger, "No se pudo reserver memoria.");
+        return -1;
     }
 
-    listAdd(tabla_paginas, paginas_proceso);
+    //TODO: no solicitar paginas si la ultima del proceso no fue llenada
+
+    list_add(tabla_paginas, paginas_proceso);
+    return 0;
 }
+
+void guardar_tareas_paginacion(t_tareas_cPID tareas_cPID_recibidas){
+    void* tareas = malloc(t_tareas_cPID);
+    int offset = 0;
+
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+    {
+        memcpy(tareas + offset, serializalizar_TAREA(tareas_cPID_recibidas->tareas[i]), sizeof(t_tarea));
+        offset += sizeof(t_tarea);
+    }
+    
+    offset = 0;
+    t_list* paginas_proceso = buscar_paginas_proceso(tareas_cPID_recibidas->PID);
+
+    for (int i = 0; i < list_size(paginas_proceso); i++)
+    {
+        memcpy((void *) list_get(paginas_proceso, i), tareas + offset, tamanio_paginas);
+        offset +=  (tareas->cantTareas * sizeof(t_tarea) / tamanio_paginas;
+    }
+
+    t_tabla_paginas_proceso *tabla_paginas_proceso = malloc(sizeof(tabla_paginas_proceso));
+
+    tabla_paginas_proceso->tipo = TAREAS;
+    tabla_paginas_proceso->offset = 0;
+    tabla_paginas_proceso->tamanio = cant_tareas * sizeof(t_tarea);
+    tabla_paginas_proceso->modificado = 0;
+
+    list_add(tabla_procesos, tabla_paginas_proceso);
+
+    return;
+}
+
 
 void generar_archivo_swap()
 {
@@ -40,6 +76,10 @@ void realizar_swap()
     {
         swap_por_Clock();
     }
+}
+
+void dump_paginacion() {
+
 }
 
 void swap_por_Clock()

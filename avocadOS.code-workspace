@@ -15,7 +15,9 @@
 	],
 	"settings": {
 		"files.associations": {
-			"proceso1.h": "c"
+			"proceso1.h": "c",
+			"math.h": "c",
+			"proceso3.h": "c"
 		}
 	},
 	"launch": {

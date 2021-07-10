@@ -108,6 +108,7 @@ void generar_archivo_swap();
 void realizar_swap();
 void swap_por_Clock();
 void swap_por_LRU();
+void guardar_tareas_paginacion(t_tareas_cPID);
 
 //Definidas en utils.c
 t_list *
