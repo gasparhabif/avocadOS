@@ -48,7 +48,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case INICIAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
-                iniciar_tripulante_paginada(client, datos_recibidos);
+                iniciar_tripulante_paginado(client, datos_recibidos);
                 break;
             case SOLICITAR_TAREA:
                 log_info(logger, "El tripulante %d solicito una tarea", client);
