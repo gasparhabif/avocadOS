@@ -23,6 +23,7 @@ void aceptar_conexiones(void *parametro)
 
         //CREO EL HILO QUE ESCUCHA CONEXIONES
         pthread_create(&recibir_mensajes_thread, NULL, (void *)recibir_mensaje, (void *)client);
+        pthread_detach(recibir_mensajes_thread);
     }
 }
 
@@ -32,11 +33,13 @@ void recibir_mensaje(void *parametro)
     int client = (int)parametro;
     int cop_recibido;
     void *datos_recibidos;
+    int recibiendo_mensajes = 1;
 
     while (recibiendo_mensajes)
     {
 
         datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
+
 
         switch (cop_recibido)
         {
@@ -60,15 +63,35 @@ void recibir_mensaje(void *parametro)
                 log_info(logger, "El tripulante %d actualizo su estado", client);
                 actualizar_estado(datos_recibidos);
                 break;
+            case SOLICITAR_LISTA:
+                log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
+                solicitar_tripulantes(client);
+                //free(datos_recibidos);
+                break;
+            case IMPRIMIR_SEGMENTACION:
+                pthread_mutex_lock(&acceso_memoria);
+                printf("------------------------------------------------------------------\n");
+                for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+                {
+                    estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
+                    printf("SEG N°: %d\t", i);
+                    printf("Inicio: %d\t", reg_seg->inicio);
+                    printf("Tamaño: %d\t", reg_seg->limite);
+                    printf("Ocupado: %d\n", reg_seg->ocupado);
+                }
+                printf("------------------------------------------------------------------\n");
+                pthread_mutex_unlock(&acceso_memoria);
+                break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
-                //¿LO MANDA EL DISCORDIADOR O EL TRIPULANTE QUE QUIERE MORIR?
+                eliminar_tripulante(datos_recibidos);
+                recibiendo_mensajes = 0;
                 break;
             default:
-                log_info(logger, "Llego un codigo de operacion desconocido: %d", cop_recibido);
+                log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
                 break;
         }
     }
 
-    return;
+    pthread_exit(0);
 }

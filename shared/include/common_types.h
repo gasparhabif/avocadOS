@@ -3,7 +3,7 @@
 
 enum CODIGOS_DE_OPERACION
 {
-    COMENZAR_PATOTA = 0,
+    COMENZAR_PATOTA = 1,
     PUNTERO_PCB,
     INICIAR_TRIPULANTE,
     SOLICITAR_TAREA,
@@ -13,9 +13,13 @@ enum CODIGOS_DE_OPERACION
     ACTUALIZAR_ESTADO,
     ELIMINAR_TRIPULANTE,
     ESTRUCTURAS_EN_MEMORIA,
+    SOLICITAR_LISTA,
+    LISTA_TRIPULANTES,
     ALERTA_SABOTAJE,
     SOLICITAR_BITACORA,
-    INICIO_PROTOCOLO_FSCK
+    BITACORA_TRIPULANTE,
+    INICIO_PROTOCOLO_FSCK,
+    IMPRIMIR_SEGMENTACION
 };
 
 enum CODIGOS_DE_TAREAS
@@ -32,7 +36,8 @@ enum CODIGOS_DE_TAREAS
 
 enum CODIGOS_DE_BITACORAS
 {
-    INICIO_TAREA               = 'I',
+    INICIO_TAREA               = 'I', //Notificacion de inicio para la bitacora
+    EJECUTAR_TAREA             = 'E', //Notificacion para ejecutar la tarea (no se manda para tareas normales)
     FIN_TAREA                  = 'F',
     INICIO_RESOLUCION_SABOTAJE = 'S',
     FIN_RESOLUCION_SABOTAJE    = 'A'
@@ -88,6 +93,21 @@ typedef struct
     u_int32_t tid;
 } t_pidYtid;
 
+typedef struct
+{
+    u_int32_t PID;
+    u_int32_t TID;
+    char estado;
+    u_int32_t posX;
+    u_int32_t posY;
+    u_int32_t proximaInstruccion;
+} t_TCBmostrar;
+
+typedef struct
+{
+    u_int32_t cantTripulantes;
+    t_TCBmostrar *tripulantes;
+} t_ListaTripulantes;
 
 //BASICOS
 typedef struct
@@ -127,6 +147,12 @@ typedef struct
     t_tarea *tareas;
 } t_tareas_cPID;
 
+typedef struct
+{
+    u_int8_t  codigoTarea;
+    u_int32_t parametro;
+} t_ejecutar_tarea;
+
 //ACTUALIZACIONES
 typedef struct
 {
@@ -140,5 +166,17 @@ typedef struct
     u_int32_t TID;
     char estado;
 } t_actualizar_estado;
+
+//ENVIO DE BITACORAS
+typedef struct{
+   int tamanioAccion;
+   char *accion;
+} t_accion;
+
+typedef struct{
+   int cantAcciones;
+   int tamanioAcciones;
+   t_accion *acciones;
+} t_bitacora;
 
 #endif

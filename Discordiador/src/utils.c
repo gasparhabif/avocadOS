@@ -208,7 +208,7 @@ int mayor_tid_list(t_list* lista){
     return index;
 }
 
-int matarTripulante(int tid, pthread_t *threadEliminar){
+int matarTripulante(int tid){
     
     t_admin_tripulantes *aux_admin;
 
@@ -217,7 +217,6 @@ int matarTripulante(int tid, pthread_t *threadEliminar){
         aux_admin = list_get(ready, i);
         if (aux_admin->tid == tid)
         {
-            *threadEliminar = aux_admin->threadTripulante;
             list_remove(ready, i);
             return 1;
         }
@@ -228,7 +227,6 @@ int matarTripulante(int tid, pthread_t *threadEliminar){
         aux_admin = list_get(exec, i);
         if (aux_admin->tid == tid)
         {
-            *threadEliminar = aux_admin->threadTripulante;
             list_remove(exec, i);
             return 1;
         }
@@ -239,8 +237,69 @@ int matarTripulante(int tid, pthread_t *threadEliminar){
         aux_admin = list_get(bloq_IO, i);
         if (aux_admin->tid == tid)
         {
-            *threadEliminar = aux_admin->threadTripulante;
             list_remove(bloq_IO, i);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int existeTripulante(int tid){
+    
+    t_admin_tripulantes *aux_admin;
+
+    for (int i = 0; i < list_size(ready); i++)
+    {
+        aux_admin = list_get(ready, i);
+        if (aux_admin->tid == tid)
+            //free(aux_admin);
+            return 1;
+    }
+
+    for (int i = 0; i < list_size(exec); i++)
+    {
+        aux_admin = list_get(exec, i);
+        if (aux_admin->tid == tid)
+            //free(aux_admin);
+            return 1;
+    }
+
+    for (int i = 0; i < list_size(bloq_IO); i++)
+    {
+        aux_admin = list_get(bloq_IO, i);
+        if (aux_admin->tid == tid)
+            //free(aux_admin);
+            return 1;
+    }
+
+    return 0;
+}
+
+int avisoDeMuerte(int tid){
+    
+    if(revisarLista_avisoDeMuerte(ready, tid))
+        return 1;
+    else if(revisarLista_avisoDeMuerte(exec, tid))
+        return 1;
+    else if (revisarLista_avisoDeMuerte(bloq, tid))
+        return 1;
+    else if (revisarLista_avisoDeMuerte(bloq_IO, tid))
+        return 1;
+    else
+        return 0;
+}
+
+int revisarLista_avisoDeMuerte(t_list *lista, int tid){
+    
+    t_admin_tripulantes *aux_admin;
+
+    for (int i = 0; i < list_size(lista); i++)
+    {
+        aux_admin = list_get(lista, i);
+        if (aux_admin->tid == tid)
+        {
+            aux_admin->debeMorir = 1;
             return 1;
         }
     }

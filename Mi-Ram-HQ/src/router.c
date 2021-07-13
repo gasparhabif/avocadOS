@@ -24,6 +24,8 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     int tamanioSerializacion;
     void *paquete;
 
+    pthread_mutex_lock(&m_procesos);
+
     //GUARDO LAS TAREAS EN MEMORIA
     t_registro_segmentos* segmento_tareas = guardar_tareas(tareas_cPID_recibidas->cantTareas, tareas_cPID_recibidas->tareas);
     
@@ -64,6 +66,8 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     else
         paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
 
+    pthread_mutex_unlock(&m_procesos);
+
     //ENVIAR A DISCORDIADOR EL PUNTERO AL PCB      
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
@@ -86,9 +90,13 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido)
     printf("----------------------------------------------------\n\n\n");
     */
 
+    pthread_mutex_lock(&m_procesos);
+
     t_registro_segmentos* segmento_tareas = guardar_tcb(tcbCpid_recibido->tcb);
 
     list_add(buscar_lista_proceso(tcbCpid_recibido->pid), segmento_tareas);
+
+    pthread_mutex_unlock(&m_procesos);
 
     log_info(logger, "TCB en memoria");
 
@@ -104,12 +112,16 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido)
 void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
 {
 
+    pthread_mutex_lock(&m_procesos);
+
     t_list* lista_proceso  = buscar_lista_proceso(pid_tid_recibidos->pid);
    
     t_PCB *pcb_proceso     = buscar_pcb_proceso(lista_proceso, pid_tid_recibidos->pid);
     
     t_tarea *tarea_buscada = malloc(sizeof(t_tarea));
     traer_tarea((void *) pcb_proceso->tareas, lista_proceso, pid_tid_recibidos->tid, tarea_buscada);
+
+    pthread_mutex_unlock(&m_procesos);
 
     //printf("codigoTarea: %d\n",   tarea_buscada->codigoTarea);
     //printf("parametro: %d\n",     tarea_buscada->parametro);
@@ -135,6 +147,8 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
 
 void mover_tripulante(t_envio_posicion *pos_recibida){
 
+    pthread_mutex_lock(&m_procesos);
+
     //ENCUENTRO LA LISTA DEL PROCESO
     t_list* lista_proceso  = buscar_lista_proceso(pos_recibida->PID);
 
@@ -154,6 +168,8 @@ void mover_tripulante(t_envio_posicion *pos_recibida){
     //LLEVO EL TCB NUEVAMENTE A MEMORIA
     memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
 
+    pthread_mutex_unlock(&m_procesos);
+
     //LIBERO LA MEMORIA
     free(pos_recibida);
     free(tcb);
@@ -162,6 +178,8 @@ void mover_tripulante(t_envio_posicion *pos_recibida){
 }
 
 void actualizar_estado(t_estado *estadoRecibido){
+
+    pthread_mutex_lock(&m_procesos);
 
     //ENCUENTRO LA LISTA DEL PROCESO
     t_list* lista_proceso  = buscar_lista_proceso(estadoRecibido->PID);
@@ -181,10 +199,124 @@ void actualizar_estado(t_estado *estadoRecibido){
     //LLEVO EL TCB NUEVAMENTE A MEMORIA
     memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
 
+    pthread_mutex_unlock(&m_procesos);
+
     //LIBERO LA MEMORIA
     free(estadoRecibido);
     free(tcb);
 
     return;
 
+}
+
+void eliminar_tripulante(t_pidYtid *pidCtid_recibido){
+
+    pthread_mutex_lock(&m_procesos);
+
+    //ENCUENTRO LA LISTA DEL PROCESO
+    t_list* unProceso = buscar_lista_proceso(pidCtid_recibido->pid);
+
+    //SI QUEDA UN SOLO TRIPULANTE ELIMINO LAS TAREAS Y EL PCB
+    //SI QUEDA MAS DE UN TRIPULANTE, ELIMINO UNICAMENTE EL TCB
+    if(cant_tripulantes(unProceso) == 1){
+
+        int baseAEliminar;
+
+        //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
+        baseAEliminar = eliminar_tcb(unProceso, pidCtid_recibido->tid);
+
+        //LIBERO EL SEGMENTO EN LA MEMORIA
+        liberar_memoria(baseAEliminar);
+        log_info(logger, "Se elimino el trpulante N°%d", pidCtid_recibido->tid);
+
+        //ELIMINO LAS TAREAS DE LA MEMORIA
+        baseAEliminar = eliminar_pcbOtareas(unProceso, TAREAS);
+        liberar_memoria(baseAEliminar);
+        log_info(logger, "Se eliminaron las tareas de la patota N°%d", pidCtid_recibido->pid);
+
+        //ELIMINO EL PCB DE LA MEMORIA
+        baseAEliminar = eliminar_pcbOtareas(unProceso, PCB);
+        liberar_memoria(baseAEliminar);
+        log_info(logger, "Se elimino el PCB de la patota N°%d", pidCtid_recibido->pid);
+
+        //ELIMINO EL PROCESO DE LA TABLA DE PROCESOS
+        eliminar_proceso(pidCtid_recibido->pid);
+
+    }
+    else{
+        //ELIMINO LA ENTRADA DE LA TABLA DE SEGMENTOS DEL PROCESO Y OBTENGO LA DIRECCION PARA BORRAR LA MEMORIA
+        int baseTCB = eliminar_tcb(unProceso, pidCtid_recibido->tid);
+
+        //LIBERO EL SEGMENTO EN LA MEMORIA
+        liberar_memoria(baseTCB);
+        log_info(logger, "Se elimino el trpulante N°%d", pidCtid_recibido->tid);
+    }
+
+    pthread_mutex_unlock(&m_procesos);
+
+    //LIBERO LA MEMORIA
+    free(pidCtid_recibido);
+
+}
+
+void solicitar_tripulantes(int client){
+
+    int cantTotalTripulantes = 0;
+    t_list *tablaUnProceso;
+    int n = 0;
+
+    pthread_mutex_lock(&m_procesos);
+
+    //OBTENGO LA CANTIDAD TOTAL DE TRIPULANTES Y RESERVO UN ESPACIO PARA COPIARLOS
+    for(int i=0; i < list_size(tabla_procesos); i++){
+        t_list *tablaUnProceso = list_get(tabla_procesos, i);
+        cantTotalTripulantes += cant_tripulantes(tablaUnProceso);
+    }
+
+    t_TCBmostrar *tcbs_enviar = malloc(cantTotalTripulantes * sizeof(t_TCBmostrar));
+
+    //BUSCO TODOS LOS TRIPULANTES EN LA NAVE
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos)); 
+    t_TCB                *tcb_aux = malloc(sizeof(t_TCB));
+
+    //RECORRO LA LISTA DE PROCESOS
+    for(int i=0; i < list_size(tabla_procesos); i++){
+        tablaUnProceso = list_get(tabla_procesos, i);
+
+        //RECORRO LOS SEGMENTO DE CADA PROCESO
+        for(int j=0; j < list_size(tablaUnProceso); j++){
+            reg_seg = list_get(tablaUnProceso, j);
+
+            //SI ENCUNETRO UN SEGMENTO QUE SEA EL TCB
+            if(reg_seg->tipo == TCB){
+
+                //ME COPIO EL TCB EN UN ESPACIO DE MEMORIA AUXILIAR (PARA TRABAJARLO)
+                memcpy(tcb_aux, (void *) reg_seg->base, sizeof(t_TCB));
+
+                //COPIO LOS DATOS QUE NECESITO
+                tcbs_enviar[n].PID                = obtener_PID((void *) tcb_aux->puntero_PCB);
+                tcbs_enviar[n].TID                = tcb_aux->TID;
+                tcbs_enviar[n].estado             = tcb_aux->estado;
+                tcbs_enviar[n].posX               = tcb_aux->posX;
+                tcbs_enviar[n].posY               = tcb_aux->posY;
+                tcbs_enviar[n].proximaInstruccion = tcb_aux->proximaInstruccion;
+                n++;
+            }
+        }
+    }
+
+    pthread_mutex_unlock(&m_procesos);
+
+    //DEVUELVO MEMORIA QUE NO NECESITO
+    //free(reg_seg);
+    //free(tcb_aux);
+
+    //LE DEVUELVO AL DISCODIADOR LA INFORMACION SOLICITADA
+    int tamanioSerializacion;
+    void *d_enviar = serializar_tcbMostrar(cantTotalTripulantes, tcbs_enviar, &tamanioSerializacion);
+    send(client, d_enviar, tamanioSerializacion, 0);
+    free(tcbs_enviar);
+    free(d_enviar);
+
+    return;
 }

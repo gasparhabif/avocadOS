@@ -38,10 +38,11 @@ void tripulante(t_parametros_tripulantes *parametro)
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
     admin = parametros_recibidos->admin;
 
-    admin->tid    = tid;
-    admin->estado = NEW;
-    admin->posX   = tcb_tripulante.posX;
-    admin->posY   = tcb_tripulante.posY;
+    admin->tid       = tid;
+    admin->estado    = NEW;
+    admin->posX      = tcb_tripulante.posX;
+    admin->posY      = tcb_tripulante.posY;
+    admin->debeMorir = 0;
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -50,6 +51,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     printf("ESTADO: %d\n", admin->estado);
     printf("POSX:   %d\n", admin->posX);
     printf("POSY:   %d\n", admin->posY);
+    printf("MUERTE: %d\n", admin->debeMorir);
     printf("---------------ADMIN----------------\n");
     */
 
@@ -107,10 +109,16 @@ void tripulante(t_parametros_tripulantes *parametro)
         actualizar_estado(admin, EXEC);
 
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
-        if (tareaPendiente == 0)
-            tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
-        
-        //SI LA TAREA RECIBIDA NO ES LA ULTIMA
+        if (tareaPendiente == 0){
+            //ANTES DE SOLICITAR UNA TAREA CHEQUEO SI EL TRIPULANTE DEBE MORIR
+            if(admin->debeMorir)
+                finTareas = 1;
+            else
+                tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
+        }
+
+
+        //SI LA TAREA RECIBIDA NO ES LA ULTIMA (o no se solicito el fin del tripulante)
         if (finTareas == 0)
         {
             //EJECUTO LA TAREA, SI DEBO BLOCKEAR EL TRIPULANTE LA VARIABLE BLOCK VALDRA 1
@@ -136,7 +144,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
             //ENVIO LA TAREA AL MONGO
             int bEnviar;
-            void *d_enviar = serializarTarea(tarea_recibida, &bEnviar);
+            void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, tarea_recibida->parametro, &bEnviar);
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
             free(d_enviar);
 
@@ -157,29 +165,29 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
     }
 
-    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &tamanioSerializacion);
-    send(sockfd_ram, dEnviar, tamanioSerializacion, 0);
+    int bEnviar;
+    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
+    send(admin->sockfd_tripulante_ram, dEnviar, bEnviar, 0);
     free(dEnviar);
 
-    close(admin->sockfd_tripulante_mongo);
+    matarTripulante(admin->tid);
+
+    //close(admin->sockfd_tripulante_mongo);
     close(admin->sockfd_tripulante_ram);
 
     free(admin);
 
     log_info(logger, "Termine mis tareas en la nave, adios");
 
+    pthread_exit(0);
+
     return;
 }
 
 t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado)
 {
-    //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
-    int tamanioSerializacion;
-    void *comenzar_tarea = serializarInt(admin->tid, INICIO_TAREA, &tamanioSerializacion);
-    send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
-    free(comenzar_tarea);
-
     //PEDIR TAREA
+    int tamanioSerializacion;
     void *solicitud_tarea = serializar_pidYtid(admin->pid, admin->tid, SOLICITAR_TAREA, &tamanioSerializacion);
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
@@ -194,6 +202,12 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     tarea_recibida->posY = 4;
     tarea_recibida->duracionTarea = 5;
 */
+    
+    //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
+    void *comenzar_tarea = serializarInt(tarea_recibida->codigoTarea, INICIO_TAREA, &tamanioSerializacion);
+    send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
+    free(comenzar_tarea);
+
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
         *finTareas = 1;

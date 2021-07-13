@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 	//pthread_detach(thread_sabotajes);
 
 	//LECTURA DE CONSOLA
-	void (*comando[6])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA};
+	void (*comando[7])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA, IMPRIMIR_SEGMENTOS};
 
 	char *leido;
 	char **parametros;
@@ -103,6 +103,8 @@ int main(int argc, char **argv)
 			comando[4](parametros);
 		else if (strcmp(parametros[0], "OBTENER_BITACORA") == 0)
 			comando[5](parametros);
+		else if (strcmp(parametros[0], "IMPRIMIR_SEGMENTOS") == 0)
+			comando[6](parametros);
 		else if (strcmp(parametros[0], "CLEAR") == 0)
 			system("clear");
 		else
@@ -115,7 +117,7 @@ int main(int argc, char **argv)
 		free(parametros);
 		leido = readline(">");
 	}
-	free(leido);
+	//free(leido);
 
 	ejecutandoTripulantes = 0;
 	ejecutandoPlanificador = 0;

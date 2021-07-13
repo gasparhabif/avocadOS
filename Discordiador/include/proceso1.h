@@ -35,7 +35,7 @@ typedef struct
     u_int32_t posY;
     int       sockfd_tripulante_ram;
     int       sockfd_tripulante_mongo;
-    pthread_t threadTripulante;
+    int       debeMorir;
 } t_admin_tripulantes;
 
 typedef struct
@@ -51,6 +51,7 @@ void EXPULSAR_TRIPULANTE   (char **);
 void INICIAR_PLANIFICACION (char **);
 void PAUSAR_PLANIFICACION  (char **);
 void OBTENER_BITACORA      (char **);
+void IMPRIMIR_SEGMENTOS    (char **);
 
 //DEFINIDAS EN utils.c
 t_tarea *leer_tareas                  (FILE *, int *, int *);
@@ -59,7 +60,10 @@ void     pausar                       ();
 int      eliminarTripulante           (t_list *, int);
 int      menor_tid_list               (t_list*);
 int      mayor_tid_list               (t_list*);
-int      matarTripulante              (int, pthread_t *);
+int      matarTripulante              (int);
+int      existeTripulante             (int);
+int      avisoDeMuerte                (int);
+int      revisarLista_avisoDeMuerte   (t_list *, int);
 
 //DEFINIDAS EN tripulantes.c
 void     tripulante           (t_parametros_tripulantes *parametro);

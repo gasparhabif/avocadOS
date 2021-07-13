@@ -86,6 +86,30 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
         case ESTRUCTURAS_EN_MEMORIA:
             dRecibidos = deserializarInt(paquete->buffer);
             break;
+        case SOLICITAR_LISTA:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case LISTA_TRIPULANTES:
+            dRecibidos = deserealizarTCBmostrar(paquete->buffer);
+            break;
+        case ELIMINAR_TRIPULANTE:
+            dRecibidos = deserealizar_pidYtid(paquete->buffer);
+            break;
+        case SOLICITAR_BITACORA:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case BITACORA_TRIPULANTE:
+            dRecibidos = deserializar_bitacora(paquete->buffer);
+            break;
+        case IMPRIMIR_SEGMENTACION:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case INICIO_TAREA:
+            dRecibidos = deserializarInt(paquete->buffer);
+            break;
+        case EJECUTAR_TAREA:
+            dRecibidos = deserealizar_ejecutarTarea(paquete->buffer);
+            break;
     }
 
     free(paquete->buffer->stream);

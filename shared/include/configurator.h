@@ -10,7 +10,7 @@
 
 #define CANTIDAD_CAMPOS_CPU 9
 #define CANTIDAD_CAMPOS_STORE 3
-#define CANTIDAD_CAMPOS_RAM 7
+#define CANTIDAD_CAMPOS_RAM 8
 
 enum POS_CAMPOS_CPU
 {
@@ -39,6 +39,7 @@ enum POS_CAMPOS_RAM
     TAMANIO_SWAP,
     PATH_SWAP,
     ALGORITMO_REEMPLAZO,
+    CRITERIO_SELECCION,
     RAM_PUERTO
 };
 
@@ -71,6 +72,7 @@ typedef struct
     int tamanio_swap;
     char *path_swap;
     char *algoritmo_reemplazo;
+    char *criterio_seleccion;
     int puerto;
 
 } t_ram_conf;

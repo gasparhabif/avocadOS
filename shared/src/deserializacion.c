@@ -171,3 +171,75 @@ t_pidYtid *deserealizar_pidYtid(t_buffer *buffer){
     return pid_tid_recibidos;
 
 }
+
+t_ListaTripulantes* deserealizarTCBmostrar (t_buffer *buffer){
+
+    t_ListaTripulantes *listaTripulantes_recibida = malloc(sizeof(t_ListaTripulantes));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(listaTripulantes_recibida->cantTripulantes), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    listaTripulantes_recibida->tripulantes = malloc(sizeof(t_TCBmostrar) * listaTripulantes_recibida->cantTripulantes);
+
+    for (int i = 0; i < listaTripulantes_recibida->cantTripulantes; i++)
+    {
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].PID),    stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].TID),    stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].estado), stream, sizeof(char));
+        stream += sizeof(char);
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].posX),   stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].posY),   stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].proximaInstruccion), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+    }
+
+    return listaTripulantes_recibida;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(tarea_recibida);
+}
+
+t_bitacora* deserializar_bitacora (t_buffer *buffer){
+
+    t_bitacora *bitacoraRecibida = malloc(sizeof(t_bitacora));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(bitacoraRecibida->cantAcciones), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(bitacoraRecibida->tamanioAcciones), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    bitacoraRecibida->acciones = malloc(bitacoraRecibida->tamanioAcciones);
+
+    for (int i = 0; i < bitacoraRecibida->cantAcciones; i++)
+    {
+        memcpy(&(bitacoraRecibida->acciones[i].tamanioAccion), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(bitacoraRecibida->acciones[i].accion), stream, sizeof(bitacoraRecibida->acciones[i].tamanioAccion));
+        stream += sizeof(bitacoraRecibida->acciones[i].tamanioAccion);
+    }
+
+    return bitacoraRecibida;
+
+}
+
+t_ejecutar_tarea *deserealizar_ejecutarTarea(t_buffer *buffer){
+
+    t_ejecutar_tarea *ejecutarTarea_recibido = malloc(sizeof(t_ejecutar_tarea));
+
+    void *stream = buffer->stream;
+    
+    memcpy(&(ejecutarTarea_recibido->codigoTarea), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(ejecutarTarea_recibido->parametro), stream, sizeof(uint32_t));
+
+    return ejecutarTarea_recibido;
+
+}
