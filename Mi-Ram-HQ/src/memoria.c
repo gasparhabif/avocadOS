@@ -12,9 +12,6 @@ void* reservar_memoria(int bytes){
         if(strcmp(config->criterio_seleccion, "BF") == 0)
             posicion = reservar_segmento_BF(bytes);
     }
-    else if(strcmp(config->esquema_memoria, "PAGINACION") == 0){
-            
-    }
 
     pthread_mutex_unlock(&acceso_memoria);
 

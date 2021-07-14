@@ -71,8 +71,6 @@ void* reservar_segmento_FF              (int);
 void* reservar_segmento_BF              (int);         
 void  liberar_memoria_segmentacion      (int);
 void  compactar                         (int);
-int   ultimo_ocupado                    (int *, int *);
-int   buscar_siguiente_segmento_ocupado (int, int *, int *);
 void  actualizar_registro_segmento      (int, int);
 
 //Definidas en utils.c

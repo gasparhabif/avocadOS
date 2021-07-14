@@ -146,97 +146,70 @@ void compactar(int sig){
 
     if(sig == SIGUSR1 && strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
     {
-        pthread_mutex_lock(&acceso_memoria);
         
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
         pthread_mutex_lock(&acceso_memoria);
         pthread_mutex_lock(&m_procesos);
 
+        t_list *tabla_nueva = list_create();
         estado_segmentos *estado = malloc(sizeof(estado_segmentos));
-        int posBuscada;
-        int tamanioSegmento;
-        int indexEncontrado;
+        void *pos_sig = memoria;
+        int memoria_libre = config->tamanio_memoria;
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
+            printf("Segmento: %d\n", i);
+
             estado = list_get(tabla_estado_segmentos, i);
 
-            if(estado->ocupado == 0 && i < (list_size(tabla_estado_segmentos)-1)){
+            if(estado->ocupado == 1){
 
-                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento, &indexEncontrado);
+                actualizar_registro_segmento(estado->inicio, (int) pos_sig);
 
-                memcpy((void *) estado->inicio, (void *) posBuscada, tamanioSegmento);
+                printf("Copio a %d lo que esta en %d. En total, %d bytes\n", (int) pos_sig, estado->inicio, estado->limite);
 
-                i = indexEncontrado;
+                memcpy(pos_sig, (void *) estado->inicio, estado->limite);
+                estado->inicio = (int) pos_sig;
 
-                actualizar_registro_segmento(posBuscada, estado->inicio);
+                printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
+
+                list_add(tabla_nueva, estado);
+                pos_sig += estado->limite;
+
+                printf("pos_sig: %d\n", (int) pos_sig);
+
+                memoria_libre -= estado->limite;
+
             }
         }
 
-        //RECORRO LOS ESTADOS Y CUANDO ENCUENTRO EL PRIMERO EN 0, ELIMINO TODOS A PARTIR DE AHI Y ME QUEDO CON UNO GRANDE
-        int bytesOcupados;
-        int pos_libertad;
-        int index_ultimo = ultimo_ocupado(&bytesOcupados, &pos_libertad);
-        
-        //ELIMINO TODOS LOS SEGMENTOS NO USADOS QUE SE ENCUENTREN AL FINAL
-        for (int i = index_ultimo; i < list_size(tabla_estado_segmentos); i++)
-            list_remove(tabla_estado_segmentos, i);
-        
-        //PONGO AL FINAL UN SEGMENTO GRANDE LIBRE
-        estado->inicio  = pos_libertad;
-        estado->limite  = config->tamanio_memoria - bytesOcupados;
+        estado->inicio  = (int) pos_sig;
+        estado->limite  = memoria_libre;
         estado->ocupado = 0;
-
-        list_add(tabla_estado_segmentos, estado);
-
+        printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
+        list_add(tabla_nueva, estado);
         free(estado);
-        
+
+        tabla_estado_segmentos = tabla_nueva;
+
+        printf("TERMINE LA COMPACTACION\n");
+        printf("------------------------------------------------------------------\n");
+        for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+        {
+            estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
+            printf("SEG N°: %d\t", i);
+            printf("Inicio: %d\t", reg_seg->inicio);
+            printf("Tamaño: %d\t", reg_seg->limite);
+            printf("Ocupado: %d\n", reg_seg->ocupado);
+        }
+        printf("------------------------------------------------------------------\n");
+
         pthread_mutex_unlock(&acceso_memoria);
-        pthread_mutex_unlock(&m_procesos);
+        pthread_mutex_unlock(&m_procesos);     
     }
 
     return;
-}
-
-int ultimo_ocupado(int *bytesOcupado, int *pos_libertad){
-
-    estado_segmentos *estado = malloc(sizeof(estado_segmentos));
-    *bytesOcupado = 0;
-
-    for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
-    {
-            estado = list_get(tabla_estado_segmentos, i);
-
-            if(estado->ocupado == 0){
-                *pos_libertad = estado->inicio;
-                return i;
-            }
-            else
-                *bytesOcupado += estado->limite;
-    }   
-
-    return -1;     
-}
-
-int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento, int *indexEncontrado){
-    
-    estado_segmentos *estado = malloc(sizeof(estado_segmentos));
-
-    for (int j = i; j < list_size(tabla_estado_segmentos); j++)
-    {
-        estado = list_get(tabla_estado_segmentos, j);
-
-        if(estado->ocupado == 1){
-            *tamanioSegmento = estado->limite;
-            *indexEncontrado = j;
-            estado->ocupado = 0;
-            list_replace(tabla_estado_segmentos, j, estado);
-            return estado->inicio;
-        }
-    }
-
-    return -1;
 }
 
 void actualizar_registro_segmento(int posBuscada, int posNueva){
