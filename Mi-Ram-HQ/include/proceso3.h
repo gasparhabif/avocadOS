@@ -71,7 +71,9 @@ void* reservar_segmento_FF              (int);
 void* reservar_segmento_BF              (int);         
 void  liberar_memoria_segmentacion      (int);
 void  compactar                         (int);
-void  actualizar_registro_segmento      (int, int);
+void  actualizar_tabla_procesos         (int, int);
+void  cambio_posicion_pcb               (int, int);
+void  cambio_posicion_tareas            (int, int);
 
 //Definidas en utils.c
 t_list*               buscar_lista_proceso (int);
