@@ -128,6 +128,7 @@ int obtener_PID(void *);
 void eliminar_proceso(int);
 int obtener_PIDproceso(t_list *);
 t_list *obtener_lista_proceso(int);
+void limpiar_estado_frames(void);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);

@@ -35,7 +35,7 @@ void recibir_mensaje(void *parametro)
     void *datos_recibidos;
     int recibiendo_mensajes = 1;
 
-    if (strcmp(config->esquema_memoria, "PAGINACION"))
+    if (strcmp(config->esquema_memoria, "PAGINACION") == 0)
     {
         while (recibiendo_mensajes)
         {
@@ -82,9 +82,7 @@ void recibir_mensaje(void *parametro)
     {
         while (recibiendo_mensajes)
         {
-            printf("Entre al while\n");
             datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
-            printf("Recibi el cop: %d\n", cop_recibido);
             switch (cop_recibido)
             {
             case COMENZAR_PATOTA:

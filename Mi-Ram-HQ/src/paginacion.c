@@ -11,12 +11,13 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     paginas_proceso->paginas = list_create();
     paginas_proceso->pid = pid;
 
-    for (int i = 0; i < maxima_cantidad_paginas && list_size(paginas_proceso) < cantidad_paginas_a_reservar; i++)
+    for (int i = 0; i < maxima_cantidad_paginas && list_size(paginas_proceso->paginas) < cantidad_paginas_a_reservar; i++)
     {
         if (estado_frames[i] == 0)
         {
-            list_add(paginas_proceso->paginas, i * config->tamanio_pagina + memoria);
             estado_frames[i] = 1;
+            printf("Pagina: %d\n", i * config->tamanio_pagina + memoria);
+            list_add(paginas_proceso->paginas, i * config->tamanio_pagina + memoria);
         }
     }
 

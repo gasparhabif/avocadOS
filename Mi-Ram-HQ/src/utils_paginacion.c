@@ -53,6 +53,14 @@ int calcular_fragmentacion(int pid)
     return bytes_ocupados % tamanio_paginas;
 }
 
+void limpiar_estado_frames()
+{
+    for (int i = 0; i < (config->tamanio_memoria / tamanio_paginas); i++)
+    {
+        estado_frames[i] = 0;
+    }
+}
+
 // t_pagina_proceso obtener_ultima_pagina_del_proceso(int pid)
 // {
 //     t_pagina_proceso ultima_pagina = null;

@@ -49,6 +49,7 @@ int main()
     {
         tamanio_paginas = config->tamanio_pagina;
         estado_frames = malloc(config->tamanio_memoria / tamanio_paginas);
+        limpiar_estado_frames();
         maxima_cantidad_paginas = config->tamanio_memoria / tamanio_paginas;
 
         tabla_paginas = list_create();
