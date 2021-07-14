@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <commons/log.h>
 #include <commons/collections/list.h>
+#include <commons/temporal.h>
 #include "shared_utils.h"
 #include <nivel-gui/nivel-gui.h>
 #include <nivel-gui/tad_nivel.h>
@@ -95,5 +96,8 @@ void*    serializar_TAREA   (t_tarea *);
 t_PCB*   deserializar_PCB   (void *);
 t_TCB*   deserializar_TCB   (void *);
 t_tarea* deserializar_TAREA (void *);
+
+//Definidas en dump.c
+void dump (int);
 
 #endif

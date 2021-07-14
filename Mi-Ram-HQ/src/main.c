@@ -20,6 +20,9 @@ int main()
     //SIGUSR1 COMPACTE LA MEMORIA
     signal(SIGUSR1, compactar);
 
+    //EN CASO DE RECIBIR UN SIGUSR2, REALIZAR EL DUMP
+    signal(SIGUSR2, dump);
+
     //INICIO EL MAPA
     /*
     nivel_gui_inicializar();
