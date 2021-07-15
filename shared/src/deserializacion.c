@@ -230,29 +230,12 @@ t_bitacora* deserializar_bitacora (t_buffer *buffer){
 
 }
 
-t_inicio_tarea *deserealizar_inicioTarea(t_buffer *buffer){
-
-    t_inicio_tarea *inicioTarea_recibido = malloc(sizeof(t_inicio_tarea));
-
-    void *stream = buffer->stream;
-
-    memcpy(&(inicioTarea_recibido->tid), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(inicioTarea_recibido->codigoTarea), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-
-    return inicioTarea_recibido;
-
-}
-
 t_ejecutar_tarea *deserealizar_ejecutarTarea(t_buffer *buffer){
 
     t_ejecutar_tarea *ejecutarTarea_recibido = malloc(sizeof(t_ejecutar_tarea));
 
     void *stream = buffer->stream;
-
-    memcpy(&(ejecutarTarea_recibido->tid), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
+    
     memcpy(&(ejecutarTarea_recibido->codigoTarea), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
     memcpy(&(ejecutarTarea_recibido->parametro), stream, sizeof(uint32_t));

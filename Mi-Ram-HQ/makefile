@@ -2,11 +2,11 @@ PROCESS_NAME=proceso3
 IDIR =./include
 SHARED_IDIR = ../shared/include
 CC=gcc
-CFLAGS=-I$(IDIR) -I$(SHARED_IDIR) -g -Wall
+CFLAGS=-I$(IDIR) -I$(SHARED_IDIR) -g -Wall -lm
 
 ODIR=./obj
 SRCDIR =./src
-LIBS=-lcommons -lpthread -lreadline -lcunit -lrt
+LIBS=-lcommons -lpthread -lreadline -lcunit -lrt -lnivel-gui -lncurses
 
 SHARED_SRCDIR = ../shared/src
 SHARED_ODIR = ../shared/obj

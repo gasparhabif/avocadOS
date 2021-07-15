@@ -105,7 +105,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
             dRecibidos = deserializarInt(paquete->buffer);
             break;
         case INICIO_TAREA:
-            dRecibidos = deserealizar_inicioTarea(paquete->buffer);
+            dRecibidos = deserializarInt(paquete->buffer);
             break;
         case EJECUTAR_TAREA:
             dRecibidos = deserealizar_ejecutarTarea(paquete->buffer);

@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 		free(parametros);
 		leido = readline(">");
 	}
-	free(leido);
+	//free(leido);
 
 	ejecutandoTripulantes = 0;
 	ejecutandoPlanificador = 0;

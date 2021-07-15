@@ -219,11 +219,11 @@ void OBTENER_BITACORA(char **parametros)
     t_bitacora *bitacoraRecibida = (t_bitacora *) recibir_paquete(sockfd_mongo);
 
     //IMPRIMO LA BITACORA
-    printf("------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------\n");
     printf("Esta es la bitacora del tripulante %d\n", atoi(parametros[1]));
     for (int i = 0; i < bitacoraRecibida->cantAcciones; i++)
         printf("ACCION N°%d %s\n", i, bitacoraRecibida->acciones[i].accion);
-    printf("------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------------------------\n");
     
 }
 
