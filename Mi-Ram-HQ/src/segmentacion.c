@@ -149,6 +149,7 @@ void compactar(int sig){
         
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
+        /*
         printf("------------------------------------------------------------------\n");
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
@@ -159,6 +160,7 @@ void compactar(int sig){
             printf("Ocupado: %d\n", reg_seg->ocupado);
         }
         printf("------------------------------------------------------------------\n");
+        */
 
         pthread_mutex_lock(&acceso_memoria);
         pthread_mutex_lock(&m_procesos);
@@ -170,7 +172,7 @@ void compactar(int sig){
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
-            printf("Segmento: %d\n", i);
+            //printf("Segmento: %d\n", i);
 
             estado = list_get(tabla_estado_segmentos, i);
 
@@ -178,17 +180,17 @@ void compactar(int sig){
 
                 actualizar_tabla_procesos(estado->inicio, (int) pos_sig);
 
-                printf("Copio a %d lo que esta en %d. En total, %d bytes\n", (int) pos_sig, estado->inicio, estado->limite);
+                //printf("Copio a %d lo que esta en %d. En total, %d bytes\n", (int) pos_sig, estado->inicio, estado->limite);
 
                 memcpy(pos_sig, (void *) estado->inicio, estado->limite);
                 estado->inicio = (int) pos_sig;
 
-                printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
+                //printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
 
                 list_add(tabla_nueva, estado);
                 pos_sig += estado->limite;
 
-                printf("pos_sig: %d\n", (int) pos_sig);
+                //printf("pos_sig: %d\n", (int) pos_sig);
 
                 memoria_libre -= estado->limite;
 
@@ -198,11 +200,12 @@ void compactar(int sig){
         estado->inicio  = (int) pos_sig;
         estado->limite  = memoria_libre;
         estado->ocupado = 0;
-        printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
+        //printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
         list_add(tabla_nueva, estado);
 
         tabla_estado_segmentos = tabla_nueva;
 
+        /*
         printf("TERMINE LA COMPACTACION\n");
         printf("------------------------------------------------------------------\n");
         for (int i = 0; i < list_size(tabla_nueva); i++)
@@ -214,6 +217,7 @@ void compactar(int sig){
             printf("Ocupado: %d\n", reg_seg->ocupado);
         }
         printf("------------------------------------------------------------------\n");
+        */
 
         pthread_mutex_unlock(&acceso_memoria);
         pthread_mutex_unlock(&m_procesos);     

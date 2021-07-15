@@ -56,7 +56,7 @@ void IMPRIMIR_SEGMENTOS    (char **);
 //DEFINIDAS EN utils.c
 t_tarea *leer_tareas                  (FILE *, int *, int *);
 int      contar_caracteres_especiales (size_t, char *, char);
-void     pausar                       ();
+int      pausar                       (int);
 int      eliminarTripulante           (t_list *, int);
 int      menor_tid_list               (t_list*);
 int      mayor_tid_list               (t_list*);

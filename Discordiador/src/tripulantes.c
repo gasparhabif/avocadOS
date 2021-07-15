@@ -164,9 +164,15 @@ void tripulante(t_parametros_tripulantes *parametro)
         else
             actualizar_estado(admin, READY);
     }
-
+    
+    //DOY EL AVISO AL MONGO QUE FINALICÉ MIS TAREAS
     int bEnviar;
-    void *dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
+    void *dEnviar = serializarInt(1, FIN_TAREAS, &bEnviar);
+    send(admin->sockfd_tripulante_mongo, dEnviar, bEnviar, 0);
+    free(dEnviar);
+
+    //DOY EL AVISO A RAM QUE DEVUELVA MI MEMORIA
+    dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
     send(admin->sockfd_tripulante_ram, dEnviar, bEnviar, 0);
     free(dEnviar);
 

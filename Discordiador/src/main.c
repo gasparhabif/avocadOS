@@ -77,6 +77,8 @@ int main(int argc, char **argv)
 	//pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
 	//pthread_detach(thread_sabotajes);
 
+	pausar(1);
+
 	//LECTURA DE CONSOLA
 	void (*comando[7])(char **) = {INICIAR_PATOTA, LISTAR_TRIPULANTES, EXPULSAR_TRIPULANTE, INICIAR_PLANIFICACION, PAUSAR_PLANIFICACION, OBTENER_BITACORA, IMPRIMIR_SEGMENTOS};
 
@@ -117,7 +119,7 @@ int main(int argc, char **argv)
 		free(parametros);
 		leido = readline(">");
 	}
-	//free(leido);
+	free(leido);
 
 	ejecutandoTripulantes = 0;
 	ejecutandoPlanificador = 0;

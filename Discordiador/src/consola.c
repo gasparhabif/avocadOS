@@ -183,28 +183,22 @@ void EXPULSAR_TRIPULANTE(char **parametros)
 
 void INICIAR_PLANIFICACION(char **parametros)
 {
-    if (planificando)
-        printf("El planificador ya se encuentra trabajando!\n");
-    else
-    {
+    if (pausar(0)){
         log_info(logger, "Iniciando planificacion...\n");
         printf("Iniciando planificacion...\n");
-        planificando = 1;
-        pausar();
     }
+    else
+        printf("El planificador ya se encuentra trabajando!\n");
 }
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
-    if (!planificando)
-        printf("El planificador ya se encuentra pausado!\n");
-    else
-    {
+    if (pausar(1)){
         log_info(logger, "Pausando planificacion...\n");
         printf("Pausando planificacion...\n");
-        planificando = 0;
-        pausar();
     }
+    else
+        printf("El planificador ya se encuentra pausado!\n");
 }
 
 void OBTENER_BITACORA(char **parametros)

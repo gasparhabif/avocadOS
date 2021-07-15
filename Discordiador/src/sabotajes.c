@@ -16,11 +16,10 @@ void sabotajes()
         unSabotaje = (t_posicion *) recibir_paquete(sockfd_mongo);
 
         //PAUSO LA PLANIFICACION
-        planificando = 0;
-        pausar();
+        pausar(0);
 
         //DOY EL AVISO CORRESPONDIENTE DE COMIENZO
-        printf("\n\n----------------------\nATENDIENDO UN SABOTAJE\n----------------------\n\n");
+        printf(">>>>>>>>>>>>>>>>>>>>>\nATENDIENDO UN SABOTAJE\n<<<<<<<<<<<<<<<<<<<<<<\n\n");
         log_info(logger, "ATENDIENDO UN SABOTAJE");
 
         //MUEVO LOS TRIPULANTES A LA LISTA DE BLOQ
@@ -105,7 +104,7 @@ void sabotajes()
 
         //RETOMO LA PLANIFICACION
         planificando = 1;
-        pausar();
+        pausar(1);
 
         //DOY EL AVISO CORRESPONDIENTE DE FIN
         printf("\n\n--------------------------\nFIN RESOLUCION DE SABOTAJE\n--------------------------\n\n");
