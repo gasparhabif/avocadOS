@@ -98,6 +98,8 @@ t_TCB*   deserializar_TCB   (void *);
 t_tarea* deserializar_TAREA (void *);
 
 //Definidas en dump.c
-void dump (int);
+void dump              (int);
+void dump_segmentacion (FILE *);
+void dump_paginacion   (FILE *);
 
 #endif
