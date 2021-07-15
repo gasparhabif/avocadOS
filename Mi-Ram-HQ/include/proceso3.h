@@ -10,7 +10,10 @@
 #include <fcntl.h>
 #include <commons/log.h>
 #include <commons/collections/list.h>
+#include <commons/temporal.h>
 #include "shared_utils.h"
+#include <nivel-gui/nivel-gui.h>
+#include <nivel-gui/tad_nivel.h>
 
 t_log *logger;
 t_ram_conf *config;
@@ -57,8 +60,8 @@ typedef struct
 
 t_list *tabla_procesos;
 pthread_mutex_t acceso_memoria;
-pthread_mutex_t m_segmentos;
 pthread_mutex_t m_procesos;
+NIVEL *level;
 //GESTION DE MEMORIA EN LA SEGMENTACIOS
 t_list *tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION
@@ -101,10 +104,10 @@ t_registro_segmentos *guardar_tcb(t_TCB);
 void *reservar_segmento_FF(int);
 void *reservar_segmento_BF(int);
 void liberar_memoria_segmentacion(int);
-void compactar(int);
-int ultimo_ocupado(int *, int *);
-int buscar_siguiente_segmento_ocupado(int, int *);
-void actualizar_registro_segmento(int, int);
+void  compactar                         (int);
+void  actualizar_tabla_procesos         (int, int);
+void  cambio_posicion_pcb               (int, int);
+void  cambio_posicion_tareas            (int, int);
 
 //Definidas en paginacion.c
 void generar_archivo_swap();
@@ -140,5 +143,10 @@ void *serializar_TAREA(t_tarea *);
 t_PCB *deserializar_PCB(void *);
 t_TCB *deserializar_TCB(void *);
 t_tarea *deserializar_TAREA(void *);
+
+//Definidas en dump.c
+void dump              (int);
+void dump_segmentacion (FILE *);
+void dump_paginacion   (FILE *);
 
 #endif

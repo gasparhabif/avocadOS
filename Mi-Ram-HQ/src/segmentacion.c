@@ -61,23 +61,15 @@ void* reservar_segmento_BF(int bytes){
 
     for(int i = 0; i < list_size(tabla_estado_segmentos); i++){
 
-//        printf("Segmento: %d\n", i);
-
         //Agarro el segmento en la posicion i
         segmento_obtenido = list_get(tabla_estado_segmentos, i);
 
-//        printf("Inicio: %d\tLimite: %d\tOcupado: %d\n", segmento_obtenido->inicio, segmento_obtenido->limite, segmento_obtenido->ocupado);
-
         //En el caso de que no este ocupado y la cantidad de byres entre
         if(segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes){
-        
-//            printf("Encontre un candidato\n");
 
             //En el caso de que sea el primer segmento o que sea menor al menor ya tomado
             if ((pos_seg == -1) || segmento_obtenido->limite < tamanio_minimo)
             {
-//                printf("Encontre un minimo\n");
-
                 //Tomo un registro de este segmento libre
                 inicio_minimo  = segmento_obtenido->inicio;
                 tamanio_minimo = segmento_obtenido->limite;
@@ -95,6 +87,7 @@ void* reservar_segmento_BF(int bytes){
         nuevo_segmento->ocupado = 1;
 
         //Modifico el segmento libre
+        segmento_obtenido = list_get(tabla_estado_segmentos, pos_seg);
         segmento_obtenido->inicio += bytes;
         segmento_obtenido->limite -= bytes;
 
@@ -104,7 +97,6 @@ void* reservar_segmento_BF(int bytes){
             // En este caso podría ocurrir que los bytes entran perfectoen el 
             // segmento obtenido, en tal caso no seria necesaria una modificacion 
             // en la lista de segmentos
-
             if(segmento_obtenido->limite != 0){
                 //Ajusto el libre
                 list_replace(tabla_estado_segmentos, pos_seg, nuevo_segmento);
@@ -117,20 +109,7 @@ void* reservar_segmento_BF(int bytes){
             }
 
             //free(segmento_obtenido);
-/*
-            printf("Se reservo la posicion %p\n", (void *) nuevo_segmento->inicio);
 
-            printf("------------------------------------------------------------------\n");
-            for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
-            {
-                estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
-                printf("SEG N°: %d\t", i);
-                printf("Inicio: %d\t", reg_seg->inicio);
-                printf("Tamaño: %d\t", reg_seg->limite);
-                printf("Ocupado: %d\n", reg_seg->ocupado);
-            }
-            printf("------------------------------------------------------------------\n");
-*/
             return (void *) nuevo_segmento->inicio;
         }
     }
@@ -167,92 +146,83 @@ void compactar(int sig){
 
     if(sig == SIGUSR1 && strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
     {
-        pthread_mutex_lock(&acceso_memoria);
         
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
+        printf("------------------------------------------------------------------\n");
+        for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+        {
+            estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
+            printf("SEG N°: %d\t", i);
+            printf("Inicio: %d\t", reg_seg->inicio);
+            printf("Tamaño: %d\t", reg_seg->limite);
+            printf("Ocupado: %d\n", reg_seg->ocupado);
+        }
+        printf("------------------------------------------------------------------\n");
+
+        pthread_mutex_lock(&acceso_memoria);
+        pthread_mutex_lock(&m_procesos);
+
+        t_list *tabla_nueva = list_create();
         estado_segmentos *estado = malloc(sizeof(estado_segmentos));
-        int posBuscada;
-        int tamanioSegmento;
+        void *pos_sig = memoria;
+        int memoria_libre = config->tamanio_memoria;
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
+            printf("Segmento: %d\n", i);
+
             estado = list_get(tabla_estado_segmentos, i);
 
-            if(estado->ocupado == 0 && i < list_size(tabla_estado_segmentos)-1){
+            if(estado->ocupado == 1){
 
-                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento);
+                actualizar_tabla_procesos(estado->inicio, (int) pos_sig);
 
-                memcpy((void *) estado->inicio, (void *) posBuscada, tamanioSegmento);
+                printf("Copio a %d lo que esta en %d. En total, %d bytes\n", (int) pos_sig, estado->inicio, estado->limite);
 
-                actualizar_registro_segmento(posBuscada, estado->inicio);
+                memcpy(pos_sig, (void *) estado->inicio, estado->limite);
+                estado->inicio = (int) pos_sig;
+
+                printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
+
+                list_add(tabla_nueva, estado);
+                pos_sig += estado->limite;
+
+                printf("pos_sig: %d\n", (int) pos_sig);
+
+                memoria_libre -= estado->limite;
+
             }
         }
 
-        //RECORRO LOS ESTADOS Y CUANDO ENCUENTRO EL PRIMERO EN 0, ELIMINO TODOS A PARTIR DE AHI Y ME QUEDO CON UNO GRANDE
-        int bytesOcupados;
-        int pos_libertad;
-        int index_ultimo = ultimo_ocupado(&bytesOcupados, &pos_libertad);
-        
-        //ELIMINO TODOS LOS SEGMENTOS NO USADOS QUE SE ENCUENTREN AL FINAL
-        for (int i = index_ultimo; i < list_size(tabla_estado_segmentos); i++)
-            list_remove(tabla_estado_segmentos, i);
-        
-        //PONGO AL FINAL UN SEGMENTO GRANDE LIBRE
-        estado->inicio  = pos_libertad;
-        estado->limite  = config->tamanio_memoria - bytesOcupados;
+        estado->inicio  = (int) pos_sig;
+        estado->limite  = memoria_libre;
         estado->ocupado = 0;
+        printf("Agrego a la nueva tabla:\n\tInicio: %d\n\tLimite: %d\n\tOcupado: %d\n", estado->inicio , estado->limite, estado->ocupado);
+        list_add(tabla_nueva, estado);
 
-        list_add(tabla_estado_segmentos, estado);
+        tabla_estado_segmentos = tabla_nueva;
 
-        free(estado);
-        
+        printf("TERMINE LA COMPACTACION\n");
+        printf("------------------------------------------------------------------\n");
+        for (int i = 0; i < list_size(tabla_nueva); i++)
+        {
+            estado_segmentos *reg_seg = list_get(tabla_nueva, i);
+            printf("SEG N°: %d\t", i);
+            printf("Inicio: %d\t", reg_seg->inicio);
+            printf("Tamaño: %d\t", reg_seg->limite);
+            printf("Ocupado: %d\n", reg_seg->ocupado);
+        }
+        printf("------------------------------------------------------------------\n");
+
         pthread_mutex_unlock(&acceso_memoria);
+        pthread_mutex_unlock(&m_procesos);     
     }
 
     return;
 }
 
-int ultimo_ocupado(int *bytesOcupado, int *pos_libertad){
-
-    estado_segmentos *estado = malloc(sizeof(estado_segmentos));
-    *bytesOcupado = 0;
-
-    for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
-    {
-            estado = list_get(tabla_estado_segmentos, i);
-
-            if(estado->ocupado == 0){
-                *pos_libertad = estado->inicio;
-                return i;
-            }
-            else
-                *bytesOcupado += estado->limite;
-    }   
-
-    return -1;     
-}
-
-int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento){
-    
-    estado_segmentos *estado = malloc(sizeof(estado_segmentos));
-
-    for (int j = i; j < list_size(tabla_estado_segmentos); j++)
-    {
-        estado = list_get(tabla_estado_segmentos, j);
-
-        if(estado->ocupado == 1){
-            *tamanioSegmento = estado->limite;
-            estado->ocupado = 0;
-            list_replace(tabla_estado_segmentos, j, estado);
-            return estado->inicio;
-        }
-    }
-
-    return -1;
-}
-
-void actualizar_registro_segmento(int posBuscada, int posNueva){
+void actualizar_tabla_procesos(int posBuscada, int posNueva){
     
     t_list *tablaUnProceso;
     t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
@@ -269,8 +239,74 @@ void actualizar_registro_segmento(int posBuscada, int posNueva){
             if(reg_seg->base == (void *) posBuscada){
                 reg_seg->base = (void *) posNueva;
                 list_replace(tablaUnProceso, j, reg_seg);
+
+                //ACTUALIZO LOS PUNTEROS
+                if(reg_seg->tipo == PCB)
+                    cambio_posicion_pcb(posNueva, reg_seg->id);
+                else if(reg_seg->tipo == TAREAS)
+                    cambio_posicion_tareas(posNueva, obtener_PIDproceso(tablaUnProceso));
+
                 return;
             }
+        }
+    }
+}
+
+void cambio_posicion_pcb (int posNueva, int pid){
+    
+    t_list* lista_proceso = buscar_lista_proceso(pid);
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
+    
+    //RECORRO LA LISTA DE SEGMENTOS DEL PROCESO
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        reg_seg = list_get(lista_proceso, i);
+
+        //EN CASO DE QUE ME ENCUENTRE UN TCB LE MODIFICO SU PUNTERO AL PCB
+        if (reg_seg->tipo == TCB)
+        {
+            //CREO UN TCB PARA TRAERLO DE MEMORIA Y TRABAJARLO
+            t_TCB *tcb = malloc(sizeof(t_TCB));
+
+            //ME COPIO EL TCB DE MEMORIA
+            memcpy(tcb, reg_seg->base, sizeof(t_TCB));
+
+            //MODIFICO EL ESTADO
+            tcb->puntero_PCB = posNueva;
+
+            //LLEVO EL TCB NUEVAMENTE A MEMORIA
+            memcpy(reg_seg->base, tcb, sizeof(t_TCB));
+        }
+    }
+    
+    //free(reg_seg);
+    return;
+}
+
+void cambio_posicion_tareas(int posNueva, int pid){
+    
+    t_list* lista_proceso = buscar_lista_proceso(pid);
+    t_registro_segmentos *reg_seg = malloc(sizeof(t_registro_segmentos));
+    
+    //RECORRO LA LISTA DE SEGMENTOS DEL PROCESO
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        reg_seg = list_get(lista_proceso, i);
+
+        //CUANDO ENCUENTRO EL PCB LE MODIFICO SU PUNTERO A LAS TAREAS
+        if (reg_seg->tipo == PCB)
+        {
+            //CREO UN PCB PARA TRAERLO DE MEMORIA Y TRABAJARLO
+            t_PCB *pcb = malloc(sizeof(t_PCB));
+
+            //ME COPIO EL PCB DE MEMORIA
+            memcpy(pcb, reg_seg->base, sizeof(t_PCB));
+
+            //MODIFICO EL PUNTERO A LAS TAREAS
+            pcb->tareas = posNueva;
+
+            //LLEVO EL PCB NUEVAMENTE A MEMORIA
+            memcpy(reg_seg->base, pcb, sizeof(t_PCB));
         }
     }
 }

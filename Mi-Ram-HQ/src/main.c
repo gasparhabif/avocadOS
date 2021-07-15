@@ -20,6 +20,16 @@ int main()
     //SIGUSR1 COMPACTE LA MEMORIA
     signal(SIGUSR1, compactar);
 
+    //EN CASO DE RECIBIR UN SIGUSR2, REALIZAR EL DUMP
+    signal(SIGUSR2, dump);
+
+    //INICIO EL MAPA
+    /*
+    nivel_gui_inicializar();
+    level = nivel_crear("AmongOS");
+    nivel_gui_dibujar(level);
+    */
+
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();
 
@@ -30,7 +40,6 @@ int main()
     {
         //INICIO LOS SEMAFOROS
         pthread_mutex_init(&acceso_memoria, NULL);
-        pthread_mutex_init(&m_segmentos, NULL);
         pthread_mutex_init(&m_procesos, NULL);
 
         tabla_estado_segmentos = list_create();
@@ -42,8 +51,6 @@ int main()
         primer_seg->ocupado = 0;
 
         list_add(tabla_estado_segmentos, primer_seg);
-
-        //free(primer_seg);
     }
     else // Paginacion
     {
@@ -71,6 +78,9 @@ int main()
     pthread_t accept_connections_thread;
     pthread_create(&accept_connections_thread, NULL, (void *)aceptar_conexiones, (void *)server_instance);
     pthread_join(accept_connections_thread, NULL);
+
+    nivel_destruir(level);
+    nivel_gui_terminar();
 
     free(memoria);
     free(config);

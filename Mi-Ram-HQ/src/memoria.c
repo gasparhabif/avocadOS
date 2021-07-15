@@ -14,10 +14,6 @@ void *reservar_memoria(int bytes)
         if (strcmp(config->criterio_seleccion, "BF") == 0)
             posicion = reservar_segmento_BF(bytes);
     }
-    else if (strcmp(config->esquema_memoria, "PAGINACION") == 0)
-    {
-        // https://docs.google.com/spreadsheets/u/6/d/145xwxF8fLjdfinzpzRnU70g5g3so5HxdyCmgMUONORo/edit?usp=sharing_eip_m&ts=60e0af59
-    }
 
     pthread_mutex_unlock(&acceso_memoria);
 
