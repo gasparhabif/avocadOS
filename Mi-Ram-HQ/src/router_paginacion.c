@@ -35,6 +35,9 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos)
 
         paquete = serializarInt(1, PUNTERO_PCB, &tamanioSerializacion);
     }
+
+    send(client, paquete, tamanioSerializacion, 0);
+    free(paquete);
 }
 
 void solicitar_tarea_paginada(int client, t_pidYtid *datos_recibidos)

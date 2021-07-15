@@ -16,7 +16,7 @@ int solicitar_paginas(int bytes_solicitados, int pid)
         if (estado_frames[i] == 0)
         {
             estado_frames[i] = 1;
-            printf("Pagina: %d\n", i * config->tamanio_pagina + memoria);
+            printf("Pagina: %d\n", (int) (i * config->tamanio_pagina + memoria));
             list_add(paginas_proceso->paginas, i * config->tamanio_pagina + memoria);
         }
     }
@@ -73,6 +73,7 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
 {
 }
 
+/*
 void generar_archivo_swap()
 {
     int *swap_fd = open(config->path_swap, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -103,3 +104,4 @@ void swap_por_Clock()
 void swap_por_LRU()
 {
 }
+*/

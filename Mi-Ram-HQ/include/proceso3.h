@@ -115,7 +115,7 @@ void guardar_tareas_paginacion(t_tareas_cPID *);
 int solicitar_paginas(int, int);
 int calcular_fragmentacion(int);
 
-//Definidas en utils.c
+//Definidas en utils_segmentacion.c
 t_list *buscar_lista_proceso(int);
 t_PCB *buscar_pcb_proceso(t_list *, int);
 t_registro_segmentos *buscar_registro_tcb(t_list *, int);
@@ -127,6 +127,9 @@ int eliminar_pcbOtareas(t_list *, int);
 int obtener_PID(void *);
 void eliminar_proceso(int);
 int obtener_PIDproceso(t_list *);
+
+//Definidas en utils_paginacion.c
+t_list *buscar_paginas_proceso(int);
 t_list *obtener_lista_proceso(int);
 void limpiar_estado_frames(void);
 
