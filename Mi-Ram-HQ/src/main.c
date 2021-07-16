@@ -27,23 +27,7 @@ int main()
     idMapa = '@';
     nivel_gui_inicializar();
     level = nivel_crear("AmongOS");
-    nivel_gui_dibujar(level);
-/*
-    personaje_crear(level, '#', 0, 0);
-	ASSERT_CREATE(level, '#', err);
-    nivel_gui_dibujar(level);
-
-    sleep(1);
-
-    for (int i = 1; i <= 3; i++)
-    {
-        item_mover(level, '#', i, 0);
-        nivel_gui_dibujar(level);
-        sleep(1);
-    }
-    
-    while (1);
-*/    
+    nivel_gui_dibujar(level);   
 
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();

@@ -113,16 +113,16 @@ void recibir_mensaje(void *parametro)
                 break;
             case IMPRIMIR_SEGMENTACION:
                 pthread_mutex_lock(&acceso_memoria);
-                printf("------------------------------------------------------------------\n");
+                log_info(logger, "\n------------------------------------------------------------------\n");
                 for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
                 {
                     estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
-                    printf("SEG N°: %d\t", i);
-                    printf("Inicio: %d\t", reg_seg->inicio);
-                    printf("Tamaño: %d\t", reg_seg->limite);
-                    printf("Ocupado: %d\n", reg_seg->ocupado);
+                    log_info(logger, "SEG N°: %d\t", i);
+                    log_info(logger, "Inicio: %d\t", reg_seg->inicio);
+                    log_info(logger, "Tamaño: %d\t", reg_seg->limite);
+                    log_info(logger, "Ocupado: %d\n", reg_seg->ocupado);
                 }
-                printf("------------------------------------------------------------------\n");
+                log_info(logger, "------------------------------------------------------------------\n");
                 pthread_mutex_unlock(&acceso_memoria);
                 break;
             case ELIMINAR_TRIPULANTE:
