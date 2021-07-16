@@ -186,6 +186,8 @@ void mover_tripulante(t_envio_posicion *pos_recibida, char idMapaTripulante)
     free(pos_recibida);
     free(tcb);
 
+    log_info(logger, "Se movio al tripulante a la posicion %d|%d", pos_recibida->pos.posX, pos_recibida->pos.posY);
+
     return;
 }
 
