@@ -79,7 +79,7 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     //free(segmento_tareas);
 }
 
-void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido)
+void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTripulante)
 {
     /*
     printf("\n-----UN TRIPULANTE CON PID: %d ABORDO LA NAVE-----\n", tcbCpid_recibido->pid);
@@ -101,6 +101,12 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido)
     pthread_mutex_unlock(&m_procesos);
 
     log_info(logger, "TCB en memoria");
+
+    //DIBUJO EL TRIPULANTE EN EL MAPA
+    int err;
+    err = personaje_crear(level, idMapaTripulante, tcbCpid_recibido->tcb.posX, tcbCpid_recibido->tcb.posY);
+	ASSERT_CREATE(level, idMapaTripulante, err);
+    nivel_gui_dibujar(level);
 
     //LE AVISO AL TRIPULANTE QUE SUS ESTRUCTURAS YA SE ENCUENTRAN EN MEMORIA
     int tamanioSerializacion;
@@ -146,7 +152,7 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
     free(pid_tid_recibidos);
 }
 
-void mover_tripulante(t_envio_posicion *pos_recibida)
+void mover_tripulante(t_envio_posicion *pos_recibida, char idMapaTripulante)
 {
 
     pthread_mutex_lock(&m_procesos);
@@ -171,6 +177,10 @@ void mover_tripulante(t_envio_posicion *pos_recibida)
     memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
 
     pthread_mutex_unlock(&m_procesos);
+
+    //MODIFICO LA POSICION DEL TRIPULANTE EN EL MAPA
+    item_mover(level, idMapaTripulante, pos_recibida->pos.posX, pos_recibida->pos.posY);
+    nivel_gui_dibujar(level);
 
     //LIBERO LA MEMORIA
     free(pos_recibida);
@@ -211,7 +221,7 @@ void actualizar_estado(t_estado *estadoRecibido)
     return;
 }
 
-void eliminar_tripulante(t_pidYtid *pidCtid_recibido)
+void eliminar_tripulante(t_pidYtid *pidCtid_recibido, char idMapaTripulante)
 {
 
     pthread_mutex_lock(&m_procesos);
@@ -257,6 +267,10 @@ void eliminar_tripulante(t_pidYtid *pidCtid_recibido)
     }
 
     pthread_mutex_unlock(&m_procesos);
+
+    //ELIMINO AL TRIPULANTE DEL MAPA
+    item_borrar(level, idMapaTripulante);
+    nivel_gui_dibujar(level);
 
     //LIBERO LA MEMORIA
     free(pidCtid_recibido);

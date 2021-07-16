@@ -34,6 +34,8 @@ void recibir_mensaje(void *parametro)
     int cop_recibido;
     void *datos_recibidos;
     int recibiendo_mensajes = 1;
+    char idMapaTripulante = idMapa;
+    idMapa++;
 
     if (strcmp(config->esquema_memoria, "PAGINACION") == 0)
     {
@@ -91,7 +93,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case INICIAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
-                iniciar_tripulante(client, datos_recibidos);
+                iniciar_tripulante(client, datos_recibidos, idMapaTripulante);
                 break;
             case SOLICITAR_TAREA:
                 log_info(logger, "El tripulante %d solicito una tarea", client);
@@ -99,7 +101,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case MOVER_TRIPULANTE:
                 log_info(logger, "El tripulante %d ha realizado un movimiento", client);
-                mover_tripulante(datos_recibidos);
+                mover_tripulante(datos_recibidos, idMapaTripulante);
                 break;
             case ACTUALIZAR_ESTADO:
                 log_info(logger, "El tripulante %d actualizo su estado", client);
@@ -126,7 +128,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
-                eliminar_tripulante(datos_recibidos);
+                eliminar_tripulante(datos_recibidos, idMapaTripulante);
                 recibiendo_mensajes = 0;
                 break;
             default:
