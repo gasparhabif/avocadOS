@@ -142,7 +142,7 @@ int cantidad_paginas_proceso(int);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);
-void *serializar_TCB(t_TCB *);
+void *serializar_TCB(t_TCB);
 void *serializar_TAREA(t_tarea *);
 t_PCB *deserializar_PCB(void *);
 t_TCB *deserializar_TCB(void *);

@@ -19,8 +19,6 @@ t_list *obtener_lista_proceso(int pid, int *err)
 {
     t_list *tabla_un_proceso;
     t_tabla_paginas_proceso *proceso = malloc(sizeof(t_tabla_paginas_proceso));
-
-    printf("Tamaño tabla proceso: %d\n", list_size(tabla_procesos));
     
     if(list_size(tabla_procesos) != 0){
         
@@ -32,7 +30,7 @@ t_list *obtener_lista_proceso(int pid, int *err)
             {
                 proceso = list_get(tabla_un_proceso, j);
 
-                printf("TIPO: %d\tID: %d\n", proceso->tipo, proceso->id);
+                //printf("TIPO: %d\tID: %d\n", proceso->tipo, proceso->id);
 
                 if (proceso->tipo == PCB && proceso->id == pid)
                 {
@@ -74,15 +72,12 @@ int calcular_fragmentacion(int pid)
     int err;
     int bytes_ocupados = 0;
     t_list *tabla_proceso = obtener_lista_proceso(pid, &err);
-    printf("Err: %d\n", err);
 
     if(err)
         return 0;
     else{
         
-        bytes_ocupados_lista(tabla_proceso);
-
-        printf("Bytes ocupados %d\nTamanio pagina: %d\n", bytes_ocupados, tamanio_paginas);
+        bytes_ocupados = bytes_ocupados_lista(tabla_proceso);
 
         return tamanio_paginas-(bytes_ocupados-tamanio_paginas*(bytes_ocupados/tamanio_paginas));
     }
@@ -96,21 +91,20 @@ int bytes_ocupados_pid(int pid){
     if(err)
         return 0;
     else
-        return bytes_ocupados_lista(tabla_procesos);
+        return bytes_ocupados_lista(tabla_proceso);
 
 }
 
 int bytes_ocupados_lista(t_list *lista_elementos_proceso){
 
     t_tabla_paginas_proceso *elemento_proceso;
-    int bytes;
+    int bytes = 0;
 
     for (int i = 0; i < list_size(lista_elementos_proceso); i++)
     {
         elemento_proceso = list_get(lista_elementos_proceso, i);
         bytes += elemento_proceso->tamanio;
     }
-
     return bytes;    
 
 }
