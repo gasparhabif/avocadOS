@@ -42,7 +42,7 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
         //GUARDO EL PCB
         t_registro_segmentos *segmento_pcb = guardar_pcb(nuevo_pcb);
 
-        if (segmento_pcb->base != (void *)-1)
+        if (segmento_pcb->base != (void *) -1)
         {
 
             log_info(logger, "PCB en memoria");

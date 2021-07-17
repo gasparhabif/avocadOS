@@ -101,20 +101,20 @@ t_registro_segmentos *guardar_pcb(t_PCB *);
 t_registro_segmentos *guardar_tcb(t_TCB);
 
 //Definidas en segmentacion.c
-void *reservar_segmento_FF(int);
-void *reservar_segmento_BF(int);
-void liberar_memoria_segmentacion(int);
-void  compactar                         (int);
-void  actualizar_tabla_procesos         (int, int);
-void  cambio_posicion_pcb               (int, int);
-void  cambio_posicion_tareas            (int, int);
+void *reservar_segmento_FF        (int);
+void *reservar_segmento_BF        (int);
+void liberar_memoria_segmentacion (int);
+void  compactar                   (int);
+void  actualizar_tabla_procesos   (int, int);
+void  cambio_posicion_pcb         (int, int);
+void  cambio_posicion_tareas      (int, int);
 
 //Definidas en paginacion.c
 void generar_archivo_swap();
 void realizar_swap();
 void swap_por_Clock();
 void swap_por_LRU();
-void guardar_tareas_paginacion(t_tareas_cPID *);
+void guardar_tareas_pcb_paginacion(t_tareas_cPID *);
 int solicitar_paginas(int, int);
 int calcular_fragmentacion(int);
 
@@ -133,8 +133,12 @@ int obtener_PIDproceso(t_list *);
 
 //Definidas en utils_paginacion.c
 t_list *buscar_paginas_proceso(int);
-t_list *obtener_lista_proceso(int);
+t_list *obtener_lista_proceso(int, int*);
 void limpiar_estado_frames(void);
+t_pagina_proceso* obtener_paginas_proceso(int, int *);
+int bytes_ocupados_pid(int);
+int bytes_ocupados_lista(t_list *);
+int cantidad_paginas_proceso(int);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);

@@ -2,15 +2,15 @@
 
 void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
-    int tamanio_tareas = sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas;
+    int   tamanio_tareas = sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas;
     void *paquete;
-    int tamanioSerializacion;
+    int   tamanioSerializacion;
 
     if (solicitar_paginas(tamanio_tareas + sizeof(t_PCB), tareas_cPID_recibidas->PID) == -1)
         paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
     else
     {
-        guardar_tareas_paginacion(tareas_cPID_recibidas);
+        guardar_tareas_pcb_paginacion(tareas_cPID_recibidas);
 
         //guardar_pcb_paginacion(tareas_cPID_recibidas->PID, /*DIRECCION TAREAS*/);
 
@@ -26,13 +26,11 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos)
     void *paquete;
     int tamanioSerializacion;
 
-    if (solicitar_paginas(sizeof(t_PCB), datos_recibidos->pid) == -1)
+    if (solicitar_paginas(sizeof(t_TCB), datos_recibidos->pid) == -1)
         paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
     else
     {
-
         guardar_tcb_paginacion(datos_recibidos);
-
         paquete = serializarInt(1, PUNTERO_PCB, &tamanioSerializacion);
     }
 
