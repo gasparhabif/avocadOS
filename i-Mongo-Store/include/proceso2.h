@@ -24,7 +24,6 @@
 // Constantes de FS
 #define BLOCK_SIZE 8
 #define BLOCKS 16
-#define MD5_SIZE 32 + 1
 
 // Estructuras
 typedef struct
@@ -48,7 +47,7 @@ typedef struct
     int block_count;
     t_list *blocks;
     char *caracter_llenado;
-    char md5_archivo[MD5_SIZE];
+    char *md5_archivo;
 } t_recurso;
 
 // Paths de FS

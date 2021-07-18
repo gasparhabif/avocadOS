@@ -12,7 +12,7 @@ void sabotaje_handler(int signal)
     // Enviar posición de sabotaje al Discordiador
     uint32_t tamanioSerializacion;
     void *posicion_sabotaje = serializar_envioSabotaje(1, 1, &tamanioSerializacion);
-    send(discordiador_connection, posicion_sabotaje, tamanioSerializacion, 0);
+    send(discordiador_cxn, posicion_sabotaje, tamanioSerializacion, 0);
 
     free(posicion_sabotaje);
 }
@@ -72,7 +72,7 @@ bool file_check(char *path)
     return true;
 }
 
-void file_check(char *path) {}
+void repair_file(char *path) {}
 
 void ejecutar_fsck()
 {
