@@ -133,9 +133,6 @@ int eliminar_tcb(t_list *lista_proceso, int tid){
     {
         reg_seg = list_get(lista_proceso, i);
 
-        printf("reg_seg->tipo %d\n", reg_seg->tipo);
-        printf("reg_seg->id %d\n", reg_seg->id);
-
         if(reg_seg->tipo == TCB && reg_seg->id == tid){
             base = (int) reg_seg->base;
             //free(reg_seg);

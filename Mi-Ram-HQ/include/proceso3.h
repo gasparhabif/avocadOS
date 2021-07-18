@@ -8,11 +8,12 @@
 #include <commons/log.h>
 #include <commons/collections/list.h>
 #include "shared_utils.h"
+#include <nivel-gui/nivel-gui.h>
+#include <nivel-gui/tad_nivel.h>
 
 t_log *logger;
 t_ram_conf *config;
 
-int recibiendo_mensajes;
 int aceptando_conexiones;
 void *memoria;
 
@@ -37,6 +38,8 @@ typedef struct {
 
 t_list*         tabla_procesos;
 pthread_mutex_t acceso_memoria;
+pthread_mutex_t m_procesos;
+NIVEL *level;
 //GESTION DE MEMORIA EN LA SEGMENTACIOS
 t_list*         tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION
@@ -69,10 +72,8 @@ void* reservar_segmento_BF              (int);
 void  liberar_memoria_segmentacion      (int);
 void  compactar                         (int);
 int   ultimo_ocupado                    (int *, int *);
-int   buscar_siguiente_segmento_ocupado (int, int *);
+int   buscar_siguiente_segmento_ocupado (int, int *, int *);
 void  actualizar_registro_segmento      (int, int);
-
-
 
 //Definidas en utils.c
 t_list*               buscar_lista_proceso (int);

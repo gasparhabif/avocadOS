@@ -19,7 +19,8 @@ enum CODIGOS_DE_OPERACION
     SOLICITAR_BITACORA,
     BITACORA_TRIPULANTE,
     INICIO_PROTOCOLO_FSCK,
-    IMPRIMIR_SEGMENTACION
+    IMPRIMIR_SEGMENTACION,
+    INICIO_TRIPULANTE_MONGO
 };
 
 enum CODIGOS_DE_TAREAS
@@ -36,20 +37,20 @@ enum CODIGOS_DE_TAREAS
 
 enum CODIGOS_DE_BITACORAS
 {
-    INICIO_TAREA               = 'I', //Notificacion de inicio para la bitacora
-    EJECUTAR_TAREA             = 'E', //Notificacion para ejecutar la tarea (no se manda para tareas normales)
-    FIN_TAREA                  = 'F',
+    INICIO_TAREA = 'I',   //Notificacion de inicio para la bitacora
+    EJECUTAR_TAREA = 'E', //Notificacion para ejecutar la tarea (no se manda para tareas normales)
+    FIN_TAREA = 'F',
     INICIO_RESOLUCION_SABOTAJE = 'S',
-    FIN_RESOLUCION_SABOTAJE    = 'A'
+    FIN_RESOLUCION_SABOTAJE = 'A'
 };
 
 //ESTADOS
-#define NEW                      'N'
-#define READY                    'R'
-#define EXEC                     'E'
-#define BLOCKED_IO               'B'
-#define BLOCKED_EMERGENCY        'Y'
-#define EXIT                     'X'
+#define NEW 'N'
+#define READY 'R'
+#define EXEC 'E'
+#define BLOCKED_IO 'B'
+#define BLOCKED_EMERGENCY 'Y'
+#define EXIT 'X'
 
 //BUFFERS Y PAQUETE
 typedef struct
@@ -109,13 +110,19 @@ typedef struct
     t_TCBmostrar *tripulantes;
 } t_ListaTripulantes;
 
-//BASICOS
 typedef struct
 {
     u_int32_t posX;
     u_int32_t posY;
 } t_posicion;
 
+typedef struct
+{
+    u_int32_t TID;
+    t_posicion pos;
+} t_tidCposicion;
+
+//BASICOS
 typedef struct
 {
     u_int32_t PID;
@@ -133,7 +140,7 @@ typedef struct
 //TAREAS
 typedef struct
 {
-    u_int8_t  codigoTarea;
+    u_int8_t codigoTarea;
     u_int32_t parametro;
     u_int32_t posX;
     u_int32_t posY;
@@ -149,14 +156,7 @@ typedef struct
 
 typedef struct
 {
-    u_int32_t tid;
-    u_int8_t  codigoTarea;
-} t_inicio_tarea;
-
-typedef struct
-{
-    u_int32_t tid;
-    u_int8_t  codigoTarea;
+    u_int8_t codigoTarea;
     u_int32_t parametro;
 } t_ejecutar_tarea;
 
@@ -175,15 +175,17 @@ typedef struct
 } t_actualizar_estado;
 
 //ENVIO DE BITACORAS
-typedef struct{
-   int tamanioAccion;
-   char *accion;
+typedef struct
+{
+    int tamanioAccion;
+    char *accion;
 } t_accion;
 
-typedef struct{
-   int cantAcciones;
-   int tamanioAcciones;
-   t_accion *acciones;
+typedef struct
+{
+    int cantAcciones;
+    int tamanioAcciones;
+    t_accion *acciones;
 } t_bitacora;
 
 #endif

@@ -15,6 +15,9 @@ int main()
     // Iniciar FS
     init_paths();
 
+    // Atender signal
+    signal(SIGUSR1, sabotaje_handler);
+
     if (!file_exists(superbloque_file_path))
     {
         log_info(logger, "El FS no existe. Creando FS desde cero...");
@@ -37,6 +40,9 @@ int main()
     blocks_file_copy = load_blocks();
     log_info(logger, "Se cargó Blocks.ims");
 
+    // TODO: Sincronizar bloques
+    // ...
+
     // Inicializar servidor
     int server_instance = init_server(config->puerto);
 
@@ -48,8 +54,19 @@ int main()
     }
 
     // Aceptar conexión del Discordiador
-    // pthread_t discordiador_cnx_thread;
-    // pthread_create(&discordiador_cnx_thread, NULL, (void *)discordiador_cxn_handler, (void *)server_instance);
+    listen(server_instance, 1);
+    log_info(logger, "Esperando discordiador en el puerto %d", config->puerto);
+
+    struct sockaddr_in client_dir;
+    unsigned int dir_size = sizeof(socklen_t);
+    discordiador_cxn = accept(server_instance, (void *)&client_dir, &dir_size);
+
+    if (discordiador_cxn == -1)
+    {
+        log_error(logger, "Error al aceptar conexión");
+        return EXIT_FAILURE;
+    }
+    log_info(logger, "Se conectó el discordiador en el socket %d", discordiador_cxn);
 
     // Aceptar conexiones de los tripulantes
     log_info(logger, "Esperando tripulantes en el puerto %d", config->puerto);
