@@ -49,17 +49,14 @@ t_pagina_proceso* obtener_paginas_proceso(int pid, int *err)
 {
     t_pagina_proceso *paginas_proceso = malloc(sizeof(t_pagina_proceso));
 
-    if(list_size(tabla_paginas) > 1){
+    for (int i = 0; i < list_size(tabla_paginas); i++)
+    {
+        paginas_proceso = list_get(tabla_paginas, i);
 
-        for (int i = 0; i < list_size(tabla_paginas); i++)
+        if (paginas_proceso->pid == pid)
         {
-            paginas_proceso = list_get(tabla_procesos, i);
-
-            if (paginas_proceso->pid)
-            {
-                *err = 0;
-                return paginas_proceso;
-            }
+            *err = 0;
+            return paginas_proceso;
         }
     }
 
@@ -122,6 +119,25 @@ int cantidad_paginas_proceso(int pid){
     }
 
     return -1;
+    
+}
+
+int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
+
+    t_tabla_paginas_proceso *elemento_proceso;
+    t_pagina_proceso        *paginas_proceso;
+    int err;
+
+    for (int i = 0; i < list_size(tabla_proceso); i++)
+    {
+        elemento_proceso = list_get(tabla_proceso, i);
+
+        if (elemento_proceso->tipo == TCB && elemento_proceso->id == tid)
+        {
+            paginas_proceso = obtener_paginas_proceso(pid, &err);
+        }
+        
+    }
     
 }
 

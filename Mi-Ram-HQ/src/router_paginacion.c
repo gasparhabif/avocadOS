@@ -38,8 +38,12 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos)
     free(paquete);
 }
 
-void solicitar_tarea_paginada(int client, t_pidYtid *datos_recibidos)
+void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
 {
+    int err;
+    t_list *tabla_proceso    = obtener_lista_proceso(datos_recibidos->pid, &err);
+    int nInstruccion         = obtener_numero_instruccion(tabla_proceso, datos_recibidos->tid);
+    t_tarea * tarea_recibida = obtenerTarea(tabla_proceso, nInstruccion);
 }
 
 void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)

@@ -7,7 +7,7 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     int fragmentacionInterna = calcular_fragmentacion(pid);
     t_pagina_proceso* paginas_proceso;
 
-    printf("Fragmentacion: %d\n", fragmentacionInterna);
+    printf("Me solicitaron %dB, la fragmentacion es %d\n", bytes_solicitados, fragmentacionInterna);
 
     if(fragmentacionInterna > bytes_solicitados){
         printf("No debo reservar paginas\n");
@@ -25,17 +25,12 @@ int solicitar_paginas(int bytes_solicitados, int pid)
         paginas_proceso->pid = pid;
     }
 
-    
-    int pos;
-
     for (int i = 0; i < maxima_cantidad_paginas && list_size(paginas_proceso->paginas) < cantidad_paginas_a_reservar; i++)
     {
         if (estado_frames[i] == 0)
         {
             estado_frames[i] = 1;
-            pos = i * config->tamanio_pagina + (int) memoria;
-            printf("Se reservo pagina con direccion: %p\n", (void *) pos);
-            list_add(paginas_proceso->paginas, (void *) pos);
+            list_add(paginas_proceso->paginas, (void *) (i * config->tamanio_pagina + (int) memoria));
         }
     }
 
@@ -139,17 +134,11 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
         paginas_acceder++;
 
     int err;
-    t_list* lista_paginas_proceso = obtener_lista_proceso(datos_recibidos->pid, &err);
-
-    for (int i = 0; i < list_size(lista_paginas_proceso); i++)
-        printf("PAG %d: %d\n", i, (int) list_get(lista_paginas_proceso, i));
-    
-
-    printf("PAG: %d\nDIR: %p\nVALOR: %p\n", escribirDesdePagina, list_get(lista_paginas_proceso, escribirDesdePagina-1), list_get(lista_paginas_proceso, escribirDesdePagina-1) + offsetPrimeraPagina);
+    t_pagina_proceso* lista_paginas_proceso = obtener_paginas_proceso(datos_recibidos->pid, &err);
 
     //EN EL CASO DE QUE ENTRE EN LA ULTIMA PAGINA
     if(fragmentacionInterna >= sizeof(t_TCB))
-        memcpy(((void *) (list_get(lista_paginas_proceso, escribirDesdePagina) + offsetPrimeraPagina)), tcb, sizeof(t_TCB));
+        memcpy(((list_get(lista_paginas_proceso->paginas, escribirDesdePagina) + offsetPrimeraPagina)), tcb, sizeof(t_TCB));
     //EN EL CASO DE QUE DEBA ALMACENARSE EN UNA NUEVA PAGINA O FINALIZAR LA ULTIMA Y UTILIZAR LA SIGUIENTE
     else{
         //ESCRIBO DESDE LA PAGINA QUE DEBA LLENAR HASTA TODAS LAS QUE NECESITE PARA GUARDAR EL TCB
@@ -157,17 +146,17 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
         {
             //LA PRIMERA PAGINA DEBO UNICAMENTE LLENARLA CON LOS BYTES QUE FALTAN
             if(i==escribirDesdePagina){
-                memcpy(((void *) (list_get(lista_paginas_proceso, i) + offsetPrimeraPagina)), tcb, fragmentacionInterna);
+                memcpy(((void *) (list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina)), tcb, fragmentacionInterna);
                 bGuardadros += fragmentacionInterna;
             }
             //EL RESTO DE LAS PAGINAS DEBO LLENARLAS ENTERAS O CON EL RESTANTE DEL TCB
             else{
                 if(bGuardadros + tamanio_paginas < sizeof(t_TCB)){
-                    memcpy(((void *) list_get(lista_paginas_proceso, i)), tcb + bGuardadros, tamanio_paginas);
+                    memcpy(((void *) list_get(lista_paginas_proceso->paginas, i)), tcb + bGuardadros, tamanio_paginas);
                     bGuardadros += tamanio_paginas;
                 }
                 else{
-                   memcpy(((void *) list_get(lista_paginas_proceso, i)), tcb + bGuardadros, sizeof(t_TCB)-bGuardadros);
+                   memcpy(((void *) list_get(lista_paginas_proceso->paginas, i)), tcb + bGuardadros, sizeof(t_TCB)-bGuardadros);
                    bGuardadros += sizeof(t_TCB)-bGuardadros;
                 }
             }
@@ -183,7 +172,8 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
     tabla_paginas_tcb->tamanio    = sizeof(t_TCB);
     tabla_paginas_tcb->modificado = 0;
 
-
+    t_list* tabla_proceso = obtener_lista_proceso(datos_recibidos->pid, &err);
+    list_add(tabla_proceso, tabla_paginas_tcb);
 }
 
 /*
