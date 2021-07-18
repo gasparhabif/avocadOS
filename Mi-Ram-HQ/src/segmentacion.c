@@ -25,7 +25,7 @@ void* reservar_segmento_FF(int bytes){
             //Chequeo que no me este pasando de la memoria reservada
             if(segmento_obtenido->inicio + bytes < (int) memoria + config->tamanio_memoria){
 
-                // En este caso podría ocurrir que los bytes entran perfectoen el 
+                // En este caso podría ocurrir que los bytes entran perfecto en el 
                 // segmento obtenido, en tal caso no seria necesaria una modificacion 
                 // en la lista de segmentos
                 if(segmento_obtenido->limite != 0){
@@ -34,6 +34,10 @@ void* reservar_segmento_FF(int bytes){
 
                     //Añado el nuevo segmento a la lista
                     list_add_in_index(tabla_estado_segmentos, i+1, segmento_obtenido);
+                }
+                else{
+                    nuevo_segmento->ocupado = 1;
+                    list_replace(tabla_estado_segmentos, i, nuevo_segmento);
                 }
                 
                 return (void *) nuevo_segmento->inicio;
@@ -51,7 +55,7 @@ void* reservar_segmento_BF(int bytes){
 
     uint32_t          inicio_minimo;
     uint32_t          tamanio_minimo    = -1;
-    uint32_t          pos_seg           = 0;
+    uint32_t          pos_seg           = -1;
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento    = malloc(sizeof(estado_segmentos));
 
@@ -62,9 +66,9 @@ void* reservar_segmento_BF(int bytes){
 
         //En el caso de que no este ocupado y la cantidad de byres entre
         if(segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes){
-        
+
             //En el caso de que sea el primer segmento o que sea menor al menor ya tomado
-            if (pos_seg || segmento_obtenido->limite < tamanio_minimo)
+            if ((pos_seg == -1) || segmento_obtenido->limite < tamanio_minimo)
             {
                 //Tomo un registro de este segmento libre
                 inicio_minimo  = segmento_obtenido->inicio;
@@ -79,10 +83,11 @@ void* reservar_segmento_BF(int bytes){
     {
         //Inicio el nuevo segmento
         nuevo_segmento->inicio  = inicio_minimo;
-        nuevo_segmento->limite  = tamanio_minimo;
+        nuevo_segmento->limite  = bytes;
         nuevo_segmento->ocupado = 1;
 
         //Modifico el segmento libre
+        segmento_obtenido = list_get(tabla_estado_segmentos, pos_seg);
         segmento_obtenido->inicio += bytes;
         segmento_obtenido->limite -= bytes;
 
@@ -92,16 +97,19 @@ void* reservar_segmento_BF(int bytes){
             // En este caso podría ocurrir que los bytes entran perfectoen el 
             // segmento obtenido, en tal caso no seria necesaria una modificacion 
             // en la lista de segmentos
-
             if(segmento_obtenido->limite != 0){
                 //Ajusto el libre
                 list_replace(tabla_estado_segmentos, pos_seg, nuevo_segmento);
 
                 //Añado el nuevo segmento a la lista
-                list_add_in_index(tabla_estado_segmentos, pos_seg, segmento_obtenido);
+                list_add_in_index(tabla_estado_segmentos, pos_seg + 1, segmento_obtenido);
+            }
+            else{
+                list_replace(tabla_estado_segmentos, pos_seg, nuevo_segmento);
             }
 
             //free(segmento_obtenido);
+
             return (void *) nuevo_segmento->inicio;
         }
     }
@@ -142,19 +150,25 @@ void compactar(int sig){
         
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
+        pthread_mutex_lock(&acceso_memoria);
+        pthread_mutex_lock(&m_procesos);
+
         estado_segmentos *estado = malloc(sizeof(estado_segmentos));
         int posBuscada;
         int tamanioSegmento;
+        int indexEncontrado;
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
             estado = list_get(tabla_estado_segmentos, i);
 
-            if(estado->ocupado == 0 && i < list_size(tabla_estado_segmentos)-1){
+            if(estado->ocupado == 0 && i < (list_size(tabla_estado_segmentos)-1)){
 
-                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento);
+                posBuscada = buscar_siguiente_segmento_ocupado(i, &tamanioSegmento, &indexEncontrado);
 
                 memcpy((void *) estado->inicio, (void *) posBuscada, tamanioSegmento);
+
+                i = indexEncontrado;
 
                 actualizar_registro_segmento(posBuscada, estado->inicio);
             }
@@ -179,6 +193,7 @@ void compactar(int sig){
         free(estado);
         
         pthread_mutex_unlock(&acceso_memoria);
+        pthread_mutex_unlock(&m_procesos);
     }
 
     return;
@@ -204,7 +219,7 @@ int ultimo_ocupado(int *bytesOcupado, int *pos_libertad){
     return -1;     
 }
 
-int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento){
+int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento, int *indexEncontrado){
     
     estado_segmentos *estado = malloc(sizeof(estado_segmentos));
 
@@ -214,6 +229,7 @@ int buscar_siguiente_segmento_ocupado(int i, int *tamanioSegmento){
 
         if(estado->ocupado == 1){
             *tamanioSegmento = estado->limite;
+            *indexEncontrado = j;
             estado->ocupado = 0;
             list_replace(tabla_estado_segmentos, j, estado);
             return estado->inicio;

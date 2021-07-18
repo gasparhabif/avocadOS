@@ -9,6 +9,8 @@ int get_free_block()
             return i;
         }
     }
+
+    return BLOCK_ASSIGN_ERROR;
 }
 
 void set_block(int block_index)
