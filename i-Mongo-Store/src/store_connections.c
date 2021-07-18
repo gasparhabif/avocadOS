@@ -84,7 +84,7 @@ void tripulante_cxn_handler(void *arg)
             break;
 
         default:
-            log_error(logger, "Código %d desconocido", cod_operacion);
+            log_error(logger, "Código %d desconocido. El tripulante %d se desconectó", cod_operacion, tripulante->TID);
             tareas_finalizadas = true;
             break;
         }
@@ -92,15 +92,16 @@ void tripulante_cxn_handler(void *arg)
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 
-    sync_blocks();
-
-    log_error(logger, "El tripulante %d se desconectó", tripulante->TID);
+    // TODO: Remover
+    // sync_blocks();
 
     free(bitacora_file_path);
     free(tid);
     free(tripulante);
+    liberar_bitacora(bitacora);
 
     // TODO: Cerrar socket
+    // ...
 
     return;
 }

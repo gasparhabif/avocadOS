@@ -24,6 +24,7 @@
 // Constantes de FS
 #define BLOCK_SIZE 8
 #define BLOCKS 16
+#define MD5_SIZE 32
 
 // Constantes de error de FS
 #define BLOCK_ASSIGN_ERROR -1
@@ -112,7 +113,8 @@ void sync_blocks();
 // Bitácoras utils (definidas en bitacoras_utils.c)
 void create_bitacora(char *);
 t_bitacora_mongo *load_bitacora(char *);
-void update_bitacora(t_bitacora_mongo *);
+void update_bitacora_metadata(t_bitacora_mongo *);
+void liberar_bitacora(t_bitacora_mongo *);
 void registrar_bitacora(t_bitacora_mongo *, char *);
 char *blocks_list_to_string(t_list *);
 
@@ -122,10 +124,12 @@ void set_block(int);
 void clean_block(int);
 
 // Recursos utils (definidas en recursos_utils.c)
+char *generate_md5(char *);
 void create_recurso(char *, char *);
 t_recurso *load_recurso(char *);
 void print_recurso(t_recurso *);
-void update_recurso(t_recurso *);
+void update_recurso_metadata(t_recurso *);
+void liberar_recurso(t_recurso *);
 void agregar_recurso(t_recurso *, int);
 void eliminar_recurso(t_recurso *, int);
 

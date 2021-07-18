@@ -1,5 +1,25 @@
 #include "proceso2.h"
 
+char *generate_md5(char *msg)
+{
+    char *file_path = "./md5.tmp";
+    int file = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+
+    char *command = string_from_format("echo -n %s | md5sum > %s", msg, file_path);
+    system(command);
+    struct stat file_stat;
+    fstat(file, &file_stat);
+
+    char *mapped_file = mmap(NULL, file_stat.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, file, SEEK_SET);
+    char *md5_result = string_substring_until(mapped_file, MD5_SIZE);
+
+    munmap((void *)file, file_stat.st_size);
+    close(file);
+    remove(file_path);
+
+    return md5_result;
+}
+
 void create_recurso(char *recurso_file_path, char *caracter_llenado)
 {
     int recurso_fd = open(recurso_file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -9,20 +29,18 @@ void create_recurso(char *recurso_file_path, char *caracter_llenado)
     config_set_value(recurso_config, "BLOCK_COUNT", "0");
     config_set_value(recurso_config, "BLOCKS", "[]");
     config_set_value(recurso_config, "CARACTER_LLENADO", caracter_llenado);
-
-    // TODO: Generar MD5 por primera vez
-    // ...
-
-    config_set_value(recurso_config, "MD5_ARCHIVO", "");
+    char *md5_archivo = string_new();
+    md5_archivo = generate_md5("");
+    config_set_value(recurso_config, "MD5_ARCHIVO", md5_archivo);
     config_save(recurso_config);
 
     config_destroy(recurso_config);
     close(recurso_fd);
+    free(md5_archivo);
 }
 
 t_recurso *load_recurso(char *recurso_file_path)
 {
-
     t_recurso *recurso_aux = malloc(sizeof(t_recurso));
     recurso_aux->path = string_new();
     string_append(&(recurso_aux->path), recurso_file_path);
@@ -49,22 +67,35 @@ void print_recurso(t_recurso *recurso)
     printf("PATH: %s\n", recurso->path);
     printf("SIZE: %d\n", recurso->size);
     printf("BLOCK_COUNT: %d\n", recurso->block_count);
-    printf("BLOCKS: %s\n", blocks_list_to_string(recurso->blocks));
+    char *blocks_aux = blocks_list_to_string(recurso->blocks);
+    printf("BLOCKS: %s\n", blocks_aux);
     printf("CARACTER_LLENADO: %s\n", recurso->caracter_llenado);
     printf("MD5_ARCHIVO: %s\n", recurso->md5_archivo);
+    free(blocks_aux);
 }
 
-void update_recurso(t_recurso *recurso)
+void update_recurso_metadata(t_recurso *recurso)
 {
     t_config *recurso_config = config_create(recurso->path);
 
     config_set_value(recurso_config, "SIZE", string_itoa(recurso->size));
     config_set_value(recurso_config, "BLOCK_COUNT", string_itoa(recurso->block_count));
-    config_set_value(recurso_config, "BLOCKS", blocks_list_to_string(recurso->blocks));
+    char *blocks_aux = blocks_list_to_string(recurso->blocks);
+    config_set_value(recurso_config, "BLOCKS", blocks_aux);
     config_set_value(recurso_config, "MD5_ARCHIVO", recurso->md5_archivo);
     config_save(recurso_config);
 
     config_destroy(recurso_config);
+    free(blocks_aux);
+}
+
+void liberar_recurso(t_recurso *recurso)
+{
+    free(recurso->path);
+    free(recurso->caracter_llenado);
+    free(recurso->md5_archivo);
+    list_destroy(recurso->blocks);
+    free(recurso);
 }
 
 void agregar_recurso(t_recurso *recurso, int cantidad)
@@ -105,10 +136,16 @@ void agregar_recurso(t_recurso *recurso, int cantidad)
         }
     }
 
-    // TODO: Actualizar MD5
-    // ...
+    char *recurso_file = string_new();
+    for (int i = 0; i < recurso->size; i++)
+    {
+        string_append(&recurso_file, recurso->caracter_llenado);
+    }
+    recurso->md5_archivo = generate_md5(recurso_file);
 
-    update_recurso(recurso);
+    free(recurso_file);
+    update_recurso_metadata(recurso);
+    liberar_recurso(recurso);
 }
 
 void eliminar_recurso(t_recurso *recurso, int cantidad)
@@ -134,8 +171,14 @@ void eliminar_recurso(t_recurso *recurso, int cantidad)
         }
     }
 
-    // TODO: Actualizar MD5
-    // ...
+    char *recurso_file = string_new();
+    for (int i = 0; i < recurso->size; i++)
+    {
+        string_append(&recurso_file, recurso->caracter_llenado);
+    }
+    recurso->md5_archivo = generate_md5(recurso_file);
 
-    update_recurso(recurso);
+    free(recurso_file);
+    update_recurso_metadata(recurso);
+    liberar_recurso(recurso);
 }

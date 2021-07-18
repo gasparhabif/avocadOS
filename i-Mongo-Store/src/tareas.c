@@ -51,9 +51,6 @@ void generarOxigeno(int cantidad)
     t_recurso *oxigeno = load_recurso(oxigeno_file_path);
     log_info(logger, "Se cargó Oxigeno.ims");
     agregar_recurso(oxigeno, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void consumirOxigeno(int cantidad)
@@ -67,9 +64,6 @@ void consumirOxigeno(int cantidad)
     t_recurso *oxigeno = load_recurso(oxigeno_file_path);
     log_info(logger, "Se cargó Oxigeno.ims");
     eliminar_recurso(oxigeno, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void generarComida(int cantidad)
@@ -83,9 +77,6 @@ void generarComida(int cantidad)
     t_recurso *comida = load_recurso(comida_file_path);
     log_info(logger, "Se cargó Comida.ims");
     agregar_recurso(comida, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void consumirComida(int cantidad)
@@ -99,9 +90,6 @@ void consumirComida(int cantidad)
     t_recurso *comida = load_recurso(comida_file_path);
     log_info(logger, "Se cargó Comida.ims");
     eliminar_recurso(comida, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void generarBasura(int cantidad)
@@ -115,9 +103,6 @@ void generarBasura(int cantidad)
     t_recurso *basura = load_recurso(basura_file_path);
     log_info(logger, "Se cargó Basura.ims");
     agregar_recurso(basura, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void descartarBasura()
@@ -133,10 +118,10 @@ void descartarBasura()
     eliminar_recurso(basura, basura->size);
 
     // Eliminar archivo
-    remove(basura->path);
-
-    // TODO: Liberar recurso
-    // ...
+    if (file_exists(basura_file_path))
+    {
+        remove(basura_file_path);
+    }
 }
 
 // TAREA NORMAL

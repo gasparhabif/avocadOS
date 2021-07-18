@@ -31,15 +31,24 @@ t_bitacora_mongo *load_bitacora(char *bitacora_file_path)
     return bitacora_aux;
 }
 
-void update_bitacora(t_bitacora_mongo *bitacora)
+void update_bitacora_metadata(t_bitacora_mongo *bitacora)
 {
     t_config *bitacora_config = config_create(bitacora->path);
 
     config_set_value(bitacora_config, "SIZE", string_itoa(bitacora->size));
-    config_set_value(bitacora_config, "BLOCKS", blocks_list_to_string(bitacora->blocks));
+    char *blocks_aux = blocks_list_to_string(bitacora->blocks);
+    config_set_value(bitacora_config, "BLOCKS", blocks_aux);
     config_save(bitacora_config);
 
     config_destroy(bitacora_config);
+    free(blocks_aux);
+}
+
+void liberar_bitacora(t_bitacora_mongo *bitacora)
+{
+    free(bitacora->path);
+    list_destroy(bitacora->blocks);
+    free(bitacora);
 }
 
 void registrar_bitacora(t_bitacora_mongo *bitacora, char *msg)
@@ -75,7 +84,7 @@ void registrar_bitacora(t_bitacora_mongo *bitacora, char *msg)
         }
     }
 
-    update_bitacora(bitacora);
+    update_bitacora_metadata(bitacora);
 }
 
 char *blocks_list_to_string(t_list *blocks_list)

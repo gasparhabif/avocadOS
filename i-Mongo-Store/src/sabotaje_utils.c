@@ -65,8 +65,7 @@ bool file_check(char *path)
     // Calcular MD5 del archivo reconstruído y comparar
     // ...
 
-    // TODO: Liberar recurso
-    // ...
+    liberar_recurso(recurso);
 
     return true;
 }
@@ -85,7 +84,6 @@ void ejecutar_fsck()
         log_info(logger, "Reparando cantidad de bloques...");
         repair_blocks_count();
         log_info(logger, "Reparación de cantidad de bloques finalizada");
-        return;
     }
 
     // Verificar bitmap
@@ -96,7 +94,6 @@ void ejecutar_fsck()
         log_info(logger, "Reparando bitmap...");
         repair_bitmap();
         log_info(logger, "Reparación de bitmap finalizada");
-        return;
     }
 
     // Verificar files
@@ -107,7 +104,6 @@ void ejecutar_fsck()
         log_info(logger, "Reparando Oxigeno.ims...");
         repair_file(oxigeno_file_path);
         log_info(logger, "Reparación de Oxigeno.ims finalizada");
-        return;
     }
 
     log_info(logger, "Verificando Comida.ims...");
@@ -117,7 +113,6 @@ void ejecutar_fsck()
         log_info(logger, "Reparando Comida.ims...");
         repair_file(comida_file_path);
         log_info(logger, "Reparación de Comida.ims finalizada");
-        return;
     }
 
     log_info(logger, "Verificando Basura.ims...");
@@ -127,6 +122,5 @@ void ejecutar_fsck()
         log_info(logger, "Reparando Basura.ims...");
         repair_file(basura_file_path);
         log_info(logger, "Reparación de Basura.ims finalizada");
-        return;
     }
 }
