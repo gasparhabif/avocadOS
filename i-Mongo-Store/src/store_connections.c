@@ -1,44 +1,17 @@
 #include "proceso2.h"
 
-void discordiador_cxn_handler(void *arg)
-{
-    int server_instance = (int)arg;
-
-    listen(server_instance, SOMAXCONN);
-
-    // Aceptar conexión
-    struct sockaddr_in client_dir;
-    unsigned int dir_size = sizeof(socklen_t);
-    int client = accept(server_instance, (void *)&client_dir, &dir_size);
-
-    // Verificar conexión aceptada
-    if (client == -1)
-    {
-        log_error(logger, "Error al aceptar conexión");
-        return;
-    }
-
-    log_info(logger, "Se conectó el discordiador en el socket %d", client);
-
-    while (1)
-    {
-    }
-}
-
 void accept_tripulantes(void *arg)
 {
     int server_instance = (int)arg;
 
-    while (1)
+    while (1) // TODO: Usar una flag para emprolijar
     {
         listen(server_instance, SOMAXCONN);
 
-        // Aceptar conexión
         struct sockaddr_in client_dir;
         unsigned int dir_size = sizeof(socklen_t);
         int client = accept(server_instance, (void *)&client_dir, &dir_size);
 
-        // Verificar conexión aceptada
         if (client == -1)
         {
             log_error(logger, "Error al aceptar conexión");
@@ -57,7 +30,7 @@ void tripulante_cxn_handler(void *arg)
     bool tareas_finalizadas = false;
 
     // Recibir tripulante y su posición inicial
-    t_envio_posicion *tripulante = recibir_paquete(client);
+    t_tidCposicion *tripulante = recibir_paquete(client);
     log_info(logger, "Se conectó el tripulante TID: %d - Posición inicial: %d|%d", tripulante->TID, tripulante->pos.posX, tripulante->pos.posY);
 
     // Obtener path
@@ -72,20 +45,10 @@ void tripulante_cxn_handler(void *arg)
     }
 
     // Cargar Tripulante#.ims
-    t_bitacora *bitacora = load_bitacora(bitacora_file_path);
+    t_bitacora_mongo *bitacora = load_bitacora(bitacora_file_path);
     log_info(logger, "Se cargó Tripulante%s.ims", tid);
 
-    // Probar acá
-    // generarBasura(25);
-    // descartarBasura();
     // ...
-
-    // sync_blocks();
-    // print_superbloque();
-
-    while (1)
-    {
-    }
 
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
@@ -95,8 +58,10 @@ void tripulante_cxn_handler(void *arg)
         switch (cod_operacion)
         {
         case MOVER_TRIPULANTE:
+            // TODO: Actualizar posicion del tripulante
             registrarDesplazamiento();
             break;
+
         case INICIO_TAREA:
             registrarInicioTarea();
             break;
@@ -104,13 +69,17 @@ void tripulante_cxn_handler(void *arg)
         case INICIO_RESOLUCION_SABOTAJE:
             registrarAtencionSabotaje();
             break;
-        // case INICIO_PROTOCOLO_FSCK:
-        //     break;
+
+        case INICIO_PROTOCOLO_FSCK:
+            ejecutar_fsck();
+            break;
+
         case FIN_RESOLUCION_SABOTAJE:
             registrarResolucionSabotaje();
             break;
-        case ENVIAR_PROXIMA_TAREA:; // EJECUTAR_TAREA
-            t_tarea *tarea_a_ejecutar = (t_tarea *)datos_recibidos;
+
+        case EJECUTAR_TAREA:;
+            t_ejecutar_tarea *tarea_a_ejecutar = (t_ejecutar_tarea *)datos_recibidos;
             ejecutarTarea(tarea_a_ejecutar);
             break;
 
@@ -123,9 +92,15 @@ void tripulante_cxn_handler(void *arg)
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 
+    sync_blocks();
+
     log_error(logger, "El tripulante %d se desconectó", tripulante->TID);
 
     free(bitacora_file_path);
     free(tid);
     free(tripulante);
+
+    // TODO: Cerrar socket
+
+    return;
 }

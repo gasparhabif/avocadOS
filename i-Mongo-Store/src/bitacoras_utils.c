@@ -13,9 +13,9 @@ void create_bitacora(char *bitacora_file_path)
     close(bitacora_fd);
 }
 
-t_bitacora *load_bitacora(char *bitacora_file_path)
+t_bitacora_mongo *load_bitacora(char *bitacora_file_path)
 {
-    t_bitacora *bitacora_aux = malloc(sizeof(t_bitacora));
+    t_bitacora_mongo *bitacora_aux = malloc(sizeof(t_bitacora_mongo));
     bitacora_aux->path = string_new();
     string_append(&(bitacora_aux->path), bitacora_file_path);
     t_config *bitacora_config = config_create(bitacora_file_path);
@@ -31,7 +31,7 @@ t_bitacora *load_bitacora(char *bitacora_file_path)
     return bitacora_aux;
 }
 
-void update_bitacora(t_bitacora *bitacora)
+void update_bitacora(t_bitacora_mongo *bitacora)
 {
     t_config *bitacora_config = config_create(bitacora->path);
 
@@ -42,7 +42,7 @@ void update_bitacora(t_bitacora *bitacora)
     config_destroy(bitacora_config);
 }
 
-void registrar_bitacora(t_bitacora *bitacora, char *msg)
+void registrar_bitacora(t_bitacora_mongo *bitacora, char *msg)
 {
     int bytes_to_write = strlen(msg);
     int next_byte_to_write = 0;

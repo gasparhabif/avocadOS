@@ -142,7 +142,8 @@ t_envio_posicion *deserializar_envioPosicion(t_buffer *buffer)
     //free(estado_recibido);
 }
 
-t_posicion *deserealizar_posicion(t_buffer *buffer){
+t_posicion *deserealizar_posicion(t_buffer *buffer)
+{
 
     t_posicion *pos_recibida = malloc(sizeof(t_posicion));
 
@@ -154,10 +155,10 @@ t_posicion *deserealizar_posicion(t_buffer *buffer){
     stream += sizeof(uint32_t);
 
     return pos_recibida;
-
 }
 
-t_pidYtid *deserealizar_pidYtid(t_buffer *buffer){
+t_pidYtid *deserealizar_pidYtid(t_buffer *buffer)
+{
 
     t_pidYtid *pid_tid_recibidos = malloc(sizeof(t_pidYtid));
 
@@ -169,10 +170,10 @@ t_pidYtid *deserealizar_pidYtid(t_buffer *buffer){
     stream += sizeof(uint32_t);
 
     return pid_tid_recibidos;
-
 }
 
-t_ListaTripulantes* deserealizarTCBmostrar (t_buffer *buffer){
+t_ListaTripulantes *deserealizarTCBmostrar(t_buffer *buffer)
+{
 
     t_ListaTripulantes *listaTripulantes_recibida = malloc(sizeof(t_ListaTripulantes));
 
@@ -185,15 +186,15 @@ t_ListaTripulantes* deserealizarTCBmostrar (t_buffer *buffer){
 
     for (int i = 0; i < listaTripulantes_recibida->cantTripulantes; i++)
     {
-        memcpy(&(listaTripulantes_recibida->tripulantes[i].PID),    stream, sizeof(uint32_t));
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].PID), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
-        memcpy(&(listaTripulantes_recibida->tripulantes[i].TID),    stream, sizeof(uint32_t));
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].TID), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
         memcpy(&(listaTripulantes_recibida->tripulantes[i].estado), stream, sizeof(char));
         stream += sizeof(char);
-        memcpy(&(listaTripulantes_recibida->tripulantes[i].posX),   stream, sizeof(uint32_t));
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].posX), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
-        memcpy(&(listaTripulantes_recibida->tripulantes[i].posY),   stream, sizeof(uint32_t));
+        memcpy(&(listaTripulantes_recibida->tripulantes[i].posY), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
         memcpy(&(listaTripulantes_recibida->tripulantes[i].proximaInstruccion), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
@@ -205,7 +206,8 @@ t_ListaTripulantes* deserealizarTCBmostrar (t_buffer *buffer){
     //free(tarea_recibida);
 }
 
-t_bitacora* deserializar_bitacora (t_buffer *buffer){
+t_bitacora *deserializar_bitacora(t_buffer *buffer)
+{
 
     t_bitacora *bitacoraRecibida = malloc(sizeof(t_bitacora));
 
@@ -227,19 +229,33 @@ t_bitacora* deserializar_bitacora (t_buffer *buffer){
     }
 
     return bitacoraRecibida;
-
 }
 
-t_ejecutar_tarea *deserealizar_ejecutarTarea(t_buffer *buffer){
+t_ejecutar_tarea *deserealizar_ejecutarTarea(t_buffer *buffer)
+{
 
     t_ejecutar_tarea *ejecutarTarea_recibido = malloc(sizeof(t_ejecutar_tarea));
 
     void *stream = buffer->stream;
-    
+
     memcpy(&(ejecutarTarea_recibido->codigoTarea), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
     memcpy(&(ejecutarTarea_recibido->parametro), stream, sizeof(uint32_t));
 
     return ejecutarTarea_recibido;
+}
 
+t_tidCposicion *deserializar_posicionCtid(t_buffer *buffer)
+{
+    t_tidCposicion *tidCpos_recibido = malloc(sizeof(t_tidCposicion));
+
+    void *stream = buffer->stream;
+
+    memcpy(&(tidCpos_recibido->TID), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tidCpos_recibido->pos.posX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tidCpos_recibido->pos.posX), stream, sizeof(uint32_t));
+
+    return tidCpos_recibido;
 }

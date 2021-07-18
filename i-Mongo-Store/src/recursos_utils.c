@@ -9,10 +9,12 @@ void create_recurso(char *recurso_file_path, char *caracter_llenado)
     config_set_value(recurso_config, "BLOCK_COUNT", "0");
     config_set_value(recurso_config, "BLOCKS", "[]");
     config_set_value(recurso_config, "CARACTER_LLENADO", caracter_llenado);
-    config_save(recurso_config);
 
-    // TODO: Calcular y setear MD5
+    // TODO: Generar MD5 por primera vez
     // ...
+
+    config_set_value(recurso_config, "MD5_ARCHIVO", "");
+    config_save(recurso_config);
 
     config_destroy(recurso_config);
     close(recurso_fd);
@@ -35,6 +37,8 @@ t_recurso *load_recurso(char *recurso_file_path)
     }
     recurso_aux->caracter_llenado = string_new();
     string_append(&(recurso_aux->caracter_llenado), config_get_string_value(recurso_config, "CARACTER_LLENADO"));
+    recurso_aux->md5_archivo = string_new();
+    string_append(&(recurso_aux->md5_archivo), config_get_string_value(recurso_config, "MD5_ARCHIVO"));
     config_destroy(recurso_config);
 
     return recurso_aux;
@@ -47,6 +51,7 @@ void print_recurso(t_recurso *recurso)
     printf("BLOCK_COUNT: %d\n", recurso->block_count);
     printf("BLOCKS: %s\n", blocks_list_to_string(recurso->blocks));
     printf("CARACTER_LLENADO: %s\n", recurso->caracter_llenado);
+    printf("MD5_ARCHIVO: %s\n", recurso->md5_archivo);
 }
 
 void update_recurso(t_recurso *recurso)
@@ -56,6 +61,7 @@ void update_recurso(t_recurso *recurso)
     config_set_value(recurso_config, "SIZE", string_itoa(recurso->size));
     config_set_value(recurso_config, "BLOCK_COUNT", string_itoa(recurso->block_count));
     config_set_value(recurso_config, "BLOCKS", blocks_list_to_string(recurso->blocks));
+    config_set_value(recurso_config, "MD5_ARCHIVO", recurso->md5_archivo);
     config_save(recurso_config);
 
     config_destroy(recurso_config);
@@ -94,6 +100,9 @@ void agregar_recurso(t_recurso *recurso, int cantidad)
         }
     }
 
+    // TODO: Actualizar MD5
+    // ...
+
     update_recurso(recurso);
 }
 
@@ -119,6 +128,9 @@ void eliminar_recurso(t_recurso *recurso, int cantidad)
             recurso->block_count--;
         }
     }
+
+    // TODO: Actualizar MD5
+    // ...
 
     update_recurso(recurso);
 }

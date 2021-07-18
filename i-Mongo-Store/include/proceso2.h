@@ -18,9 +18,13 @@
 #include <unistd.h>
 #include <string.h>
 
+// Señales para sabotaje
+#include <signal.h>
+
 // Constantes de FS
 #define BLOCK_SIZE 8
 #define BLOCKS 16
+#define MD5_SIZE 32 + 1
 
 // Estructuras
 typedef struct
@@ -35,7 +39,7 @@ typedef struct
     char *path;
     int size;
     t_list *blocks;
-} t_bitacora;
+} t_bitacora_mongo;
 
 typedef struct
 {
@@ -44,6 +48,7 @@ typedef struct
     int block_count;
     t_list *blocks;
     char *caracter_llenado;
+    char md5_archivo[MD5_SIZE];
 } t_recurso;
 
 // Paths de FS
@@ -58,6 +63,7 @@ char *basura_file_path;
 // Variables globales
 t_log *logger;
 t_store_conf *config;
+int discordiador_cxn;
 t_superbloque *superbloque;
 int superbloque_fd;
 int superbloque_file_size;
@@ -68,12 +74,11 @@ char *blocks_file;
 char *blocks_file_copy;
 
 // Conexiones hacia el store (definidas en store_connections.c)
-void discordiador_cxn_handler(void *);
 void accept_tripulantes(void *);
 void tripulante_cxn_handler(void *);
 
 // Tareas de ES (definidas en tareas.c)
-void ejecutarTarea(t_tarea *);
+void ejecutarTarea(t_ejecutar_tarea *);
 void finTareas();
 void generarOxigeno(int);
 void consumirOxigeno(int);
@@ -104,9 +109,9 @@ void sync_blocks();
 
 // Bitácoras utils (definidas en bitacoras_utils.c)
 void create_bitacora(char *);
-t_bitacora *load_bitacora(char *);
-void update_bitacora(t_bitacora *);
-void registrar_bitacora(t_bitacora *, char *);
+t_bitacora_mongo *load_bitacora(char *);
+void update_bitacora(t_bitacora_mongo *);
+void registrar_bitacora(t_bitacora_mongo *, char *);
 char *blocks_list_to_string(t_list *);
 
 // SuperBloque utils (definidas en superbloque_utils.c)
@@ -120,5 +125,15 @@ void print_recurso(t_recurso *);
 void update_recurso(t_recurso *);
 void agregar_recurso(t_recurso *, int);
 void eliminar_recurso(t_recurso *, int);
+
+// Sabotaje utils (definidas en sabotaje_utils.c)
+void sabotaje_handler(int);
+bool blocks_count_check();
+void repair_blocks_count();
+bool bitmap_check();
+void repair_bitmap();
+bool file_check(char *);
+void repair_file(char *);
+void ejecutar_fsck();
 
 #endif

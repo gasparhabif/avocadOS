@@ -1,7 +1,7 @@
 #include "proceso2.h"
 
 // Selector de tareas
-void ejecutarTarea(t_tarea *tarea_a_ejecutar)
+void ejecutarTarea(t_ejecutar_tarea *tarea_a_ejecutar)
 {
     switch (tarea_a_ejecutar->codigoTarea)
     {
@@ -131,6 +131,8 @@ void descartarBasura()
     t_recurso *basura = load_recurso(basura_file_path);
     log_info(logger, "Se cargó Basura.ims");
     eliminar_recurso(basura, basura->size);
+
+    // Eliminar archivo
     remove(basura->path);
 
     // TODO: Liberar recurso
