@@ -25,6 +25,9 @@
 #define BLOCK_SIZE 8
 #define BLOCKS 16
 
+// Constantes de error de FS
+#define BLOCK_ASSIGN_ERROR -1
+
 // Estructuras
 typedef struct
 {
@@ -116,6 +119,7 @@ char *blocks_list_to_string(t_list *);
 // SuperBloque utils (definidas en superbloque_utils.c)
 int get_free_block();
 void set_block(int);
+void clean_block(int);
 
 // Recursos utils (definidas en recursos_utils.c)
 void create_recurso(char *, char *);

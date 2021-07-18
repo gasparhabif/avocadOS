@@ -24,7 +24,7 @@ t_bitacora_mongo *load_bitacora(char *bitacora_file_path)
     bitacora_aux->blocks = list_create();
     for (int i = 0; blocks[i] != NULL; i++)
     {
-        list_add(bitacora_aux->blocks, atoi(blocks[i]));
+        list_add(bitacora_aux->blocks, (void *)atoi(blocks[i]));
     }
     config_destroy(bitacora_config);
 
@@ -55,13 +55,13 @@ void registrar_bitacora(t_bitacora_mongo *bitacora, char *msg)
 
         if (!list_is_empty(bitacora->blocks) && last_block_offset > 0)
         {
-            last_block = list_get(bitacora->blocks, list_size(bitacora->blocks) - 1);
+            last_block = (int)list_get(bitacora->blocks, list_size(bitacora->blocks) - 1);
         }
         else
         {
             last_block = get_free_block();
             set_block(last_block);
-            list_add(bitacora->blocks, last_block);
+            list_add(bitacora->blocks, (void *)last_block);
         }
 
         int blocks_file_offset = last_block * superbloque->block_size + last_block_offset;

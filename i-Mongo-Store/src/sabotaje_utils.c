@@ -10,7 +10,7 @@ void sabotaje_handler(int signal)
     log_info(logger, "Hubo bardo en el FS!");
 
     // Enviar posición de sabotaje al Discordiador
-    uint32_t tamanioSerializacion;
+    int tamanioSerializacion;
     void *posicion_sabotaje = serializar_envioSabotaje(1, 1, &tamanioSerializacion);
     send(discordiador_cxn, posicion_sabotaje, tamanioSerializacion, 0);
 
@@ -20,7 +20,7 @@ void sabotaje_handler(int signal)
 bool blocks_count_check()
 {
     uint32_t blocks_aux;
-    memcpy(superbloque_file + sizeof(uint32_t), &(blocks_aux), sizeof(uint32_t));
+    memcpy(&(blocks_aux), superbloque_file + sizeof(uint32_t), sizeof(uint32_t));
 
     return superbloque->blocks == blocks_aux;
 }
@@ -32,10 +32,10 @@ void repair_blocks_count()
 
 bool bitmap_check()
 {
-    t_bitarray *bitmap_aux;
+
     void *bit_pointer_aux = malloc(superbloque->blocks / 8);
     memcpy(bit_pointer_aux, superbloque_file + 2 * sizeof(uint32_t), superbloque->blocks / 8);
-    bitmap_aux = bitarray_create_with_mode(bit_pointer_aux, superbloque->blocks / 8, LSB_FIRST);
+    t_bitarray *bitmap_aux = bitarray_create_with_mode(bit_pointer_aux, superbloque->blocks / 8, LSB_FIRST);
 
     for (int i = 0; i < superbloque->blocks; i++)
     {
@@ -47,7 +47,6 @@ bool bitmap_check()
     }
 
     bitarray_destroy(bitmap_aux);
-
     return true;
 }
 

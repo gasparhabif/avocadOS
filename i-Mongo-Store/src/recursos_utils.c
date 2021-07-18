@@ -33,7 +33,7 @@ t_recurso *load_recurso(char *recurso_file_path)
     recurso_aux->blocks = list_create();
     for (int i = 0; blocks[i] != NULL; i++)
     {
-        list_add(recurso_aux->blocks, atoi(blocks[i]));
+        list_add(recurso_aux->blocks, (void *)atoi(blocks[i]));
     }
     recurso_aux->caracter_llenado = string_new();
     string_append(&(recurso_aux->caracter_llenado), config_get_string_value(recurso_config, "CARACTER_LLENADO"));
@@ -80,13 +80,18 @@ void agregar_recurso(t_recurso *recurso, int cantidad)
 
         if (!list_is_empty(recurso->blocks) && last_block_offset > 0)
         {
-            last_block = list_get(recurso->blocks, list_size(recurso->blocks) - 1);
+            last_block = (int)list_get(recurso->blocks, list_size(recurso->blocks) - 1);
         }
         else
         {
             last_block = get_free_block();
+            if (last_block == BLOCK_ASSIGN_ERROR)
+            {
+                log_error(logger, "No hay bloques disponibles. Se rompió todo");
+                exit(EXIT_FAILURE);
+            }
             set_block(last_block);
-            list_add(recurso->blocks, last_block);
+            list_add(recurso->blocks, (void *)last_block);
             recurso->block_count++;
         }
 
@@ -112,7 +117,7 @@ void eliminar_recurso(t_recurso *recurso, int cantidad)
 
     while (bytes_to_delete != 0)
     {
-        int last_block = list_get(recurso->blocks, list_size(recurso->blocks) - 1);
+        int last_block = (int)list_get(recurso->blocks, list_size(recurso->blocks) - 1);
         int block_bytes_count = recurso->size % superbloque->block_size;
         int byte_to_delete = last_block * superbloque->block_size - 1;
         byte_to_delete += block_bytes_count == 0 ? superbloque->block_size : block_bytes_count;
@@ -123,7 +128,7 @@ void eliminar_recurso(t_recurso *recurso, int cantidad)
 
         if (recurso->size % superbloque->block_size == 0)
         {
-            int block_to_free = list_remove(recurso->blocks, list_size(recurso->blocks) - 1);
+            int block_to_free = (int)list_remove(recurso->blocks, list_size(recurso->blocks) - 1);
             clean_block(block_to_free);
             recurso->block_count--;
         }
