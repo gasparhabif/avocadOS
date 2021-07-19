@@ -125,8 +125,9 @@ int cantidad_paginas_proceso(int pid){
 int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
 
     t_tabla_paginas_proceso *elemento_proceso;
-    t_pagina_proceso        *paginas_proceso;
-    int err;
+    void *d_proceso;
+    void *tcb_serializado = malloc(sizeof(t_TCB));
+    t_TCB *tcb;
 
     for (int i = 0; i < list_size(tabla_proceso); i++)
     {
@@ -134,11 +135,147 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
 
         if (elemento_proceso->tipo == TCB && elemento_proceso->id == tid)
         {
-            paginas_proceso = obtener_paginas_proceso(pid, &err);
+            //OBTENGO EL TCB
+            d_proceso = recuperar_elementos_proceso(pid);
+            memcpy(tcb_serializado, d_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
+            tcb = deserializar_TCB(tcb_serializado);
+            
+            //INCREMENTO EL IP
+            tcb->proximaInstruccion++;
+
+            //GUARDO EL TCB ACTUALIZADO
+            tcb_serializado = serializar_pTCB(tcb);
+            memcpy(d_proceso + elemento_proceso->offset, tcb_serializado, elemento_proceso->tamanio);
+            guardar_elementos_proceso(pid, d_proceso);
+
+            //printf("TID: %d\n", tcb->TID);
+            //printf("estado: %c\n", tcb->estado);
+            //printf("posX: %d\n", tcb->posX);
+            //printf("posY: %d\n", tcb->posY);
+            //printf("proximaInstruccion: %d\n", tcb->proximaInstruccion);
+            //printf("puntero_PCB: %d\n", tcb->puntero_PCB);
+
+            return tcb->proximaInstruccion - 1;
+        }   
+    }
+
+    return -1;
+}
+
+void* recuperar_elementos_proceso(int pid){
+    
+    int               err;
+    int               bProceso          = bytes_ocupados_pid(pid);
+    int               bObtenidos        = 0;
+    void             *elementos_proceso = malloc(bProceso);
+    t_pagina_proceso *paginas_proceso   = obtener_paginas_proceso(pid, &err);
+
+    for (int i = 0; i < list_size(paginas_proceso->paginas); i++)
+    {
+        if((bObtenidos + tamanio_paginas) < bProceso){
+            memcpy(elementos_proceso + bObtenidos, list_get(paginas_proceso->paginas, i), tamanio_paginas);
+            bObtenidos += tamanio_paginas;
         }
-        
+        else{
+            memcpy(elementos_proceso + bObtenidos, list_get(paginas_proceso->paginas, i), (tamanio_paginas-calcular_fragmentacion(pid)));
+            bObtenidos += (tamanio_paginas-calcular_fragmentacion(pid));
+        }
+    }
+
+    return elementos_proceso;
+}
+
+void guardar_elementos_proceso(int pid, void* datosProceso){
+    int bProceso = bytes_ocupados_pid(pid);
+    int bGuardados = 0;
+    int err;
+    t_list* pag_proc = obtener_paginas_proceso(pid, &err)->paginas;
+
+    for (int i = 0; i < list_size(pag_proc); i++)
+    {
+        if ((bGuardados + tamanio_paginas) < bProceso)
+        {
+            memcpy(list_get(pag_proc, i), datosProceso + bGuardados, tamanio_paginas);
+            bGuardados += tamanio_paginas;
+        }
+        else{
+            memcpy(list_get(pag_proc, i), datosProceso + bGuardados, (tamanio_paginas-calcular_fragmentacion(pid)));
+            bGuardados += (tamanio_paginas-calcular_fragmentacion(pid));
+        }
     }
     
+}
+
+t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
+
+    void *elementos_proceso = recuperar_elementos_proceso(pid);
+    t_tabla_paginas_proceso *pagina_proceso;
+    void *tarea_serializada = malloc(sizeof(t_tarea));
+    t_tarea *tarea;
+
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        pagina_proceso = list_get(lista_proceso, i);
+
+        if (pagina_proceso->tipo == TAREAS)
+        {
+
+            printf("Tarea N°%d\n", nInstruccion);
+
+            if(pagina_proceso->tamanio/sizeof(t_tarea) == nInstruccion){
+                printf("ULTIMA INSTRUCCION\n");
+                
+                tarea = malloc(sizeof(t_tarea));
+                tarea->codigoTarea = FIN_TAREAS;
+
+                return tarea;
+            }
+            else{
+                memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + nInstruccion * sizeof(t_tarea), sizeof(t_tarea));
+                tarea = deserializar_TAREA(tarea_serializada);
+
+                //printf("codigoTarea: %d\n", tarea->codigoTarea);
+                //printf("parametro: %d\n", tarea->parametro);
+                //printf("posX: %d\n", tarea->posX);
+                //printf("posY: %d\n", tarea->posY);
+                //printf("duracionTarea: %d\n", tarea->duracionTarea);
+
+                return tarea;
+            }
+        }
+    }
+    
+    return (t_tarea*) -1;
+}
+
+int cant_tripulantes_paginacion(t_list* tabla_proceso){
+    int cant = 0;
+    t_tabla_paginas_proceso *pagina_proceso;
+
+    for (int i = 0; i < list_size(tabla_proceso); i++)
+    {
+        pagina_proceso = list_get(tabla_proceso, i);
+
+        if (pagina_proceso->tipo == TCB)
+            cant++;
+    }
+
+    return cant;    
+}
+
+int obtener_pid_pag(t_list* tablaUnProceso){
+    
+    t_tabla_paginas_proceso *pagina_proceso;
+
+    for (int i = 0; i < list_size(tablaUnProceso); i++)
+    {
+        pagina_proceso = list_get(tablaUnProceso, i);
+
+        if (pagina_proceso->tipo == PCB)
+            return pagina_proceso->id;
+    }
+
+    return -1;
 }
 
 void limpiar_estado_frames()

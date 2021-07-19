@@ -35,13 +35,34 @@ void *serializar_TCB(t_TCB unTCB){
     return tcb_serializado;
 }
 
+void *serializar_pTCB(t_TCB *unTCB){
+    
+    void *tcb_serializado = malloc(sizeof(t_TCB));
+    int offset = 0;
+
+    memcpy(tcb_serializado + offset, &(unTCB->TID), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(tcb_serializado + offset, &(unTCB->estado), sizeof(char));
+    offset += sizeof(char);
+    memcpy(tcb_serializado + offset, &(unTCB->posX), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(tcb_serializado + offset, &(unTCB->posY), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(tcb_serializado + offset, &(unTCB->proximaInstruccion), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(tcb_serializado + offset, &(unTCB->puntero_PCB), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+
+    return tcb_serializado;
+}
+
 void *serializar_TAREA(t_tarea *unaTarea){
     
     void *tarea_serializada = malloc(sizeof(t_tarea));
     int offset = 0;
 
-    memcpy(tarea_serializada + offset, &(unaTarea->codigoTarea), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
+    memcpy(tarea_serializada + offset, &(unaTarea->codigoTarea), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
     memcpy(tarea_serializada + offset, &(unaTarea->parametro), sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(tarea_serializada + offset, &(unaTarea->posX), sizeof(uint32_t));
@@ -94,8 +115,8 @@ t_tarea* deserializar_TAREA(void *unaTarea){
     t_tarea *tarea_deserializada = malloc(sizeof(t_tarea));
     int offset = 0;
 
-    memcpy(&(tarea_deserializada->codigoTarea), unaTarea + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
+    memcpy(&(tarea_deserializada->codigoTarea), unaTarea + offset, sizeof(uint8_t));
+    offset += sizeof(uint8_t);
     memcpy(&(tarea_deserializada->parametro), unaTarea + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(&(tarea_deserializada->posX), unaTarea + offset, sizeof(uint32_t));

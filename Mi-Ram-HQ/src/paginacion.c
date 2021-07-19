@@ -74,7 +74,9 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
 
     //GUARDO LAS TAREAS SERIALIZADAS EN MEMORIA
     offset = 0;
-    t_list *paginas_proceso = buscar_paginas_proceso(tareas_cPID_recibidas->PID);
+    int err;
+    t_list *paginas_proceso = obtener_paginas_proceso(tareas_cPID_recibidas->PID, &err)->paginas;
+
 
     int ultPagina = (sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas + sizeof(t_PCB)) % tamanio_paginas;
 
