@@ -178,4 +178,12 @@ void solicitar_tripulantes_paginada(int client)
 
 void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
 {
+
+    if(cant_tripulantes_proceso(datos_recibidos->pid) == 1){
+        //ELIMINAR PCB Y TAREAS (ADEMAS DEL TCB)
+
+    }
+    else{
+        //ELIMINAR TCB SOLICITADO
+    }
 }

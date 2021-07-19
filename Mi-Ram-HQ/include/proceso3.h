@@ -145,6 +145,7 @@ void guardar_elementos_proceso(int, void*);
 t_tarea* obtenerTarea(t_list*, int, int);
 int cant_tripulantes_paginacion(t_list*);
 int obtener_pid_pag(t_list*);
+int cant_tripulantes_proceso(int);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);

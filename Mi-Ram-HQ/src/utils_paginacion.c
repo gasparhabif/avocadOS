@@ -263,6 +263,13 @@ int cant_tripulantes_paginacion(t_list* tabla_proceso){
     return cant;    
 }
 
+int cant_tripulantes_proceso(int pid){
+    int err;
+    t_list* lista_proc = obtener_lista_proceso(pid, &err);
+
+    return cant_tripulantes_paginacion(lista_proc);
+}
+
 int obtener_pid_pag(t_list* tablaUnProceso){
     
     t_tabla_paginas_proceso *pagina_proceso;
