@@ -32,6 +32,7 @@ int main()
 
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();
+    pthread_mutex_init(&acceso_memoria, NULL);
 
     //CREO ESTRUCTURAS PARA CONOCER EL ESTADO DE LA MEMORIA:
     //      EN EL CASO DE LA PAGINACION   ES UNA ARRAY DE BITS CON LA CANTIDAD DE FRAMES
@@ -39,7 +40,6 @@ int main()
     if (strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
     {
         //INICIO LOS SEMAFOROS
-        pthread_mutex_init(&acceso_memoria, NULL);
         pthread_mutex_init(&m_procesos, NULL);
 
         tabla_estado_segmentos = list_create();

@@ -374,7 +374,7 @@ void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY
         mover_una_posicion(admin, posX, posY);
 
         int bEnviar;
-        void *d_enviar = serializar_envioPosicion(admin->pid, admin->tid, posX, posY, &bEnviar);
+        void *d_enviar = serializar_envioPosicion(admin->pid, admin->tid, admin->posX, admin->posY, &bEnviar);
         send(admin->sockfd_tripulante_ram,   d_enviar, bEnviar, 0);
         send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
         free(d_enviar);

@@ -26,7 +26,7 @@ void dump (int sig){
         }
         else if (strcmp(config->esquema_memoria, "PAGINACION") == 0)
         {
-            //dump_paginacion(fpDump);
+            dump_paginacion(fpDump);
         }
         
     fprintf(fpDump, "----------------------------------------------------------------\n");
@@ -61,4 +61,15 @@ void dump_segmentacion(FILE *fpDump){
 
 void dump_paginacion (FILE *fpDump){
 
+    t_pagina_proceso* pag_proc;
+
+    for (int i = 0; i < list_size(tabla_paginas); i++)
+    {
+        pag_proc = list_get(tabla_paginas, i);
+
+        for (int j = 0; j < list_size(pag_proc->paginas); j++)
+            fprintf(fpDump, "Proceso: %d\tPagina: %d\tMarco: %d\n", pag_proc->pid, j, (((int) list_get(pag_proc->paginas, j) - (int) memoria) / tamanio_paginas));
+    }
+    
+    return;
 }
