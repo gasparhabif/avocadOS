@@ -191,14 +191,19 @@ void guardar_elementos_proceso(int pid, void* datosProceso){
     int err;
     t_list* pag_proc = obtener_paginas_proceso(pid, &err)->paginas;
 
+    //printf("bProceso: %d\n", bProceso);
+
+
     for (int i = 0; i < list_size(pag_proc); i++)
     {
         if ((bGuardados + tamanio_paginas) < bProceso)
         {
+            //printf("Guardo bien\n");
             memcpy(list_get(pag_proc, i), datosProceso + bGuardados, tamanio_paginas);
             bGuardados += tamanio_paginas;
         }
         else{
+            //printf("Guardo en %p, lo que esta en %p, cantidad %d\n", list_get(pag_proc, i), datosProceso + bGuardados, (tamanio_paginas-calcular_fragmentacion(pid)));
             memcpy(list_get(pag_proc, i), datosProceso + bGuardados, (tamanio_paginas-calcular_fragmentacion(pid)));
             bGuardados += (tamanio_paginas-calcular_fragmentacion(pid));
         }

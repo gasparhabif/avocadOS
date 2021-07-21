@@ -105,6 +105,7 @@ void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)
             memcpy(elementos_proceso + elemento_proceso->offset, tcbSerializado, elemento_proceso->tamanio);
 
             guardar_elementos_proceso(datos_recibidos->PID, elementos_proceso);
+            free(elementos_proceso);
 
         }
     }
@@ -142,6 +143,8 @@ void actualizar_estado_paginada(t_estado *datos_recibidos)
             memcpy(elementos_proceso + elemento_proceso->offset, tcbSerializado, elemento_proceso->tamanio);
 
             guardar_elementos_proceso(datos_recibidos->PID, elementos_proceso);
+
+            free(elementos_proceso);
 
         }
     }
@@ -260,6 +263,11 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
         t_list* lista_paginas_proceso = obtener_paginas_proceso(datos_recibidos->pid, &err)->paginas;
         t_tabla_paginas_proceso *elemento_del_proceso;
         int index;
+        int paginasNecesarias = (bProceso - sizeof(t_TCB)) / tamanio_paginas;
+    
+        if (((bProceso - sizeof(t_TCB)) % tamanio_paginas) != 0)
+            paginasNecesarias++;
+
 
         for (int i = 0; i < list_size(tabla_proceso); i++)
         {
@@ -268,13 +276,15 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
             if (elemento_del_proceso->tipo == TCB && elemento_del_proceso->id == datos_recibidos->tid)
             {
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
-                if(ceil((bProceso-sizeof(t_TCB))/tamanio_paginas) < list_size(lista_paginas_proceso)){
+                printf("Paginas necesarias: %d\nPaginas que tengo: %d\n", paginasNecesarias, list_size(lista_paginas_proceso));
+                if(paginasNecesarias < list_size(lista_paginas_proceso)){
                
-
-                    for (int i = list_size(lista_paginas_proceso)-1; i > (list_size(lista_paginas_proceso) - ceil((bProceso-sizeof(t_TCB))/tamanio_paginas))-1; i--)
+                    for (int i = list_size(lista_paginas_proceso)-1; i > paginasNecesarias-1; i--)
                     {
+                        printf("i: %d\n", i);
                         estado_frames[i] = 0;
-                        free(list_remove(lista_paginas_proceso, i));
+                        list_remove(lista_paginas_proceso, i);
+                        printf("Libere una pagina\n");
                     }
                 }
 
@@ -298,6 +308,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
             list_replace(tabla_proceso, i, elemento_del_proceso);
         }
 
+        printf("LLAMO YO\n");
         guardar_elementos_proceso(datos_recibidos->pid, elementos_proceso_sTCB);
     }
 
