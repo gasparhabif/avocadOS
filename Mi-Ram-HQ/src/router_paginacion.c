@@ -73,7 +73,7 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
 void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)
 {
 
-    printf("Recibo la posicion -> %d|%d\n", datos_recibidos->pos.posX, datos_recibidos->pos.posY);
+    //printf("Recibo la posicion -> %d|%d\n", datos_recibidos->pos.posX, datos_recibidos->pos.posY);
 
     pthread_mutex_lock(&acceso_memoria);
 
@@ -83,6 +83,7 @@ void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)
     t_tabla_paginas_proceso *elemento_proceso;
     void *tcbSerializado = malloc(sizeof(t_TCB));
     t_TCB *tcb;
+    
 
     for (int i = 0; i < list_size(tabla_proceso); i++)
     {
@@ -97,8 +98,6 @@ void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)
 
             tcb->posX = datos_recibidos->pos.posX;
             tcb->posY = datos_recibidos->pos.posY;
-
-            printf("Cambio una posicion\n");
 
             tcbSerializado = serializar_pTCB(tcb);
             free(tcb);
@@ -251,9 +250,55 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
         }       
     }
     else{
-        //ELIMINAR TCB SOLICITADO
+        //ELIMINAR TCB SOLICITADO UNICAMENTE
 
-        
+        int bProceso                  = bytes_ocupados_pid(datos_recibidos->pid);
+        void *elementos_proceso_cTCB  = recuperar_elementos_proceso(datos_recibidos->pid);
+        void *elementos_proceso_sTCB  = malloc(bProceso-sizeof(t_TCB));
+        int err;
+        t_list *tabla_proceso         = obtener_lista_proceso(datos_recibidos->pid, &err);
+        t_list* lista_paginas_proceso = obtener_paginas_proceso(datos_recibidos->pid, &err)->paginas;
+        t_tabla_paginas_proceso *elemento_del_proceso;
+        int index;
+
+        for (int i = 0; i < list_size(tabla_proceso); i++)
+        {
+            elemento_del_proceso = list_get(tabla_proceso, i);
+
+            if (elemento_del_proceso->tipo == TCB && elemento_del_proceso->id == datos_recibidos->tid)
+            {
+                //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
+                if(ceil((bProceso-sizeof(t_TCB))/tamanio_paginas) < list_size(lista_paginas_proceso)){
+               
+
+                    for (int i = list_size(lista_paginas_proceso)-1; i > (list_size(lista_paginas_proceso) - ceil((bProceso-sizeof(t_TCB))/tamanio_paginas))-1; i--)
+                    {
+                        estado_frames[i] = 0;
+                        free(list_remove(lista_paginas_proceso, i));
+                    }
+                }
+
+                //CAMBIAR OFFSETS A PARTIR DE ACA
+                index = i;
+
+                //ELIMINO EL TCB DE LA MEMORIA
+                memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->offset);
+                memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->tamanio, bProceso - elemento_del_proceso->offset - elemento_del_proceso->tamanio);
+
+                //ELIMINAR TCB DE LA LISTA DEL PROCESO
+                free(list_remove(tabla_proceso, i));
+
+            }
+        }
+
+        //CAMBIO LOS OFFSETS NECESARIOS
+        for (int i = index; i < list_size(tabla_proceso); i++){
+            elemento_del_proceso = list_get(tabla_proceso, i);
+            elemento_del_proceso->offset-= sizeof(t_TCB);
+            list_replace(tabla_proceso, i, elemento_del_proceso);
+        }
+
+        guardar_elementos_proceso(datos_recibidos->pid, elementos_proceso_sTCB);
     }
 
     pthread_mutex_unlock(&acceso_memoria);
