@@ -1,5 +1,13 @@
 #include "proceso2.h"
 
+t_posicion *next_pos_sabotaje()
+{
+    t_posicion *first_pos = list_remove(config->posiciones_sabotaje, 0);
+    list_add(config->posiciones_sabotaje, first_pos);
+
+    return first_pos;
+}
+
 void sabotaje_handler(int signal)
 {
     if (signal != SIGUSR1)
@@ -7,12 +15,14 @@ void sabotaje_handler(int signal)
         return;
     }
 
-    log_info(logger, "Hubo bardo en el FS!");
+    t_posicion *next_pos = next_pos_sabotaje();
+    log_error(logger, "Se armó bardo en la posición %d|%d de la nave", next_pos->posX, next_pos->posY);
 
-    // Enviar posición de sabotaje al Discordiador
-    int tamanioSerializacion;
-    void *posicion_sabotaje = serializar_envioSabotaje(1, 1, &tamanioSerializacion);
-    send(discordiador_cxn, posicion_sabotaje, tamanioSerializacion, 0);
+    // Enviar posicion del sabotaje
+    int tamano_paquete;
+    void *posicion_sabotaje = serializar_envioSabotaje(next_pos->posX, next_pos->posY, &tamano_paquete);
+    send(discordiador_cxn, posicion_sabotaje, tamano_paquete, 0);
+    log_info(logger, "Se envió la posición %d|%d al Discordiador", next_pos->posX, next_pos->posY);
 
     free(posicion_sabotaje);
 }

@@ -134,6 +134,7 @@ void agregar_recurso(t_recurso *, int);
 void eliminar_recurso(t_recurso *, int);
 
 // Sabotaje utils (definidas en sabotaje_utils.c)
+t_posicion *next_pos_sabotaje();
 void sabotaje_handler(int);
 bool blocks_count_check();
 void repair_blocks_count();
