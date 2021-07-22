@@ -47,7 +47,7 @@ t_list *obtener_lista_proceso(int pid, int *err)
 
 t_pagina_proceso* obtener_paginas_proceso(int pid, int *err)
 {
-    t_pagina_proceso *paginas_proceso = malloc(sizeof(t_pagina_proceso));
+    t_pagina_proceso *paginas_proceso;
 
     for (int i = 0; i < list_size(tabla_paginas); i++)
     {
@@ -128,6 +128,7 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
     void *d_proceso;
     void *tcb_serializado = malloc(sizeof(t_TCB));
     t_TCB *tcb;
+    int numInst = 0;
 
     for (int i = 0; i < list_size(tabla_proceso); i++)
     {
@@ -140,13 +141,23 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
             memcpy(tcb_serializado, d_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
             tcb = deserializar_TCB(tcb_serializado);
             
+            printf("Tengo el tcb\n");
+
             //INCREMENTO EL IP
+            numInst = tcb->proximaInstruccion;
             tcb->proximaInstruccion++;
 
+            printf("Incremento el tcb\n");
+
             //GUARDO EL TCB ACTUALIZADO
+            free(tcb_serializado);
             tcb_serializado = serializar_pTCB(tcb);
             memcpy(d_proceso + elemento_proceso->offset, tcb_serializado, elemento_proceso->tamanio);
             guardar_elementos_proceso(pid, d_proceso);
+            free(tcb);
+            free(d_proceso);
+
+            printf("Guardo el tcb\n");
 
             //printf("TID: %d\n", tcb->TID);
             //printf("estado: %c\n", tcb->estado);
@@ -155,7 +166,10 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
             //printf("proximaInstruccion: %d\n", tcb->proximaInstruccion);
             //printf("puntero_PCB: %d\n", tcb->puntero_PCB);
 
-            return tcb->proximaInstruccion - 1;
+            //printf("Devuelvo %d\n", numInst);
+
+            printf("Termino\n");
+            return numInst;
         }   
     }
 
@@ -213,9 +227,11 @@ void guardar_elementos_proceso(int pid, void* datosProceso){
 
 t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
 
-    void *elementos_proceso = recuperar_elementos_proceso(pid);
+    void *elementos_proceso;
+    elementos_proceso = recuperar_elementos_proceso(pid);
     t_tabla_paginas_proceso *pagina_proceso;
-    void *tarea_serializada = malloc(sizeof(t_tarea));
+    void *tarea_serializada;
+    tarea_serializada = malloc(sizeof(t_tarea));
     t_tarea *tarea;
 
     for (int i = 0; i < list_size(lista_proceso); i++)
@@ -225,13 +241,17 @@ t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
         if (pagina_proceso->tipo == TAREAS)
         {
 
-            printf("Tarea N°%d\n", nInstruccion);
+            //printf("Tarea N°%d\n", nInstruccion);
 
             if(pagina_proceso->tamanio/sizeof(t_tarea) == nInstruccion){
                 printf("ULTIMA INSTRUCCION\n");
                 
                 tarea = malloc(sizeof(t_tarea));
                 tarea->codigoTarea = FIN_TAREAS;
+                tarea->parametro = 0;
+                tarea->posX = 0;
+                tarea->posY = 0;
+                tarea->duracionTarea = 0;
 
                 return tarea;
             }

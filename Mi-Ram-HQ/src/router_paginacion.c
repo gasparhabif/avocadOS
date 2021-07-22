@@ -52,13 +52,19 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
     pthread_mutex_lock(&acceso_memoria);
 
     int err;
-    t_list *tabla_proceso    = obtener_lista_proceso(pidYtid_recibido->pid, &err);
+    t_list *tabla_proceso = obtener_lista_proceso(pidYtid_recibido->pid, &err);
 
     //OBTENGO EL NRO DE INSTRUCCION E INCREMENTO EL IP
-    int nInstruccion         = obtener_numero_instruccion(tabla_proceso, pidYtid_recibido->pid, pidYtid_recibido->tid);
-    
+    int nInstruccion;
+
+    //printf("\n\n\nNO TENGO EL NRO DE INSTRUCCION\n\n\n");
+
+    nInstruccion = obtener_numero_instruccion(tabla_proceso, pidYtid_recibido->pid, pidYtid_recibido->tid);
+
+    //printf("\n\n\nTENGO EL NRO DE INSTRUCCION %d\n\n\n", nInstruccion);
+
     //BUSCO LA TAREA QUE NECESITO
-    t_tarea *tarea_recibida  = obtenerTarea(tabla_proceso, pidYtid_recibido->pid, nInstruccion);
+    t_tarea *tarea_recibida = obtenerTarea(tabla_proceso, pidYtid_recibido->pid, nInstruccion);
 
     pthread_mutex_unlock(&acceso_memoria);
 
@@ -228,11 +234,11 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 //LIBERO LA MEMORIA Y ELIMINO LAS PAGINAS DEL PROCESO DE LA TABLA
                 for (int j = 0; j < list_size(pag_proceso->paginas); j++){
                     estado_frames[((int) list_get(pag_proceso->paginas, j) - (int) memoria) / tamanio_paginas] = 0;
-                    free(list_remove(pag_proceso->paginas, j));
+                    list_remove(pag_proceso->paginas, j);
                 }
 
                 //ELIMINO LA TABLA DE PAGINAS DEL PROCEO
-                free(list_remove(tabla_paginas, i));
+                list_remove(tabla_paginas, i);
             }
         }
 
@@ -244,13 +250,10 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
             tabla_un_proceso = list_get(tabla_procesos, i);
 
             if(obtener_pid_pag(tabla_un_proceso) == datos_recibidos->pid){
-                for(int j=0; j<list_size(tabla_un_proceso); j++)
-                    free(list_remove(tabla_un_proceso, j));
 
-                
                 list_remove(tabla_procesos, i);
             }
-        }       
+        }     
     }
     else{
         //ELIMINAR TCB SOLICITADO UNICAMENTE
@@ -281,10 +284,8 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                
                     for (int i = list_size(lista_paginas_proceso)-1; i > paginasNecesarias-1; i--)
                     {
-                        printf("i: %d\n", i);
                         estado_frames[i] = 0;
                         list_remove(lista_paginas_proceso, i);
-                        printf("Libere una pagina\n");
                     }
                 }
 
@@ -296,7 +297,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->tamanio, bProceso - elemento_del_proceso->offset - elemento_del_proceso->tamanio);
 
                 //ELIMINAR TCB DE LA LISTA DEL PROCESO
-                free(list_remove(tabla_proceso, i));
+                list_remove(tabla_proceso, i);
 
             }
         }
@@ -308,7 +309,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
             list_replace(tabla_proceso, i, elemento_del_proceso);
         }
 
-        printf("LLAMO YO\n");
         guardar_elementos_proceso(datos_recibidos->pid, elementos_proceso_sTCB);
     }
 

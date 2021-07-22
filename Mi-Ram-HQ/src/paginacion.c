@@ -19,10 +19,11 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     if (((bytes_solicitados - fragmentacionInterna) % tamanio_paginas) != 0)
         cantidad_paginas_a_reservar++;
 
-    printf("Reservo %d paginas\n", cantidad_paginas_a_reservar);
+    //printf("Reservo %d paginas\n", cantidad_paginas_a_reservar);
     
     paginas_proceso = obtener_paginas_proceso(pid, &err);
-    if (err){    
+    if (err){
+        printf("Se esta creando un proceso, puede ser pa?\n");
         paginas_proceso = malloc(sizeof(t_pagina_proceso));
         paginas_proceso->paginas = list_create();
         paginas_proceso->pid = pid;
@@ -143,8 +144,10 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
     int err;
     t_pagina_proceso* lista_paginas_proceso = obtener_paginas_proceso(datos_recibidos->pid, &err);
 
-    escribirDesdePagina = (((int) list_get(lista_paginas_proceso->paginas, bytesOcupados / tamanio_paginas) - (int) memoria) / tamanio_paginas);
-    //printf("Escribir desde pagina %d el byte %d\n", escribirDesdePagina, offsetPrimeraPagina);
+    //escribirDesdePagina = (((int) list_get(lista_paginas_proceso->paginas, bytesOcupados / tamanio_paginas) - (int) memoria) / tamanio_paginas);
+    escribirDesdePagina = bytesOcupados / tamanio_paginas;
+    //printf("Escribir desde pagina %d el byte %d\nbytesOcupados / tamanio_paginas: %d\n", escribirDesdePagina, offsetPrimeraPagina, bytesOcupados / tamanio_paginas);
+
 
 
     //EN EL CASO DE QUE ENTRE EN LA ULTIMA PAGINA
