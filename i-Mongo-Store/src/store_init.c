@@ -107,7 +107,8 @@ void create_blocks()
 
     for (int i = 0; i < blocks_file_size; i++)
     {
-        blocks_file[i] = i % BLOCK_SIZE == 0 ? '|' : '-';
+        // blocks_file[i] = i % BLOCK_SIZE == 0 ? '|' : '-';
+        blocks_file[i] = '-';
     }
 
     munmap(blocks_file, blocks_file_size);

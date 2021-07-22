@@ -130,34 +130,3 @@ void tareaNormal()
     log_info(logger, "Se solicitó realizar una tarea normal");
     // ...
 }
-
-// REGISTRO DE BITÁCORA
-void registrarDesplazamiento()
-{
-    log_info(logger, "Registrando DESPLAZAMIENTO...");
-    // ...
-}
-
-void registrarInicioTarea()
-{
-    log_info(logger, "Registrando INICIO DE TAREA...");
-    // ...
-}
-
-void registrarFinTarea()
-{
-    log_info(logger, "Registrando FIN DE TAREA...");
-    // ...
-}
-
-void registrarAtencionSabotaje()
-{
-    log_info(logger, "Registrando ATENCIÓN DE SABOTAJE...");
-    // ...
-}
-
-void registrarResolucionSabotaje()
-{
-    log_info(logger, "Registrando RESOLUCIÓN DE SABOTAJE...");
-    // ...
-}

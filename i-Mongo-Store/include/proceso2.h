@@ -23,7 +23,7 @@
 
 // Constantes de FS
 #define BLOCK_SIZE 8
-#define BLOCKS 16
+#define BLOCKS 128
 #define MD5_SIZE 32
 
 // Constantes de error de FS
@@ -91,13 +91,6 @@ void generarBasura(int);
 void descartarBasura();
 void tareaNormal();
 
-// Registro de bitácora (definidas en tareas.c)
-void registrarDesplazamiento();
-void registrarInicioTarea();
-void registrarFinTarea();
-void registrarAtencionSabotaje();
-void registrarResolucionSabotaje();
-
 // Inicialización del FS (definidas en store_init.c)
 void init_paths();
 bool file_exists(char *);
@@ -117,6 +110,9 @@ void update_bitacora_metadata(t_bitacora_mongo *);
 void liberar_bitacora(t_bitacora_mongo *);
 void registrar_bitacora(t_bitacora_mongo *, char *);
 char *blocks_list_to_string(t_list *);
+char *pos_to_string(t_posicion *);
+void update_pos(t_posicion *, t_posicion *);
+char *get_nombre_tarea(int);
 
 // SuperBloque utils (definidas en superbloque_utils.c)
 int get_free_block();

@@ -31,10 +31,14 @@ void tripulante_cxn_handler(void *arg)
 
     // Recibir tripulante y su posición inicial
     t_tidCposicion *tripulante = recibir_paquete(client);
-    log_info(logger, "Se conectó el tripulante TID: %d - Posición inicial: %d|%d", tripulante->TID, tripulante->pos.posX, tripulante->pos.posY);
+    char *tid = string_itoa(tripulante->TID);
+    t_posicion *current_pos = malloc(sizeof(t_posicion));
+    current_pos->posX = tripulante->pos.posX;
+    current_pos->posY = tripulante->pos.posY;
+
+    log_info(logger, "Se conectó el tripulante TID: %s - Posición inicial: %s", tid, pos_to_string(current_pos));
 
     // Obtener path
-    char *tid = string_itoa(tripulante->TID);
     // char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
     char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
 
@@ -55,19 +59,27 @@ void tripulante_cxn_handler(void *arg)
 
     while (!tareas_finalizadas)
     {
+        sync_blocks();
+
         switch (cod_operacion)
         {
-        case MOVER_TRIPULANTE:
-            // TODO: Actualizar posicion del tripulante
-            registrarDesplazamiento();
+        case MOVER_TRIPULANTE:;
+            t_envio_posicion *datos_posicion = (t_envio_posicion *)datos_recibidos;
+            t_posicion *next_pos = malloc(sizeof(t_posicion));
+            next_pos->posX = datos_posicion->pos.posX;
+            next_pos->posY = datos_posicion->pos.posY;
+            registrar_bitacora(bitacora, string_from_format("Se mueve de %s a %s\0", pos_to_string(current_pos), pos_to_string(next_pos)));
+            update_pos(current_pos, next_pos);
+            free(next_pos);
+            free(datos_posicion);
             break;
 
         case INICIO_TAREA:
-            registrarInicioTarea();
+            registrar_bitacora(bitacora, string_from_format("Comienza ejecución de tarea %s\0", get_nombre_tarea((int)datos_recibidos)));
             break;
 
         case INICIO_RESOLUCION_SABOTAJE:
-            registrarAtencionSabotaje();
+            registrar_bitacora(bitacora, "Se corre en pánico hacia la ubicación del sabotaje\0");
             break;
 
         case INICIO_PROTOCOLO_FSCK:
@@ -75,12 +87,14 @@ void tripulante_cxn_handler(void *arg)
             break;
 
         case FIN_RESOLUCION_SABOTAJE:
-            registrarResolucionSabotaje();
+            registrar_bitacora(bitacora, "Se resuelve el sabotaje\0");
             break;
 
         case EJECUTAR_TAREA:;
             t_ejecutar_tarea *tarea_a_ejecutar = (t_ejecutar_tarea *)datos_recibidos;
             ejecutarTarea(tarea_a_ejecutar);
+            registrar_bitacora(bitacora, string_from_format("Se finaliza la tarea %s\0", get_nombre_tarea(tarea_a_ejecutar->codigoTarea)));
+            free(tarea_a_ejecutar);
             break;
 
         default:
@@ -91,9 +105,6 @@ void tripulante_cxn_handler(void *arg)
 
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
-
-    // TODO: Remover
-    // sync_blocks();
 
     free(bitacora_file_path);
     free(tid);
