@@ -4,23 +4,21 @@ int solicitar_paginas(int bytes_solicitados, int pid)
 {
     int cantidad_paginas_a_reservar;
     int err;
-    int fragmentacionInterna = calcular_fragmentacion(pid);
+    int fragmentacion_interna = calcular_fragmentacion(pid);
     int paginas_reservadas = 0;
     t_pagina_proceso *paginas_proceso;
 
-    printf("Me solicitaron %dB, la fragmentacion es %d\n", bytes_solicitados, fragmentacionInterna);
+    printf("Me solicitaron %dB, la fragmentacion es %d\n", bytes_solicitados, fragmentacion_interna);
 
-    if (fragmentacionInterna > bytes_solicitados)
+    if (fragmentacion_interna > bytes_solicitados)
     {
         printf("No debo reservar paginas\n");
         return 0;
     }
 
-    cantidad_paginas_a_reservar = (bytes_solicitados - fragmentacionInterna) / tamanio_paginas;
-    if (((bytes_solicitados - fragmentacionInterna) % tamanio_paginas) != 0)
+    cantidad_paginas_a_reservar = (bytes_solicitados - fragmentacion_interna) / tamanio_paginas;
+    if (((bytes_solicitados - fragmentacion_interna) % tamanio_paginas) != 0)
         cantidad_paginas_a_reservar++;
-
-    //printf("Reservo %d paginas\n", cantidad_paginas_a_reservar);
 
     paginas_proceso = obtener_paginas_proceso(pid, &err);
     if (err)
@@ -137,13 +135,13 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
 
     //GUARDO EL TCB EN LA MEMORIA
     int bytesOcupados = bytes_ocupados_pid(datos_recibidos->pid);
-    int fragmentacionInterna = calcular_fragmentacion(datos_recibidos->pid);
+    int fragmentacion_interna = calcular_fragmentacion(datos_recibidos->pid);
     int escribirDesdePagina;
-    int offsetPrimeraPagina = tamanio_paginas - fragmentacionInterna;
+    int offsetPrimeraPagina = tamanio_paginas - fragmentacion_interna;
     int paginas_acceder = 1;
     int bGuardadros = 0;
 
-    for (int i = fragmentacionInterna; i < sizeof(t_TCB); i += tamanio_paginas)
+    for (int i = fragmentacion_interna; i < sizeof(t_TCB); i += tamanio_paginas)
         paginas_acceder++;
 
     int err;
@@ -154,7 +152,7 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
     //printf("Escribir desde pagina %d el byte %d\nbytesOcupados / tamanio_paginas: %d\n", escribirDesdePagina, offsetPrimeraPagina, bytesOcupados / tamanio_paginas);
 
     //EN EL CASO DE QUE ENTRE EN LA ULTIMA PAGINA
-    if (fragmentacionInterna >= sizeof(t_TCB))
+    if (fragmentacion_interna >= sizeof(t_TCB))
         memcpy((list_get(lista_paginas_proceso->paginas, escribirDesdePagina) + offsetPrimeraPagina), tcb, sizeof(t_TCB));
     //EN EL CASO DE QUE DEBA ALMACENARSE EN UNA NUEVA PAGINA O FINALIZAR LA ULTIMA Y UTILIZAR LA SIGUIENTE
     else
@@ -166,8 +164,8 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
             //LA PRIMERA PAGINA DEBO UNICAMENTE LLENARLA CON LOS BYTES QUE FALTAN
             if (i == escribirDesdePagina)
             {
-                memcpy((list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina), tcb, fragmentacionInterna);
-                bGuardadros += fragmentacionInterna;
+                memcpy((list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina), tcb, fragmentacion_interna);
+                bGuardadros += fragmentacion_interna;
             }
             //EL RESTO DE LAS PAGINAS DEBO LLENARLAS ENTERAS O CON EL RESTANTE DEL TCB
             else

@@ -66,17 +66,29 @@ t_pagina_proceso *obtener_paginas_proceso(int pid, int *err)
 int calcular_fragmentacion(int pid)
 {
     int err;
-    int bytes_ocupados = 0;
     t_list *tabla_proceso = obtener_lista_proceso(pid, &err);
 
     if (err)
         return 0;
     else
     {
-        bytes_ocupados = bytes_ocupados_lista(tabla_proceso);
+        int bytes_ocupados = bytes_ocupados_lista(tabla_proceso);
+        int paginas_ocupadas = calcular_paginas_ocupadas(bytes_ocupados);
 
-        return tamanio_paginas - (bytes_ocupados - tamanio_paginas * (bytes_ocupados / tamanio_paginas));
+        // return tamanio_paginas - (bytes_ocupados - tamanio_paginas * (bytes_ocupados / tamanio_paginas));
+        return tamanio_paginas * paginas_ocupadas - bytes_ocupados;
     }
+}
+
+int calcular_paginas_ocupadas(int bytes_ocupados)
+{
+    int cantidad = 1;
+    while (bytes_ocupados > tamanio_paginas)
+    {
+        cantidad++;
+        bytes_ocupados -= tamanio_paginas;
+    }
+    return cantidad;
 }
 
 int bytes_ocupados_pid(int pid)
