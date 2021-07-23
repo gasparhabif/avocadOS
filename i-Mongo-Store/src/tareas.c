@@ -5,9 +5,6 @@ void ejecutarTarea(t_ejecutar_tarea *tarea_a_ejecutar)
 {
     switch (tarea_a_ejecutar->codigoTarea)
     {
-    case FIN_TAREAS:
-        finTareas();
-        break;
     case GENERAR_OXIGENO:
         generarOxigeno(tarea_a_ejecutar->parametro);
         break;
@@ -27,7 +24,6 @@ void ejecutarTarea(t_ejecutar_tarea *tarea_a_ejecutar)
         descartarBasura();
         break;
     default:
-        tareaNormal();
         break;
     }
 }

@@ -39,8 +39,8 @@ void tripulante_cxn_handler(void *arg)
     log_info(logger, "Se conectó el tripulante TID: %s - Posición inicial: %s", tid, pos_to_string(current_pos));
 
     // Obtener path
-    // char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
-    char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
+    char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
+    // char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
 
     if (!file_exists(bitacora_file_path))
     {
@@ -65,6 +65,7 @@ void tripulante_cxn_handler(void *arg)
 
     while (!tareas_finalizadas)
     {
+        pthread_mutex_lock(&fs_libre);
         sync_blocks();
 
         switch (cod_operacion)
@@ -103,12 +104,18 @@ void tripulante_cxn_handler(void *arg)
             free(tarea_a_ejecutar);
             break;
 
+        case FIN_TAREAS:
+            log_info(logger, "El tripulante %d finalizó sus tareas y se desconectó", tripulante->TID);
+            tareas_finalizadas = true;
+            break;
+
         default:
             log_error(logger, "Código %d desconocido. El tripulante %d se desconectó", cod_operacion, tripulante->TID);
             tareas_finalizadas = true;
             break;
         }
 
+        pthread_mutex_unlock(&fs_libre);
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 

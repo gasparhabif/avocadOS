@@ -113,6 +113,9 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     case INICIO_TRIPULANTE_MONGO:
         dRecibidos = deserializar_posicionCtid(paquete->buffer);
         break;
+    case FIN_TAREAS:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
     }
 
     free(paquete->buffer->stream);

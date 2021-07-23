@@ -23,7 +23,7 @@
 
 // Constantes de FS
 #define BLOCK_SIZE 8
-#define BLOCKS 128
+#define BLOCKS 256
 #define MD5_SIZE 32
 
 // Constantes de error de FS
@@ -75,6 +75,7 @@ int blocks_fd;
 int blocks_file_size;
 char *blocks_file;
 char *blocks_file_copy;
+pthread_mutex_t fs_libre;
 
 // Conexiones hacia el store (definidas en store_connections.c)
 void accept_tripulantes(void *);

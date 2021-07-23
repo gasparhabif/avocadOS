@@ -12,6 +12,9 @@ int main()
     config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
     log_info(logger, "Se cargó la configuración");
 
+    // Iniciar mutex
+    pthread_mutex_init(&fs_libre, NULL);
+
     // Iniciar FS
     init_paths();
 

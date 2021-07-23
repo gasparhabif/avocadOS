@@ -14,26 +14,26 @@ int main(int argc, char **argv)
 	log_info(logger, "Se cargo la config del Discordador");
 
 	//INICIALIZO VARIABLES CLAVE
-	patota_id              = 1;
-	ejecutandoTripulantes  = 1;
+	patota_id = 1;
+	ejecutandoTripulantes = 1;
 	ejecutandoPlanificador = 1;
-	escuchandoSabotajes    = 1;
-	planificando           = 1;
-	sabotaje               = 0;
+	escuchandoSabotajes = 1;
+	planificando = 1;
+	sabotaje = 0;
 
 	pthread_mutex_init(&mutex_block, NULL);
 	sem_init(&s_multiprocesamiento, 0, config->grado_multitarea);
 
-	exec    = list_create();
-	ready   = list_create();
-	bloq    = list_create();
+	exec = list_create();
+	ready = list_create();
+	bloq = list_create();
 	bloq_IO = list_create();
 
-	pthread_mutex_init(&m_listaExec,  NULL);
+	pthread_mutex_init(&m_listaExec, NULL);
 	pthread_mutex_init(&m_listaReady, NULL);
 	pthread_mutex_init(&m_listaBlock, NULL);
 	pthread_mutex_init(&m_listaBlockIO, NULL);
-	
+
 	pthread_mutex_init(&pause_block, NULL);
 	sem_init(&pause_exec, 0, config->grado_multitarea);
 
@@ -42,10 +42,10 @@ int main(int argc, char **argv)
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
-	//sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
-	/*char reconectOP;
+	char reconectOP;
 
 	while (sockfd_ram == -1 || sockfd_mongo == -1)
 	{
@@ -68,14 +68,13 @@ int main(int argc, char **argv)
 			system("clear");
 		}
 	}
-	*/
 
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
-	//pthread_t thread_sabotajes;
-	//pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
-	//pthread_detach(thread_sabotajes);
+	pthread_t thread_sabotajes;
+	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
+	pthread_detach(thread_sabotajes);
 
 	pausar(1);
 
@@ -93,7 +92,7 @@ int main(int argc, char **argv)
 
 		string_to_upper(parametros[0]);
 
-		if (strcmp(parametros[0],      "INICIAR_PATOTA") == 0)
+		if (strcmp(parametros[0], "INICIAR_PATOTA") == 0)
 			comando[0](parametros);
 		else if (strcmp(parametros[0], "LISTAR_TRIPULANTES") == 0)
 			comando[1](parametros);
