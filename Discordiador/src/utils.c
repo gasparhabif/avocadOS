@@ -147,6 +147,7 @@ int pausar(int pausarPlanificacion){
         for (int i = 0; i < config->grado_multitarea; i++)
             sem_post(&pause_exec);     
         pthread_mutex_unlock(&pause_block);
+        pausar_tripulantes(0);
 
         planificando = 1;
         return 1;
@@ -156,12 +157,40 @@ int pausar(int pausarPlanificacion){
         for (int i = 0; i < config->grado_multitarea; i++)
             sem_wait(&pause_exec);     
         pthread_mutex_lock(&pause_block);
+        pausar_tripulantes(1);
 
         planificando = 0;
         return 1;
     }
     else
         return 0;
+}
+
+void pausar_tripulantes(int hayQuePausar){
+    pausar_lista(exec,    hayQuePausar);
+    pausar_lista(ready,   hayQuePausar);
+    pausar_lista(bloq,    hayQuePausar);
+    pausar_lista(bloq_IO, hayQuePausar);
+
+    return;
+}
+
+void pausar_lista(t_list* lista, int hayQuePausar){
+    
+    t_admin_tripulantes *aux_admin;
+
+    for (int i = 0; i < list_size(lista); i++)
+    {
+        aux_admin = list_get(lista, i);
+        
+        if (hayQuePausar)            
+            pthread_mutex_lock(&(aux_admin->pausar_tripulante));
+        else
+            pthread_mutex_unlock(&(aux_admin->pausar_tripulante));
+    }
+    
+
+    return;
 }
 
 int eliminarTripulante(t_list *lista, int tid){

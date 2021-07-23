@@ -28,14 +28,15 @@
 //STRUCTS
 typedef struct
 {
-    u_int32_t pid;
-    u_int32_t tid;
-    char      estado;
-    u_int32_t posX;
-    u_int32_t posY;
-    int       sockfd_tripulante_ram;
-    int       sockfd_tripulante_mongo;
-    int       debeMorir;
+    u_int32_t       pid;
+    u_int32_t       tid;
+    char            estado;
+    u_int32_t       posX;
+    u_int32_t       posY;
+    int             sockfd_tripulante_ram;
+    int             sockfd_tripulante_mongo;
+    pthread_mutex_t pausar_tripulante;
+    int             debeMorir;
 } t_admin_tripulantes;
 
 typedef struct
@@ -57,6 +58,10 @@ void IMPRIMIR_SEGMENTOS    (char **);
 t_tarea *leer_tareas                  (FILE *, int *, int *);
 int      contar_caracteres_especiales (size_t, char *, char);
 int      pausar                       (int);
+void     pausar_tripulantes           (int);
+void     pausar_lista                 (t_list*, int);
+
+
 int      eliminarTripulante           (t_list *, int);
 int      menor_tid_list               (t_list*);
 int      mayor_tid_list               (t_list*);

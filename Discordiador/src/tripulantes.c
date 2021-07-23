@@ -38,11 +38,17 @@ void tripulante(t_parametros_tripulantes *parametro)
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
     admin = parametros_recibidos->admin;
 
-    admin->tid = tid;
-    admin->estado = NEW;
-    admin->posX = tcb_tripulante.posX;
-    admin->posY = tcb_tripulante.posY;
-    admin->debeMorir = 0;
+    admin->tid               = tid;
+    admin->estado            = NEW;
+    admin->posX              = tcb_tripulante.posX;
+    admin->posY              = tcb_tripulante.posY;
+    admin->debeMorir         = 0;
+
+    pthread_mutex_init(&(admin->pausar_tripulante), NULL);
+
+    if (!planificando)
+        pthread_mutex_lock(&admin->pausar_tripulante);
+    
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -102,6 +108,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
+        pthread_mutex_lock(&admin->pausar_tripulante);
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -173,6 +180,8 @@ void tripulante(t_parametros_tripulantes *parametro)
         }
         else
             actualizar_estado(admin, READY);
+
+        pthread_mutex_unlock(&admin->pausar_tripulante);
     }
 
     //DOY EL AVISO AL MONGO QUE FINALICÉ MIS TAREAS
