@@ -157,5 +157,5 @@ char *reconstruir_bitacora(t_bitacora_mongo *bitacora)
         free(block_info);
     }
 
-    return string_substring_until(bitacora_string, bitacora->size);
+    return string_substring_until(bitacora_string, bitacora->size - 1);
 }

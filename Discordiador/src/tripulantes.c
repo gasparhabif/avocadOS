@@ -38,17 +38,16 @@ void tripulante(t_parametros_tripulantes *parametro)
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
     admin = parametros_recibidos->admin;
 
-    admin->tid               = tid;
-    admin->estado            = NEW;
-    admin->posX              = tcb_tripulante.posX;
-    admin->posY              = tcb_tripulante.posY;
-    admin->debeMorir         = 0;
+    admin->tid = tid;
+    admin->estado = NEW;
+    admin->posX = tcb_tripulante.posX;
+    admin->posY = tcb_tripulante.posY;
+    admin->debeMorir = 0;
 
     pthread_mutex_init(&(admin->pausar_tripulante), NULL);
 
     if (!planificando)
         pthread_mutex_lock(&admin->pausar_tripulante);
-    
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -96,6 +95,8 @@ void tripulante(t_parametros_tripulantes *parametro)
         return;
     }
     log_info(logger, "El tripulante se conecto con i-Mongo-Store");
+
+    printf("Posición de TID %d: %d|%d\n", admin->tid, admin->posX, admin->posY);
 
     //ENVIO EL TID Y LA POSICION INICIAL AL MONGO
     void *enviar_tidYpos = serializar_posicionCtid(admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
@@ -392,7 +393,7 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     return;
 }
 
-void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY, int movimientosPosibles, int *duracionMovimientos)
+void mover_tripulante(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY, int movimientosPosibles, int *duracionMovimientos)
 {
 
     for (int i = 0; i < movimientosPosibles; i++)
@@ -414,7 +415,7 @@ void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY
     }
 }
 
-void mover_una_posicion(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY)
+void mover_una_posicion(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY)
 {
 
     int movX = posX - admin->posX;

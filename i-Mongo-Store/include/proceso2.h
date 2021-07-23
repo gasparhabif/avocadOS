@@ -22,8 +22,8 @@
 #include <signal.h>
 
 // Constantes de FS
-#define BLOCK_SIZE 32
-#define BLOCKS 512
+#define BLOCK_SIZE 8
+#define BLOCKS 128
 #define MD5_SIZE 32
 
 // Constantes de error de FS
@@ -78,6 +78,7 @@ char *blocks_file_copy;
 pthread_mutex_t fs_libre;
 
 // Conexiones hacia el store (definidas en store_connections.c)
+void discordiador_cxn_handler();
 void accept_tripulantes(void *);
 void tripulante_cxn_handler(void *);
 

@@ -224,8 +224,8 @@ t_bitacora *deserializar_bitacora(t_buffer *buffer)
     {
         memcpy(&(bitacoraRecibida->acciones[i].tamanioAccion), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
-        memcpy(&(bitacoraRecibida->acciones[i].accion), stream, sizeof(bitacoraRecibida->acciones[i].tamanioAccion));
-        stream += sizeof(bitacoraRecibida->acciones[i].tamanioAccion);
+        memcpy(&(bitacoraRecibida->acciones[i].accion), stream, bitacoraRecibida->acciones[i].tamanioAccion);
+        stream += bitacoraRecibida->acciones[i].tamanioAccion;
     }
 
     return bitacoraRecibida;
@@ -255,7 +255,7 @@ t_tidCposicion *deserializar_posicionCtid(t_buffer *buffer)
     stream += sizeof(uint32_t);
     memcpy(&(tidCpos_recibido->pos.posX), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(tidCpos_recibido->pos.posX), stream, sizeof(uint32_t));
+    memcpy(&(tidCpos_recibido->pos.posY), stream, sizeof(uint32_t));
 
     return tidCpos_recibido;
 }

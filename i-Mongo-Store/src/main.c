@@ -71,6 +71,10 @@ int main()
     }
     log_info(logger, "Se conectó el discordiador en el socket %d", discordiador_cxn);
 
+    pthread_t discordiador_cxn_thread;
+    pthread_create(&discordiador_cxn_thread, NULL, (void *)discordiador_cxn_handler, NULL);
+    pthread_detach(discordiador_cxn_thread);
+
     // Aceptar conexiones de los tripulantes
     log_info(logger, "Esperando tripulantes en el puerto %d", config->puerto);
     pthread_t tripulantes_cxns_thread;

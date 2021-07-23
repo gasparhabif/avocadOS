@@ -1,6 +1,8 @@
 #ifndef COMMON_TYPES_H
 #define COMMON_TYPES_H
 
+#include <stdint.h>
+
 enum CODIGOS_DE_OPERACION
 {
     COMENZAR_PATOTA = 1,
@@ -55,31 +57,31 @@ enum CODIGOS_DE_BITACORAS
 //BUFFERS Y PAQUETE
 typedef struct
 {
-    u_int32_t size;
+    uint32_t size;
     void *stream;
 } t_buffer;
 
 typedef struct
 {
-    u_int8_t codigo_operacion;
+    uint8_t codigo_operacion;
     t_buffer *buffer;
 } t_paquete;
 
 //TCB Y PCB
 typedef struct
 {
-    u_int32_t PID;
-    u_int32_t tareas;
+    uint32_t PID;
+    uint32_t tareas;
 } t_PCB;
 
 typedef struct
 {
-    u_int32_t TID;
+    uint32_t TID;
     char estado;
-    u_int32_t posX;
-    u_int32_t posY;
-    u_int32_t proximaInstruccion;
-    u_int32_t puntero_PCB;
+    uint32_t posX;
+    uint32_t posY;
+    uint32_t proximaInstruccion;
+    uint32_t puntero_PCB;
 } t_TCB;
 
 typedef struct
@@ -90,101 +92,101 @@ typedef struct
 
 typedef struct
 {
-    u_int32_t pid;
-    u_int32_t tid;
+    uint32_t pid;
+    uint32_t tid;
 } t_pidYtid;
 
 typedef struct
 {
-    u_int32_t PID;
-    u_int32_t TID;
+    uint32_t PID;
+    uint32_t TID;
     char estado;
-    u_int32_t posX;
-    u_int32_t posY;
-    u_int32_t proximaInstruccion;
+    uint32_t posX;
+    uint32_t posY;
+    uint32_t proximaInstruccion;
 } t_TCBmostrar;
 
 typedef struct
 {
-    u_int32_t cantTripulantes;
+    uint32_t cantTripulantes;
     t_TCBmostrar *tripulantes;
 } t_ListaTripulantes;
 
 typedef struct
 {
-    u_int32_t posX;
-    u_int32_t posY;
+    uint32_t posX;
+    uint32_t posY;
 } t_posicion;
 
 typedef struct
 {
-    u_int32_t TID;
+    uint32_t TID;
     t_posicion pos;
 } t_tidCposicion;
 
 //BASICOS
 typedef struct
 {
-    u_int32_t PID;
-    u_int32_t TID;
+    uint32_t PID;
+    uint32_t TID;
     char estado;
 } t_estado;
 
 typedef struct
 {
-    u_int32_t PID;
-    u_int32_t TID;
+    uint32_t PID;
+    uint32_t TID;
     t_posicion pos;
 } t_envio_posicion;
 
 //TAREAS
 typedef struct
 {
-    u_int8_t codigoTarea;
-    u_int32_t parametro;
-    u_int32_t posX;
-    u_int32_t posY;
-    u_int32_t duracionTarea;
+    uint8_t codigoTarea;
+    uint32_t parametro;
+    uint32_t posX;
+    uint32_t posY;
+    uint32_t duracionTarea;
 } t_tarea;
 
 typedef struct
 {
-    u_int32_t PID;
-    u_int8_t cantTareas;
+    uint32_t PID;
+    uint8_t cantTareas;
     t_tarea *tareas;
 } t_tareas_cPID;
 
 typedef struct
 {
-    u_int8_t codigoTarea;
-    u_int32_t parametro;
+    uint8_t codigoTarea;
+    uint32_t parametro;
 } t_ejecutar_tarea;
 
 //ACTUALIZACIONES
 typedef struct
 {
-    u_int32_t TID;
-    u_int32_t posX;
-    u_int32_t posY;
+    uint32_t TID;
+    uint32_t posX;
+    uint32_t posY;
 } t_actualizar_posicion;
 
 typedef struct
 {
-    u_int32_t TID;
+    uint32_t TID;
     char estado;
 } t_actualizar_estado;
 
 //ENVIO DE BITACORAS
 typedef struct
 {
-    int tamanioAccion;
+    uint32_t tamanioAccion;
     char *accion;
 } t_accion;
 
 typedef struct
 {
-    int cantAcciones;
-    int tamanioAcciones;
+    uint32_t cantAcciones;
+    uint32_t tamanioAcciones;
     t_accion *acciones;
 } t_bitacora;
 

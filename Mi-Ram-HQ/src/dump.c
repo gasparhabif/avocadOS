@@ -1,15 +1,19 @@
 #include "proceso3.h"
 
-void dump (int sig){
-    if(sig == SIGUSR2){
+void dump(int sig)
+{
+    mkdir("./Dump", 0777);
+
+    if (sig == SIGUSR2)
+    {
 
         log_info(logger, "Se ha solicitado un DUMP de la memoria");
 
         FILE *fpDump;
 
         char *nombreArchivo = string_new();
-	    string_append(&nombreArchivo, "./Dump/Dump_");
-	    string_append(&nombreArchivo, temporal_get_string_time("%d%m%y%H%M%S%MS"));
+        string_append(&nombreArchivo, "./Dump/Dump_");
+        string_append(&nombreArchivo, temporal_get_string_time("%d%m%y%H%M%S%MS"));
         string_append(&nombreArchivo, ".dmp");
 
         fpDump = fopen(nombreArchivo, "w+");
@@ -19,7 +23,6 @@ void dump (int sig){
         fprintf(fpDump, "----------------------------------------------------------------\n");
         fprintf(fpDump, "Dump %s\n", temporal_get_string_time("%d/%m/%y %H:%M:%S"));
 
-
         if (strcmp(config->esquema_memoria, "SEGMENTACION") == 0)
         {
             dump_segmentacion(fpDump);
@@ -28,14 +31,15 @@ void dump (int sig){
         {
             //dump_paginacion(fpDump);
         }
-        
-    fprintf(fpDump, "----------------------------------------------------------------\n");
+
+        fprintf(fpDump, "----------------------------------------------------------------\n");
 
         fclose(fpDump);
     }
 }
 
-void dump_segmentacion(FILE *fpDump){
+void dump_segmentacion(FILE *fpDump)
+{
 
     //pthread_mutex_lock(&m_procesos);
 
@@ -49,8 +53,8 @@ void dump_segmentacion(FILE *fpDump){
         for (int j = 0; j < list_size(tablaUnProceso); j++)
         {
             reg_seg = list_get(tablaUnProceso, j);
-            fprintf(fpDump, "Proceso: %d\tSegmento: %d\tInicio: %p\tTam: %dB\n", obtener_PIDproceso(tablaUnProceso), j+1, reg_seg->base, reg_seg->tamanio);
-        }   
+            fprintf(fpDump, "Proceso: %d\tSegmento: %d\tInicio: %p\tTam: %dB\n", obtener_PIDproceso(tablaUnProceso), j + 1, reg_seg->base, reg_seg->tamanio);
+        }
     }
 
     //pthread_mutex_lock(&m_procesos);
@@ -58,7 +62,6 @@ void dump_segmentacion(FILE *fpDump){
     return;
 }
 
-
-void dump_paginacion (FILE *fpDump){
-
+void dump_paginacion(FILE *fpDump)
+{
 }
