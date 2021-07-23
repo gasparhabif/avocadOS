@@ -130,7 +130,7 @@ int cantidad_paginas_proceso(int pid)
             return list_size(pagina_proceso->paginas);
     }
 
-    return -1;
+    return EXIT_FAILURE;
 }
 
 int obtener_numero_instruccion(t_list *tabla_proceso, int pid, int tid)
@@ -185,7 +185,7 @@ int obtener_numero_instruccion(t_list *tabla_proceso, int pid, int tid)
         }
     }
 
-    return -1;
+    return EXIT_FAILURE;
 }
 
 void *recuperar_elementos_proceso(int pid)
@@ -328,7 +328,7 @@ int obtener_pid_pag(t_list *tablaUnProceso)
             return pagina_proceso->id;
     }
 
-    return -1;
+    return EXIT_FAILURE;
 }
 
 void limpiar_estado_frames()
