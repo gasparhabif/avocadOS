@@ -141,13 +141,20 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
             memcpy(tcb_serializado, d_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
             tcb = deserializar_TCB(tcb_serializado);
             
-            printf("Tengo el tcb\n");
+            //printf("Tengo el tcb\n");
+
+            printf("TID: %d\n", tcb->TID);
+            printf("estado: %c\n", tcb->estado);
+            printf("posX: %d\n", tcb->posX);
+            printf("posY: %d\n", tcb->posY);
+            printf("proximaInstruccion: %d\n", tcb->proximaInstruccion);
+            printf("puntero_PCB: %d\n", tcb->puntero_PCB);
 
             //INCREMENTO EL IP
             numInst = tcb->proximaInstruccion;
             tcb->proximaInstruccion++;
 
-            printf("Incremento el tcb\n");
+            //printf("Incremento el tcb\n");
 
             //GUARDO EL TCB ACTUALIZADO
             free(tcb_serializado);
@@ -157,18 +164,11 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
             free(tcb);
             free(d_proceso);
 
-            printf("Guardo el tcb\n");
-
-            //printf("TID: %d\n", tcb->TID);
-            //printf("estado: %c\n", tcb->estado);
-            //printf("posX: %d\n", tcb->posX);
-            //printf("posY: %d\n", tcb->posY);
-            //printf("proximaInstruccion: %d\n", tcb->proximaInstruccion);
-            //printf("puntero_PCB: %d\n", tcb->puntero_PCB);
+            //printf("Guardo el tcb\n");
 
             //printf("Devuelvo %d\n", numInst);
 
-            printf("Termino\n");
+            //printf("Termino\n");
             return numInst;
         }   
     }
@@ -241,7 +241,7 @@ t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
         if (pagina_proceso->tipo == TAREAS)
         {
 
-            //printf("Tarea N°%d\n", nInstruccion);
+            printf("Cantidad de tarea: %d\nTarea solicitada: %d\n", pagina_proceso->tamanio/sizeof(t_tarea), nInstruccion);
 
             if(pagina_proceso->tamanio/sizeof(t_tarea) == nInstruccion){
                 printf("ULTIMA INSTRUCCION\n");

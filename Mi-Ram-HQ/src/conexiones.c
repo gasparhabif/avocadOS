@@ -136,5 +136,7 @@ void recibir_mensaje(void *parametro)
         }
     }
 
+    printf("Se desconecto");
+
     pthread_exit(0);
 }

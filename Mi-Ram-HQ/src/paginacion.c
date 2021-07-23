@@ -23,7 +23,6 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     
     paginas_proceso = obtener_paginas_proceso(pid, &err);
     if (err){
-        printf("Se esta creando un proceso, puede ser pa?\n");
         paginas_proceso = malloc(sizeof(t_pagina_proceso));
         paginas_proceso->paginas = list_create();
         paginas_proceso->pid = pid;

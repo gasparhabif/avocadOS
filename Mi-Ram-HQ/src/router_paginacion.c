@@ -278,6 +278,19 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
 
             if (elemento_del_proceso->tipo == TCB && elemento_del_proceso->id == datos_recibidos->tid)
             {
+
+            
+                //void* tcbSerializado = malloc(sizeof(t_TCB));
+                //memcpy(tcbSerializado, elementos_proceso_cTCB + elemento_del_proceso->offset, sizeof(t_TCB));
+                //t_TCB *TCB = deserializar_TCB(tcbSerializado);
+                //printf("%d\n", TCB->TID);
+                //printf("%C\n", TCB->estado);
+                //printf("%d\n", TCB->posX);
+                //printf("%d\n", TCB->posY);
+                //printf("%d\n", TCB->proximaInstruccion);
+                //printf("%d\n", TCB->puntero_PCB);
+
+
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
                 printf("Paginas necesarias: %d\nPaginas que tengo: %d\n", paginasNecesarias, list_size(lista_paginas_proceso));
                 if(paginasNecesarias < list_size(lista_paginas_proceso)){
@@ -286,6 +299,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                     {
                         estado_frames[i] = 0;
                         list_remove(lista_paginas_proceso, i);
+                        printf("Libero un pagina\n");
                     }
                 }
 
@@ -293,8 +307,22 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 index = i;
 
                 //ELIMINO EL TCB DE LA MEMORIA
+                printf("Copio %d primero, sigo copiando desde el byte %d, copiando %d mas\n", elemento_del_proceso->offset, elemento_del_proceso->offset + elemento_del_proceso->tamanio, (bProceso - elemento_del_proceso->offset - elemento_del_proceso->tamanio));
+
                 memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->offset);
-                memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->tamanio, bProceso - elemento_del_proceso->offset - elemento_del_proceso->tamanio);
+                if ((bProceso - (elemento_del_proceso->offset + elemento_del_proceso->tamanio)) != 0)
+                    memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->offset + elemento_del_proceso->tamanio, (bProceso - (elemento_del_proceso->offset + elemento_del_proceso->tamanio)));
+
+                void* tcb_serializado = malloc(sizeof(t_TCB));
+                memcpy(tcb_serializado, elementos_proceso_cTCB + 52, 24);
+                t_TCB *unTCB = deserializar_TCB(tcb_serializado);
+                printf("%d\n", unTCB->TID);
+                printf("%c\n", unTCB->estado);
+                printf("%d\n", unTCB->posX);
+                printf("%d\n", unTCB->posY);
+                printf("%d\n", unTCB->proximaInstruccion);
+                printf("%d\n", unTCB->puntero_PCB);
+
 
                 //ELIMINAR TCB DE LA LISTA DEL PROCESO
                 list_remove(tabla_proceso, i);
@@ -307,9 +335,16 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
             elemento_del_proceso = list_get(tabla_proceso, i);
             elemento_del_proceso->offset-= sizeof(t_TCB);
             list_replace(tabla_proceso, i, elemento_del_proceso);
+
+            //printf("ID: %d\n", elemento_del_proceso->id);
+            //printf("TIPO: %d\n", elemento_del_proceso->tipo);
+            //printf("OFFSET: %d\n", elemento_del_proceso->offset);
+            //printf("TAMANIO: %d\n\n", elemento_del_proceso->tamanio);
         }
 
         guardar_elementos_proceso(datos_recibidos->pid, elementos_proceso_sTCB);
+
+        log_info(logger, "El tripulante %d abandono la nave", datos_recibidos->tid);
     }
 
     pthread_mutex_unlock(&acceso_memoria);
