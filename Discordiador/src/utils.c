@@ -29,7 +29,8 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
             instruccion = string_split(line, " ");
             cantInstrucciones = 1 + contar_caracteres_especiales(read, line, ' ');
 
-            if (cantInstrucciones == 2){
+            if (cantInstrucciones == 2)
+            {
                 //ES UNA TAREA DE E/S
 
                 if (strcmp(instruccion[0], "GENERAR_OXIGENO") == 0)
@@ -44,9 +45,10 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
                     tareas[i].codigoTarea = GENERAR_BASURA;
                 else if (strcmp(instruccion[0], "DESCARTAR_BASURA") == 0)
                     tareas[i].codigoTarea = DESCARTAR_BASURA;
-                else{
+                else
+                {
                     //INSTRUCCION NO RECONOCIDA
-                    log_info(logger, "Tarea %d no reconocida\n", i+1);
+                    log_info(logger, "Tarea %d no reconocida\n", i + 1);
                     *error = 1;
                     free(instruccion);
                     free(data);
@@ -61,14 +63,15 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
                 //CARGO EL RESTO DE LOS PARAMETROS
                 if (cantParametros == 4)
                 {
-                    tareas[i].parametro     = atoi(data[0]);
-                    tareas[i].posX          = atoi(data[1]);
-                    tareas[i].posY          = atoi(data[2]);
+                    tareas[i].parametro = atoi(data[0]);
+                    tareas[i].posX = atoi(data[1]);
+                    tareas[i].posY = atoi(data[2]);
                     tareas[i].duracionTarea = atoi(data[3]);
                 }
-                else{
+                else
+                {
                     //FALTAN PARAMETROS
-                    log_info(logger, "Faltan parametros en la instruccion %d\n", i+1);
+                    log_info(logger, "Faltan parametros en la instruccion %d\n", i + 1);
                     *error = 1;
                     free(instruccion);
                     free(data);
@@ -76,7 +79,8 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
                     return tareas;
                 }
             }
-            else{
+            else
+            {
                 //ES UNA TAREA NORMAL
 
                 data = string_split(instruccion[0], ";");
@@ -96,7 +100,7 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
                 else
                 {
                     //INSTRUCCION NO RECONOCIDA, FALTAN PARAMETROS
-                    log_info(logger, "Faltan parametros en la instruccion %d\n", i+1);
+                    log_info(logger, "Faltan parametros en la instruccion %d\n", i + 1);
                     *error = 1;
                     free(instruccion);
                     free(data);
@@ -115,7 +119,7 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 
     free(line);
 
-/*
+    /*
     for(int i=0; i<*cantTareas; i++){
         printf("---------Tarea: %d---------\n", i+1);
         printf("CODI: %d\n", tareas[i].codigoTarea);
@@ -141,12 +145,15 @@ int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
     return contador;
 }
 
-int pausar(int pausarPlanificacion){
+int pausar(int pausarPlanificacion)
+{
 
-    if(planificando == 0 && pausarPlanificacion == 0){
+    if (planificando == 0 && pausarPlanificacion == 0)
+    {
         for (int i = 0; i < config->grado_multitarea; i++)
-            sem_post(&pause_exec);     
+            sem_post(&pause_exec);
         pthread_mutex_unlock(&pause_block);
+        pausar_tripulantes(0);
 
         planificando = 1;
         return 1;
@@ -154,8 +161,9 @@ int pausar(int pausarPlanificacion){
     else if (planificando && pausarPlanificacion == 1)
     {
         for (int i = 0; i < config->grado_multitarea; i++)
-            sem_wait(&pause_exec);     
+            sem_wait(&pause_exec);
         pthread_mutex_lock(&pause_block);
+        pausar_tripulantes(1);
 
         planificando = 0;
         return 1;
@@ -164,13 +172,44 @@ int pausar(int pausarPlanificacion){
         return 0;
 }
 
-int eliminarTripulante(t_list *lista, int tid){
-    
+void pausar_tripulantes(int hayQuePausar)
+{
+    pausar_lista(exec, hayQuePausar);
+    pausar_lista(ready, hayQuePausar);
+    pausar_lista(bloq, hayQuePausar);
+    pausar_lista(bloq_IO, hayQuePausar);
+
+    return;
+}
+
+void pausar_lista(t_list *lista, int hayQuePausar)
+{
+
     t_admin_tripulantes *aux_admin;
 
-    for(int i=0; i<list_size(lista); i++){
+    for (int i = 0; i < list_size(lista); i++)
+    {
         aux_admin = list_get(lista, i);
-        if(aux_admin->tid == tid){
+
+        if (hayQuePausar)
+            pthread_mutex_lock(&(aux_admin->pausar_tripulante));
+        else
+            pthread_mutex_unlock(&(aux_admin->pausar_tripulante));
+    }
+
+    return;
+}
+
+int eliminarTripulante(t_list *lista, int tid)
+{
+
+    t_admin_tripulantes *aux_admin;
+
+    for (int i = 0; i < list_size(lista); i++)
+    {
+        aux_admin = list_get(lista, i);
+        if (aux_admin->tid == tid)
+        {
             list_remove(lista, i);
             return 1;
         }
@@ -179,19 +218,22 @@ int eliminarTripulante(t_list *lista, int tid){
     return 0;
 }
 
-int menor_tid_list(t_list* lista){
+int menor_tid_list(t_list *lista)
+{
 
     t_admin_tripulantes *aux_admin;
 
     int tid_minimo;
     int index;
 
-    aux_admin  = list_get(lista, 0);
+    aux_admin = list_get(lista, 0);
     tid_minimo = aux_admin->tid;
 
-    for(int i=1; i<list_size(lista); i++){
+    for (int i = 1; i < list_size(lista); i++)
+    {
         aux_admin = list_get(lista, i);
-        if(aux_admin->tid <= tid_minimo){
+        if (aux_admin->tid <= tid_minimo)
+        {
             index = i;
             tid_minimo = aux_admin->tid;
         }
@@ -200,16 +242,19 @@ int menor_tid_list(t_list* lista){
     return index;
 }
 
-int mayor_tid_list(t_list* lista){
+int mayor_tid_list(t_list *lista)
+{
 
     t_admin_tripulantes *aux_admin;
 
     int tid_maximo = -1;
     int index;
 
-    for(int i=0; i<list_size(lista); i++){
+    for (int i = 0; i < list_size(lista); i++)
+    {
         aux_admin = list_get(lista, i);
-        if(aux_admin->tid >= tid_maximo){
+        if (aux_admin->tid >= tid_maximo)
+        {
             index = i;
             tid_maximo = aux_admin->tid;
         }
@@ -218,8 +263,9 @@ int mayor_tid_list(t_list* lista){
     return index;
 }
 
-int matarTripulante(int tid){
-    
+int matarTripulante(int tid)
+{
+
     t_admin_tripulantes *aux_admin;
 
     for (int i = 0; i < list_size(ready); i++)
@@ -255,8 +301,9 @@ int matarTripulante(int tid){
     return 0;
 }
 
-int existeTripulante(int tid){
-    
+int existeTripulante(int tid)
+{
+
     t_admin_tripulantes *aux_admin;
 
     for (int i = 0; i < list_size(ready); i++)
@@ -286,11 +333,12 @@ int existeTripulante(int tid){
     return 0;
 }
 
-int avisoDeMuerte(int tid){
-    
-    if(revisarLista_avisoDeMuerte(ready, tid))
+int avisoDeMuerte(int tid)
+{
+
+    if (revisarLista_avisoDeMuerte(ready, tid))
         return 1;
-    else if(revisarLista_avisoDeMuerte(exec, tid))
+    else if (revisarLista_avisoDeMuerte(exec, tid))
         return 1;
     else if (revisarLista_avisoDeMuerte(bloq, tid))
         return 1;
@@ -300,8 +348,9 @@ int avisoDeMuerte(int tid){
         return 0;
 }
 
-int revisarLista_avisoDeMuerte(t_list *lista, int tid){
-    
+int revisarLista_avisoDeMuerte(t_list *lista, int tid)
+{
+
     t_admin_tripulantes *aux_admin;
 
     for (int i = 0; i < list_size(lista); i++)

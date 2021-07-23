@@ -113,11 +113,11 @@ void update_pos(t_posicion *current_pos, t_posicion *next_pos)
     current_pos->posY = next_pos->posY;
 }
 
-char *get_nombre_tarea(int cod_operacion)
+char *get_nombre_tarea(int cod_tarea)
 {
     char *nombre_tarea = string_new();
 
-    switch (cod_operacion)
+    switch (cod_tarea)
     {
     case GENERAR_OXIGENO:
         string_append(&nombre_tarea, "GENERAR_OXIGENO");
@@ -157,5 +157,5 @@ char *reconstruir_bitacora(t_bitacora_mongo *bitacora)
         free(block_info);
     }
 
-    return string_substring_until(bitacora_string, bitacora->size);
+    return string_substring_until(bitacora_string, bitacora->size - 1);
 }

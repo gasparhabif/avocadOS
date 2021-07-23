@@ -12,6 +12,9 @@ int main()
     config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
     log_info(logger, "Se cargó la configuración");
 
+    // Iniciar mutex
+    pthread_mutex_init(&fs_libre, NULL);
+
     // Iniciar FS
     init_paths();
 
@@ -67,6 +70,10 @@ int main()
         return EXIT_FAILURE;
     }
     log_info(logger, "Se conectó el discordiador en el socket %d", discordiador_cxn);
+
+    pthread_t discordiador_cxn_thread;
+    pthread_create(&discordiador_cxn_thread, NULL, (void *)discordiador_cxn_handler, NULL);
+    pthread_detach(discordiador_cxn_thread);
 
     // Aceptar conexiones de los tripulantes
     log_info(logger, "Esperando tripulantes en el puerto %d", config->puerto);

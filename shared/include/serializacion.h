@@ -18,7 +18,7 @@ void *serializar_envioPosicion(uint32_t, uint32_t, uint32_t, uint32_t, int *);
 void *serializar_envioSabotaje(uint32_t, uint32_t, int *);
 void *serializar_pidYtid(uint32_t, uint32_t, uint8_t, int *);
 void *serializar_tcbMostrar(uint32_t, t_TCBmostrar *, int *);
-void *serializar_bitacora(t_bitacora *, int *);
+void *serializar_bitacora(t_bitacora *, uint32_t *);
 void *serializar_ejecutarTarea(uint32_t, uint32_t, int *);
 void *serializar_posicionCtid(uint32_t, uint32_t, uint32_t, int *);
 

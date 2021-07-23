@@ -77,14 +77,14 @@ void *serializarTarea(t_tarea *unaTarea, int *tamanioSerializacion)
 
     memcpy(stream + offset, &(unaTarea->codigoTarea), sizeof(u_int8_t));
     offset += sizeof(u_int8_t);
-    memcpy(stream + offset, &(unaTarea->parametro), sizeof(u_int32_t));
-    offset += sizeof(u_int32_t);
-    memcpy(stream + offset, &(unaTarea->posX), sizeof(u_int32_t));
-    offset += sizeof(u_int32_t);
-    memcpy(stream + offset, &(unaTarea->posY), sizeof(u_int32_t));
-    offset += sizeof(u_int32_t);
-    memcpy(stream + offset, &(unaTarea->duracionTarea), sizeof(u_int32_t));
-    offset += sizeof(u_int32_t);
+    memcpy(stream + offset, &(unaTarea->parametro), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(unaTarea->posX), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(unaTarea->posY), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, &(unaTarea->duracionTarea), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
 
     buffer->stream = stream;
 
@@ -155,7 +155,7 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     //buffer->stream = stream;
 
     // Cantidad de Tareas * Tamaño Tareas + Cant Tareas + PID + Size del Stream
-    //paquete->buffer = malloc(cantTareas * sizeof(t_tarea) + sizeof(u_int8_t) + sizeof(u_int32_t) + sizeof(u_int32_t));
+    //paquete->buffer = malloc(cantTareas * sizeof(t_tarea) + sizeof(u_int8_t) + sizeof(uint32_t) + sizeof(uint32_t));
 
     paquete->codigo_operacion = COMENZAR_PATOTA;
     paquete->buffer = buffer;
@@ -443,18 +443,18 @@ void *serializar_tcbMostrar(uint32_t cantTotalTripulantes, t_TCBmostrar *tcbs_en
 
     for (int i = 0; i < cantTotalTripulantes; i++)
     {
-        memcpy(buffer->stream + offset, &tcbs_enviar[i].PID, sizeof(u_int32_t));
-        offset += sizeof(u_int32_t);
-        memcpy(buffer->stream + offset, &tcbs_enviar[i].TID, sizeof(u_int32_t));
-        offset += sizeof(u_int32_t);
+        memcpy(buffer->stream + offset, &tcbs_enviar[i].PID, sizeof(uint32_t));
+        offset += sizeof(uint32_t);
+        memcpy(buffer->stream + offset, &tcbs_enviar[i].TID, sizeof(uint32_t));
+        offset += sizeof(uint32_t);
         memcpy(buffer->stream + offset, &tcbs_enviar[i].estado, sizeof(char));
         offset += sizeof(char);
-        memcpy(buffer->stream + offset, &tcbs_enviar[i].posX, sizeof(u_int32_t));
-        offset += sizeof(u_int32_t);
-        memcpy(buffer->stream + offset, &tcbs_enviar[i].posY, sizeof(u_int32_t));
-        offset += sizeof(u_int32_t);
-        memcpy(buffer->stream + offset, &tcbs_enviar[i].proximaInstruccion, sizeof(u_int32_t));
-        offset += sizeof(u_int32_t);
+        memcpy(buffer->stream + offset, &tcbs_enviar[i].posX, sizeof(uint32_t));
+        offset += sizeof(uint32_t);
+        memcpy(buffer->stream + offset, &tcbs_enviar[i].posY, sizeof(uint32_t));
+        offset += sizeof(uint32_t);
+        memcpy(buffer->stream + offset, &tcbs_enviar[i].proximaInstruccion, sizeof(uint32_t));
+        offset += sizeof(uint32_t);
     }
 
     //CREAMOS EL PAQUETE
@@ -484,7 +484,7 @@ void *serializar_tcbMostrar(uint32_t cantTotalTripulantes, t_TCBmostrar *tcbs_en
     //free(a_enviar);
 }
 
-void *serializar_bitacora(t_bitacora *unaBitacora, int *tamanioSerializacion)
+void *serializar_bitacora(t_bitacora *unaBitacora, uint32_t *tamanioSerializacion)
 {
 
     //CREO EL BUFFER Y LE RESERVO LA MEMORIA
@@ -509,10 +509,10 @@ void *serializar_bitacora(t_bitacora *unaBitacora, int *tamanioSerializacion)
 
     for (int i = 0; i < unaBitacora->cantAcciones; i++)
     {
-        memcpy(buffer->stream + offset, &(unaBitacora->acciones[i].tamanioAccion), sizeof(u_int32_t));
-        offset += sizeof(u_int32_t);
-        memcpy(buffer->stream + offset, &(unaBitacora->acciones[i].accion), sizeof(unaBitacora->acciones[i].tamanioAccion));
-        offset += sizeof(unaBitacora->acciones[i].tamanioAccion);
+        memcpy(buffer->stream + offset, &(unaBitacora->acciones[i].tamanioAccion), sizeof(uint32_t));
+        offset += sizeof(uint32_t);
+        memcpy(buffer->stream + offset, &(unaBitacora->acciones[i].accion), unaBitacora->acciones[i].tamanioAccion);
+        offset += unaBitacora->acciones[i].tamanioAccion;
     }
 
     //CREAMOS EL PAQUETE

@@ -1,5 +1,29 @@
 #include "proceso2.h"
 
+void discordiador_cxn_handler()
+{
+    int bitacora_tid = (int)recibir_paquete(discordiador_cxn);
+
+    while (bitacora_tid >= 0)
+    {
+        pthread_mutex_lock(&fs_libre);
+
+        char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, string_itoa(bitacora_tid));
+        t_bitacora_mongo *bitacora = load_bitacora(bitacora_file_path);
+
+        char *bitacora_str = reconstruir_bitacora(bitacora);
+
+        // TODO: Serializar strlen(bitacora_str) y bitacora_str para enviar al Discordiador
+        // ...
+
+        free(bitacora_str);
+        liberar_bitacora(bitacora);
+
+        pthread_mutex_unlock(&fs_libre);
+        bitacora_tid = (int)recibir_paquete(discordiador_cxn);
+    }
+}
+
 void accept_tripulantes(void *arg)
 {
     int server_instance = (int)arg;
@@ -39,8 +63,8 @@ void tripulante_cxn_handler(void *arg)
     log_info(logger, "Se conectó el tripulante TID: %s - Posición inicial: %s", tid, pos_to_string(current_pos));
 
     // Obtener path
-    // char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
-    char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
+    char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
+    // char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
 
     if (!file_exists(bitacora_file_path))
     {
@@ -54,18 +78,13 @@ void tripulante_cxn_handler(void *arg)
 
     // ...
 
-    // printf("Bitacora reconstruida: %s\n", reconstruir_bitacora(bitacora));
-
-    // while (1)
-    // {
-    // }
-
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
     while (!tareas_finalizadas)
     {
-        sync_blocks();
+        pthread_mutex_lock(&fs_libre);
+        // sync_blocks();
 
         switch (cod_operacion)
         {
@@ -74,18 +93,18 @@ void tripulante_cxn_handler(void *arg)
             t_posicion *next_pos = malloc(sizeof(t_posicion));
             next_pos->posX = datos_posicion->pos.posX;
             next_pos->posY = datos_posicion->pos.posY;
-            registrar_bitacora(bitacora, string_from_format("Se mueve de %s a %s\0", pos_to_string(current_pos), pos_to_string(next_pos)));
+            registrar_bitacora(bitacora, string_from_format("Se mueve de %s a %s$", pos_to_string(current_pos), pos_to_string(next_pos)));
             update_pos(current_pos, next_pos);
             free(next_pos);
             free(datos_posicion);
             break;
 
         case INICIO_TAREA:
-            registrar_bitacora(bitacora, string_from_format("Comienza ejecución de tarea %s\0", get_nombre_tarea((int)datos_recibidos)));
+            registrar_bitacora(bitacora, string_from_format("Comienza ejecución de tarea %s$", get_nombre_tarea((int)datos_recibidos)));
             break;
 
         case INICIO_RESOLUCION_SABOTAJE:
-            registrar_bitacora(bitacora, "Se corre en pánico hacia la ubicación del sabotaje\0");
+            registrar_bitacora(bitacora, "Se corre en pánico hacia la ubicación del sabotaje$");
             break;
 
         case INICIO_PROTOCOLO_FSCK:
@@ -93,14 +112,19 @@ void tripulante_cxn_handler(void *arg)
             break;
 
         case FIN_RESOLUCION_SABOTAJE:
-            registrar_bitacora(bitacora, "Se resuelve el sabotaje\0");
+            registrar_bitacora(bitacora, "Se resuelve el sabotaje$");
             break;
 
         case EJECUTAR_TAREA:;
             t_ejecutar_tarea *tarea_a_ejecutar = (t_ejecutar_tarea *)datos_recibidos;
             ejecutarTarea(tarea_a_ejecutar);
-            registrar_bitacora(bitacora, string_from_format("Se finaliza la tarea %s\0", get_nombre_tarea(tarea_a_ejecutar->codigoTarea)));
+            registrar_bitacora(bitacora, string_from_format("Se finaliza la tarea %s$", get_nombre_tarea(tarea_a_ejecutar->codigoTarea)));
             free(tarea_a_ejecutar);
+            break;
+
+        case FIN_TAREAS:
+            log_info(logger, "El tripulante %d finalizó sus tareas y se desconectó", tripulante->TID);
+            tareas_finalizadas = true;
             break;
 
         default:
@@ -109,6 +133,7 @@ void tripulante_cxn_handler(void *arg)
             break;
         }
 
+        pthread_mutex_unlock(&fs_libre);
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 

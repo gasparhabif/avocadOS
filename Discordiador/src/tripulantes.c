@@ -38,11 +38,16 @@ void tripulante(t_parametros_tripulantes *parametro)
     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
     admin = parametros_recibidos->admin;
 
-    admin->tid       = tid;
-    admin->estado    = NEW;
-    admin->posX      = tcb_tripulante.posX;
-    admin->posY      = tcb_tripulante.posY;
+    admin->tid = tid;
+    admin->estado = NEW;
+    admin->posX = tcb_tripulante.posX;
+    admin->posY = tcb_tripulante.posY;
     admin->debeMorir = 0;
+
+    pthread_mutex_init(&(admin->pausar_tripulante), NULL);
+
+    if (!planificando)
+        pthread_mutex_lock(&admin->pausar_tripulante);
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -63,7 +68,8 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     //ABRO LA CONEXION CON LA RAM
     admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
-    if(admin->sockfd_tripulante_ram == -1){
+    if (admin->sockfd_tripulante_ram == -1)
+    {
         log_info(logger, "Tripulante abandona la nave por fallo de conexion con Mi-RAM-HQ");
         return;
     }
@@ -76,22 +82,24 @@ void tripulante(t_parametros_tripulantes *parametro)
     log_info(logger, "Se envio el TCB a la RAM");
 
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
-    if(!((int) recibir_paquete(admin->sockfd_tripulante_ram))){
+    if (!((int)recibir_paquete(admin->sockfd_tripulante_ram)))
+    {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         return;
     }
 
-    /*
     admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
-    if(admin->sockfd_tripulante_mongo == -1){
+    if (admin->sockfd_tripulante_mongo == -1)
+    {
         log_info(logger, "Tripulante abandona la nave por fallo de conexion con i-Mongo-Store");
         return;
     }
     log_info(logger, "El tripulante se conecto con i-Mongo-Store");
-    */
+
+    printf("Posición de TID %d: %d|%d\n", admin->tid, admin->posX, admin->posY);
 
     //ENVIO EL TID Y LA POSICION INICIAL AL MONGO
-    void *enviar_tidYpos = serializar_envioPosicion(admin->pid, admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
+    void *enviar_tidYpos = serializar_posicionCtid(admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
     send(admin->sockfd_tripulante_mongo, enviar_tidYpos, tamanioSerializacion, 0);
     free(enviar_tidYpos);
     log_info(logger, "Se envio el TID y la posicion al i-mongo-store");
@@ -101,6 +109,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
+        pthread_mutex_lock(&admin->pausar_tripulante);
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -109,14 +118,14 @@ void tripulante(t_parametros_tripulantes *parametro)
         actualizar_estado(admin, EXEC);
 
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
-        if (tareaPendiente == 0){
+        if (tareaPendiente == 0)
+        {
             //ANTES DE SOLICITAR UNA TAREA CHEQUEO SI EL TRIPULANTE DEBE MORIR
-            if(admin->debeMorir)
+            if (admin->debeMorir)
                 finTareas = 1;
             else
                 tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
         }
-
 
         //SI LA TAREA RECIBIDA NO ES LA ULTIMA (o no se solicito el fin del tripulante)
         if (finTareas == 0)
@@ -138,7 +147,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
         if (block)
         {
-            block=0;
+            block = 0;
             actualizar_estado(admin, BLOCKED_IO);
             pthread_mutex_lock(&mutex_block);
 
@@ -160,11 +169,22 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
         }
         else if (!tareaPendiente && finTareas)
+        {
             actualizar_estado(admin, EXIT);
+        }
+        else if (!tareaPendiente && !finTareas)
+        {
+            int bEnviar;
+            void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, tarea_recibida->parametro, &bEnviar);
+            send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
+            free(d_enviar);
+        }
         else
             actualizar_estado(admin, READY);
+
+        pthread_mutex_unlock(&admin->pausar_tripulante);
     }
-    
+
     //DOY EL AVISO AL MONGO QUE FINALICÉ MIS TAREAS
     int bEnviar;
     void *dEnviar = serializarInt(1, FIN_TAREAS, &bEnviar);
@@ -178,7 +198,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     matarTripulante(admin->tid);
 
-    //close(admin->sockfd_tripulante_mongo);
+    close(admin->sockfd_tripulante_mongo);
     close(admin->sockfd_tripulante_ram);
 
     free(admin);
@@ -201,24 +221,24 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
     t_tarea *tarea_recibida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
-/*
+    /*
     tarea_recibida->codigoTarea = 3;
     tarea_recibida->parametro = 4;
     tarea_recibida->posX = 3;
     tarea_recibida->posY = 4;
     tarea_recibida->duracionTarea = 5;
 */
-    
-    //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
-    void *comenzar_tarea = serializarInt(tarea_recibida->codigoTarea, INICIO_TAREA, &tamanioSerializacion);
-    send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
-    free(comenzar_tarea);
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
         *finTareas = 1;
     else
     {
+        //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
+        void *comenzar_tarea = serializarInt(tarea_recibida->codigoTarea, INICIO_TAREA, &tamanioSerializacion);
+        send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
+        free(comenzar_tarea);
+
         //CALCULO DEL TIEMPO QUE LA TAREA PERMANECERÁ MOVIENDOSE POR EL MAPA, EN EJECUCION Y BLOQUEADA
         if (tarea_recibida->codigoTarea == MOVER_POSICION)
         {
@@ -241,17 +261,18 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
 int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion)
 {
     int tiempoMovimientos = 0;
-    int tiempoEjecutando  = 0;
+    int tiempoEjecutando = 0;
 
     if (strcmp(config->algoritmo, "FIFO") == 0)
     {
         tiempoMovimientos = ejecutar_tiempos_CPU(*duracionMovimientos, 0);
-        tiempoEjecutando  = ejecutar_tiempos_CPU(*duracionEjecucion,   0);
+        tiempoEjecutando = ejecutar_tiempos_CPU(*duracionEjecucion, 0);
     }
     else if (strcmp(config->algoritmo, "RR") == 0)
     {
         tiempoMovimientos = ejecutar_tiempos_CPU(*duracionMovimientos, 0);
-        if (tiempoMovimientos < config->quantum){
+        if (tiempoMovimientos < config->quantum)
+        {
             tiempoEjecutando = ejecutar_tiempos_CPU(*duracionEjecucion, tiempoMovimientos);
             log_info(logger, "Tiempo ejecutado: %d", tiempoEjecutando);
         }
@@ -261,7 +282,7 @@ int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionM
 
     for (int i = 0; i < tiempoEjecutando; i++)
     {
-        
+
         retardo_ciclo_cpu();
         log_info(logger, "Ciclo ejecucion");
         (*duracionEjecucion)--;
@@ -283,17 +304,20 @@ int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado)
             tiempoAEjecutar = duracionEjecucion;
         else if (strcmp(config->algoritmo, "RR") == 0)
         {
-            if(tEjecutado == 0){
+            if (tEjecutado == 0)
+            {
                 if (duracionEjecucion > config->quantum)
                     tiempoAEjecutar = config->quantum;
                 else
                     tiempoAEjecutar = duracionEjecucion;
             }
-            else{
+            else
+            {
                 if (duracionEjecucion > config->quantum)
                     tiempoAEjecutar = config->quantum - tEjecutado;
-                else{
-                    if((duracionEjecucion + tEjecutado) <= config->quantum)
+                else
+                {
+                    if ((duracionEjecucion + tEjecutado) <= config->quantum)
                         tiempoAEjecutar = duracionEjecucion;
                     else
                         tiempoAEjecutar = duracionEjecucion - tEjecutado;
@@ -317,24 +341,24 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     //ELIMINO EL TRIPULANTE DE LA LISTA EN LA QUE SE ENCUENTRE
     switch (admin->estado)
     {
-        case EXEC:
-            pthread_mutex_lock(&m_listaExec);
-            //log_info(logger, "Sale de EXEC: %d", admin->tid);
-            eliminarTripulante(exec, admin->tid);
-            pthread_mutex_unlock(&m_listaExec);
-            break;
-        case READY:
-            pthread_mutex_lock(&m_listaReady);
-            //log_info(logger, "Sale de READY: %d", admin->tid);
-            eliminarTripulante(ready, admin->tid);
-            pthread_mutex_unlock(&m_listaReady);
-            break;
-        case BLOCKED_IO:
-            pthread_mutex_lock(&m_listaBlockIO);
-            //log_info(logger, "Sale de BLOCK_IO: %d", admin->tid);
-            eliminarTripulante(bloq_IO, admin->tid);
-            pthread_mutex_unlock(&m_listaBlockIO);
-            break;
+    case EXEC:
+        pthread_mutex_lock(&m_listaExec);
+        //log_info(logger, "Sale de EXEC: %d", admin->tid);
+        eliminarTripulante(exec, admin->tid);
+        pthread_mutex_unlock(&m_listaExec);
+        break;
+    case READY:
+        pthread_mutex_lock(&m_listaReady);
+        //log_info(logger, "Sale de READY: %d", admin->tid);
+        eliminarTripulante(ready, admin->tid);
+        pthread_mutex_unlock(&m_listaReady);
+        break;
+    case BLOCKED_IO:
+        pthread_mutex_lock(&m_listaBlockIO);
+        //log_info(logger, "Sale de BLOCK_IO: %d", admin->tid);
+        eliminarTripulante(bloq_IO, admin->tid);
+        pthread_mutex_unlock(&m_listaBlockIO);
+        break;
     }
 
     admin->estado = nuevoEstado;
@@ -342,26 +366,26 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     //AGREGO EL TRIPULANTE A LA NUEVA LISTA
     switch (nuevoEstado)
     {
-        case EXEC:
-            pthread_mutex_lock(&m_listaExec);
-            //log_info(logger, "Entra a EXEC: %d", admin->tid);
-            list_add(exec, admin);
-            pthread_mutex_unlock(&m_listaExec);
-            break;
-        case READY:
-            pthread_mutex_lock(&m_listaReady);
-            //log_info(logger, "Entra a READY: %d", admin->tid);
-            list_add(ready, admin);
-            pthread_mutex_unlock(&m_listaReady);
-            break;
-        case BLOCKED_IO:
-            pthread_mutex_lock(&m_listaBlockIO);
-            //log_info(logger, "Entra a BLOCK_IO: %d", admin->tid);
-            list_add(bloq_IO, admin);
-            pthread_mutex_unlock(&m_listaBlockIO);
-            break;
-        default:
-            break;
+    case EXEC:
+        pthread_mutex_lock(&m_listaExec);
+        //log_info(logger, "Entra a EXEC: %d", admin->tid);
+        list_add(exec, admin);
+        pthread_mutex_unlock(&m_listaExec);
+        break;
+    case READY:
+        pthread_mutex_lock(&m_listaReady);
+        //log_info(logger, "Entra a READY: %d", admin->tid);
+        list_add(ready, admin);
+        pthread_mutex_unlock(&m_listaReady);
+        break;
+    case BLOCKED_IO:
+        pthread_mutex_lock(&m_listaBlockIO);
+        //log_info(logger, "Entra a BLOCK_IO: %d", admin->tid);
+        list_add(bloq_IO, admin);
+        pthread_mutex_unlock(&m_listaBlockIO);
+        break;
+    default:
+        break;
     }
 
     log_info(logger, "Tripulante en estado: %c", nuevoEstado);
@@ -369,7 +393,7 @@ void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado)
     return;
 }
 
-void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY, int movimientosPosibles, int *duracionMovimientos)
+void mover_tripulante(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY, int movimientosPosibles, int *duracionMovimientos)
 {
 
     for (int i = 0; i < movimientosPosibles; i++)
@@ -380,8 +404,8 @@ void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY
         mover_una_posicion(admin, posX, posY);
 
         int bEnviar;
-        void *d_enviar = serializar_envioPosicion(admin->pid, admin->tid, posX, posY, &bEnviar);
-        send(admin->sockfd_tripulante_ram,   d_enviar, bEnviar, 0);
+        void *d_enviar = serializar_envioPosicion(admin->pid, admin->tid, admin->posX, admin->posY, &bEnviar);
+        send(admin->sockfd_tripulante_ram, d_enviar, bEnviar, 0);
         send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
         free(d_enviar);
 
@@ -391,7 +415,7 @@ void mover_tripulante(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY
     }
 }
 
-void mover_una_posicion(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t posY)
+void mover_una_posicion(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY)
 {
 
     int movX = posX - admin->posX;
@@ -412,7 +436,7 @@ void mover_una_posicion(t_admin_tripulantes *admin, u_int32_t posX, u_int32_t po
         //PUEDE SER PARA ATRAS O PARA ADELANTE
         if (movY > 0)
             admin->posY++;
-        else if(movY < 0)
+        else if (movY < 0)
             admin->posY--;
     }
 }
@@ -435,7 +459,7 @@ void retardo_ciclo_IO()
 {
     pthread_mutex_lock(&pause_block);
     sleep(config->retardo_ciclo_cpu);
-    pthread_mutex_unlock(&pause_block); 
+    pthread_mutex_unlock(&pause_block);
 
     return;
 }
