@@ -101,13 +101,13 @@ t_registro_segmentos *guardar_pcb(t_PCB *);
 t_registro_segmentos *guardar_tcb(t_TCB);
 
 //Definidas en segmentacion.c
-void *reservar_segmento_FF        (int);
-void *reservar_segmento_BF        (int);
-void liberar_memoria_segmentacion (int);
-void  compactar                   (int);
-void  actualizar_tabla_procesos   (int, int);
-void  cambio_posicion_pcb         (int, int);
-void  cambio_posicion_tareas      (int, int);
+void *reservar_segmento_FF(int);
+void *reservar_segmento_BF(int);
+void liberar_memoria_segmentacion(int);
+void compactar(int);
+void actualizar_tabla_procesos(int, int);
+void cambio_posicion_pcb(int, int);
+void cambio_posicion_tareas(int, int);
 
 //Definidas en paginacion.c
 void generar_archivo_swap();
@@ -133,19 +133,20 @@ int obtener_PIDproceso(t_list *);
 
 //Definidas en utils_paginacion.c
 t_list *buscar_paginas_proceso(int);
-t_list *obtener_lista_proceso(int, int*);
+t_list *obtener_lista_proceso(int, int *);
 void limpiar_estado_frames(void);
-t_pagina_proceso* obtener_paginas_proceso(int, int *);
+t_pagina_proceso *obtener_paginas_proceso(int, int *);
 int bytes_ocupados_pid(int);
 int bytes_ocupados_lista(t_list *);
 int cantidad_paginas_proceso(int);
-int obtener_numero_instruccion(t_list*, int, int);
-void* recuperar_elementos_proceso(int);
-void guardar_elementos_proceso(int, void*);
-t_tarea* obtenerTarea(t_list*, int, int);
-int cant_tripulantes_paginacion(t_list*);
-int obtener_pid_pag(t_list*);
+int obtener_numero_instruccion(t_list *, int, int);
+void *recuperar_elementos_proceso(int);
+void guardar_elementos_proceso(int, void *);
+t_tarea *obtenerTarea(t_list *, int, int);
+int cant_tripulantes_paginacion(t_list *);
+int obtener_pid_pag(t_list *);
 int cant_tripulantes_proceso(int);
+int calcular_paginas_ocupadas(int);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);
@@ -157,8 +158,8 @@ t_TCB *deserializar_TCB(void *);
 t_tarea *deserializar_TAREA(void *);
 
 //Definidas en dump.c
-void dump              (int);
-void dump_segmentacion (FILE *);
-void dump_paginacion   (FILE *);
+void dump(int);
+void dump_segmentacion(FILE *);
+void dump_paginacion(FILE *);
 
 #endif

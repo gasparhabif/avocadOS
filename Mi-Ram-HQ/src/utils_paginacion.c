@@ -19,9 +19,10 @@ t_list *obtener_lista_proceso(int pid, int *err)
 {
     t_list *tabla_un_proceso;
     t_tabla_paginas_proceso *proceso = malloc(sizeof(t_tabla_paginas_proceso));
-    
-    if(list_size(tabla_procesos) != 0){
-        
+
+    if (list_size(tabla_procesos) != 0)
+    {
+
         for (int i = 0; i < list_size(tabla_procesos); i++)
         {
             tabla_un_proceso = list_get(tabla_procesos, i);
@@ -29,8 +30,6 @@ t_list *obtener_lista_proceso(int pid, int *err)
             for (int j = 0; j < list_size(tabla_un_proceso); j++)
             {
                 proceso = list_get(tabla_un_proceso, j);
-
-                //printf("TIPO: %d\tID: %d\n", proceso->tipo, proceso->id);
 
                 if (proceso->tipo == PCB && proceso->id == pid)
                 {
@@ -42,10 +41,10 @@ t_list *obtener_lista_proceso(int pid, int *err)
     }
 
     *err = 1;
-    return (t_list *) -1;
+    return (t_list *)EXIT_FAILURE;
 }
 
-t_pagina_proceso* obtener_paginas_proceso(int pid, int *err)
+t_pagina_proceso *obtener_paginas_proceso(int pid, int *err)
 {
     t_pagina_proceso *paginas_proceso;
 
@@ -61,38 +60,51 @@ t_pagina_proceso* obtener_paginas_proceso(int pid, int *err)
     }
 
     *err = 1;
-    return (t_pagina_proceso*) -1;
+    return (t_pagina_proceso *)-1;
 }
 
 int calcular_fragmentacion(int pid)
 {
     int err;
-    int bytes_ocupados = 0;
     t_list *tabla_proceso = obtener_lista_proceso(pid, &err);
 
-    if(err)
+    if (err)
         return 0;
-    else{
-        
-        bytes_ocupados = bytes_ocupados_lista(tabla_proceso);
+    else
+    {
+        int bytes_ocupados = bytes_ocupados_lista(tabla_proceso);
+        int paginas_ocupadas = calcular_paginas_ocupadas(bytes_ocupados);
 
-        return tamanio_paginas-(bytes_ocupados-tamanio_paginas*(bytes_ocupados/tamanio_paginas));
+        // return tamanio_paginas - (bytes_ocupados - tamanio_paginas * (bytes_ocupados / tamanio_paginas));
+        return tamanio_paginas * paginas_ocupadas - bytes_ocupados;
     }
 }
 
-int bytes_ocupados_pid(int pid){
+int calcular_paginas_ocupadas(int bytes_ocupados)
+{
+    int cantidad = 1;
+    while (bytes_ocupados > tamanio_paginas)
+    {
+        cantidad++;
+        bytes_ocupados -= tamanio_paginas;
+    }
+    return cantidad;
+}
+
+int bytes_ocupados_pid(int pid)
+{
 
     int err;
     t_list *tabla_proceso = obtener_lista_proceso(pid, &err);
 
-    if(err)
+    if (err)
         return 0;
     else
         return bytes_ocupados_lista(tabla_proceso);
-
 }
 
-int bytes_ocupados_lista(t_list *lista_elementos_proceso){
+int bytes_ocupados_lista(t_list *lista_elementos_proceso)
+{
 
     t_tabla_paginas_proceso *elemento_proceso;
     int bytes = 0;
@@ -102,11 +114,11 @@ int bytes_ocupados_lista(t_list *lista_elementos_proceso){
         elemento_proceso = list_get(lista_elementos_proceso, i);
         bytes += elemento_proceso->tamanio;
     }
-    return bytes;    
-
+    return bytes;
 }
 
-int cantidad_paginas_proceso(int pid){
+int cantidad_paginas_proceso(int pid)
+{
 
     t_pagina_proceso *pagina_proceso;
 
@@ -118,11 +130,11 @@ int cantidad_paginas_proceso(int pid){
             return list_size(pagina_proceso->paginas);
     }
 
-    return -1;
-    
+    return EXIT_FAILURE;
 }
 
-int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
+int obtener_numero_instruccion(t_list *tabla_proceso, int pid, int tid)
+{
 
     t_tabla_paginas_proceso *elemento_proceso;
     void *d_proceso;
@@ -140,6 +152,7 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
             d_proceso = recuperar_elementos_proceso(pid);
             memcpy(tcb_serializado, d_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
             tcb = deserializar_TCB(tcb_serializado);
+<<<<<<< HEAD
             
             //printf("Tengo el tcb\n");
 
@@ -149,9 +162,14 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
             printf("posY: %d\n", tcb->posY);
             printf("proximaInstruccion: %d\n", tcb->proximaInstruccion);
             printf("puntero_PCB: %d\n", tcb->puntero_PCB);
+=======
+
+            printf("Tengo el tcb: %i\n", tcb->TID);
+>>>>>>> 284c2a25c9e26bf9ad17cc50580a9daa278be02c
 
             //INCREMENTO EL IP
             numInst = tcb->proximaInstruccion;
+            printf("Num Instruccion: %i\n", numInst);
             tcb->proximaInstruccion++;
 
             //printf("Incremento el tcb\n");
@@ -170,43 +188,46 @@ int obtener_numero_instruccion(t_list* tabla_proceso, int pid, int tid){
 
             //printf("Termino\n");
             return numInst;
-        }   
+        }
     }
 
-    return -1;
+    return EXIT_FAILURE;
 }
 
-void* recuperar_elementos_proceso(int pid){
-    
-    int               err;
-    int               bProceso          = bytes_ocupados_pid(pid);
-    int               bObtenidos        = 0;
-    void             *elementos_proceso = malloc(bProceso);
-    t_pagina_proceso *paginas_proceso   = obtener_paginas_proceso(pid, &err);
+void *recuperar_elementos_proceso(int pid)
+{
+
+    int err;
+    int bProceso = bytes_ocupados_pid(pid);
+    int bObtenidos = 0;
+    void *elementos_proceso = malloc(bProceso);
+    t_pagina_proceso *paginas_proceso = obtener_paginas_proceso(pid, &err);
 
     for (int i = 0; i < list_size(paginas_proceso->paginas); i++)
     {
-        if((bObtenidos + tamanio_paginas) < bProceso){
+        if ((bObtenidos + tamanio_paginas) < bProceso)
+        {
             memcpy(elementos_proceso + bObtenidos, list_get(paginas_proceso->paginas, i), tamanio_paginas);
             bObtenidos += tamanio_paginas;
         }
-        else{
-            memcpy(elementos_proceso + bObtenidos, list_get(paginas_proceso->paginas, i), (tamanio_paginas-calcular_fragmentacion(pid)));
-            bObtenidos += (tamanio_paginas-calcular_fragmentacion(pid));
+        else
+        {
+            memcpy(elementos_proceso + bObtenidos, list_get(paginas_proceso->paginas, i), (tamanio_paginas - calcular_fragmentacion(pid)));
+            bObtenidos += (tamanio_paginas - calcular_fragmentacion(pid));
         }
     }
 
     return elementos_proceso;
 }
 
-void guardar_elementos_proceso(int pid, void* datosProceso){
+void guardar_elementos_proceso(int pid, void *datosProceso)
+{
     int bProceso = bytes_ocupados_pid(pid);
     int bGuardados = 0;
     int err;
-    t_list* pag_proc = obtener_paginas_proceso(pid, &err)->paginas;
+    t_list *pag_proc = obtener_paginas_proceso(pid, &err)->paginas;
 
     //printf("bProceso: %d\n", bProceso);
-
 
     for (int i = 0; i < list_size(pag_proc); i++)
     {
@@ -216,16 +237,17 @@ void guardar_elementos_proceso(int pid, void* datosProceso){
             memcpy(list_get(pag_proc, i), datosProceso + bGuardados, tamanio_paginas);
             bGuardados += tamanio_paginas;
         }
-        else{
+        else
+        {
             //printf("Guardo en %p, lo que esta en %p, cantidad %d\n", list_get(pag_proc, i), datosProceso + bGuardados, (tamanio_paginas-calcular_fragmentacion(pid)));
-            memcpy(list_get(pag_proc, i), datosProceso + bGuardados, (tamanio_paginas-calcular_fragmentacion(pid)));
-            bGuardados += (tamanio_paginas-calcular_fragmentacion(pid));
+            memcpy(list_get(pag_proc, i), datosProceso + bGuardados, (tamanio_paginas - calcular_fragmentacion(pid)));
+            bGuardados += (tamanio_paginas - calcular_fragmentacion(pid));
         }
     }
-    
 }
 
-t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
+t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
+{
 
     void *elementos_proceso;
     elementos_proceso = recuperar_elementos_proceso(pid);
@@ -243,9 +265,10 @@ t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
 
             printf("Cantidad de tarea: %d\nTarea solicitada: %d\n", pagina_proceso->tamanio/sizeof(t_tarea), nInstruccion);
 
-            if(pagina_proceso->tamanio/sizeof(t_tarea) == nInstruccion){
+            if (pagina_proceso->tamanio / sizeof(t_tarea) == nInstruccion)
+            {
                 printf("ULTIMA INSTRUCCION\n");
-                
+
                 tarea = malloc(sizeof(t_tarea));
                 tarea->codigoTarea = FIN_TAREAS;
                 tarea->parametro = 0;
@@ -255,7 +278,8 @@ t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
 
                 return tarea;
             }
-            else{
+            else
+            {
                 memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + nInstruccion * sizeof(t_tarea), sizeof(t_tarea));
                 tarea = deserializar_TAREA(tarea_serializada);
 
@@ -269,11 +293,12 @@ t_tarea* obtenerTarea(t_list* lista_proceso, int pid, int nInstruccion){
             }
         }
     }
-    
-    return (t_tarea*) -1;
+
+    return (t_tarea *)-1;
 }
 
-int cant_tripulantes_paginacion(t_list* tabla_proceso){
+int cant_tripulantes_paginacion(t_list *tabla_proceso)
+{
     int cant = 0;
     t_tabla_paginas_proceso *pagina_proceso;
 
@@ -285,18 +310,20 @@ int cant_tripulantes_paginacion(t_list* tabla_proceso){
             cant++;
     }
 
-    return cant;    
+    return cant;
 }
 
-int cant_tripulantes_proceso(int pid){
+int cant_tripulantes_proceso(int pid)
+{
     int err;
-    t_list* lista_proc = obtener_lista_proceso(pid, &err);
+    t_list *lista_proc = obtener_lista_proceso(pid, &err);
 
     return cant_tripulantes_paginacion(lista_proc);
 }
 
-int obtener_pid_pag(t_list* tablaUnProceso){
-    
+int obtener_pid_pag(t_list *tablaUnProceso)
+{
+
     t_tabla_paginas_proceso *pagina_proceso;
 
     for (int i = 0; i < list_size(tablaUnProceso); i++)
@@ -307,24 +334,13 @@ int obtener_pid_pag(t_list* tablaUnProceso){
             return pagina_proceso->id;
     }
 
-    return -1;
+    return EXIT_FAILURE;
 }
 
 void limpiar_estado_frames()
 {
-    for (int i = 0; i < (config->tamanio_memoria / tamanio_paginas); i++)
+    for (int i = 0; i < maxima_cantidad_paginas; i++)
     {
         estado_frames[i] = 0;
     }
 }
-
-// t_pagina_proceso obtener_ultima_pagina_del_proceso(int pid)
-// {
-//     t_pagina_proceso ultima_pagina = null;
-//     for (int i = 0; i < list_size(tabla_paginas->paginas); i++)
-//     {
-//         t_pagina_proceso pagina_actual = list_get(tabla_paginas->paginas, i);
-//         if (pagina_actual->pid == pid)
-//             ultima_pagina = pagina_actual;
-//     }
-// }
