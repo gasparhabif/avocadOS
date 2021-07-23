@@ -5,7 +5,7 @@ void INICIAR_PATOTA(char **parametros)
 
     static int cantParametros;
     cantParametros = 0;
-    
+
     while (parametros[cantParametros] != NULL)
         cantParametros++;
 
@@ -32,12 +32,12 @@ void INICIAR_PATOTA(char **parametros)
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 int cantTareas = 0;
                 int errorLeyendoTareas = 0;
-                
+
                 t_tarea *tareas = leer_tareas(fpTareas, &cantTareas, &errorLeyendoTareas);
 
-                if(errorLeyendoTareas)
+                if (errorLeyendoTareas)
                     return;
-                
+
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //printf("Serializando...\n");
                 int tamanioSerializacion;
@@ -54,10 +54,11 @@ void INICIAR_PATOTA(char **parametros)
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
-                int direccionPCB = (int) recibir_paquete(sockfd_ram);
+                int direccionPCB = (int)recibir_paquete(sockfd_ram);
                 //printf("Pos recibida: %p\n", direccionPCB);
 
-                if(!direccionPCB){
+                if (!direccionPCB)
+                {
                     log_info(logger, "Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes");
                     printf("Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes\n");
                     return;
@@ -99,29 +100,29 @@ void INICIAR_PATOTA(char **parametros)
                 //CREO LOS THREADS DE LOS TRIPULANTES
                 pthread_t threads_tripulantes[cantTripulantes];
 
-                for (int i = 0; i < cantTripulantes; i++){
-                    
-                    //CREO LA ESTRUCTURA DE ADMINISTACION DEL TRIPULANTE Y LE ASIGNO INFORMACION QUE DESPUES NO LE VOY A PODER ASIGNAR                    
+                for (int i = 0; i < cantTripulantes; i++)
+                {
+
+                    //CREO LA ESTRUCTURA DE ADMINISTACION DEL TRIPULANTE Y LE ASIGNO INFORMACION QUE DESPUES NO LE VOY A PODER ASIGNAR
                     t_admin_tripulantes *admin = malloc(sizeof(t_admin_tripulantes));
-                    admin->pid                 = patota_id;
+                    admin->pid = patota_id;
 
                     //CREO LOS PARAMETROS PARA EL TRIPULANTE A CREAR
                     t_parametros_tripulantes *parametros_tripulante = malloc(sizeof(t_parametros_tripulantes));
                     //parametros_tripulante->tcbTripulante            = malloc(sizeof(t_TCB));
-                    parametros_tripulante->tcbTripulante            = tripulantes_tcb[i];
-                    parametros_tripulante->admin                    = admin;
+                    parametros_tripulante->tcbTripulante = tripulantes_tcb[i];
+                    parametros_tripulante->admin = admin;
 
                     //CREO EL TRIPULANTE
-                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *) parametros_tripulante);
-                    pthread_detach(threads_tripulantes[i]);                   
+                    pthread_create(&(threads_tripulantes[i]), NULL, (void *)tripulante, (t_parametros_tripulantes *)parametros_tripulante);
+                    pthread_detach(threads_tripulantes[i]);
                 }
 
                 patota_id++;
-                
+
                 printf("Iniciando %d tripulantes\n", cantTripulantes);
-            
             }
-            
+
             fclose(fpTareas);
         }
     }
@@ -131,44 +132,44 @@ void LISTAR_TRIPULANTES(char **parametros)
 {
     //SOLICITO LOS TRIPULANTES DE LA MEMORIA RAM
     int tamanioSerializacion;
-    void *paquete = serializarInt(1, SOLICITAR_LISTA, &tamanioSerializacion);   
+    void *paquete = serializarInt(1, SOLICITAR_LISTA, &tamanioSerializacion);
     send(sockfd_ram, paquete, tamanioSerializacion, 0);
     free(paquete);
 
     //RECIBO LOS TRIPULANTES DE LA RAM
-    t_ListaTripulantes *tripulantesRecibidos = (t_ListaTripulantes *) recibir_paquete(sockfd_ram);
+    t_ListaTripulantes *tripulantesRecibidos = (t_ListaTripulantes *)recibir_paquete(sockfd_ram);
 
     //LISTO LOS TRIPULANTES
-	time_t tiempo = time(0);
+    time_t tiempo = time(0);
     tlocal = localtime(&tiempo);
     char *hora = malloc(128);
-    strftime(hora,128,"%d/%m/%y %H:%M:%S",tlocal);
+    strftime(hora, 128, "%d/%m/%y %H:%M:%S", tlocal);
 
     printf("--------------------------------------------------------------------------------\n");
-    
+
     printf("Estado de la nave: %s\n", hora);
     free(hora);
     printf("Actualmente hay %d tripulantes en la nave\n", tripulantesRecibidos->cantTripulantes);
 
     for (int i = 0; i < tripulantesRecibidos->cantTripulantes; i++)
     {
-        printf("Patota: %d\t",     tripulantesRecibidos->tripulantes[i].PID);
+        printf("Patota: %d\t", tripulantesRecibidos->tripulantes[i].PID);
         printf("Tripulante: %d\t", tripulantesRecibidos->tripulantes[i].TID);
-        printf("Status: %c\t",     tripulantesRecibidos->tripulantes[i].estado);
-        printf("Pos X: %d\t",      tripulantesRecibidos->tripulantes[i].posX);
-        printf("Pos Y: %d\t",      tripulantesRecibidos->tripulantes[i].posY);
-        printf("Nro. Inst: %d\n",  tripulantesRecibidos->tripulantes[i].proximaInstruccion);
+        printf("Status: %c\t", tripulantesRecibidos->tripulantes[i].estado);
+        printf("Pos X: %d\t", tripulantesRecibidos->tripulantes[i].posX);
+        printf("Pos Y: %d\t", tripulantesRecibidos->tripulantes[i].posY);
+        printf("Nro. Inst: %d\n", tripulantesRecibidos->tripulantes[i].proximaInstruccion);
     }
 
     printf("--------------------------------------------------------------------------------\n");
-    
 }
 
 void EXPULSAR_TRIPULANTE(char **parametros)
 {
 
     //SACO AL TRIPULANTE DE LA LISTA EN LA QUE SE ENCUENTRE (SI EXISTE)
-    if(existeTripulante(atoi(parametros[1]))){
+    if (existeTripulante(atoi(parametros[1])))
+    {
 
         //LE DOY EL AVISO DE MUERTE AL TRIPULANTE
         avisoDeMuerte(atoi(parametros[1]));
@@ -183,7 +184,8 @@ void EXPULSAR_TRIPULANTE(char **parametros)
 
 void INICIAR_PLANIFICACION(char **parametros)
 {
-    if (pausar(0)){
+    if (pausar(0))
+    {
         log_info(logger, "Iniciando planificacion...\n");
         printf("Iniciando planificacion...\n");
     }
@@ -193,7 +195,8 @@ void INICIAR_PLANIFICACION(char **parametros)
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
-    if (pausar(1)){
+    if (pausar(1))
+    {
         log_info(logger, "Pausando planificacion...\n");
         printf("Pausando planificacion...\n");
     }
@@ -210,18 +213,15 @@ void OBTENER_BITACORA(char **parametros)
     free(dEnviar);
 
     //RECIBO LA BITACORA DEL MONGO
-    char* bitacoraRecibida = (char *) recibir_paquete(sockfd_mongo);
-
+    char *bitacoraRecibida = (char *)recibir_paquete(sockfd_mongo);
     char **bitacoras_separadas = string_split(bitacoraRecibida, "$");
 
-
-    //IMPRIMO LA BITACORA
+    // IMPRIMO LA BITACORA
     printf("--------------------------------------------------------------------------------------------------------\n");
     printf("Esta es la bitacora del tripulante %d\n", atoi(parametros[1]));
     for (int i = 0; bitacoras_separadas[i] != NULL; i++)
         printf("ACCION N°%d: %s\n", i, bitacoras_separadas[i]);
     printf("--------------------------------------------------------------------------------------------------------\n");
-    
 }
 
 void IMPRIMIR_SEGMENTOS(char **parametros)

@@ -637,7 +637,8 @@ void *serializar_posicionCtid(uint32_t tid, uint32_t posX, uint32_t posY, int *t
     //free(a_enviar);
 }
 
-void *serializar_bitacora_tripulante(uint32_t tamanio_bitacora, char* bitacora, int *tamanioSerializaion){
+void *serializar_bitacora_tripulante(uint32_t tamanio_bitacora, char *bitacora, int *tamanioSerializaion)
+{
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -680,5 +681,5 @@ void *serializar_bitacora_tripulante(uint32_t tamanio_bitacora, char* bitacora, 
     return a_enviar;
 
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
-    //free(a_enviar);   
+    //free(a_enviar);
 }

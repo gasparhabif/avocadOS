@@ -72,9 +72,9 @@ int main(int argc, char **argv)
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
-	pthread_t thread_sabotajes;
-	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
-	pthread_detach(thread_sabotajes);
+	// pthread_t thread_sabotajes;
+	// pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
+	// pthread_detach(thread_sabotajes);
 
 	pausar(1);
 

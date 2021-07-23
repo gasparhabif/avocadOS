@@ -13,8 +13,16 @@ void discordiador_cxn_handler()
 
         char *bitacora_str = reconstruir_bitacora(bitacora);
 
-        // TODO: Serializar strlen(bitacora_str) y bitacora_str para enviar al Discordiador
-        // ...
+        uint32_t tamanio_bitacora = strlen(bitacora_str);
+        uint32_t tamanio_paquete;
+        void *bitacora_serializada = serializar_bitacora_tripulante(tamanio_bitacora, bitacora_str, &tamanio_paquete);
+
+        if (send(discordiador_cxn, bitacora_serializada, tamanio_paquete, 0) <= 0)
+        {
+            log_error(logger, "Error al enviar bitácora del tripulante %d", bitacora_tid);
+            exit(EXIT_FAILURE);
+        }
+        log_info(logger, "Se envió la bitácora del tripulante %d", bitacora_tid);
 
         free(bitacora_str);
         liberar_bitacora(bitacora);
@@ -84,7 +92,7 @@ void tripulante_cxn_handler(void *arg)
     while (!tareas_finalizadas)
     {
         pthread_mutex_lock(&fs_libre);
-        // sync_blocks();
+        sync_blocks();
 
         switch (cod_operacion)
         {
@@ -134,6 +142,10 @@ void tripulante_cxn_handler(void *arg)
         }
 
         pthread_mutex_unlock(&fs_libre);
+
+        if (tareas_finalizadas)
+            break;
+
         datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
     }
 
