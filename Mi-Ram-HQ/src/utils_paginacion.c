@@ -153,10 +153,11 @@ int obtener_numero_instruccion(t_list *tabla_proceso, int pid, int tid)
             memcpy(tcb_serializado, d_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
             tcb = deserializar_TCB(tcb_serializado);
 
-            printf("Tengo el tcb\n");
+            printf("Tengo el tcb: %i\n", tcb->TID);
 
             //INCREMENTO EL IP
             numInst = tcb->proximaInstruccion;
+            printf("Num Instruccion: %i\n", numInst);
             tcb->proximaInstruccion++;
 
             printf("Incremento el tcb\n");
@@ -257,7 +258,7 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
         if (pagina_proceso->tipo == TAREAS)
         {
 
-            //printf("Tarea N°%d\n", nInstruccion);
+            printf("Tarea N°%d\n", nInstruccion);
 
             if (pagina_proceso->tamanio / sizeof(t_tarea) == nInstruccion)
             {

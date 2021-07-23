@@ -57,7 +57,7 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
 
     nInstruccion = obtener_numero_instruccion(tabla_proceso, pidYtid_recibido->pid, pidYtid_recibido->tid);
 
-    //printf("\n\n\nTENGO EL NRO DE INSTRUCCION %d\n\n\n", nInstruccion);
+    printf("\n\n\nTENGO EL NRO DE INSTRUCCION %d\n\n\n", nInstruccion);
 
     //BUSCO LA TAREA QUE NECESITO
     t_tarea *tarea_recibida = obtenerTarea(tabla_proceso, pidYtid_recibido->pid, nInstruccion);
