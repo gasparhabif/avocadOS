@@ -144,3 +144,18 @@ char *get_nombre_tarea(int cod_operacion)
 
     return nombre_tarea;
 }
+
+char *reconstruir_bitacora(t_bitacora_mongo *bitacora)
+{
+    char *bitacora_string = string_new();
+
+    for (int i = 0; i < list_size(bitacora->blocks); i++)
+    {
+        char *block_info = malloc(superbloque->block_size);
+        memcpy(block_info, blocks_file + (int)list_get(bitacora->blocks, i) * superbloque->block_size, superbloque->block_size);
+        string_append(&bitacora_string, block_info);
+        free(block_info);
+    }
+
+    return string_substring_until(bitacora_string, bitacora->size);
+}

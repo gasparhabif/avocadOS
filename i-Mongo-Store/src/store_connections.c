@@ -54,6 +54,12 @@ void tripulante_cxn_handler(void *arg)
 
     // ...
 
+    // printf("Bitacora reconstruida: %s\n", reconstruir_bitacora(bitacora));
+
+    // while (1)
+    // {
+    // }
+
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 

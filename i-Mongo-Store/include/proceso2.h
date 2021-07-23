@@ -113,6 +113,7 @@ char *blocks_list_to_string(t_list *);
 char *pos_to_string(t_posicion *);
 void update_pos(t_posicion *, t_posicion *);
 char *get_nombre_tarea(int);
+char *reconstruir_bitacora(t_bitacora_mongo *);
 
 // SuperBloque utils (definidas en superbloque_utils.c)
 int get_free_block();
