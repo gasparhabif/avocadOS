@@ -21,6 +21,7 @@ void *serializar_tcbMostrar(uint32_t, t_TCBmostrar *, int *);
 void *serializar_bitacora(t_bitacora *, uint32_t *);
 void *serializar_ejecutarTarea(uint32_t, uint32_t, int *);
 void *serializar_posicionCtid(uint32_t, uint32_t, uint32_t, int *);
+void *serializar_bitacora_tripulante(uint32_t, char*, int*);
 
 //DEFINIDAS EN deserializacion.c
 t_TCBcPID *deserializarTCB(t_buffer *);
@@ -35,5 +36,6 @@ t_ListaTripulantes *deserealizarTCBmostrar(t_buffer *);
 t_bitacora *deserializar_bitacora(t_buffer *);
 t_ejecutar_tarea *deserealizar_ejecutarTarea(t_buffer *);
 t_tidCposicion *deserializar_posicionCtid(t_buffer *);
+char *deserializar_bitacora_tripulante(t_buffer*);
 
 #endif

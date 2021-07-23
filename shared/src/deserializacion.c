@@ -259,3 +259,15 @@ t_tidCposicion *deserializar_posicionCtid(t_buffer *buffer)
 
     return tidCpos_recibido;
 }
+
+char *deserializar_bitacora_tripulante(t_buffer* buffer){
+    
+    uint32_t tamanioBitacora;
+    memcpy(&tamanioBitacora, buffer, sizeof(tamanioBitacora));
+    
+    char* bitacora_recibida = malloc(tamanioBitacora);
+
+    memcpy(bitacora_recibida, buffer + sizeof(uint32_t), tamanioBitacora);
+
+    return bitacora_recibida;
+}

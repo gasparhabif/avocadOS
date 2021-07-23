@@ -210,13 +210,16 @@ void OBTENER_BITACORA(char **parametros)
     free(dEnviar);
 
     //RECIBO LA BITACORA DEL MONGO
-    t_bitacora *bitacoraRecibida = (t_bitacora *) recibir_paquete(sockfd_mongo);
+    char* bitacoraRecibida = (char *) recibir_paquete(sockfd_mongo);
+
+    char **bitacoras_separadas = string_split(bitacoraRecibida, "$");
+
 
     //IMPRIMO LA BITACORA
     printf("--------------------------------------------------------------------------------------------------------\n");
     printf("Esta es la bitacora del tripulante %d\n", atoi(parametros[1]));
-    for (int i = 0; i < bitacoraRecibida->cantAcciones; i++)
-        printf("ACCION N°%d %s\n", i, bitacoraRecibida->acciones[i].accion);
+    for (int i = 0; bitacoras_separadas[i] != NULL; i++)
+        printf("ACCION N°%d: %s\n", i, bitacoras_separadas[i]);
     printf("--------------------------------------------------------------------------------------------------------\n");
     
 }

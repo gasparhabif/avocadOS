@@ -96,7 +96,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     }
     log_info(logger, "El tripulante se conecto con i-Mongo-Store");
 
-    printf("Posición de TID %d: %d|%d\n", admin->tid, admin->posX, admin->posY);
+    //printf("Posición de TID %d: %d|%d\n", admin->tid, admin->posX, admin->posY);
 
     //ENVIO EL TID Y LA POSICION INICIAL AL MONGO
     void *enviar_tidYpos = serializar_posicionCtid(admin->tid, admin->posX, admin->posY, &tamanioSerializacion);
