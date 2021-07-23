@@ -141,17 +141,27 @@ int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
     return contador;
 }
 
-void pausar(){
-    if(planificando){
+int pausar(int pausarPlanificacion){
+
+    if(planificando == 0 && pausarPlanificacion == 0){
         for (int i = 0; i < config->grado_multitarea; i++)
             sem_post(&pause_exec);     
         pthread_mutex_unlock(&pause_block);
+
+        planificando = 1;
+        return 1;
     }
-    else{
+    else if (planificando && pausarPlanificacion == 1)
+    {
         for (int i = 0; i < config->grado_multitarea; i++)
             sem_wait(&pause_exec);     
         pthread_mutex_lock(&pause_block);
+
+        planificando = 0;
+        return 1;
     }
+    else
+        return 0;
 }
 
 int eliminarTripulante(t_list *lista, int tid){
