@@ -55,9 +55,9 @@ int main()
     else // Paginacion
     {
         tamanio_paginas = config->tamanio_pagina;
-        estado_frames = malloc(config->tamanio_memoria / tamanio_paginas);
-        limpiar_estado_frames();
         maxima_cantidad_paginas = config->tamanio_memoria / tamanio_paginas;
+        estado_frames = malloc(maxima_cantidad_paginas);
+        limpiar_estado_frames();
 
         tabla_paginas = list_create();
     }
@@ -67,7 +67,7 @@ int main()
     if ((server_instance = init_server(config->puerto)) == -1)
     {
         log_error(logger, "Algo malió sal al iniciar el servidor");
-        return 1;
+        return EXIT_FAILURE;
     }
     log_info(logger, "Se inicio el server");
 

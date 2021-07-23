@@ -1,6 +1,7 @@
 #include "proceso3.h"
 
-void *serializar_PCB(t_PCB *unPCB){
+void *serializar_PCB(t_PCB *unPCB)
+{
 
     void *pcb_serializado = malloc(sizeof(t_PCB));
     int offset = 0;
@@ -11,11 +12,11 @@ void *serializar_PCB(t_PCB *unPCB){
     offset += sizeof(uint32_t);
 
     return pcb_serializado;
-
 }
 
-void *serializar_TCB(t_TCB unTCB){
-    
+void *serializar_TCB(t_TCB unTCB)
+{
+
     void *tcb_serializado = malloc(sizeof(t_TCB));
     int offset = 0;
 
@@ -35,8 +36,9 @@ void *serializar_TCB(t_TCB unTCB){
     return tcb_serializado;
 }
 
-void *serializar_pTCB(t_TCB *unTCB){
-    
+void *serializar_pTCB(t_TCB *unTCB)
+{
+
     void *tcb_serializado = malloc(sizeof(t_TCB));
     int offset = 0;
 
@@ -56,8 +58,9 @@ void *serializar_pTCB(t_TCB *unTCB){
     return tcb_serializado;
 }
 
-void *serializar_TAREA(t_tarea *unaTarea){
-    
+void *serializar_TAREA(t_tarea *unaTarea)
+{
+
     void *tarea_serializada = malloc(sizeof(t_tarea));
     int offset = 0;
 
@@ -75,22 +78,23 @@ void *serializar_TAREA(t_tarea *unaTarea){
     return tarea_serializada;
 }
 
-t_PCB* deserializar_PCB(void *unPCB){
+t_PCB *deserializar_PCB(void *unPCB)
+{
 
     t_PCB *pcb_deserializado = malloc(sizeof(t_PCB));
     int offset = 0;
 
-    memcpy(&(pcb_deserializado->PID), unPCB + offset , sizeof(uint32_t));
+    memcpy(&(pcb_deserializado->PID), unPCB + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(&(pcb_deserializado->tareas), unPCB + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
 
     return pcb_deserializado;
-
 }
 
-t_TCB* deserializar_TCB(void *unTCB){
-    
+t_TCB *deserializar_TCB(void *unTCB)
+{
+
     t_TCB *tcb_deserializado = malloc(sizeof(t_TCB));
     int offset = 0;
 
@@ -110,8 +114,9 @@ t_TCB* deserializar_TCB(void *unTCB){
     return tcb_deserializado;
 }
 
-t_tarea* deserializar_TAREA(void *unaTarea){
-    
+t_tarea *deserializar_TAREA(void *unaTarea)
+{
+
     t_tarea *tarea_deserializada = malloc(sizeof(t_tarea));
     int offset = 0;
 
@@ -121,7 +126,7 @@ t_tarea* deserializar_TAREA(void *unaTarea){
     offset += sizeof(uint32_t);
     memcpy(&(tarea_deserializada->posX), unaTarea + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(&(tarea_deserializada->posY), unaTarea + offset,  sizeof(uint32_t));
+    memcpy(&(tarea_deserializada->posY), unaTarea + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(&(tarea_deserializada->duracionTarea), unaTarea + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
