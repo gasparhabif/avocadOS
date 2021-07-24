@@ -66,7 +66,8 @@ char *basura_file_path;
 // Variables globales
 t_log *logger;
 t_store_conf *config;
-int discordiador_cxn;
+int discordiador_cxn_sabotajes;
+int discordiador_cxn_bitacoras;
 t_superbloque *superbloque;
 int superbloque_fd;
 int superbloque_file_size;
@@ -78,7 +79,7 @@ char *blocks_file_copy;
 pthread_mutex_t fs_libre;
 
 // Conexiones hacia el store (definidas en store_connections.c)
-void discordiador_cxn_handler();
+void discordiador_cxn_handler_bitacoras();
 void accept_tripulantes(void *);
 void tripulante_cxn_handler(void *);
 

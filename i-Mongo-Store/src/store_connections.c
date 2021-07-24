@@ -1,8 +1,8 @@
 #include "proceso2.h"
 
-void discordiador_cxn_handler()
+void discordiador_cxn_handler_bitacoras()
 {
-    int bitacora_tid = (int)recibir_paquete(discordiador_cxn);
+    int bitacora_tid = (int)recibir_paquete(discordiador_cxn_bitacoras);
 
     while (bitacora_tid >= 0)
     {
@@ -14,10 +14,10 @@ void discordiador_cxn_handler()
         char *bitacora_str = reconstruir_bitacora(bitacora);
 
         uint32_t tamanio_bitacora = strlen(bitacora_str);
-        uint32_t tamanio_paquete;
+        int tamanio_paquete;
         void *bitacora_serializada = serializar_bitacora_tripulante(tamanio_bitacora, bitacora_str, &tamanio_paquete);
 
-        if (send(discordiador_cxn, bitacora_serializada, tamanio_paquete, 0) <= 0)
+        if (send(discordiador_cxn_bitacoras, bitacora_serializada, tamanio_paquete, 0) <= 0)
         {
             log_error(logger, "Error al enviar bitácora del tripulante %d", bitacora_tid);
             exit(EXIT_FAILURE);
@@ -28,7 +28,7 @@ void discordiador_cxn_handler()
         liberar_bitacora(bitacora);
 
         pthread_mutex_unlock(&fs_libre);
-        bitacora_tid = (int)recibir_paquete(discordiador_cxn);
+        bitacora_tid = (int)recibir_paquete(discordiador_cxn_bitacoras);
     }
 }
 

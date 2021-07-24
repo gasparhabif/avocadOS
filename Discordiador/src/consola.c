@@ -209,11 +209,11 @@ void OBTENER_BITACORA(char **parametros)
     //SOLICITO LA BITACORA DE UN TRIPULANTE
     int bEnviar;
     void *dEnviar = serializarInt(atoi(parametros[1]), SOLICITAR_BITACORA, &bEnviar);
-    send(sockfd_mongo, dEnviar, bEnviar, 0);
+    send(sockfd_mongo_bitacoras, dEnviar, bEnviar, 0);
     free(dEnviar);
 
     //RECIBO LA BITACORA DEL MONGO
-    char *bitacoraRecibida = (char *)recibir_paquete(sockfd_mongo);
+    char *bitacoraRecibida = (char *)recibir_paquete(sockfd_mongo_bitacoras);
     char **bitacoras_separadas = string_split(bitacoraRecibida, "$");
 
     // IMPRIMO LA BITACORA

@@ -13,7 +13,7 @@ void sabotajes()
     while(escuchandoSabotajes){
 
         //RECIBO EL SABOTAJE
-        unSabotaje = (t_posicion *) recibir_paquete(sockfd_mongo);
+        unSabotaje = (t_posicion *) recibir_paquete(sockfd_mongo_sabotajes);
 
         //PAUSO LA PLANIFICACION
         pausar(0);
@@ -37,7 +37,7 @@ void sabotajes()
             list_add(bloq, aux_admin);
         }
 
-        //SELECCIONO ELTRIPULANTE QUE VA A REALIZAR EL SABOTAJE
+        //SELECCIONO EL TRIPULANTE QUE VA A REALIZAR EL SABOTAJE
         for (int i = 0; i < list_size(bloq); i++)
         {
             aux_admin = list_get(bloq, i);
@@ -66,7 +66,7 @@ void sabotajes()
 
         //INVOCO AL PROTOCOLO FSCK
         d_enviar = serializarInt(tripulante_elegido->tid, INICIO_PROTOCOLO_FSCK, &bEnviar);
-        send(sockfd_mongo, d_enviar, bEnviar, 0);
+        send(sockfd_mongo_sabotajes, d_enviar, bEnviar, 0);
         free(d_enviar);
 
         //RESUELVO EL SABOTAJE 

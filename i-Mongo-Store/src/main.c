@@ -56,23 +56,38 @@ int main()
         return EXIT_FAILURE;
     }
 
-    // Aceptar conexión del Discordiador
+    // Aceptar conexión del Discordiador para sabotajes
     listen(server_instance, 1);
-    log_info(logger, "Esperando discordiador en el puerto %d", config->puerto);
+    log_info(logger, "Esperando Discordiador en el puerto %d para informar sabotajes", config->puerto);
 
     struct sockaddr_in client_dir;
     unsigned int dir_size = sizeof(socklen_t);
-    discordiador_cxn = accept(server_instance, (void *)&client_dir, &dir_size);
+    discordiador_cxn_sabotajes = accept(server_instance, (void *)&client_dir, &dir_size);
 
-    if (discordiador_cxn == -1)
+    if (discordiador_cxn_sabotajes == -1)
     {
         log_error(logger, "Error al aceptar conexión");
         return EXIT_FAILURE;
     }
-    log_info(logger, "Se conectó el discordiador en el socket %d", discordiador_cxn);
+    log_info(logger, "Se conectó el discordiador en el socket %d para informar sabotajes", discordiador_cxn_sabotajes);
+
+    // Aceptar conexión del Discordiador para bitácoras
+    listen(server_instance, 1);
+    log_info(logger, "Esperando Discordiador en el puerto %d para traficar bitácoras", config->puerto);
+
+    // struct sockaddr_in client_dir;
+    // unsigned int dir_size = sizeof(socklen_t);
+    discordiador_cxn_bitacoras = accept(server_instance, (void *)&client_dir, &dir_size);
+
+    if (discordiador_cxn_bitacoras == -1)
+    {
+        log_error(logger, "Error al aceptar conexión");
+        return EXIT_FAILURE;
+    }
+    log_info(logger, "Se conectó el Discordiador en el socket %d para traficar bitácoras", discordiador_cxn_bitacoras);
 
     pthread_t discordiador_cxn_thread;
-    pthread_create(&discordiador_cxn_thread, NULL, (void *)discordiador_cxn_handler, NULL);
+    pthread_create(&discordiador_cxn_thread, NULL, (void *)discordiador_cxn_handler_bitacoras, NULL);
     pthread_detach(discordiador_cxn_thread);
 
     // Aceptar conexiones de los tripulantes

@@ -89,7 +89,8 @@ int distancia_posiciones(t_posicion *, int, int);
 t_log *logger;
 t_cpu_conf *config;
 
-int sockfd_mongo;
+int sockfd_mongo_sabotajes;
+int sockfd_mongo_bitacoras;
 int sockfd_ram;
 int patota_id;
 int ejecutandoTripulantes;

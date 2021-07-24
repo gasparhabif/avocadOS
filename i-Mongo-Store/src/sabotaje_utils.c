@@ -21,8 +21,8 @@ void sabotaje_handler(int signal)
     // Enviar posicion del sabotaje
     int tamano_paquete;
     void *posicion_sabotaje = serializar_envioSabotaje(next_pos->posX, next_pos->posY, &tamano_paquete);
-    send(discordiador_cxn, posicion_sabotaje, tamano_paquete, 0);
-    log_info(logger, "Se envió la posición %d|%d al Discordiador", next_pos->posX, next_pos->posY);
+    send(discordiador_cxn_sabotajes, posicion_sabotaje, tamano_paquete, 0);
+    log_info(logger, "Se envió la posición %d|%d del sabotaje al Discordiador", next_pos->posX, next_pos->posY);
 
     free(posicion_sabotaje);
 }
