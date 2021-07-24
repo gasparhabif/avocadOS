@@ -19,7 +19,13 @@ cd $MAP
 sudo make install
 cd $CWD
 echo -e "\n\nBuilding projects...\n\n"
+make clean -C ./Discordiador
+mkdir ./Discordiador/obj
 make -C ./Discordiador
+make clean -C ./i-Mongo-Store
+mkdir ./i-Mongo-Store/obj
 make -C ./i-Mongo-Store
+make clean -C ./Mi-Ram-HQ
+mkdir ./Mi-Ram-HQ/obj
 make -C ./Mi-Ram-HQ
 echo -e "\n\nDeploy done!\n\n"
