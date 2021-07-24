@@ -241,12 +241,8 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
         if (pagina_proceso->tipo == TAREAS)
         {
 
-            printf("Cantidad de tarea: %d\nTarea solicitada: %d\n", pagina_proceso->tamanio / sizeof(t_tarea), nInstruccion);
-
             if (pagina_proceso->tamanio / sizeof(t_tarea) == nInstruccion)
             {
-                printf("ULTIMA INSTRUCCION\n");
-
                 tarea = malloc(sizeof(t_tarea));
                 tarea->codigoTarea = FIN_TAREAS;
                 tarea->parametro = 0;

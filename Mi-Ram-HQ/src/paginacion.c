@@ -8,11 +8,8 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     int paginas_reservadas = 0;
     t_pagina_proceso *paginas_proceso;
 
-    printf("Me solicitaron %dB, la fragmentacion es %d\n", bytes_solicitados, fragmentacion_interna);
-
     if (fragmentacion_interna > bytes_solicitados)
     {
-        printf("No debo reservar paginas\n");
         return 0;
     }
 
@@ -23,7 +20,6 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     paginas_proceso = obtener_paginas_proceso(pid, &err);
     if (err)
     {
-        printf("Se esta creando un proceso, puede ser pa?\n");
         paginas_proceso = malloc(sizeof(t_pagina_proceso));
         paginas_proceso->paginas = list_create();
         paginas_proceso->pid = pid;
@@ -36,7 +32,6 @@ int solicitar_paginas(int bytes_solicitados, int pid)
             estado_frames[i] = 1;
             list_add(paginas_proceso->paginas, (void *)(i * config->tamanio_pagina + (int)memoria));
             paginas_reservadas++;
-            printf("Reservo pagina\n");
         }
     }
 

@@ -282,7 +282,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 //printf("%d\n", TCB->puntero_PCB);
 
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
-                printf("Paginas necesarias: %d\nPaginas que tengo: %d\n", paginasNecesarias, list_size(lista_paginas_proceso));
                 if (paginasNecesarias < list_size(lista_paginas_proceso))
                 {
 
@@ -299,8 +298,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
 
                 //ELIMINO EL TCB DE LA MEMORIA
                 int offsetTCB = elemento_del_proceso->offset + elemento_del_proceso->tamanio;
-                printf("Bytes a copiar: %d\n", elemento_del_proceso->tamanio);
-                printf("Copio %d primero, sigo copiando desde el byte %d, copiando %d mas\n", elemento_del_proceso->offset, offsetTCB, (bProceso - offsetTCB));
 
                 memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->offset);
 
@@ -312,12 +309,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 void *tcb_serializado = malloc(sizeof(t_TCB));
                 memcpy(tcb_serializado, elementos_proceso_sTCB + 48, 24);
                 t_TCB *unTCB = deserializar_TCB(tcb_serializado);
-                printf("TID %d\n", unTCB->TID);
-                printf("ESTADO %c\n", unTCB->estado);
-                printf("X %d\n", unTCB->posX);
-                printf("Y %d\n", unTCB->posY);
-                printf("Prox INST %d\n", unTCB->proximaInstruccion);
-                printf("PCB %d\n", unTCB->puntero_PCB);
 
                 //ELIMINAR TCB DE LA LISTA DEL PROCESO
                 list_remove(tabla_proceso, i);
