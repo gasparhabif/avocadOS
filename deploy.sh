@@ -19,6 +19,7 @@ cd $MAP
 sudo make install
 cd $CWD
 echo -e "\n\nBuilding projects...\n\n"
+mkdir ./shared/obj
 make clean -C ./Discordiador
 mkdir ./Discordiador/obj
 make -C ./Discordiador
