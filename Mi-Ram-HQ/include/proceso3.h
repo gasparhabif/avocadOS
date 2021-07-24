@@ -90,12 +90,12 @@ void solicitar_tripulantes(int);
 
 //Definidas en router_paginacion.c
 void comenzar_patota_paginada(int, t_tareas_cPID *);
-void iniciar_tripulante_paginado(int, t_TCBcPID *);
+void iniciar_tripulante_paginado(int, t_TCBcPID *, char);
 void solicitar_tarea_paginada(int, t_pidYtid *);
-void mover_tripulante_paginada(t_envio_posicion *);
+void mover_tripulante_paginada(t_envio_posicion *, char);
 void actualizar_estado_paginada(t_estado *);
 void solicitar_tripulantes_paginada(int);
-void eliminar_tripulante_paginado(t_pidYtid *);
+void eliminar_tripulante_paginado(t_pidYtid *, char);
 void guardar_tcb_paginacion(t_TCBcPID *);
 
 //Definidas en memoria.c
@@ -119,7 +119,7 @@ void generar_archivo_swap();
 void realizar_swap();
 void swap_por_Clock();
 void swap_por_LRU();
-void guardar_tareas_paginacion(t_tareas_cPID *);
+void guardar_tareas_pcb_paginacion(t_tareas_cPID *);
 int solicitar_paginas(int, int);
 int calcular_fragmentacion(int);
 
@@ -138,12 +138,25 @@ int obtener_PIDproceso(t_list *);
 
 //Definidas en utils_paginacion.c
 t_list *buscar_paginas_proceso(int);
-t_list *obtener_lista_proceso(int);
+t_list *obtener_lista_proceso(int, int *);
 void limpiar_estado_frames(void);
+t_pagina_proceso *obtener_paginas_proceso(int, int *);
+int bytes_ocupados_pid(int);
+int bytes_ocupados_lista(t_list *);
+int cantidad_paginas_proceso(int);
+int obtener_numero_instruccion(t_list *, int, int);
+void *recuperar_elementos_proceso(int);
+void guardar_elementos_proceso(int, void *);
+t_tarea *obtenerTarea(t_list *, int, int);
+int cant_tripulantes_paginacion(t_list *);
+int obtener_pid_pag(t_list *);
+int cant_tripulantes_proceso(int);
+int calcular_paginas_ocupadas(int);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);
-void *serializar_TCB(t_TCB *);
+void *serializar_TCB(t_TCB);
+void *serializar_pTCB(t_TCB *);
 void *serializar_TAREA(t_tarea *);
 t_PCB *deserializar_PCB(void *);
 t_TCB *deserializar_TCB(void *);

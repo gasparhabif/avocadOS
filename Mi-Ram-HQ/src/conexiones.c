@@ -49,7 +49,7 @@ void recibir_mensaje(void *parametro)
                 comenzar_patota_paginada(client, (t_tareas_cPID *)datos_recibidos);
                 break;
             case INICIAR_TRIPULANTE:
-                iniciar_tripulante_paginado(client, datos_recibidos);
+                iniciar_tripulante_paginado(client, datos_recibidos, idMapaTripulante);
                 break;
             case SOLICITAR_TAREA:
                 log_info(logger, "El tripulante %d solicito una tarea", client);
@@ -57,7 +57,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case MOVER_TRIPULANTE:
                 log_info(logger, "El tripulante %d ha realizado un movimiento", client);
-                mover_tripulante_paginada(datos_recibidos);
+                mover_tripulante_paginada(datos_recibidos, idMapaTripulante);
                 break;
             case ACTUALIZAR_ESTADO:
                 log_info(logger, "El tripulante %d actualizo su estado", client);
@@ -70,11 +70,11 @@ void recibir_mensaje(void *parametro)
                 break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
-                eliminar_tripulante_paginado(datos_recibidos);
+                eliminar_tripulante_paginado(datos_recibidos, idMapaTripulante);
                 recibiendo_mensajes = 0;
                 break;
             default:
-                log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
+                // log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
                 break;
             }
         }
@@ -136,6 +136,8 @@ void recibir_mensaje(void *parametro)
             }
         }
     }
+
+    log_info(logger, "Se desconecto un tripulante");
 
     pthread_exit(0);
 }
