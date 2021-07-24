@@ -6,12 +6,13 @@ void sabotajes()
     t_admin_tripulantes *tripulante_elegido;
     t_posicion *unSabotaje;
     int index;
-    int distancia = -1;
+    int distancia;
     int bEnviar;
     void *d_enviar;
 
     while (escuchandoSabotajes)
     {
+        distancia = -1;
 
         //RECIBO EL SABOTAJE
         unSabotaje = (t_posicion *)recibir_paquete(sockfd_mongo_sabotajes);
@@ -27,7 +28,7 @@ void sabotajes()
         log_info(logger, "ATENDIENDO UN SABOTAJE");
 
         //MUEVO LOS TRIPULANTES A LA LISTA DE BLOQ
-        printf("Tripulantes en Exec: %d\n", list_size(exec));
+        // printf("Tripulantes en Exec: %d\n", list_size(exec));
         for (int i = 0; !list_is_empty(exec); i++)
         {
             index = menor_tid_list(exec);
@@ -35,13 +36,13 @@ void sabotajes()
             list_add(bloq, aux_admin);
         }
 
-        printf("Tripulantes en Ready: %d\n", list_size(ready));
+        // printf("Tripulantes en Ready: %d\n", list_size(ready));
         for (int i = 0; !list_is_empty(ready); i++)
         {
             index = menor_tid_list(ready);
-            printf("Index: %d\n", index);
+            // printf("Index: %d\n", index);
             aux_admin = list_remove(ready, index);
-            printf("TID: %d\n", aux_admin->tid);
+            // printf("TID: %d\n", aux_admin->tid);
             list_add(bloq, aux_admin);
         }
 
@@ -65,7 +66,7 @@ void sabotajes()
 
         tripulante_elegido = list_get(bloq, index);
 
-        printf("El tripulante %d resolvera el sabotaje\n", tripulante_elegido->tid);
+        log_info(logger, "El tripulante %d resolverá el sabotaje\n", tripulante_elegido->tid);
 
         //REGISTRO EN BITACORA EL TRIPULANTE ELEGIDO PARA REALIZAR EL SABOTAJE
         d_enviar = serializarInt(tripulante_elegido->tid, INICIO_RESOLUCION_SABOTAJE, &bEnviar);
@@ -91,10 +92,10 @@ void sabotajes()
         free(d_enviar);
 
         //DESBLOQUEO TRIPULANTES
-        for (int i = 0; !list_is_empty(bloq); i++)
+        for (int i = 0; i < list_size(bloq); i++)
         {
-            printf("i: %d\n", i);
-            aux_admin = list_remove(bloq, i);
+            // printf("i: %d\n", i);
+            aux_admin = list_get(bloq, i);
 
             //LE AVISO A RAM PARA QUE CAMBIE EL ESTADO
             d_enviar = serializar_ActulizacionEstado(aux_admin->pid, aux_admin->tid, aux_admin->estado, &bEnviar);
@@ -112,6 +113,12 @@ void sabotajes()
                 list_add(exec, aux_admin);
                 break;
             }
+        }
+
+        // Remover todos los TID de bloq
+        while (!list_is_empty(bloq))
+        {
+            list_remove(bloq, 0);
         }
 
         //RETOMO LA PLANIFICACION

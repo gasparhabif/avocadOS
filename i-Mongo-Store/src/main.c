@@ -15,7 +15,7 @@ int main()
     // Iniciar mutex
     pthread_mutex_init(&fs_libre, NULL);
 
-    // Iniciar FS
+    // Iniciar paths
     init_paths();
 
     // Atender signal
@@ -43,8 +43,24 @@ int main()
     blocks_file_copy = load_blocks();
     log_info(logger, "Se cargó Blocks.ims");
 
-    // TODO: Sincronizar bloques
-    // ...
+    // Sincronizar bloques
+    pthread_t blocks_sync_thread;
+    pthread_create(&blocks_sync_thread, NULL, (void *)sync_blocks_handler, NULL);
+    pthread_detach(blocks_sync_thread);
+
+    // Si existen, cargar recursos
+    if (file_exists(oxigeno_file_path))
+    {
+        last_oxigeno = load_recurso(oxigeno_file_path);
+    }
+    if (file_exists(comida_file_path))
+    {
+        last_comida = load_recurso(comida_file_path);
+    }
+    if (file_exists(basura_file_path))
+    {
+        last_basura = load_recurso(basura_file_path);
+    }
 
     // Inicializar servidor
     int server_instance = init_server(config->puerto);
@@ -98,6 +114,10 @@ int main()
 
     // ...
 
+    liberar_recurso(last_oxigeno);
+    liberar_recurso(last_comida);
+    liberar_recurso(last_basura);
+
     free(blocks_file_copy);
     free(superbloque->bitmap->bitarray);
     free(superbloque->bitmap);
@@ -110,4 +130,16 @@ int main()
     close(superbloque_fd);
 
     return EXIT_SUCCESS;
+}
+
+void sync_blocks_handler()
+{
+    while (1)
+    {
+        sleep(config->tiempo_sincronizacion);
+        pthread_mutex_lock(&fs_libre);
+        sync_blocks();
+        log_info(logger, "Se sincronizaron los bloques");
+        pthread_mutex_unlock(&fs_libre);
+    }
 }
