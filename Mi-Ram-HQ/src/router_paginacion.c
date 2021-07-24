@@ -53,11 +53,7 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
     //OBTENGO EL NRO DE INSTRUCCION E INCREMENTO EL IP
     int nInstruccion;
 
-    //printf("\n\n\nNO TENGO EL NRO DE INSTRUCCION\n\n\n");
-
     nInstruccion = obtener_numero_instruccion(tabla_proceso, pidYtid_recibido->pid, pidYtid_recibido->tid);
-
-    printf("\n\n\nTENGO EL NRO DE INSTRUCCION %d\n\n\n", nInstruccion);
 
     //BUSCO LA TAREA QUE NECESITO
     t_tarea *tarea_recibida = obtenerTarea(tabla_proceso, pidYtid_recibido->pid, nInstruccion);
@@ -212,7 +208,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
 {
 
     pthread_mutex_lock(&acceso_memoria);
-
     if (cant_tripulantes_proceso(datos_recibidos->pid) == 1)
     {
         //ELIMINAR PCB Y TAREAS (ADEMAS DEL TCB)
@@ -276,7 +271,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
             if (elemento_del_proceso->tipo == TCB && elemento_del_proceso->id == datos_recibidos->tid)
             {
 
-            
                 //void* tcbSerializado = malloc(sizeof(t_TCB));
                 //memcpy(tcbSerializado, elementos_proceso_cTCB + elemento_del_proceso->offset, sizeof(t_TCB));
                 //t_TCB *TCB = deserializar_TCB(tcbSerializado);
@@ -286,7 +280,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 //printf("%d\n", TCB->posY);
                 //printf("%d\n", TCB->proximaInstruccion);
                 //printf("%d\n", TCB->puntero_PCB);
-
 
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
                 printf("Paginas necesarias: %d\nPaginas que tengo: %d\n", paginasNecesarias, list_size(lista_paginas_proceso));
@@ -305,25 +298,31 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 index = i;
 
                 //ELIMINO EL TCB DE LA MEMORIA
-                printf("Copio %d primero, sigo copiando desde el byte %d, copiando %d mas\n", elemento_del_proceso->offset, elemento_del_proceso->offset + elemento_del_proceso->tamanio, (bProceso - elemento_del_proceso->offset - elemento_del_proceso->tamanio));
+                int offsetTCB = elemento_del_proceso->offset + elemento_del_proceso->tamanio;
+                printf("Copio %d primero, sigo copiando desde el byte %d, copiando %d mas\n", elemento_del_proceso->offset, offsetTCB, (bProceso - offsetTCB));
 
                 memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->offset);
-                if ((bProceso - (elemento_del_proceso->offset + elemento_del_proceso->tamanio)) != 0)
-                    memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->offset + elemento_del_proceso->tamanio, (bProceso - (elemento_del_proceso->offset + elemento_del_proceso->tamanio)));
+                if ((bProceso - offsetTCB) != 0)
+                {
+                    printf("Entree\n\n");
+                    // memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, (bProceso - offsetTCB));
+                    memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->offset, (bProceso - offsetTCB));
+                }
 
-                void* tcb_serializado = malloc(sizeof(t_TCB));
+                void *tcb_serializado = malloc(sizeof(t_TCB));
                 memcpy(tcb_serializado, elementos_proceso_cTCB + 52, 24);
                 t_TCB *unTCB = deserializar_TCB(tcb_serializado);
-                printf("%d\n", unTCB->TID);
-                printf("%c\n", unTCB->estado);
-                printf("%d\n", unTCB->posX);
-                printf("%d\n", unTCB->posY);
-                printf("%d\n", unTCB->proximaInstruccion);
-                printf("%d\n", unTCB->puntero_PCB);
-
+                printf("TID %d\n", unTCB->TID);
+                printf("ESTADO %c\n", unTCB->estado);
+                printf("X %d\n", unTCB->posX);
+                printf("Y %d\n", unTCB->posY);
+                printf("Prox INST %d\n", unTCB->proximaInstruccion);
+                printf("PCB %d\n", unTCB->puntero_PCB);
 
                 //ELIMINAR TCB DE LA LISTA DEL PROCESO
-                list_remove(tabla_proceso, i);
+                list_remove(tabla_proceso, unTCB->TID);
+                // list_remove(tabla_proceso, i);
+                free(tcb_serializado);
             }
         }
 

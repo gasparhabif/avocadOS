@@ -111,9 +111,6 @@ t_TCB *deserializar_TCB(void *unTCB)
     memcpy(&(tcb_deserializado->puntero_PCB), unTCB + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
 
-    printf("Tcb Deserializado TID: %d\n", tcb_deserializado->TID);
-    printf("Tcb Deserializado Prox inst: %d\n", tcb_deserializado->proximaInstruccion);
-
     return tcb_deserializado;
 }
 
