@@ -119,18 +119,16 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 
     free(line);
 
-    /*
-    for(int i=0; i<*cantTareas; i++){
-        printf("---------Tarea: %d---------\n", i+1);
-        printf("CODI: %d\n", tareas[i].codigoTarea);
-        printf("PARA: %d\n", tareas[i].parametro);
-        printf("POSX: %d\n", tareas[i].posX);
-        printf("POSY: %d\n", tareas[i].posY);
-        printf("DURA: %d\n", tareas[i].duracionTarea);
-        printf("---------------------------\n\n");
-        
-    }
-*/
+    // for (int i = 0; i < *cantTareas; i++)
+    // {
+    //     printf("---------Tarea: %d---------\n", i + 1);
+    //     printf("CODI: %d\n", tareas[i].codigoTarea);
+    //     printf("PARA: %d\n", tareas[i].parametro);
+    //     printf("POSX: %d\n", tareas[i].posX);
+    //     printf("POSY: %d\n", tareas[i].posY);
+    //     printf("DURA: %d\n", tareas[i].duracionTarea);
+    //     printf("---------------------------\n\n");
+    // }
 
     return tareas;
 }

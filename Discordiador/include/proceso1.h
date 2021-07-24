@@ -85,6 +85,7 @@ void retardo_ciclo_en_emergencia();
 void sabotajes();
 void resolver_sabotaje();
 int distancia_posiciones(t_posicion *, int, int);
+//int abs(int);
 
 //VARIABLES GLOBALES
 t_log *logger;

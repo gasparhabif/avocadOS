@@ -23,7 +23,7 @@
 
 // Constantes de FS
 #define BLOCK_SIZE 32
-#define BLOCKS 1024
+#define BLOCKS 16384
 #define MD5_SIZE 32
 
 // Constantes de error de FS

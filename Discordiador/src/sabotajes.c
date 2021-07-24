@@ -23,21 +23,25 @@ void sabotajes()
         sabotaje = 1;
 
         //DOY EL AVISO CORRESPONDIENTE DE COMIENZO
-        printf("\n>>>>>>>>>>>>>>>>>>>>>\nATENDIENDO UN SABOTAJE\n<<<<<<<<<<<<<<<<<<<<<<\n\n");
+        printf(">>>>>>>>>>>>>>>>>>>>>\nATENDIENDO UN SABOTAJE\n<<<<<<<<<<<<<<<<<<<<<<\n\n");
         log_info(logger, "ATENDIENDO UN SABOTAJE");
 
         //MUEVO LOS TRIPULANTES A LA LISTA DE BLOQ
-        for (int i = 0; i < list_size(exec); i++)
+        printf("Tripulantes en Exec: %d\n", list_size(exec));
+        for (int i = 0; !list_is_empty(exec); i++)
         {
             index = menor_tid_list(exec);
             aux_admin = list_remove(exec, index);
             list_add(bloq, aux_admin);
         }
 
-        for (int i = 0; i < list_size(ready); i++)
+        printf("Tripulantes en Ready: %d\n", list_size(ready));
+        for (int i = 0; !list_is_empty(ready); i++)
         {
             index = menor_tid_list(ready);
+            printf("Index: %d\n", index);
             aux_admin = list_remove(ready, index);
+            printf("TID: %d\n", aux_admin->tid);
             list_add(bloq, aux_admin);
         }
 
@@ -52,13 +56,16 @@ void sabotajes()
             free(d_enviar);
 
             //CHEQUEO LA DISTANCIA DE CADA TRIPULANTE CON EL SABOTAJE
-            if (distancia == -1 || distancia_posiciones(unSabotaje, aux_admin->posX, aux_admin->posY) < distancia)
+            if (distancia == -1 || (abs(unSabotaje->posX - aux_admin->posX) + abs(unSabotaje->posY - aux_admin->posY)) < distancia)
+            {
                 index = i;
+                distancia = (abs(unSabotaje->posX - aux_admin->posX) + abs(unSabotaje->posY - aux_admin->posY));
+            }
         }
 
         tripulante_elegido = list_get(bloq, index);
 
-        //printf("El tripulante %d resolvera el sabotaje\n", tripulante_elegido->tid);
+        printf("El tripulante %d resolvera el sabotaje\n", tripulante_elegido->tid);
 
         //REGISTRO EN BITACORA EL TRIPULANTE ELEGIDO PARA REALIZAR EL SABOTAJE
         d_enviar = serializarInt(tripulante_elegido->tid, INICIO_RESOLUCION_SABOTAJE, &bEnviar);
@@ -84,9 +91,10 @@ void sabotajes()
         free(d_enviar);
 
         //DESBLOQUEO TRIPULANTES
-        for (int i = 0; i < list_size(bloq); i++)
+        for (int i = 0; !list_is_empty(bloq); i++)
         {
-            aux_admin = list_get(bloq, i);
+            printf("i: %d\n", i);
+            aux_admin = list_remove(bloq, i);
 
             //LE AVISO A RAM PARA QUE CAMBIE EL ESTADO
             d_enviar = serializar_ActulizacionEstado(aux_admin->pid, aux_admin->tid, aux_admin->estado, &bEnviar);
@@ -97,12 +105,10 @@ void sabotajes()
             switch (aux_admin->estado)
             {
             case READY:
-                eliminarTripulante(bloq, aux_admin->tid);
                 list_add(ready, aux_admin);
                 break;
 
             case EXEC:
-                eliminarTripulante(bloq, aux_admin->tid);
                 list_add(exec, aux_admin);
                 break;
             }
@@ -128,5 +134,20 @@ void resolver_sabotaje()
 
 int distancia_posiciones(t_posicion *pSabotaje, int posX, int posY)
 {
-    return fabs(pSabotaje->posX - posX) + fabs(pSabotaje->posY - posY);
+    int difX = fabs(pSabotaje->posX - posX);
+    printf("Dif X: %d\n", difX);
+    int difY = fabs(pSabotaje->posY - posY);
+    printf("Dif Y: %d\n", difY);
+    return difX + difY;
 }
+
+/*
+int abs(int n)
+{
+
+    if (n < 0)
+        return (-1) * n;
+    else
+        return n;
+}
+*/
