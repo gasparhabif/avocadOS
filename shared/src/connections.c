@@ -59,57 +59,63 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
 
     switch (paquete->codigo_operacion)
     {
-        case COMENZAR_PATOTA:
-            dRecibidos = deserializarTareas_cPID(paquete->buffer);
-            break;
-        case PUNTERO_PCB:
-            dRecibidos = deserializarInt(paquete->buffer);
-            break;
-        case INICIAR_TRIPULANTE:
-            dRecibidos = deserializarTCB(paquete->buffer);
-            break;
-        case SOLICITAR_TAREA:
-            dRecibidos = deserealizar_pidYtid(paquete->buffer);
-            break;
-        case ENVIAR_PROXIMA_TAREA:
-            dRecibidos = deserializarTarea(paquete->buffer);
-            break;
-        case ACTUALIZAR_ESTADO:
-            dRecibidos = deserializar_ActulizacionEstado(paquete->buffer);
-            break;
-        case MOVER_TRIPULANTE:
-            dRecibidos = deserializar_envioPosicion(paquete->buffer);
-            break;
-        case ALERTA_SABOTAJE:
-            dRecibidos = deserealizar_posicion(paquete->buffer);
-            break;
-        case ESTRUCTURAS_EN_MEMORIA:
-            dRecibidos = deserializarInt(paquete->buffer);
-            break;
-        case SOLICITAR_LISTA:
-            dRecibidos = deserializarInt(paquete->buffer);
-            break;
-        case LISTA_TRIPULANTES:
-            dRecibidos = deserealizarTCBmostrar(paquete->buffer);
-            break;
-        case ELIMINAR_TRIPULANTE:
-            dRecibidos = deserealizar_pidYtid(paquete->buffer);
-            break;
-        case SOLICITAR_BITACORA:
-            dRecibidos = deserializarInt(paquete->buffer);
-            break;
-        case BITACORA_TRIPULANTE:
-            dRecibidos = deserializar_bitacora(paquete->buffer);
-            break;
-        case IMPRIMIR_SEGMENTACION:
-            dRecibidos = deserializarInt(paquete->buffer);
-            break;
-        case INICIO_TAREA:
-            dRecibidos = deserializarInt(paquete->buffer);
-            break;
-        case EJECUTAR_TAREA:
-            dRecibidos = deserealizar_ejecutarTarea(paquete->buffer);
-            break;
+    case COMENZAR_PATOTA:
+        dRecibidos = deserializarTareas_cPID(paquete->buffer);
+        break;
+    case PUNTERO_PCB:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
+    case INICIAR_TRIPULANTE:
+        dRecibidos = deserializarTCB(paquete->buffer);
+        break;
+    case SOLICITAR_TAREA:
+        dRecibidos = deserealizar_pidYtid(paquete->buffer);
+        break;
+    case ENVIAR_PROXIMA_TAREA:
+        dRecibidos = deserializarTarea(paquete->buffer);
+        break;
+    case ACTUALIZAR_ESTADO:
+        dRecibidos = deserializar_ActulizacionEstado(paquete->buffer);
+        break;
+    case MOVER_TRIPULANTE:
+        dRecibidos = deserializar_envioPosicion(paquete->buffer);
+        break;
+    case ALERTA_SABOTAJE:
+        dRecibidos = deserealizar_posicion(paquete->buffer);
+        break;
+    case ESTRUCTURAS_EN_MEMORIA:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
+    case SOLICITAR_LISTA:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
+    case LISTA_TRIPULANTES:
+        dRecibidos = deserealizarTCBmostrar(paquete->buffer);
+        break;
+    case ELIMINAR_TRIPULANTE:
+        dRecibidos = deserealizar_pidYtid(paquete->buffer);
+        break;
+    case SOLICITAR_BITACORA:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
+    case BITACORA_TRIPULANTE:
+        dRecibidos = deserializar_bitacora_tripulante(paquete->buffer);
+        break;
+    case IMPRIMIR_SEGMENTACION:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
+    case INICIO_TAREA:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
+    case EJECUTAR_TAREA:
+        dRecibidos = deserealizar_ejecutarTarea(paquete->buffer);
+        break;
+    case INICIO_TRIPULANTE_MONGO:
+        dRecibidos = deserializar_posicionCtid(paquete->buffer);
+        break;
+    case FIN_TAREAS:
+        dRecibidos = deserializarInt(paquete->buffer);
+        break;
     }
 
     free(paquete->buffer->stream);

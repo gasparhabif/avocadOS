@@ -13,9 +13,9 @@ void create_bitacora(char *bitacora_file_path)
     close(bitacora_fd);
 }
 
-t_bitacora *load_bitacora(char *bitacora_file_path)
+t_bitacora_mongo *load_bitacora(char *bitacora_file_path)
 {
-    t_bitacora *bitacora_aux = malloc(sizeof(t_bitacora));
+    t_bitacora_mongo *bitacora_aux = malloc(sizeof(t_bitacora_mongo));
     bitacora_aux->path = string_new();
     string_append(&(bitacora_aux->path), bitacora_file_path);
     t_config *bitacora_config = config_create(bitacora_file_path);
@@ -24,25 +24,34 @@ t_bitacora *load_bitacora(char *bitacora_file_path)
     bitacora_aux->blocks = list_create();
     for (int i = 0; blocks[i] != NULL; i++)
     {
-        list_add(bitacora_aux->blocks, atoi(blocks[i]));
+        list_add(bitacora_aux->blocks, (void *)atoi(blocks[i]));
     }
     config_destroy(bitacora_config);
 
     return bitacora_aux;
 }
 
-void update_bitacora(t_bitacora *bitacora)
+void update_bitacora_metadata(t_bitacora_mongo *bitacora)
 {
     t_config *bitacora_config = config_create(bitacora->path);
 
     config_set_value(bitacora_config, "SIZE", string_itoa(bitacora->size));
-    config_set_value(bitacora_config, "BLOCKS", blocks_list_to_string(bitacora->blocks));
+    char *blocks_aux = blocks_list_to_string(bitacora->blocks);
+    config_set_value(bitacora_config, "BLOCKS", blocks_aux);
     config_save(bitacora_config);
 
     config_destroy(bitacora_config);
+    free(blocks_aux);
 }
 
-void registrar_bitacora(t_bitacora *bitacora, char *msg)
+void liberar_bitacora(t_bitacora_mongo *bitacora)
+{
+    free(bitacora->path);
+    list_destroy(bitacora->blocks);
+    free(bitacora);
+}
+
+void registrar_bitacora(t_bitacora_mongo *bitacora, char *msg)
 {
     int bytes_to_write = strlen(msg);
     int next_byte_to_write = 0;
@@ -55,13 +64,13 @@ void registrar_bitacora(t_bitacora *bitacora, char *msg)
 
         if (!list_is_empty(bitacora->blocks) && last_block_offset > 0)
         {
-            last_block = list_get(bitacora->blocks, list_size(bitacora->blocks) - 1);
+            last_block = (int)list_get(bitacora->blocks, list_size(bitacora->blocks) - 1);
         }
         else
         {
             last_block = get_free_block();
             set_block(last_block);
-            list_add(bitacora->blocks, last_block);
+            list_add(bitacora->blocks, (void *)last_block);
         }
 
         int blocks_file_offset = last_block * superbloque->block_size + last_block_offset;
@@ -75,7 +84,8 @@ void registrar_bitacora(t_bitacora *bitacora, char *msg)
         }
     }
 
-    update_bitacora(bitacora);
+    update_bitacora_metadata(bitacora);
+    log_info(logger, msg);
 }
 
 char *blocks_list_to_string(t_list *blocks_list)
@@ -90,4 +100,62 @@ char *blocks_list_to_string(t_list *blocks_list)
     string_append(&blocks_string, "]");
 
     return blocks_string;
+}
+
+char *pos_to_string(t_posicion *pos)
+{
+    return string_from_format("%s|%s", string_itoa(pos->posX), string_itoa(pos->posY));
+}
+
+void update_pos(t_posicion *current_pos, t_posicion *next_pos)
+{
+    current_pos->posX = next_pos->posX;
+    current_pos->posY = next_pos->posY;
+}
+
+char *get_nombre_tarea(int cod_tarea)
+{
+    char *nombre_tarea = string_new();
+
+    switch (cod_tarea)
+    {
+    case GENERAR_OXIGENO:
+        string_append(&nombre_tarea, "GENERAR_OXIGENO");
+        break;
+    case CONSUMIR_OXIGENO:
+        string_append(&nombre_tarea, "CONSUMIR_OXIGENO");
+        break;
+    case GENERAR_COMIDA:
+        string_append(&nombre_tarea, "GENERAR_COMIDA");
+        break;
+    case CONSUMIR_COMIDA:
+        string_append(&nombre_tarea, "CONSUMIR_COMIDA");
+        break;
+    case GENERAR_BASURA:
+        string_append(&nombre_tarea, "GENERAR_BASURA");
+        break;
+    case DESCARTAR_BASURA:
+        string_append(&nombre_tarea, "DESCARTAR_BASURA");
+        break;
+    default:
+        string_append(&nombre_tarea, "NORMAL");
+        break;
+    }
+
+    return nombre_tarea;
+}
+
+char *reconstruir_bitacora(t_bitacora_mongo *bitacora)
+{
+    char *bitacora_string = string_new();
+
+    for (int i = 0; i < list_size(bitacora->blocks); i++)
+    {
+        char *block_info = malloc(superbloque->block_size);
+        memcpy(block_info, blocks_file + (int)list_get(bitacora->blocks, i) * superbloque->block_size, superbloque->block_size);
+        string_append(&bitacora_string, block_info);
+        free(block_info);
+    }
+
+    return string_substring_until(bitacora_string, bitacora->size - 1);
 }

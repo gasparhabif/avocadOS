@@ -3,13 +3,14 @@
 
 #include <commons/config.h>
 #include <commons/string.h>
+#include <commons/collections/list.h>
 #include <stdlib.h>
 #include <stdio.h> // Eliminar luego
 
 // TODO: Desarrollar destroyers para cada TAD
 
 #define CANTIDAD_CAMPOS_CPU 9
-#define CANTIDAD_CAMPOS_STORE 3
+#define CANTIDAD_CAMPOS_STORE 4
 #define CANTIDAD_CAMPOS_RAM 8
 
 enum POS_CAMPOS_CPU
@@ -29,7 +30,8 @@ enum POS_CAMPOS_STORE
 {
     PUNTO_MONTAJE,
     STORE_PUERTO,
-    TIEMPO_SINCRONIZACION
+    TIEMPO_SINCRONIZACION,
+    POSICIONES_SABOTAJE
 };
 enum POS_CAMPOS_RAM
 {
@@ -61,6 +63,7 @@ typedef struct
     char *punto_montaje;
     int puerto;
     int tiempo_sincronizacion;
+    t_list *posiciones_sabotaje;
 
 } t_store_conf;
 

@@ -1,4 +1,5 @@
 #include "configurator.h"
+#include "common_types.h"
 
 static void verificar_existencia_campos(char **, t_config *);
 int tamanio_string_array(char **);
@@ -94,6 +95,17 @@ t_store_conf *get_store_config(char *path)
     response->punto_montaje = config_get_string_value(basicConfig, campos_store[PUNTO_MONTAJE]);
     response->puerto = config_get_int_value(basicConfig, campos_store[STORE_PUERTO]);
     response->tiempo_sincronizacion = config_get_int_value(basicConfig, campos_store[TIEMPO_SINCRONIZACION]);
+    response->posiciones_sabotaje = list_create();
+
+    char **posiciones_sabotaje_aux = config_get_array_value(basicConfig, campos_store[POSICIONES_SABOTAJE]);
+    for (int i = 0; posiciones_sabotaje_aux[i] != NULL; i++)
+    {
+        char **split_pos = string_split(posiciones_sabotaje_aux[i], "|");
+        t_posicion *pos = malloc(sizeof(t_posicion));
+        pos->posX = atoi(split_pos[0]);
+        pos->posY = atoi(split_pos[1]);
+        list_add(response->posiciones_sabotaje, (void *)pos);
+    }
 
     free(basicConfig);
 
@@ -105,6 +117,7 @@ static void llenar_campos_store(char *response[CANTIDAD_CAMPOS_STORE])
     response[PUNTO_MONTAJE] = "PUNTO_MONTAJE";
     response[STORE_PUERTO] = "PUERTO";
     response[TIEMPO_SINCRONIZACION] = "TIEMPO_SINCRONIZACION";
+    response[POSICIONES_SABOTAJE] = "POSICIONES_SABOTAJE";
 }
 
 t_ram_conf *get_ram_config(char *path)

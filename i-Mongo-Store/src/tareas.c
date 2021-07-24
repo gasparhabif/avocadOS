@@ -1,13 +1,10 @@
 #include "proceso2.h"
 
 // Selector de tareas
-void ejecutarTarea(t_tarea *tarea_a_ejecutar)
+void ejecutarTarea(t_ejecutar_tarea *tarea_a_ejecutar)
 {
     switch (tarea_a_ejecutar->codigoTarea)
     {
-    case FIN_TAREAS:
-        finTareas();
-        break;
     case GENERAR_OXIGENO:
         generarOxigeno(tarea_a_ejecutar->parametro);
         break;
@@ -27,7 +24,6 @@ void ejecutarTarea(t_tarea *tarea_a_ejecutar)
         descartarBasura();
         break;
     default:
-        tareaNormal();
         break;
     }
 }
@@ -51,9 +47,6 @@ void generarOxigeno(int cantidad)
     t_recurso *oxigeno = load_recurso(oxigeno_file_path);
     log_info(logger, "Se cargó Oxigeno.ims");
     agregar_recurso(oxigeno, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void consumirOxigeno(int cantidad)
@@ -67,9 +60,6 @@ void consumirOxigeno(int cantidad)
     t_recurso *oxigeno = load_recurso(oxigeno_file_path);
     log_info(logger, "Se cargó Oxigeno.ims");
     eliminar_recurso(oxigeno, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void generarComida(int cantidad)
@@ -83,9 +73,6 @@ void generarComida(int cantidad)
     t_recurso *comida = load_recurso(comida_file_path);
     log_info(logger, "Se cargó Comida.ims");
     agregar_recurso(comida, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void consumirComida(int cantidad)
@@ -99,9 +86,6 @@ void consumirComida(int cantidad)
     t_recurso *comida = load_recurso(comida_file_path);
     log_info(logger, "Se cargó Comida.ims");
     eliminar_recurso(comida, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void generarBasura(int cantidad)
@@ -115,9 +99,6 @@ void generarBasura(int cantidad)
     t_recurso *basura = load_recurso(basura_file_path);
     log_info(logger, "Se cargó Basura.ims");
     agregar_recurso(basura, cantidad);
-
-    // TODO: Liberar recurso
-    // ...
 }
 
 void descartarBasura()
@@ -131,46 +112,17 @@ void descartarBasura()
     t_recurso *basura = load_recurso(basura_file_path);
     log_info(logger, "Se cargó Basura.ims");
     eliminar_recurso(basura, basura->size);
-    remove(basura->path);
 
-    // TODO: Liberar recurso
-    // ...
+    // Eliminar archivo
+    if (file_exists(basura_file_path))
+    {
+        remove(basura_file_path);
+    }
 }
 
 // TAREA NORMAL
 void tareaNormal()
 {
     log_info(logger, "Se solicitó realizar una tarea normal");
-    // ...
-}
-
-// REGISTRO DE BITÁCORA
-void registrarDesplazamiento()
-{
-    log_info(logger, "Registrando DESPLAZAMIENTO...");
-    // ...
-}
-
-void registrarInicioTarea()
-{
-    log_info(logger, "Registrando INICIO DE TAREA...");
-    // ...
-}
-
-void registrarFinTarea()
-{
-    log_info(logger, "Registrando FIN DE TAREA...");
-    // ...
-}
-
-void registrarAtencionSabotaje()
-{
-    log_info(logger, "Registrando ATENCIÓN DE SABOTAJE...");
-    // ...
-}
-
-void registrarResolucionSabotaje()
-{
-    log_info(logger, "Registrando RESOLUCIÓN DE SABOTAJE...");
     // ...
 }

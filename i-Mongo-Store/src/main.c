@@ -12,8 +12,14 @@ int main()
     config = get_store_config("../i-Mongo-Store/cfg/config.cfg");
     log_info(logger, "Se cargó la configuración");
 
+    // Iniciar mutex
+    pthread_mutex_init(&fs_libre, NULL);
+
     // Iniciar FS
     init_paths();
+
+    // Atender signal
+    signal(SIGUSR1, sabotaje_handler);
 
     if (!file_exists(superbloque_file_path))
     {
@@ -37,6 +43,9 @@ int main()
     blocks_file_copy = load_blocks();
     log_info(logger, "Se cargó Blocks.ims");
 
+    // TODO: Sincronizar bloques
+    // ...
+
     // Inicializar servidor
     int server_instance = init_server(config->puerto);
 
@@ -47,9 +56,39 @@ int main()
         return EXIT_FAILURE;
     }
 
-    // Aceptar conexión del Discordiador
-    // pthread_t discordiador_cnx_thread;
-    // pthread_create(&discordiador_cnx_thread, NULL, (void *)discordiador_cxn_handler, (void *)server_instance);
+    // Aceptar conexión del Discordiador para sabotajes
+    listen(server_instance, 1);
+    log_info(logger, "Esperando Discordiador en el puerto %d para informar sabotajes", config->puerto);
+
+    struct sockaddr_in client_dir;
+    unsigned int dir_size = sizeof(socklen_t);
+    discordiador_cxn_sabotajes = accept(server_instance, (void *)&client_dir, &dir_size);
+
+    if (discordiador_cxn_sabotajes == -1)
+    {
+        log_error(logger, "Error al aceptar conexión");
+        return EXIT_FAILURE;
+    }
+    log_info(logger, "Se conectó el discordiador en el socket %d para informar sabotajes", discordiador_cxn_sabotajes);
+
+    // Aceptar conexión del Discordiador para bitácoras
+    listen(server_instance, 1);
+    log_info(logger, "Esperando Discordiador en el puerto %d para traficar bitácoras", config->puerto);
+
+    // struct sockaddr_in client_dir;
+    // unsigned int dir_size = sizeof(socklen_t);
+    discordiador_cxn_bitacoras = accept(server_instance, (void *)&client_dir, &dir_size);
+
+    if (discordiador_cxn_bitacoras == -1)
+    {
+        log_error(logger, "Error al aceptar conexión");
+        return EXIT_FAILURE;
+    }
+    log_info(logger, "Se conectó el Discordiador en el socket %d para traficar bitácoras", discordiador_cxn_bitacoras);
+
+    pthread_t discordiador_cxn_thread;
+    pthread_create(&discordiador_cxn_thread, NULL, (void *)discordiador_cxn_handler_bitacoras, NULL);
+    pthread_detach(discordiador_cxn_thread);
 
     // Aceptar conexiones de los tripulantes
     log_info(logger, "Esperando tripulantes en el puerto %d", config->puerto);

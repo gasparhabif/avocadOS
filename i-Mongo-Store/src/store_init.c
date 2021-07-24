@@ -87,9 +87,6 @@ t_superbloque *load_superbloque()
 
 void print_superbloque()
 {
-    // printf("Tamaño de bloque: %d\n", superbloque->block_size);
-    // printf("Cantidad de bloques: %d\n", superbloque->blocks);
-    printf("Bitmap: ");
     for (int i = 0; i < superbloque->blocks; i++)
     {
         printf("%d", bitarray_test_bit(superbloque->bitmap, i));
@@ -110,7 +107,8 @@ void create_blocks()
 
     for (int i = 0; i < blocks_file_size; i++)
     {
-        blocks_file[i] = i % BLOCK_SIZE == 0 ? '|' : '-';
+        // blocks_file[i] = i % BLOCK_SIZE == 0 ? '|' : '-';
+        blocks_file[i] = '-';
     }
 
     munmap(blocks_file, blocks_file_size);

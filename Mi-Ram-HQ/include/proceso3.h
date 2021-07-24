@@ -15,6 +15,7 @@
 #include "shared_utils.h"
 #include <nivel-gui/nivel-gui.h>
 #include <nivel-gui/tad_nivel.h>
+#include <sys/stat.h>
 
 #define ASSERT_CREATE(level, id, err)
 
@@ -33,31 +34,31 @@ enum TIPO
 
 typedef struct
 {
-    void *base;        // Posicion inicio del segmento
-    u_int32_t tamanio; // Tamaño del contenido del segmento
-    u_int8_t tipo;     // Tipo del contenido del segmento
-    u_int32_t id;      // Opcional
+    void *base;       // Posicion inicio del segmento
+    uint32_t tamanio; // Tamaño del contenido del segmento
+    uint8_t tipo;     // Tipo del contenido del segmento
+    uint32_t id;      // Opcional
 } t_registro_segmentos;
 
 typedef struct
 {
-    u_int32_t inicio;
-    u_int32_t limite;
-    u_int8_t ocupado;
+    uint32_t inicio;
+    uint32_t limite;
+    uint8_t ocupado;
 } estado_segmentos;
 
 typedef struct
 {
-    u_int32_t id;  //para tripulantes es el tcb y para el pcb es el pid
-    u_int8_t tipo; // Tipo del contenido
-    u_int32_t offset;
-    u_int32_t tamanio;
-    u_int8_t modificado;
+    uint32_t id;  //para tripulantes es el tcb y para el pcb es el pid
+    uint8_t tipo; // Tipo del contenido
+    uint32_t offset;
+    uint32_t tamanio;
+    uint8_t modificado;
 } t_tabla_paginas_proceso;
 
 typedef struct
 {
-    u_int32_t pid;
+    uint32_t pid;
     t_list *paginas;
 } t_pagina_proceso;
 
@@ -69,8 +70,8 @@ char idMapa;
 //GESTION DE MEMORIA EN LA SEGMENTACIOS
 t_list *tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION
-u_int8_t *estado_frames;
-u_int32_t tamanio_paginas;
+uint8_t *estado_frames;
+uint32_t tamanio_paginas;
 t_list *tabla_paginas;
 int maxima_cantidad_paginas;
 
@@ -108,10 +109,10 @@ t_registro_segmentos *guardar_tcb(t_TCB);
 void *reservar_segmento_FF(int);
 void *reservar_segmento_BF(int);
 void liberar_memoria_segmentacion(int);
-void  compactar                         (int);
-void  actualizar_tabla_procesos         (int, int);
-void  cambio_posicion_pcb               (int, int);
-void  cambio_posicion_tareas            (int, int);
+void compactar(int);
+void actualizar_tabla_procesos(int, int);
+void cambio_posicion_pcb(int, int);
+void cambio_posicion_tareas(int, int);
 
 //Definidas en paginacion.c
 void generar_archivo_swap();
@@ -149,8 +150,8 @@ t_TCB *deserializar_TCB(void *);
 t_tarea *deserializar_TAREA(void *);
 
 //Definidas en dump.c
-void dump              (int);
-void dump_segmentacion (FILE *);
-void dump_paginacion   (FILE *);
+void dump(int);
+void dump_segmentacion(FILE *);
+void dump_paginacion(FILE *);
 
 #endif
