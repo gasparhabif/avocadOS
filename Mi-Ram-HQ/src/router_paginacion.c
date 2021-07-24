@@ -307,11 +307,11 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 // memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->tamanio);
                 if ((bProceso - offsetTCB) != 0)
                 {
-                    memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, (bProceso - offsetTCB));
+                    memcpy(elementos_proceso_sTCB + elemento_del_proceso->offset, elementos_proceso_cTCB + offsetTCB, bProceso-offsetTCB);
                 }
 
                 void *tcb_serializado = malloc(sizeof(t_TCB));
-                memcpy(tcb_serializado, elementos_proceso_cTCB + 52, 24);
+                memcpy(tcb_serializado, elementos_proceso_sTCB + 48, 24);
                 t_TCB *unTCB = deserializar_TCB(tcb_serializado);
                 printf("TID %d\n", unTCB->TID);
                 printf("ESTADO %c\n", unTCB->estado);

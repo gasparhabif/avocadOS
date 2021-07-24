@@ -136,7 +136,8 @@ void recibir_mensaje(void *parametro)
         }
     }
 
-    printf("Se desconecto");
+    
+    log_info(logger, "Se desconecto un tripulante");
 
     pthread_exit(0);
 }
