@@ -15,11 +15,13 @@ void sabotajes()
         //RECIBO EL SABOTAJE
         unSabotaje = (t_posicion *) recibir_paquete(sockfd_mongo_sabotajes);
 
+        printf("Pos del sabotaje en %d|%d", unSabotaje->posX, unSabotaje->posY);
+
         //PAUSO LA PLANIFICACION
         pausar(0);
 
         //DOY EL AVISO CORRESPONDIENTE DE COMIENZO
-        printf(">>>>>>>>>>>>>>>>>>>>>\nATENDIENDO UN SABOTAJE\n<<<<<<<<<<<<<<<<<<<<<<\n\n");
+        printf("\n>>>>>>>>>>>>>>>>>>>>>\nATENDIENDO UN SABOTAJE\n<<<<<<<<<<<<<<<<<<<<<<\n\n");
         log_info(logger, "ATENDIENDO UN SABOTAJE");
 
         //MUEVO LOS TRIPULANTES A LA LISTA DE BLOQ
@@ -54,6 +56,8 @@ void sabotajes()
 
         tripulante_elegido = list_get(bloq, index);
 
+        printf("El tripulante %d resolvera el sabotaje\n", tripulante_elegido->tid);
+
         //REGISTRO EN BITACORA EL TRIPULANTE ELEGIDO PARA REALIZAR EL SABOTAJE
         d_enviar = serializarInt(tripulante_elegido->tid, INICIO_RESOLUCION_SABOTAJE, &bEnviar);
         send(tripulante_elegido->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
@@ -66,7 +70,7 @@ void sabotajes()
 
         //INVOCO AL PROTOCOLO FSCK
         d_enviar = serializarInt(tripulante_elegido->tid, INICIO_PROTOCOLO_FSCK, &bEnviar);
-        send(sockfd_mongo_sabotajes, d_enviar, bEnviar, 0);
+        send(tripulante_elegido->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
         free(d_enviar);
 
         //RESUELVO EL SABOTAJE 
