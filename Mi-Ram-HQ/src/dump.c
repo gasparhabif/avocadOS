@@ -12,7 +12,7 @@ void dump(int sig)
         FILE *fpDump;
 
         char *nombreArchivo = string_new();
-        string_append(&nombreArchivo, "./Dump/Dump_");
+        string_append(&nombreArchivo, "/home/utnso/Dump/Dump_");
         string_append(&nombreArchivo, temporal_get_string_time("%d%m%y%H%M%S%MS"));
         string_append(&nombreArchivo, ".dmp");
 
