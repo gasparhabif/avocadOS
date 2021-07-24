@@ -109,7 +109,10 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
-        pthread_mutex_trylock(&admin->pausar_tripulante);
+
+        if(pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
+            pthread_mutex_lock(&admin->pausar_tripulante);
+
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -198,7 +201,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     matarTripulante(admin->tid);
 
-    close(admin->sockfd_tripulante_mongo);
+    //close(admin->sockfd_tripulante_mongo);
     close(admin->sockfd_tripulante_ram);
 
     free(admin);

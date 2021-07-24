@@ -55,9 +55,9 @@ void INICIAR_PATOTA(char **parametros)
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
                 int direccionPCB = (int)recibir_paquete(sockfd_ram);
-                // printf("Pos recibida: %p\n", direccionPCB);
+                //printf("Pos recibida: %d\n", direccionPCB);
 
-                if (direccionPCB == -1)
+                if (direccionPCB < 0)
                 {
                     log_info(logger, "Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes");
                     printf("Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes\n");
@@ -195,7 +195,6 @@ void INICIAR_PLANIFICACION(char **parametros)
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
-    printf("Se solicito pausar la planificacion...\n");
 
     if (pausar(1))
     {
