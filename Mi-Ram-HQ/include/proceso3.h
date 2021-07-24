@@ -119,7 +119,7 @@ void generar_archivo_swap();
 void realizar_swap();
 void swap_por_Clock();
 void swap_por_LRU();
-void guardar_tareas_paginacion(t_tareas_cPID *);
+void guardar_tareas_pcb_paginacion(t_tareas_cPID *);
 int solicitar_paginas(int, int);
 int calcular_fragmentacion(int);
 
@@ -138,12 +138,25 @@ int obtener_PIDproceso(t_list *);
 
 //Definidas en utils_paginacion.c
 t_list *buscar_paginas_proceso(int);
-t_list *obtener_lista_proceso(int);
+t_list *obtener_lista_proceso(int, int *);
 void limpiar_estado_frames(void);
+t_pagina_proceso *obtener_paginas_proceso(int, int *);
+int bytes_ocupados_pid(int);
+int bytes_ocupados_lista(t_list *);
+int cantidad_paginas_proceso(int);
+int obtener_numero_instruccion(t_list *, int, int);
+void *recuperar_elementos_proceso(int);
+void guardar_elementos_proceso(int, void *);
+t_tarea *obtenerTarea(t_list *, int, int);
+int cant_tripulantes_paginacion(t_list *);
+int obtener_pid_pag(t_list *);
+int cant_tripulantes_proceso(int);
+int calcular_paginas_ocupadas(int);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);
-void *serializar_TCB(t_TCB *);
+void *serializar_TCB(t_TCB);
+void *serializar_pTCB(t_TCB *);
 void *serializar_TAREA(t_tarea *);
 t_PCB *deserializar_PCB(void *);
 t_TCB *deserializar_TCB(void *);
