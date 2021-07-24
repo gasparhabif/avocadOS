@@ -90,12 +90,12 @@ void solicitar_tripulantes(int);
 
 //Definidas en router_paginacion.c
 void comenzar_patota_paginada(int, t_tareas_cPID *);
-void iniciar_tripulante_paginado(int, t_TCBcPID *);
+void iniciar_tripulante_paginado(int, t_TCBcPID *, char);
 void solicitar_tarea_paginada(int, t_pidYtid *);
-void mover_tripulante_paginada(t_envio_posicion *);
+void mover_tripulante_paginada(t_envio_posicion *, char);
 void actualizar_estado_paginada(t_estado *);
 void solicitar_tripulantes_paginada(int);
-void eliminar_tripulante_paginado(t_pidYtid *);
+void eliminar_tripulante_paginado(t_pidYtid *, char);
 void guardar_tcb_paginacion(t_TCBcPID *);
 
 //Definidas en memoria.c

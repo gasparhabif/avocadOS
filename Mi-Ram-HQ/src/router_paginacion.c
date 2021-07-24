@@ -22,7 +22,7 @@ void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
     free(paquete);
 }
 
-void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos)
+void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char idMapa)
 {
     void *paquete;
     int tamanioSerializacion;
@@ -38,6 +38,11 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos)
     }
 
     pthread_mutex_unlock(&acceso_memoria);
+
+    //DIBUJO EL TRIPULANTE EN EL MAPA
+    personaje_crear(level, idMapa, datos_recibidos->tcb.posX, datos_recibidos->tcb.posY);
+    ASSERT_CREATE(level, idMapa, err);
+    nivel_gui_dibujar(level);
 
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
@@ -68,7 +73,7 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
     free(tarea_recibida);
 }
 
-void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)
+void mover_tripulante_paginada(t_envio_posicion *datos_recibidos, char idMapa)
 {
 
     //printf("Recibo la posicion -> %d|%d\n", datos_recibidos->pos.posX, datos_recibidos->pos.posY);
@@ -107,6 +112,10 @@ void mover_tripulante_paginada(t_envio_posicion *datos_recibidos)
     }
 
     pthread_mutex_unlock(&acceso_memoria);
+
+    //MODIFICO LA POSICION DEL TRIPULANTE EN EL MAPA
+    item_mover(level, idMapa, datos_recibidos->pos.posX, datos_recibidos->pos.posY);
+    nivel_gui_dibujar(level);
 }
 
 void actualizar_estado_paginada(t_estado *datos_recibidos)
@@ -204,7 +213,7 @@ void solicitar_tripulantes_paginada(int client)
     free(d_enviar);
 }
 
-void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
+void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
 {
 
     pthread_mutex_lock(&acceso_memoria);
@@ -306,13 +315,13 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                     memcpy(elementos_proceso_sTCB + elemento_del_proceso->offset, elementos_proceso_cTCB + offsetTCB, bProceso - offsetTCB);
                 }
 
-                void *tcb_serializado = malloc(sizeof(t_TCB));
-                memcpy(tcb_serializado, elementos_proceso_sTCB + 48, 24);
-                t_TCB *unTCB = deserializar_TCB(tcb_serializado);
+                // void *tcb_serializado = malloc(sizeof(t_TCB));
+                // memcpy(tcb_serializado, elementos_proceso_sTCB + 48, 24);
+                // t_TCB *unTCB = deserializar_TCB(tcb_serializado);
+                // free(tcb_serializado);
 
                 //ELIMINAR TCB DE LA LISTA DEL PROCESO
                 list_remove(tabla_proceso, i);
-                free(tcb_serializado);
             }
         }
 
@@ -335,4 +344,8 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
     }
 
     pthread_mutex_unlock(&acceso_memoria);
+
+    //ELIMINO AL TRIPULANTE DEL MAPA
+    item_borrar(level, idMapa);
+    nivel_gui_dibujar(level);
 }
