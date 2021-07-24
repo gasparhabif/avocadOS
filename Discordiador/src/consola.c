@@ -195,6 +195,8 @@ void INICIAR_PLANIFICACION(char **parametros)
 
 void PAUSAR_PLANIFICACION(char **parametros)
 {
+    printf("Se solicito pausar la planificacion...\n");
+
     if (pausar(1))
     {
         log_info(logger, "Pausando planificacion...\n");

@@ -18,7 +18,6 @@ int main(int argc, char **argv)
 	ejecutandoTripulantes = 1;
 	ejecutandoPlanificador = 1;
 	escuchandoSabotajes = 1;
-	planificando = 1;
 	sabotaje = 0;
 
 	pthread_mutex_init(&mutex_block, NULL);
@@ -79,6 +78,7 @@ int main(int argc, char **argv)
 	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
 	pthread_detach(thread_sabotajes);
 
+	planificando = 1;
 	pausar(1);
 
 	//LECTURA DE CONSOLA

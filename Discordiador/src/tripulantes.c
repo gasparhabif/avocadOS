@@ -47,7 +47,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     pthread_mutex_init(&(admin->pausar_tripulante), NULL);
 
     if (!planificando)
-        pthread_mutex_lock(&admin->pausar_tripulante);
+        pthread_mutex_trylock(&admin->pausar_tripulante);
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -109,7 +109,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
-        pthread_mutex_lock(&admin->pausar_tripulante);
+        pthread_mutex_trylock(&admin->pausar_tripulante);
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -399,7 +399,10 @@ void mover_tripulante(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY, 
     for (int i = 0; i < movimientosPosibles; i++)
     {
 
-        retardo_ciclo_cpu();
+        if (sabotaje)
+            retardo_ciclo_en_emergencia();
+        else
+            retardo_ciclo_cpu();
 
         mover_una_posicion(admin, posX, posY);
 
@@ -462,4 +465,9 @@ void retardo_ciclo_IO()
     pthread_mutex_unlock(&pause_block);
 
     return;
+}
+
+void retardo_ciclo_en_emergencia()
+{
+    sleep(config->retardo_ciclo_cpu);
 }

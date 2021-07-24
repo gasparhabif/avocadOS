@@ -140,6 +140,7 @@ bool blocks_count_check();
 void repair_blocks_count();
 bool bitmap_check();
 void repair_bitmap();
+char *reconstruir_recurso(t_recurso *);
 bool file_check(char *);
 void repair_file(char *);
 void ejecutar_fsck();
