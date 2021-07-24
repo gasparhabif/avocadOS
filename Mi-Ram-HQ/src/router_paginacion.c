@@ -299,14 +299,15 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
 
                 //ELIMINO EL TCB DE LA MEMORIA
                 int offsetTCB = elemento_del_proceso->offset + elemento_del_proceso->tamanio;
+                printf("Bytes a copiar: %d\n", elemento_del_proceso->tamanio);
                 printf("Copio %d primero, sigo copiando desde el byte %d, copiando %d mas\n", elemento_del_proceso->offset, offsetTCB, (bProceso - offsetTCB));
 
                 memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->offset);
+                // Y si copiamos todos los bytes de memoria de una?
+                // memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->tamanio);
                 if ((bProceso - offsetTCB) != 0)
                 {
-                    printf("Entree\n\n");
-                    // memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, (bProceso - offsetTCB));
-                    memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB + elemento_del_proceso->offset, (bProceso - offsetTCB));
+                    memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, (bProceso - offsetTCB));
                 }
 
                 void *tcb_serializado = malloc(sizeof(t_TCB));
@@ -320,8 +321,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 printf("PCB %d\n", unTCB->puntero_PCB);
 
                 //ELIMINAR TCB DE LA LISTA DEL PROCESO
-                list_remove(tabla_proceso, unTCB->TID);
-                // list_remove(tabla_proceso, i);
+                list_remove(tabla_proceso, i);
                 free(tcb_serializado);
             }
         }
