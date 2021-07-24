@@ -454,7 +454,7 @@ int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal)
 void retardo_ciclo_cpu()
 {
     sem_wait(&pause_exec);
-    sleep(config->grado_multitarea);
+    sleep(config->retardo_ciclo_cpu);
     sem_post(&pause_exec);
 
     return;
