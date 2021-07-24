@@ -21,8 +21,8 @@ void sabotaje_handler(int signal)
     // Enviar posicion del sabotaje
     int tamano_paquete;
     void *posicion_sabotaje = serializar_envioSabotaje(next_pos->posX, next_pos->posY, &tamano_paquete);
-    send(discordiador_cxn, posicion_sabotaje, tamano_paquete, 0);
-    log_info(logger, "Se envió la posición %d|%d al Discordiador", next_pos->posX, next_pos->posY);
+    send(discordiador_cxn_sabotajes, posicion_sabotaje, tamano_paquete, 0);
+    log_info(logger, "Se envió la posición %d|%d del sabotaje al Discordiador", next_pos->posX, next_pos->posY);
 
     free(posicion_sabotaje);
 }
@@ -65,19 +65,37 @@ void repair_bitmap()
     memcpy(superbloque_file + 2 * sizeof(uint32_t), superbloque->bitmap->bitarray, superbloque->bitmap->size);
 }
 
+char *reconstruir_recurso(t_recurso *recurso)
+{
+    char *recurso_string = string_new();
+
+    for (int i = 0; i < list_size(recurso->blocks); i++)
+    {
+        char *block_info = malloc(superbloque->block_size);
+        memcpy(block_info, blocks_file + (int)list_get(recurso->blocks, i) * superbloque->block_size, superbloque->block_size);
+        string_append(&recurso_string, block_info);
+        free(block_info);
+    }
+
+    return string_substring_until(recurso_string, recurso->size);
+}
+
 bool file_check(char *path)
 {
     t_recurso *recurso = load_recurso(path);
 
     // Reconstruir archivo
-    // ...
+    char *recurso_string = reconstruir_recurso(recurso);
 
     // Calcular MD5 del archivo reconstruído y comparar
-    // ...
+    char *md5_recurso_string = generate_md5(recurso_string);
+    bool result = string_equals_ignore_case(md5_recurso_string, recurso->md5_archivo);
 
+    free(md5_recurso_string);
+    free(recurso_string);
     liberar_recurso(recurso);
 
-    return true;
+    return result;
 }
 
 void repair_file(char *path) {}
@@ -108,7 +126,7 @@ void ejecutar_fsck()
 
     // Verificar files
     log_info(logger, "Verificando Oxigeno.ims...");
-    if (!file_check(oxigeno_file_path))
+    if (file_exists(oxigeno_file_path) && !file_check(oxigeno_file_path))
     {
         log_error(logger, "Hubo un sabotaje en Oxigeno.ims");
         log_info(logger, "Reparando Oxigeno.ims...");
@@ -117,7 +135,7 @@ void ejecutar_fsck()
     }
 
     log_info(logger, "Verificando Comida.ims...");
-    if (!file_check(comida_file_path))
+    if (file_exists(comida_file_path) && !file_check(comida_file_path))
     {
         log_error(logger, "Hubo un sabotaje en Comida.ims");
         log_info(logger, "Reparando Comida.ims...");
@@ -126,7 +144,7 @@ void ejecutar_fsck()
     }
 
     log_info(logger, "Verificando Basura.ims...");
-    if (!file_check(basura_file_path))
+    if (file_exists(basura_file_path) && !file_check(basura_file_path))
     {
         log_error(logger, "Hubo un sabotaje en Basura.ims");
         log_info(logger, "Reparando Basura.ims...");

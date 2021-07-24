@@ -18,7 +18,6 @@ int main(int argc, char **argv)
 	ejecutandoTripulantes = 1;
 	ejecutandoPlanificador = 1;
 	escuchandoSabotajes = 1;
-	planificando = 1;
 	sabotaje = 0;
 
 	pthread_mutex_init(&mutex_block, NULL);
@@ -42,12 +41,13 @@ int main(int argc, char **argv)
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
 
 	log_info(logger, "Conectando a MONGO...");
-	sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+	sockfd_mongo_sabotajes = connect_to(config->ip_mongo, config->puerto_mongo);
+	sockfd_mongo_bitacoras = connect_to(config->ip_mongo, config->puerto_mongo);
 
 	//EN CASO DE QUE LA CONEXION HAYA FALLADO
 	char reconectOP;
 
-	while (sockfd_ram == -1 || sockfd_mongo == -1)
+	while (sockfd_ram == -1 || sockfd_mongo_sabotajes == -1 || sockfd_mongo_bitacoras == -1)
 	{
 		system("clear");
 		printf("Error de conexion ¿desea reconectar? [s|n]\n");
@@ -59,8 +59,10 @@ int main(int argc, char **argv)
 
 			if (sockfd_ram == -1)
 				sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
-			if (sockfd_mongo == -1)
-				sockfd_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
+			if (sockfd_mongo_sabotajes == -1)
+				sockfd_mongo_sabotajes = connect_to(config->ip_mongo, config->puerto_mongo);
+			if (sockfd_mongo_bitacoras == -1)
+				sockfd_mongo_bitacoras = connect_to(config->ip_mongo, config->puerto_mongo);
 		}
 		else if (reconectOP == 'n')
 		{
@@ -76,6 +78,7 @@ int main(int argc, char **argv)
 	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
 	pthread_detach(thread_sabotajes);
 
+	planificando = 1;
 	pausar(1);
 
 	//LECTURA DE CONSOLA
@@ -127,7 +130,8 @@ int main(int argc, char **argv)
 	sem_destroy(&s_multiprocesamiento);
 	system("clear");
 	close(sockfd_ram);
-	close(sockfd_mongo);
+	close(sockfd_mongo_sabotajes);
+	close(sockfd_mongo_bitacoras);
 	log_destroy(logger);
 	free(config);
 

@@ -22,8 +22,8 @@
 #include <signal.h>
 
 // Constantes de FS
-#define BLOCK_SIZE 8
-#define BLOCKS 128
+#define BLOCK_SIZE 32
+#define BLOCKS 1024
 #define MD5_SIZE 32
 
 // Constantes de error de FS
@@ -66,7 +66,8 @@ char *basura_file_path;
 // Variables globales
 t_log *logger;
 t_store_conf *config;
-int discordiador_cxn;
+int discordiador_cxn_sabotajes;
+int discordiador_cxn_bitacoras;
 t_superbloque *superbloque;
 int superbloque_fd;
 int superbloque_file_size;
@@ -78,7 +79,7 @@ char *blocks_file_copy;
 pthread_mutex_t fs_libre;
 
 // Conexiones hacia el store (definidas en store_connections.c)
-void discordiador_cxn_handler();
+void discordiador_cxn_handler_bitacoras();
 void accept_tripulantes(void *);
 void tripulante_cxn_handler(void *);
 
@@ -139,6 +140,7 @@ bool blocks_count_check();
 void repair_blocks_count();
 bool bitmap_check();
 void repair_bitmap();
+char *reconstruir_recurso(t_recurso *);
 bool file_check(char *);
 void repair_file(char *);
 void ejecutar_fsck();

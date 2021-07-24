@@ -99,7 +99,7 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
         dRecibidos = deserializarInt(paquete->buffer);
         break;
     case BITACORA_TRIPULANTE:
-        dRecibidos = deserializar_bitacora(paquete->buffer);
+        dRecibidos = deserializar_bitacora_tripulante(paquete->buffer);
         break;
     case IMPRIMIR_SEGMENTACION:
         dRecibidos = deserializarInt(paquete->buffer);

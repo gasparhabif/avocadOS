@@ -151,25 +151,33 @@ int pausar(int pausarPlanificacion)
     if (planificando == 0 && pausarPlanificacion == 0)
     {
         for (int i = 0; i < config->grado_multitarea; i++)
+        {
             sem_post(&pause_exec);
+        }
         pthread_mutex_unlock(&pause_block);
         pausar_tripulantes(0);
 
         planificando = 1;
         return 1;
     }
-    else if (planificando && pausarPlanificacion == 1)
+    else if (planificando && pausarPlanificacion)
     {
         for (int i = 0; i < config->grado_multitarea; i++)
+        {
             sem_wait(&pause_exec);
+        }
         pthread_mutex_lock(&pause_block);
         pausar_tripulantes(1);
+        ;
 
         planificando = 0;
         return 1;
     }
     else
+    {
         return 0;
+        printf("Se invoco al pausar erroneamente");
+    }
 }
 
 void pausar_tripulantes(int hayQuePausar)
@@ -192,7 +200,9 @@ void pausar_lista(t_list *lista, int hayQuePausar)
         aux_admin = list_get(lista, i);
 
         if (hayQuePausar)
-            pthread_mutex_lock(&(aux_admin->pausar_tripulante));
+        {
+            pthread_mutex_trylock(&(aux_admin->pausar_tripulante));
+        }
         else
             pthread_mutex_unlock(&(aux_admin->pausar_tripulante));
     }
@@ -224,15 +234,15 @@ int menor_tid_list(t_list *lista)
     t_admin_tripulantes *aux_admin;
 
     int tid_minimo;
-    int index;
+    int index = 0;
 
     aux_admin = list_get(lista, 0);
     tid_minimo = aux_admin->tid;
 
-    for (int i = 1; i < list_size(lista); i++)
+    for (int i = 0; i < list_size(lista); i++)
     {
         aux_admin = list_get(lista, i);
-        if (aux_admin->tid <= tid_minimo)
+        if (aux_admin->tid < tid_minimo)
         {
             index = i;
             tid_minimo = aux_admin->tid;
@@ -253,7 +263,7 @@ int mayor_tid_list(t_list *lista)
     for (int i = 0; i < list_size(lista); i++)
     {
         aux_admin = list_get(lista, i);
-        if (aux_admin->tid >= tid_maximo)
+        if (aux_admin->tid > tid_maximo)
         {
             index = i;
             tid_maximo = aux_admin->tid;

@@ -79,6 +79,7 @@ void mover_una_posicion(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY
 int cantMovimientos(int xInicial, int yInicial, int xFinal, int yFinal);
 void retardo_ciclo_cpu();
 void retardo_ciclo_IO();
+void retardo_ciclo_en_emergencia();
 
 //DEFINIDAS EN sabotajes.c
 void sabotajes();
@@ -89,7 +90,8 @@ int distancia_posiciones(t_posicion *, int, int);
 t_log *logger;
 t_cpu_conf *config;
 
-int sockfd_mongo;
+int sockfd_mongo_sabotajes;
+int sockfd_mongo_bitacoras;
 int sockfd_ram;
 int patota_id;
 int ejecutandoTripulantes;
