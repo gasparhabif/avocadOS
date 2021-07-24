@@ -303,11 +303,10 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos)
                 printf("Copio %d primero, sigo copiando desde el byte %d, copiando %d mas\n", elemento_del_proceso->offset, offsetTCB, (bProceso - offsetTCB));
 
                 memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->offset);
-                // Y si copiamos todos los bytes de memoria de una?
-                // memcpy(elementos_proceso_sTCB, elementos_proceso_cTCB, elemento_del_proceso->tamanio);
+
                 if ((bProceso - offsetTCB) != 0)
                 {
-                    memcpy(elementos_proceso_sTCB + elemento_del_proceso->offset, elementos_proceso_cTCB + offsetTCB, bProceso-offsetTCB);
+                    memcpy(elementos_proceso_sTCB + elemento_del_proceso->offset, elementos_proceso_cTCB + offsetTCB, bProceso - offsetTCB);
                 }
 
                 void *tcb_serializado = malloc(sizeof(t_TCB));
