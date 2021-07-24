@@ -84,15 +84,13 @@ void tripulante_cxn_handler(void *arg)
     t_bitacora_mongo *bitacora = load_bitacora(bitacora_file_path);
     log_info(logger, "Se cargó Tripulante%s.ims", tid);
 
-    // ...
-
     int cod_operacion;
     void *datos_recibidos = recibir_paquete_cCOP(client, &cod_operacion);
 
     while (!tareas_finalizadas)
     {
         pthread_mutex_lock(&fs_libre);
-        sync_blocks();
+        // sync_blocks();
 
         switch (cod_operacion)
         {

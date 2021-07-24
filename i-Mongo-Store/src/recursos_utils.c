@@ -59,6 +59,8 @@ t_recurso *load_recurso(char *recurso_file_path)
     string_append(&(recurso_aux->md5_archivo), config_get_string_value(recurso_config, "MD5_ARCHIVO"));
     config_destroy(recurso_config);
 
+    log_info(logger, "Se cargó %s", recurso_file_path);
+
     return recurso_aux;
 }
 
@@ -145,7 +147,8 @@ void agregar_recurso(t_recurso *recurso, int cantidad)
 
     free(recurso_file);
     update_recurso_metadata(recurso);
-    liberar_recurso(recurso);
+    // update_last_recurso(recurso);
+    // liberar_recurso(recurso);
 }
 
 void eliminar_recurso(t_recurso *recurso, int cantidad)
@@ -180,5 +183,6 @@ void eliminar_recurso(t_recurso *recurso, int cantidad)
 
     free(recurso_file);
     update_recurso_metadata(recurso);
-    liberar_recurso(recurso);
+    // update_last_recurso(recurso);
+    // liberar_recurso(recurso);
 }

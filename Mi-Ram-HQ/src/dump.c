@@ -2,7 +2,7 @@
 
 void dump(int sig)
 {
-    mkdir("./Dump", 0777);
+    mkdir("/home/utnso/Dump", 0777);
 
     if (sig == SIGUSR2)
     {

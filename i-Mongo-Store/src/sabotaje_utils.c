@@ -98,7 +98,33 @@ bool file_check(char *path)
     return result;
 }
 
-void repair_file(char *path) {}
+bool recurso_size_check(t_recurso *last_recurso, t_recurso *recurso)
+{
+    return last_recurso->size == recurso->size;
+}
+
+bool recurso_block_count_check(t_recurso *recurso)
+{
+    return recurso->block_count == list_size(recurso->blocks);
+}
+
+bool recurso_blocks_check(t_recurso *last_recurso, t_recurso *recurso)
+{
+    if (list_size(last_recurso->blocks) != list_size(recurso->blocks))
+    {
+        return false;
+    }
+
+    for (int i = 0; i < list_size(last_recurso->blocks); i++)
+    {
+        if (list_get(last_recurso->blocks, i) != list_get(recurso->blocks, i))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 void ejecutar_fsck()
 {
@@ -124,31 +150,111 @@ void ejecutar_fsck()
         log_info(logger, "Reparación de bitmap finalizada");
     }
 
-    // Verificar files
-    log_info(logger, "Verificando Oxigeno.ims...");
-    if (file_exists(oxigeno_file_path) && !file_check(oxigeno_file_path))
+    // Verificar Oxigeno.ims
+    if (file_exists(oxigeno_file_path))
     {
-        log_error(logger, "Hubo un sabotaje en Oxigeno.ims");
-        log_info(logger, "Reparando Oxigeno.ims...");
-        repair_file(oxigeno_file_path);
-        log_info(logger, "Reparación de Oxigeno.ims finalizada");
+        log_info(logger, "Verificando Oxigeno.ims...");
+        t_recurso *oxigeno_aux = load_recurso(oxigeno_file_path);
+
+        // Verificar tamaño del archivo
+        if (!recurso_size_check(last_oxigeno, oxigeno_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en SIZE de Oxigeno.ims");
+            log_info(logger, "Reparando SIZE de Oxigeno.ims...");
+            update_recurso_metadata(last_oxigeno);
+            log_info(logger, "Reparación de SIZE de Oxigeno.ims finalizada");
+        }
+
+        // Verificar cantidad de bloques y lista de bloques
+        if (!recurso_block_count_check(oxigeno_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Oxigeno.ims");
+            log_info(logger, "Reparando BLOCK_COUNT de Oxigeno.ims...");
+            update_recurso_metadata(last_oxigeno);
+            log_info(logger, "Reparación de BLOCK_COUNT de Oxigeno.ims finalizada");
+        }
+
+        // Verificar bloques
+        if (!recurso_blocks_check(last_oxigeno, oxigeno_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCKS de Oxigeno.ims");
+            log_info(logger, "Reparando BLOCKS de Oxigeno.ims...");
+            update_recurso_metadata(last_oxigeno);
+            log_info(logger, "Reparación de BLOCKS de Oxigeno.ims finalizada");
+        }
+
+        liberar_recurso(oxigeno_aux);
     }
 
-    log_info(logger, "Verificando Comida.ims...");
-    if (file_exists(comida_file_path) && !file_check(comida_file_path))
+    // Verificar Comida.ims
+    if (file_exists(comida_file_path))
     {
-        log_error(logger, "Hubo un sabotaje en Comida.ims");
-        log_info(logger, "Reparando Comida.ims...");
-        repair_file(comida_file_path);
-        log_info(logger, "Reparación de Comida.ims finalizada");
+        log_info(logger, "Verificando Comida.ims...");
+        t_recurso *comida_aux = load_recurso(comida_file_path);
+
+        // Verificar tamaño del archivo
+        if (!recurso_size_check(last_comida, comida_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en SIZE de Comida.ims");
+            log_info(logger, "Reparando SIZE de Comida.ims...");
+            update_recurso_metadata(last_comida);
+            log_info(logger, "Reparación de SIZE de Comida.ims finalizada");
+        }
+
+        // Verificar cantidad de bloques y lista de bloques
+        if (!recurso_block_count_check(comida_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Comida.ims");
+            log_info(logger, "Reparando BLOCK_COUNT de Comida.ims...");
+            update_recurso_metadata(last_comida);
+            log_info(logger, "Reparación de BLOCK_COUNT de Comida.ims finalizada");
+        }
+
+        // Verificar bloques
+        if (!recurso_blocks_check(last_comida, comida_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCKS de Comida.ims");
+            log_info(logger, "Reparando BLOCKS de Comida.ims...");
+            update_recurso_metadata(last_comida);
+            log_info(logger, "Reparación de BLOCKS de Comida.ims finalizada");
+        }
+
+        liberar_recurso(comida_aux);
     }
 
-    log_info(logger, "Verificando Basura.ims...");
-    if (file_exists(basura_file_path) && !file_check(basura_file_path))
+    // Verificar Basura.ims
+    if (file_exists(basura_file_path))
     {
-        log_error(logger, "Hubo un sabotaje en Basura.ims");
-        log_info(logger, "Reparando Basura.ims...");
-        repair_file(basura_file_path);
-        log_info(logger, "Reparación de Basura.ims finalizada");
+        log_info(logger, "Verificando Basura.ims...");
+        t_recurso *basura_aux = load_recurso(basura_file_path);
+
+        // Verificar tamaño del archivo
+        if (!recurso_size_check(last_basura, basura_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en SIZE de Basura.ims");
+            log_info(logger, "Reparando SIZE de Basura.ims...");
+            update_recurso_metadata(last_basura);
+            log_info(logger, "Reparación de SIZE de Basura.ims finalizada");
+        }
+
+        // Verificar cantidad de bloques y lista de bloques
+        if (!recurso_block_count_check(basura_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Basura.ims");
+            log_info(logger, "Reparando BLOCK_COUNT de Basura.ims...");
+            update_recurso_metadata(last_basura);
+            log_info(logger, "Reparación de BLOCK_COUNT de Basura.ims finalizada");
+        }
+
+        // Verificar bloques
+        if (!recurso_blocks_check(last_basura, basura_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCKS de Basura.ims");
+            log_info(logger, "Reparando BLOCKS de Basura.ims...");
+            update_recurso_metadata(last_basura);
+            log_info(logger, "Reparación de BLOCKS de Basura.ims finalizada");
+        }
+
+        liberar_recurso(basura_aux);
     }
 }

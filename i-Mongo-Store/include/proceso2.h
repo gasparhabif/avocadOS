@@ -78,6 +78,14 @@ char *blocks_file;
 char *blocks_file_copy;
 pthread_mutex_t fs_libre;
 
+// Estado real de recursos en FS
+t_recurso *last_oxigeno;
+t_recurso *last_comida;
+t_recurso *last_basura;
+
+// Sync blocks handler
+void sync_blocks_handler();
+
 // Conexiones hacia el store (definidas en store_connections.c)
 void discordiador_cxn_handler_bitacoras();
 void accept_tripulantes(void *);
@@ -92,7 +100,6 @@ void generarComida(int);
 void consumirComida(int);
 void generarBasura(int);
 void descartarBasura();
-void tareaNormal();
 
 // Inicialización del FS (definidas en store_init.c)
 void init_paths();
@@ -142,7 +149,9 @@ bool bitmap_check();
 void repair_bitmap();
 char *reconstruir_recurso(t_recurso *);
 bool file_check(char *);
-void repair_file(char *);
 void ejecutar_fsck();
+bool recurso_size_check(t_recurso *, t_recurso *);
+bool recurso_block_count_check(t_recurso *);
+bool recurso_blocks_check(t_recurso *, t_recurso *);
 
 #endif
