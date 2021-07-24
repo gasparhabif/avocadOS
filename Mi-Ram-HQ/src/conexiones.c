@@ -34,6 +34,8 @@ void recibir_mensaje(void *parametro)
     int cop_recibido;
     void *datos_recibidos;
     int recibiendo_mensajes = 1;
+    char idMapaTripulante = idMapa;
+    idMapa++;
 
     if (strcmp(config->esquema_memoria, "PAGINACION") == 0)
     {
@@ -47,7 +49,6 @@ void recibir_mensaje(void *parametro)
                 comenzar_patota_paginada(client, (t_tareas_cPID *)datos_recibidos);
                 break;
             case INICIAR_TRIPULANTE:
-                log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
                 iniciar_tripulante_paginado(client, datos_recibidos);
                 break;
             case SOLICITAR_TAREA:
@@ -91,7 +92,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case INICIAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d solicita el ingreso a la nave", client);
-                iniciar_tripulante(client, datos_recibidos);
+                iniciar_tripulante(client, datos_recibidos, idMapaTripulante);
                 break;
             case SOLICITAR_TAREA:
                 log_info(logger, "El tripulante %d solicito una tarea", client);
@@ -99,7 +100,7 @@ void recibir_mensaje(void *parametro)
                 break;
             case MOVER_TRIPULANTE:
                 log_info(logger, "El tripulante %d ha realizado un movimiento", client);
-                mover_tripulante(datos_recibidos);
+                mover_tripulante(datos_recibidos, idMapaTripulante);
                 break;
             case ACTUALIZAR_ESTADO:
                 log_info(logger, "El tripulante %d actualizo su estado", client);
@@ -112,21 +113,21 @@ void recibir_mensaje(void *parametro)
                 break;
             case IMPRIMIR_SEGMENTACION:
                 pthread_mutex_lock(&acceso_memoria);
-                printf("------------------------------------------------------------------\n");
+                log_info(logger, "\n------------------------------------------------------------------\n");
                 for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
                 {
                     estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
-                    printf("SEG N°: %d\t", i);
-                    printf("Inicio: %d\t", reg_seg->inicio);
-                    printf("Tamaño: %d\t", reg_seg->limite);
-                    printf("Ocupado: %d\n", reg_seg->ocupado);
+                    log_info(logger, "SEG N°: %d\t", i);
+                    log_info(logger, "Inicio: %d\t", reg_seg->inicio);
+                    log_info(logger, "Tamaño: %d\t", reg_seg->limite);
+                    log_info(logger, "Ocupado: %d\n", reg_seg->ocupado);
                 }
-                printf("------------------------------------------------------------------\n");
+                log_info(logger, "------------------------------------------------------------------\n");
                 pthread_mutex_unlock(&acceso_memoria);
                 break;
             case ELIMINAR_TRIPULANTE:
                 log_info(logger, "El tripulante %d quiere abandonar la nave", client);
-                eliminar_tripulante(datos_recibidos);
+                eliminar_tripulante(datos_recibidos, idMapaTripulante);
                 recibiendo_mensajes = 0;
                 break;
             default:

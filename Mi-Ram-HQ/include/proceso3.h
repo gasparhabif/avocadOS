@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <curses.h>
 #include <commons/log.h>
 #include <commons/collections/list.h>
 #include <commons/temporal.h>
@@ -15,6 +16,8 @@
 #include <nivel-gui/nivel-gui.h>
 #include <nivel-gui/tad_nivel.h>
 #include <sys/stat.h>
+
+#define ASSERT_CREATE(level, id, err)
 
 t_log *logger;
 t_ram_conf *config;
@@ -63,6 +66,7 @@ t_list *tabla_procesos;
 pthread_mutex_t acceso_memoria;
 pthread_mutex_t m_procesos;
 NIVEL *level;
+char idMapa;
 //GESTION DE MEMORIA EN LA SEGMENTACIOS
 t_list *tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION
@@ -77,11 +81,11 @@ void recibir_mensaje(void *);
 
 //Definidas en router_segmentacion.c
 void comenzar_patota(int, t_tareas_cPID *);
-void iniciar_tripulante(int, t_TCBcPID *);
+void iniciar_tripulante(int, t_TCBcPID *, char);
 void solicitar_tarea(int, t_pidYtid *);
-void mover_tripulante(t_envio_posicion *);
+void mover_tripulante(t_envio_posicion *, char);
 void actualizar_estado(t_estado *);
-void eliminar_tripulante(t_pidYtid *);
+void eliminar_tripulante(t_pidYtid *, char);
 void solicitar_tripulantes(int);
 
 //Definidas en router_paginacion.c

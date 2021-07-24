@@ -5,7 +5,7 @@ int main()
     system("clear");
 
     //CREO EL LOGGER
-    logger = log_create("../Mi-Ram-HQ/logs/proceso3.log", "Mi-Ram-HQ", 1, LOG_LEVEL_INFO);
+    logger = log_create("../Mi-Ram-HQ/logs/proceso3.log", "Mi-Ram-HQ", 0, LOG_LEVEL_INFO);
     log_info(logger, "Se inicio el log");
 
     //INICIO DEL CONFIG
@@ -24,11 +24,10 @@ int main()
     signal(SIGUSR2, dump);
 
     //INICIO EL MAPA
-    /*
+    idMapa = '@';
     nivel_gui_inicializar();
     level = nivel_crear("AmongOS");
-    nivel_gui_dibujar(level);
-    */
+    nivel_gui_dibujar(level);   
 
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();
