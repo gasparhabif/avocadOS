@@ -22,6 +22,7 @@ void *serializar_bitacora(t_bitacora *, uint32_t *);
 void *serializar_ejecutarTarea(uint32_t, uint32_t, int *);
 void *serializar_posicionCtid(uint32_t, uint32_t, uint32_t, int *);
 void *serializar_bitacora_tripulante(uint32_t, char*, int*);
+void *serializar_inicioTarea(uint32_t, uint32_t, char *, int *);
 
 //DEFINIDAS EN deserializacion.c
 t_TCBcPID *deserializarTCB(t_buffer *);

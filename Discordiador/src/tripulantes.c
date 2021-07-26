@@ -6,7 +6,9 @@ void tripulante(t_parametros_tripulantes *parametro)
     int tid;
     tid = syscall(SYS_gettid);
     t_TCB tcb_tripulante;
-    t_tarea *tarea_recibida;
+    t_tarea_descomprimida *tarea_recibida;
+    int len_tarea;
+    char *nom_tarea;
     int tamanioSerializacion;
     int finTareas = 0, tareaPendiente = 0;
     int block = 0;
@@ -66,6 +68,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     //LOGEO EL INICIO
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
+/*
     //ABRO LA CONEXION CON LA RAM
     admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     if (admin->sockfd_tripulante_ram == -1)
@@ -74,6 +77,7 @@ void tripulante(t_parametros_tripulantes *parametro)
         return;
     }
     log_info(logger, "El tripulante se conecto con Mi-RAM-HQ");
+*/
 
     //SERIALIZO Y ENVIO EL TCB
     void *d_Enviar = serializarTCB(admin->pid, tcb_tripulante, &tamanioSerializacion);
@@ -82,12 +86,13 @@ void tripulante(t_parametros_tripulantes *parametro)
     log_info(logger, "Se envio el TCB a la RAM");
 
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
-    if (!((int)recibir_paquete(admin->sockfd_tripulante_ram)))
+    if (((int) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
     {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         return;
     }
 
+/*
     admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     if (admin->sockfd_tripulante_mongo == -1)
     {
@@ -95,6 +100,7 @@ void tripulante(t_parametros_tripulantes *parametro)
         return;
     }
     log_info(logger, "El tripulante se conecto con i-Mongo-Store");
+*/
 
     //printf("Posición de TID %d: %d|%d\n", admin->tid, admin->posX, admin->posY);
 
@@ -126,7 +132,7 @@ void tripulante(t_parametros_tripulantes *parametro)
             if (admin->debeMorir)
                 finTareas = 1;
             else
-                tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado);
+                tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, &len_tarea, nom_tarea);
         }
 
         //SI LA TAREA RECIBIDA NO ES LA ULTIMA (o no se solicito el fin del tripulante)
@@ -212,7 +218,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     return;
 }
 
-t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado)
+t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int *len_tarea, char *nom_tarea)
 {
     //PEDIR TAREA
     int tamanioSerializacion;
@@ -222,14 +228,17 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
 
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
-    t_tarea *tarea_recibida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
+    t_tarea *tarea_comprimida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
+    
     /*
     tarea_recibida->codigoTarea = 3;
     tarea_recibida->parametro = 4;
     tarea_recibida->posX = 3;
     tarea_recibida->posY = 4;
     tarea_recibida->duracionTarea = 5;
-*/
+    */
+
+    t_tarea_descomprimida * tarea_recibida = descomprimir_tarea(tarea_comprimida, &len_tarea, nom_tarea);
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
     if (tarea_recibida->codigoTarea == FIN_TAREAS)
@@ -237,7 +246,7 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     else
     {
         //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
-        void *comenzar_tarea = serializarInt(tarea_recibida->codigoTarea, INICIO_TAREA, &tamanioSerializacion);
+        void *comenzar_tarea = serializar_inicioTarea(admin->tid, *len_tarea, nom_tarea, &tamanioSerializacion);
         send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
         free(comenzar_tarea);
 
@@ -260,7 +269,7 @@ t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duraci
     return tarea_recibida;
 }
 
-int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion)
+int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea_descomprimida *unaTarea, int *duracionMovimientos, int *duracionEjecucion)
 {
     int tiempoMovimientos = 0;
     int tiempoEjecutando = 0;

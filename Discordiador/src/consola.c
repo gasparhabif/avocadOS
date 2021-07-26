@@ -31,12 +31,8 @@ void INICIAR_PATOTA(char **parametros)
             {
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 int cantTareas = 0;
-                int errorLeyendoTareas = 0;
 
-                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas, &errorLeyendoTareas);
-
-                if (errorLeyendoTareas)
-                    return;
+                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas);
 
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //printf("Serializando...\n");

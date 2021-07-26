@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
 	pthread_mutex_init(&pause_block, NULL);
 	sem_init(&pause_exec, 0, config->grado_multitarea);
-
+/*
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
@@ -70,13 +70,13 @@ int main(int argc, char **argv)
 			system("clear");
 		}
 	}
-
+*/
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO
-	pthread_t thread_sabotajes;
-	pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
-	pthread_detach(thread_sabotajes);
+	//pthread_t thread_sabotajes;
+	//pthread_create(&thread_sabotajes, NULL, (void *)sabotajes, NULL);
+	//pthread_detach(thread_sabotajes);
 
 	planificando = 1;
 	pausar(1);

@@ -1,5 +1,38 @@
 #include "proceso1.h"
 
+t_tarea* leer_tareas(FILE *fpTareas, int *cantTareas){
+    
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    int cantLineas = 0;
+    t_tarea *tareas;
+
+    //CHEQUEO LA CANTIDAD DE LINEAS PARA RESERVAR LA MEMORIA
+    while ((read = getline(&line, &len, fpTareas)) != -1)
+        cantLineas++;
+
+    *cantTareas = cantLineas;
+    fseek(fpTareas, 0, SEEK_SET);
+
+    //RESERVO LA MEMORIA
+    tareas = malloc(sizeof(t_tarea) * cantLineas);
+
+    //LEO LINEA A LINEA
+    for (int i = 0; i < cantLineas; i++)
+    {
+        if ((read = getline(&line, &len, fpTareas)) != -1)
+        {
+            tareas[i].tamanio_tarea = len;
+            tareas[i].tarea = malloc(len);
+            strcpy(tareas[i].tarea, line);
+        }
+    }
+
+    return tareas;
+}
+
+/*
 t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 {
 
@@ -132,6 +165,8 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 
     return tareas;
 }
+*/
+
 
 int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
 {

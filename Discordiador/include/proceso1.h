@@ -54,7 +54,7 @@ void OBTENER_BITACORA(char **);
 void IMPRIMIR_SEGMENTOS(char **);
 
 //DEFINIDAS EN utils.c
-t_tarea *leer_tareas(FILE *, int *, int *);
+t_tarea* leer_tareas(FILE *, int *);
 int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);
 void pausar_tripulantes(int);
@@ -70,8 +70,8 @@ int revisarLista_avisoDeMuerte(t_list *, int);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(t_parametros_tripulantes *parametro);
-t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado);
-int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
+t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int *len_tarea, char *nom_tarea);
+int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea_descomprimida *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
 void mover_tripulante(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY, int movimientosPosibles, int *duracionMovimientos);
 int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado);
 void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado);

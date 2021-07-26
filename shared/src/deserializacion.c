@@ -35,16 +35,11 @@ t_tarea *deserializarTarea(t_buffer *buffer)
 
     void *stream = buffer->stream;
 
-    memcpy(&(tarea_recibida->codigoTarea), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-    memcpy(&(tarea_recibida->parametro), stream, sizeof(uint32_t));
+    memcpy(&(tarea_recibida->tamanio_tarea), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    memcpy(&(tarea_recibida->posX), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(tarea_recibida->posY), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(tarea_recibida->duracionTarea), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
+
+    tarea_recibida->tarea = malloc(tarea_recibida->tamanio_tarea);
+    memcpy(&(tarea_recibida->tarea), stream, tarea_recibida->tamanio_tarea);
 
     return tarea_recibida;
 
@@ -63,20 +58,15 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
     memcpy(&(tareas_cPID_recibidas->cantTareas), stream, sizeof(uint8_t));
     stream += sizeof(uint8_t);
 
-    tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas * sizeof(t_tarea));
+    tareas_cPID_recibidas->tareas = malloc(tareas_cPID_recibidas->cantTareas);
 
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
-        memcpy(&(tareas_cPID_recibidas->tareas[i].codigoTarea), stream, sizeof(uint8_t));
-        stream += sizeof(uint8_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].parametro), stream, sizeof(uint32_t));
+        memcpy(&(tareas_cPID_recibidas->tareas[i].tamanio_tarea), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].posX), stream, sizeof(uint32_t));
-        stream += sizeof(uint32_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].posY), stream, sizeof(uint32_t));
-        stream += sizeof(uint32_t);
-        memcpy(&(tareas_cPID_recibidas->tareas[i].duracionTarea), stream, sizeof(uint32_t));
-        stream += sizeof(uint32_t);
+        tareas_cPID_recibidas->tareas[i].tarea = malloc(tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+        memcpy(&(tareas_cPID_recibidas->tareas[i].tarea), stream, tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+        stream += tareas_cPID_recibidas->tareas[i].tamanio_tarea;
     }
 
     return tareas_cPID_recibidas;

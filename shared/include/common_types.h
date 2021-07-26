@@ -142,12 +142,18 @@ typedef struct
 //TAREAS
 typedef struct
 {
+    uint32_t tamanio_tarea;
+    char *tarea;
+} t_tarea;
+
+typedef struct
+{
     uint8_t codigoTarea;
     uint32_t parametro;
     uint32_t posX;
     uint32_t posY;
     uint32_t duracionTarea;
-} t_tarea;
+} t_tarea_descomprimida;
 
 typedef struct
 {
