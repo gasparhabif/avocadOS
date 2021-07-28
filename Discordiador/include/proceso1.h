@@ -55,6 +55,7 @@ void IMPRIMIR_SEGMENTOS(char **);
 
 //DEFINIDAS EN utils.c
 t_tarea* leer_tareas(FILE *, int *);
+t_tarea_descomprimida* descomprimir_tarea(t_tarea*, int*, char*);
 int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);
 void pausar_tripulantes(int);

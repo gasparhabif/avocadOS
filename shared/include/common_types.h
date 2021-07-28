@@ -164,6 +164,13 @@ typedef struct
 
 typedef struct
 {
+    uint32_t tid;
+    uint32_t len_tarea;
+    char *tarea;
+} t_inicio_tarea;
+
+typedef struct
+{
     uint8_t codigoTarea;
     uint32_t parametro;
 } t_ejecutar_tarea;

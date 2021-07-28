@@ -87,15 +87,21 @@ int traer_tarea(void *tareas, t_list* lista_proceso, int tid, t_tarea *tarea_bus
     //OBTENGO EL NUMERO DE TAREA A DEVOLVER
     if (tcb->proximaInstruccion == cant_tareas(lista_proceso)){
 
-        tarea_buscada->codigoTarea = FIN_TAREAS;
+        tarea_buscada->tamanio_tarea = FIN_TAREAS;
 
         return 0;
 
     }
     else{
 
+        int offsetTarea = 0;
+        for (int i = 0; i < tcb->proximaInstruccion; i++)
+            offsetTarea += (int) list_get(reg_tcb->tamanio_tareas, i);
+
         //ME COPIO LA TAREA QUE NECESITO
-        memcpy(tarea_buscada, tareas + (tcb->proximaInstruccion * sizeof(t_tarea)), sizeof(t_tarea));
+        tarea_buscada->tamanio_tarea = (int) list_get(reg_tcb->tamanio_tareas, tcb->proximaInstruccion);
+        tarea_buscada->tarea = malloc((int) list_get(reg_tcb->tamanio_tareas, tcb->proximaInstruccion));
+        memcpy(tarea_buscada->tarea, tareas + offsetTarea, (int) list_get(reg_tcb->tamanio_tareas, tcb->proximaInstruccion));
         
         //SUMO UNO A LA PROXIMA INSTRUCCION
         tcb->proximaInstruccion += 1;

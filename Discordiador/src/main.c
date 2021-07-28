@@ -35,11 +35,11 @@ int main(int argc, char **argv)
 
 	pthread_mutex_init(&pause_block, NULL);
 	sem_init(&pause_exec, 0, config->grado_multitarea);
-/*
+
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
-
+/*
 	log_info(logger, "Conectando a MONGO...");
 	sockfd_mongo_sabotajes = connect_to(config->ip_mongo, config->puerto_mongo);
 	sockfd_mongo_bitacoras = connect_to(config->ip_mongo, config->puerto_mongo);

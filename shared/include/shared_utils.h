@@ -10,6 +10,5 @@
 #include "configurator.h"
 #include "serializacion.h"
 #include "connections.h"
-#include "tareas.h"
 
 #endif

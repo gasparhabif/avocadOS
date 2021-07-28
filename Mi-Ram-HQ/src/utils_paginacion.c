@@ -241,21 +241,21 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
         if (pagina_proceso->tipo == TAREAS)
         {
 
-            if (pagina_proceso->tamanio / sizeof(t_tarea) == nInstruccion)
+            if (pagina_proceso->id == nInstruccion)
             {
                 tarea = malloc(sizeof(t_tarea));
-                tarea->codigoTarea = FIN_TAREAS;
-                tarea->parametro = 0;
-                tarea->posX = 0;
-                tarea->posY = 0;
-                tarea->duracionTarea = 0;
+                tarea->tamanio_tarea = FIN_TAREAS;
 
                 return tarea;
             }
             else
             {
-                memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + nInstruccion * sizeof(t_tarea), sizeof(t_tarea));
-                tarea = deserializar_TAREA(tarea_serializada);
+                int offset_tarea = 0;
+                for (int i = 0; i < nInstruccion; i++)
+                    offset_tarea += (int) list_get(pagina_proceso->len_tareas , i);                
+
+                memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + offset_tarea, (int) list_get(pagina_proceso->len_tareas , nInstruccion));
+                tarea = deserializar_TAREA(tarea_serializada, (int) list_get(pagina_proceso->len_tareas, nInstruccion));
 
                 //printf("codigoTarea: %d\n", tarea->codigoTarea);
                 //printf("parametro: %d\n", tarea->parametro);

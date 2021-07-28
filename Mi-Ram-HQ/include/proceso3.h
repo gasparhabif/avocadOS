@@ -34,10 +34,11 @@ enum TIPO
 
 typedef struct
 {
-    void *base;       // Posicion inicio del segmento
-    uint32_t tamanio; // Tamaño del contenido del segmento
-    uint8_t tipo;     // Tipo del contenido del segmento
-    uint32_t id;      // Opcional
+    void *base;             // Posicion inicio del segmento
+    uint32_t tamanio;       // Tamaño del contenido del segmento
+    uint8_t tipo;           // Tipo del contenido del segmento
+    uint32_t id;            // Opcional
+    t_list *tamanio_tareas; // Tamanio de las tareas
 } t_registro_segmentos;
 
 typedef struct
@@ -54,6 +55,7 @@ typedef struct
     uint32_t offset;
     uint32_t tamanio;
     uint8_t modificado;
+    t_list *len_tareas;
 } t_tabla_paginas_proceso;
 
 typedef struct
@@ -157,10 +159,10 @@ int calcular_paginas_ocupadas(int);
 void *serializar_PCB(t_PCB *);
 void *serializar_TCB(t_TCB);
 void *serializar_pTCB(t_TCB *);
-void *serializar_TAREA(t_tarea *);
+void *serializar_TAREA(char *, int);
 t_PCB *deserializar_PCB(void *);
 t_TCB *deserializar_TCB(void *);
-t_tarea *deserializar_TAREA(void *);
+t_tarea *deserializar_TAREA(void *, int);
 
 //Definidas en dump.c
 void dump(int);

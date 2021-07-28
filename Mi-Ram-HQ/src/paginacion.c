@@ -52,21 +52,25 @@ int solicitar_paginas(int bytes_solicitados, int pid)
 
 void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
 {
+
+    int tamanio_tareas = 0;
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+        tamanio_tareas += tareas_cPID_recibidas->tareas[i].tamanio_tarea;
+
     //SERIALIZO LAS TAREAS
-    void *tareas_pcb = malloc(sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas + sizeof(t_PCB));
+    void *tareas_pcb = malloc(tamanio_tareas + sizeof(t_PCB));
     int offset = 0;
 
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
-        memcpy(tareas_pcb + offset, serializar_TAREA(&(tareas_cPID_recibidas->tareas[i])), sizeof(t_tarea));
-        offset += sizeof(t_tarea);
+        memcpy(tareas_pcb + offset, serializar_TAREA(tareas_cPID_recibidas->tareas[i].tarea, tareas_cPID_recibidas->tareas[i].tamanio_tarea), tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+        offset += tareas_cPID_recibidas->tareas[i].tamanio_tarea;
     }
 
     //CREO EL PCB
     t_PCB *pcb = malloc(sizeof(t_PCB));
     pcb->PID = tareas_cPID_recibidas->PID;
-    pcb->tareas = tareas_cPID_recibidas->cantTareas * sizeof(t_tarea);
-    ;
+    pcb->tareas = tamanio_tareas;
 
     //COPIO EL PCB A tareas_pcb
     memcpy(tareas_pcb + offset, pcb, sizeof(t_PCB));
@@ -105,12 +109,15 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
     tabla_paginas_tareas->offset = 0;
     tabla_paginas_tareas->tamanio = tareas_cPID_recibidas->cantTareas * sizeof(t_tarea);
     tabla_paginas_tareas->modificado = 0;
+    tabla_paginas_tareas->len_tareas = list_create();
+    
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+        list_add(tabla_paginas_tareas->len_tareas, tareas_cPID_recibidas->tareas[i].tamanio_tarea);
 
     t_tabla_paginas_proceso *tabla_paginas_pcb = malloc(sizeof(t_tabla_paginas_proceso));
     tabla_paginas_pcb->id = tareas_cPID_recibidas->PID;
     tabla_paginas_pcb->tipo = PCB;
     tabla_paginas_pcb->offset = tareas_cPID_recibidas->cantTareas * sizeof(t_tarea);
-    ;
     tabla_paginas_pcb->tamanio = sizeof(t_PCB);
     tabla_paginas_pcb->modificado = 0;
 

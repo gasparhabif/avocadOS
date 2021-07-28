@@ -58,23 +58,10 @@ void *serializar_pTCB(t_TCB *unTCB)
     return tcb_serializado;
 }
 
-void *serializar_TAREA(t_tarea *unaTarea)
+void *serializar_TAREA(char *unaTarea, int len_tarea)
 {
-
-    void *tarea_serializada = malloc(sizeof(t_tarea));
-    int offset = 0;
-
-    memcpy(tarea_serializada + offset, &(unaTarea->codigoTarea), sizeof(uint8_t));
-    offset += sizeof(uint8_t);
-    memcpy(tarea_serializada + offset, &(unaTarea->parametro), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(tarea_serializada + offset, &(unaTarea->posX), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(tarea_serializada + offset, &(unaTarea->posY), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(tarea_serializada + offset, &(unaTarea->duracionTarea), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-
+    void *tarea_serializada = malloc(len_tarea);
+    memcpy(tarea_serializada, unaTarea, len_tarea);
     return tarea_serializada;
 }
 
@@ -114,22 +101,20 @@ t_TCB *deserializar_TCB(void *unTCB)
     return tcb_deserializado;
 }
 
-t_tarea *deserializar_TAREA(void *unaTarea)
+t_tarea *deserializar_TAREA(void *unaTarea, int len_tarea)
 {
 
     t_tarea *tarea_deserializada = malloc(sizeof(t_tarea));
     int offset = 0;
 
-    memcpy(&(tarea_deserializada->codigoTarea), unaTarea + offset, sizeof(uint8_t));
-    offset += sizeof(uint8_t);
-    memcpy(&(tarea_deserializada->parametro), unaTarea + offset, sizeof(uint32_t));
+    memcpy(&(tarea_deserializada->tamanio_tarea), unaTarea + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(&(tarea_deserializada->posX), unaTarea + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(&(tarea_deserializada->posY), unaTarea + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(&(tarea_deserializada->duracionTarea), unaTarea + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
+
+    tarea_deserializada->tarea = malloc(tarea_deserializada->tamanio_tarea);
+
+    memcpy(&(tarea_deserializada->tarea), unaTarea + offset, tarea_deserializada->tamanio_tarea);
+    offset += tarea_deserializada->tamanio_tarea;
+
 
     return tarea_deserializada;
 }

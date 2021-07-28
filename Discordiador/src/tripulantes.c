@@ -8,7 +8,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     t_TCB tcb_tripulante;
     t_tarea_descomprimida *tarea_recibida;
     int len_tarea;
-    char *nom_tarea;
+    char *nom_tarea = NULL;
     int tamanioSerializacion;
     int finTareas = 0, tareaPendiente = 0;
     int block = 0;
@@ -68,7 +68,6 @@ void tripulante(t_parametros_tripulantes *parametro)
     //LOGEO EL INICIO
     log_info(logger, "Tripulante en posicion X:%d Y:%d", admin->posX, admin->posY);
 
-/*
     //ABRO LA CONEXION CON LA RAM
     admin->sockfd_tripulante_ram = connect_to(config->ip_ram, config->puerto_ram);
     if (admin->sockfd_tripulante_ram == -1)
@@ -77,7 +76,6 @@ void tripulante(t_parametros_tripulantes *parametro)
         return;
     }
     log_info(logger, "El tripulante se conecto con Mi-RAM-HQ");
-*/
 
     //SERIALIZO Y ENVIO EL TCB
     void *d_Enviar = serializarTCB(admin->pid, tcb_tripulante, &tamanioSerializacion);
@@ -238,7 +236,7 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     tarea_recibida->duracionTarea = 5;
     */
 
-    t_tarea_descomprimida * tarea_recibida = descomprimir_tarea(tarea_comprimida, &len_tarea, nom_tarea);
+    t_tarea_descomprimida * tarea_recibida = descomprimir_tarea(tarea_comprimida, len_tarea, nom_tarea);
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
     if (tarea_recibida->codigoTarea == FIN_TAREAS)

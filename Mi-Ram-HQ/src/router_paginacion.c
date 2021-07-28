@@ -2,9 +2,11 @@
 
 void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
-    int tamanio_tareas = sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas;
     void *paquete;
     int tamanioSerializacion;
+    int tamanio_tareas = 0;
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+        tamanio_tareas += tareas_cPID_recibidas->tareas[i].tamanio_tarea;
 
     pthread_mutex_lock(&acceso_memoria);
 
@@ -61,6 +63,7 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
     nInstruccion = obtener_numero_instruccion(tabla_proceso, pidYtid_recibido->pid, pidYtid_recibido->tid);
 
     //BUSCO LA TAREA QUE NECESITO
+    //FALTA MODIFICAR ESTO
     t_tarea *tarea_recibida = obtenerTarea(tabla_proceso, pidYtid_recibido->pid, nInstruccion);
 
     pthread_mutex_unlock(&acceso_memoria);
