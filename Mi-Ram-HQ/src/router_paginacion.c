@@ -135,6 +135,15 @@ void actualizar_estado_paginada(t_estado *datos_recibidos)
 
         if (elemento_proceso->tipo == TCB && elemento_proceso->id == datos_recibidos->TID)
         {
+            int bytes_ocupados = elemento_proceso->offset + elemento_proceso->tamanio;
+            for (int j = elemento_proceso->offset; j < bytes_ocupados; j += config->tamanio_pagina)
+            {
+                t_estado_frame *frame = list_get(estado_frames, j);
+                frame->ultimo_acceso = obtener_timestamp();
+                printf("EL ULTIMO ACCESO AL FRAME %d ES DE: %d\n", j, frame->ultimo_acceso);
+                list_replace(estado_frames, j, frame);
+            }
+
             memcpy(tcbSerializado, elementos_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
 
             tcb = deserializar_TCB(tcbSerializado);
@@ -233,7 +242,12 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //LIBERO LA MEMORIA Y ELIMINO LAS PAGINAS DEL PROCESO DE LA TABLA
                 for (int j = 0; j < list_size(pag_proceso->paginas); j++)
                 {
-                    estado_frames[((int)list_get(pag_proceso->paginas, j) - (int)memoria) / tamanio_paginas] = 0;
+                    int indice = ((int)list_get(pag_proceso->paginas, j) - (int)memoria) / tamanio_paginas;
+                    t_estado_frame *frame = list_get(estado_frames, indice);
+                    frame->ocupado = 0;
+                    frame->ultimo_acceso = 0;
+                    list_replace(estado_frames, indice, frame);
+
                     list_remove(pag_proceso->paginas, j);
                 }
 
@@ -251,7 +265,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
 
             if (obtener_pid_pag(tabla_un_proceso) == datos_recibidos->pid)
             {
-
                 list_remove(tabla_procesos, i);
             }
         }
@@ -296,7 +309,9 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
 
                     for (int i = list_size(lista_paginas_proceso) - 1; i > paginasNecesarias - 1; i--)
                     {
-                        estado_frames[i] = 0;
+                        t_estado_frame *frame = list_get(estado_frames, i);
+                        frame->ocupado = 0;
+                        list_replace(estado_frames, i, frame);
                         list_remove(lista_paginas_proceso, i);
                         printf("Libero un pagina\n");
                     }

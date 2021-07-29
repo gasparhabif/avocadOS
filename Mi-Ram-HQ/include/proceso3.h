@@ -16,6 +16,7 @@
 #include <nivel-gui/nivel-gui.h>
 #include <nivel-gui/tad_nivel.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #define ASSERT_CREATE(level, id, err)
 
@@ -24,6 +25,8 @@ t_ram_conf *config;
 
 int aceptando_conexiones;
 void *memoria;
+
+struct timeval tv;
 
 enum TIPO
 {
@@ -49,12 +52,26 @@ typedef struct
 
 typedef struct
 {
+    uint32_t ultimo_acceso;
+    uint8_t ocupado;
+} t_estado_frame;
+
+typedef struct
+{
     uint32_t id;  //para tripulantes es el tcb y para el pcb es el pid
     uint8_t tipo; // Tipo del contenido
     uint32_t offset;
     uint32_t tamanio;
     uint8_t modificado;
+    uint8_t presencia;
 } t_tabla_paginas_proceso;
+
+typedef struct
+{
+    uint32_t offset;
+    uint8_t pid;
+    uint8_t num_pagina;
+} t_pagina_memoria_virtual;
 
 typedef struct
 {
@@ -63,6 +80,7 @@ typedef struct
 } t_pagina_proceso;
 
 t_list *tabla_procesos;
+t_list *tabla_memoria_virtual;
 pthread_mutex_t acceso_memoria;
 pthread_mutex_t m_procesos;
 NIVEL *level;
@@ -70,7 +88,7 @@ char idMapa;
 //GESTION DE MEMORIA EN LA SEGMENTACIOS
 t_list *tabla_estado_segmentos;
 // GESTION DE MEMORIA EN LA PAGINACION
-uint8_t *estado_frames;
+t_list *estado_frames;
 uint32_t tamanio_paginas;
 t_list *tabla_paginas;
 int maxima_cantidad_paginas;
@@ -139,7 +157,7 @@ int obtener_PIDproceso(t_list *);
 //Definidas en utils_paginacion.c
 t_list *buscar_paginas_proceso(int);
 t_list *obtener_lista_proceso(int, int *);
-void limpiar_estado_frames(void);
+void iniciar_frames(void);
 t_pagina_proceso *obtener_paginas_proceso(int, int *);
 int bytes_ocupados_pid(int);
 int bytes_ocupados_lista(t_list *);
@@ -152,6 +170,7 @@ int cant_tripulantes_paginacion(t_list *);
 int obtener_pid_pag(t_list *);
 int cant_tripulantes_proceso(int);
 int calcular_paginas_ocupadas(int);
+int obtener_timestamp(void);
 
 //Definidas en serializacionPaginacion.c
 void *serializar_PCB(t_PCB *);
@@ -166,5 +185,8 @@ t_tarea *deserializar_TAREA(void *);
 void dump(int);
 void dump_segmentacion(FILE *);
 void dump_paginacion(FILE *);
+
+// Definidas en memoria_virtual.c
+void frame_a_memoria_virtual(void);
 
 #endif

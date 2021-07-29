@@ -42,6 +42,7 @@ void recibir_mensaje(void *parametro)
         while (recibiendo_mensajes)
         {
             datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
+            printf("COP Recibido: %d\n", cop_recibido);
             switch (cop_recibido)
             {
             case COMENZAR_PATOTA:
@@ -74,7 +75,8 @@ void recibir_mensaje(void *parametro)
                 recibiendo_mensajes = 0;
                 break;
             default:
-                // log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
+                log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
+                exit(-1);
                 break;
             }
         }
