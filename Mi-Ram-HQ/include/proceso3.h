@@ -129,6 +129,7 @@ int calcular_fragmentacion(int);
 t_list *buscar_lista_proceso(int);
 t_PCB *buscar_pcb_proceso(t_list *, int);
 t_registro_segmentos *buscar_registro_tcb(t_list *, int);
+t_registro_segmentos *buscar_registro_tareas (t_list*);
 int traer_tarea(void *, t_list *, int, t_tarea *);
 int cant_tareas(t_list *);
 int cant_tripulantes(t_list *);

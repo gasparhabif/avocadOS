@@ -131,7 +131,7 @@ void recibir_mensaje(void *parametro)
                     recibiendo_mensajes = 0;
                     break;
                 default:
-                    log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
+                    //log_info(logger, "Llego un codigo de operacion desconocido: %d al cliente %d", cop_recibido, client);
                     break;
             }
         }

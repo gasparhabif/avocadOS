@@ -13,10 +13,6 @@ void tripulante(t_parametros_tripulantes *parametro)
     int finTareas = 0, tareaPendiente = 0;
     int block = 0;
 
-    //SETEO LA CANCELACION INMEDIATA
-    //pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
-    //pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-
     log_info(logger, "Se inicio el tripulante N°:%d", tid);
 
     //TRAIGO LOS PARAMETROS
@@ -83,12 +79,14 @@ void tripulante(t_parametros_tripulantes *parametro)
     free(d_Enviar);
     log_info(logger, "Se envio el TCB a la RAM");
 
+    printf("Esperando que se guarden las estructuras\n");
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
-    if (((int) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
+    if (((int *) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
     {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         return;
     }
+    printf("Estructuras guardadas\n");
 
 /*
     admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
@@ -113,9 +111,12 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
+        //pthread_mutex_trylock(&admin->pausar_tripulante);
 
         if (pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
             pthread_mutex_lock(&admin->pausar_tripulante);
+
+        printf("Empezando a planificar\n");
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -224,10 +225,15 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
 
+    printf("Solicitando tarea\n");
+
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
     t_tarea *tarea_comprimida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
-    
+
+    printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
+    printf("Tamanio: %s\n", tarea_comprimida->tarea);
+
     /*
     tarea_recibida->codigoTarea = 3;
     tarea_recibida->parametro = 4;

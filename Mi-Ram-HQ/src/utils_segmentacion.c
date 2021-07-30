@@ -60,6 +60,22 @@ t_registro_segmentos *buscar_registro_tcb (t_list* lista_proceso, int tid){
     return (t_registro_segmentos *) -1;
 }
 
+t_registro_segmentos *buscar_registro_tareas (t_list* lista_proceso){
+    
+    t_registro_segmentos *reg_tareas;
+
+    for (int i = 0; i < list_size(lista_proceso); i++)
+    {
+        reg_tareas = list_get(lista_proceso, i);
+
+        if(reg_tareas->tipo == TAREAS)
+            return reg_tareas;
+        
+    }
+
+    return (t_registro_segmentos *) -1;
+}
+
 int cant_tareas (t_list* lista_proceso){
 
     t_registro_segmentos *reg_seg;
@@ -69,7 +85,7 @@ int cant_tareas (t_list* lista_proceso){
         reg_seg = list_get(lista_proceso, i);
 
         if(reg_seg->tipo == TAREAS)
-            return (reg_seg->tamanio / sizeof(t_tarea));        
+            return reg_seg->id;        
     }
 
     return 0;
@@ -77,9 +93,10 @@ int cant_tareas (t_list* lista_proceso){
 
 int traer_tarea(void *tareas, t_list* lista_proceso, int tid, t_tarea *tarea_buscada){
 
-    //TRAIGO EL REGISTRO DEL TCB
-    t_registro_segmentos *reg_tcb = buscar_registro_tcb(lista_proceso, tid);
-    
+    //TRAIGO EL REGISTRO DEL TCB Y LAS TAREAS
+    t_registro_segmentos *reg_tcb    = buscar_registro_tcb   (lista_proceso, tid);
+    t_registro_segmentos *reg_tareas = buscar_registro_tareas(lista_proceso);
+
     //ME COPIO EL TCB
     t_TCB *tcb = malloc(sizeof(t_TCB));
     memcpy(tcb, (void*) reg_tcb->base, reg_tcb->tamanio);
@@ -94,14 +111,20 @@ int traer_tarea(void *tareas, t_list* lista_proceso, int tid, t_tarea *tarea_bus
     }
     else{
 
+        printf("PI: %d\n", tcb->proximaInstruccion);
+        printf("Cantidad de tareas: %d\n", (int) list_size(reg_tareas->tamanio_tareas));
+
         int offsetTarea = 0;
-        for (int i = 0; i < tcb->proximaInstruccion; i++)
-            offsetTarea += (int) list_get(reg_tcb->tamanio_tareas, i);
+        for (int i = 0; i < tcb->proximaInstruccion; i++){
+            printf("Tamanio de tarea N°%d\n", i);
+            offsetTarea += (int) list_get(reg_tareas->tamanio_tareas, i);
+            printf("AC: %d\n", offsetTarea);
+        }
 
         //ME COPIO LA TAREA QUE NECESITO
-        tarea_buscada->tamanio_tarea = (int) list_get(reg_tcb->tamanio_tareas, tcb->proximaInstruccion);
-        tarea_buscada->tarea = malloc((int) list_get(reg_tcb->tamanio_tareas, tcb->proximaInstruccion));
-        memcpy(tarea_buscada->tarea, tareas + offsetTarea, (int) list_get(reg_tcb->tamanio_tareas, tcb->proximaInstruccion));
+        tarea_buscada->tamanio_tarea = (int) list_get(reg_tareas->tamanio_tareas, tcb->proximaInstruccion);
+        tarea_buscada->tarea = malloc(tarea_buscada->tamanio_tarea);
+        memcpy(tarea_buscada->tarea, tareas + offsetTarea, tarea_buscada->tamanio_tarea);
         
         //SUMO UNO A LA PROXIMA INSTRUCCION
         tcb->proximaInstruccion += 1;

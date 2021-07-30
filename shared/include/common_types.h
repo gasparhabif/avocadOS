@@ -158,7 +158,7 @@ typedef struct
 typedef struct
 {
     uint32_t PID;
-    uint8_t cantTareas;
+    uint32_t cantTareas;
     t_tarea *tareas;
 } t_tareas_cPID;
 

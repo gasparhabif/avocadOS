@@ -58,8 +58,10 @@ t_registro_segmentos *guardar_tareas(int cantTareas, t_tarea *tareas_recibidas)
     segmento_tareas->id             = cantTareas;
     segmento_tareas->tamanio_tareas = list_create();
     
-    for(int i = 0; i < cantTareas; i++)
-        list_add(segmento_tareas->tamanio_tareas, tareas_recibidas[i].tamanio_tarea);
+    for(int i = 0; i < cantTareas; i++){
+        list_add(segmento_tareas->tamanio_tareas, (void *) tareas_recibidas[i].tamanio_tarea);
+        printf("Agrego tarea %d con tamanio %d tamanio lista %d\n", i, (int) list_get(segmento_tareas->tamanio_tareas, i), list_size(segmento_tareas->tamanio_tareas));
+    }
 
     return segmento_tareas;
 }

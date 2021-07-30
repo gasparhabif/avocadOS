@@ -23,10 +23,17 @@ t_tarea* leer_tareas(FILE *fpTareas, int *cantTareas){
     {
         if ((read = getline(&line, &len, fpTareas)) != -1)
         {
-            tareas[i].tamanio_tarea = len;
-            tareas[i].tarea = malloc(len);
+            tareas[i].tamanio_tarea = strlen(line);
+            tareas[i].tarea = malloc(strlen(line));
             strcpy(tareas[i].tarea, line);
         }
+    }
+
+    for (int i = 0; i < cantLineas; i++)
+    {
+        printf("Tarea N°%d\n", i+1);
+        printf("Len tarea: %d\n", tareas[i].tamanio_tarea);
+        printf("Tarea: %s\n", tareas[i].tarea);
     }
 
     return tareas;
