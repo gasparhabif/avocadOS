@@ -105,20 +105,14 @@ int traer_tarea(void *tareas, t_list* lista_proceso, int tid, t_tarea *tarea_bus
     if (tcb->proximaInstruccion == cant_tareas(lista_proceso)){
 
         tarea_buscada->tamanio_tarea = FIN_TAREAS;
-
         return 0;
 
     }
     else{
 
-        printf("PI: %d\n", tcb->proximaInstruccion);
-        printf("Cantidad de tareas: %d\n", (int) list_size(reg_tareas->tamanio_tareas));
-
         int offsetTarea = 0;
         for (int i = 0; i < tcb->proximaInstruccion; i++){
-            printf("Tamanio de tarea N°%d\n", i);
             offsetTarea += (int) list_get(reg_tareas->tamanio_tareas, i);
-            printf("AC: %d\n", offsetTarea);
         }
 
         //ME COPIO LA TAREA QUE NECESITO
@@ -200,6 +194,7 @@ int eliminar_pcbOtareas(t_list *lista_proceso, int queBorrar){
 }
 
 int obtener_PID(void *pcb){
+    printf("PCB: %p\n", pcb);
     int pid;
     t_PCB *pcb_aux = malloc(sizeof(t_PCB));
     memcpy(pcb_aux, pcb, sizeof(t_PCB));

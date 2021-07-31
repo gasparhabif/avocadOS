@@ -112,7 +112,7 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
     tabla_paginas_tareas->len_tareas = list_create();
     
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
-        list_add(tabla_paginas_tareas->len_tareas, tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+        list_add(tabla_paginas_tareas->len_tareas, (void *) tareas_cPID_recibidas->tareas[i].tamanio_tarea);
 
     t_tabla_paginas_proceso *tabla_paginas_pcb = malloc(sizeof(t_tabla_paginas_proceso));
     tabla_paginas_pcb->id = tareas_cPID_recibidas->PID;

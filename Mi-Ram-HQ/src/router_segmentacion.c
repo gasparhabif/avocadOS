@@ -2,23 +2,6 @@
 
 void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
-    /*
-    printf("\n-----UNA NUEVA PATOTA ABORDA LA NAVE-----\n");
-    printf("INICIO DE PATOTA CON PID: %d\n", tareas_cPID_recibidas->PID);
-    printf("CANT TAREAS: %d\n", tareas_cPID_recibidas->cantTareas);
-
-    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
-    {
-        printf("TAREA: %d\n",  i + 1);
-        printf("CODT: %d\n",   tareas_cPID_recibidas->tareas[i].codigoTarea);
-        printf("PARA: %d\n",   tareas_cPID_recibidas->tareas[i].parametro);
-        printf("POSX: %d\n",   tareas_cPID_recibidas->tareas[i].posX);
-        printf("POSY: %d\n",   tareas_cPID_recibidas->tareas[i].posY);
-        printf("DURA: %d\n\n", tareas_cPID_recibidas->tareas[i].duracionTarea);
-    }
-    printf("-----------------------------------------\n\n\n");
-    */
-
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
     {
         printf("Tarea %d\n", i+1);
@@ -68,6 +51,8 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
             list_add(tabla_procesos, registro_proceso);
 
             //CREO EL PAQUETE A ENVIAR
+            printf("Base PCB %d y P: %p\n", (int)segmento_pcb->base, segmento_pcb->base);
+
             paquete = serializarInt((int)segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
         }
         else
@@ -139,24 +124,10 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
     pthread_mutex_unlock(&m_procesos);
 
     printf("Tamaño: %d\n", tarea_buscada->tamanio_tarea);
-    printf("Tarea: %s\n", tarea_buscada->tarea);
-
-    //printf("codigoTarea: %d\n",   tarea_buscada->codigoTarea);
-    //printf("parametro: %d\n",     tarea_buscada->parametro);
-    //printf("posX: %d\n",          tarea_buscada->posX);
-    //printf("posY: %d\n",          tarea_buscada->posY);
-    //printf("duracionTarea: %d\n", tarea_buscada->duracionTarea);
-    
-    //t_tarea *tareaDePrueba = malloc(sizeof(t_tarea));
-    //tareaDePrueba->codigoTarea = MOVER_POSICION;
-    //tareaDePrueba->parametro = 3;
-    //tareaDePrueba->posX = 1;
-    //tareaDePrueba->posY = 4;
-    //tareaDePrueba->duracionTarea = 5;
-    
+    printf("Tarea: %s\n", tarea_buscada->tarea);    
     
     int bEnviar;
-    void *d_enviar = serializarTarea(tarea_buscada, &bEnviar);
+    void *d_enviar = serializarTarea(tarea_buscada, ENVIAR_PROXIMA_TAREA, &bEnviar);
     send(client, d_enviar, bEnviar, 0);
     free(d_enviar);
 
@@ -194,11 +165,12 @@ void mover_tripulante(t_envio_posicion *pos_recibida, char idMapaTripulante)
     //item_mover(level, idMapaTripulante, pos_recibida->pos.posX, pos_recibida->pos.posY);
     //nivel_gui_dibujar(level);
 
+    log_info(logger, "Se movio al tripulante a la posicion %d|%d", pos_recibida->pos.posX, pos_recibida->pos.posY);
+
     //LIBERO LA MEMORIA
     free(pos_recibida);
     free(tcb);
 
-    log_info(logger, "Se movio al tripulante a la posicion %d|%d", pos_recibida->pos.posX, pos_recibida->pos.posY);
 
     return;
 }

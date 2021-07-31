@@ -38,8 +38,11 @@ t_tarea *deserializarTarea(t_buffer *buffer)
     memcpy(&(tarea_recibida->tamanio_tarea), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
 
-    tarea_recibida->tarea = malloc(tarea_recibida->tamanio_tarea);
-    memcpy(tarea_recibida->tarea, stream, tarea_recibida->tamanio_tarea);
+    if (tarea_recibida->tamanio_tarea != FIN_TAREAS)
+    {    
+        tarea_recibida->tarea = malloc(tarea_recibida->tamanio_tarea);
+        memcpy(tarea_recibida->tarea, stream, tarea_recibida->tamanio_tarea);
+    }
 
     return tarea_recibida;
 
@@ -77,9 +80,9 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
 
 int *deserializarInt(t_buffer *buffer)
 {
-    int *numero_recibido = malloc(sizeof(uint32_t));
+    int *numero_recibido = malloc(buffer->size);
     void *stream = buffer->stream;
-    memcpy(numero_recibido, stream, sizeof(uint32_t));
+    memcpy(numero_recibido, stream, buffer->size);
     return numero_recibido;
 
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION

@@ -23,17 +23,10 @@ t_tarea* leer_tareas(FILE *fpTareas, int *cantTareas){
     {
         if ((read = getline(&line, &len, fpTareas)) != -1)
         {
-            tareas[i].tamanio_tarea = strlen(line);
-            tareas[i].tarea = malloc(strlen(line));
+            tareas[i].tamanio_tarea = string_length(line);
+            tareas[i].tarea = malloc(tareas[i].tamanio_tarea);
             strcpy(tareas[i].tarea, line);
         }
-    }
-
-    for (int i = 0; i < cantLineas; i++)
-    {
-        printf("Tarea N°%d\n", i+1);
-        printf("Len tarea: %d\n", tareas[i].tamanio_tarea);
-        printf("Tarea: %s\n", tareas[i].tarea);
     }
 
     return tareas;
@@ -181,7 +174,7 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
     char* t_recibida = string_new();
     t_recibida = string_from_format("%s", tarea_recibida->tarea);
 
-    if(tarea_recibida->tamanio_tarea == -1){
+    if(tarea_recibida->tamanio_tarea == FIN_TAREAS){
 
         tarea_descomprimida->codigoTarea   = FIN_TAREAS;
         tarea_descomprimida->duracionTarea = 0;
@@ -191,20 +184,24 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
     }
     else{
 
-        int cantEspacios = 0;
-        for (int i = 0; i < tarea_recibida->tamanio_tarea; i++)
-        {
-            if (tarea_recibida->tarea[i] == ' ')
-                cantEspacios++;   
-        }
+        //int cantEspacios = 0;
+        //for (int i = 0; i < tarea_recibida->tamanio_tarea; i++)
+        //{
+        //    if (tarea_recibida->tarea[i] == ' ')
+        //        cantEspacios++;   
+        //}
         
         char **tarea = NULL;
 
-        if (cantEspacios > 0)
+        if (string_contains(t_recibida, " "))
         {
             //ES UNA TAREA DE E/S
-            printf("Voy a splitear %s\n", t_recibida);
+            //printf("Voy a splitear la T-E/S %s, tamaño: %d\n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, " ");
+
+            *len_tarea = tarea_recibida->tamanio_tarea;
+            nom_tarea = malloc(tarea_recibida->tamanio_tarea);
+            strcpy(nom_tarea, t_recibida);
 
             if (strcmp(tarea[0], "GENERAR_OXIGENO") == 0)
                 tarea_descomprimida->codigoTarea = GENERAR_OXIGENO;
@@ -230,13 +227,14 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
         else
         {
             //ES UNA TAREA NORMAL
-            printf("Voy a splitear %s\n", t_recibida);
+            //printf("Voy a splitear la TN: %s, tamaño: %d\n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, ";");
 
             *len_tarea = tarea_recibida->tamanio_tarea;
-            nom_tarea = malloc(tarea_recibida->tamanio_tarea);
-            strcpy(nom_tarea, tarea_recibida->tarea);
-            
+            nom_tarea = malloc(tarea_recibida->tamanio_tarea-2);
+            //strcpy(nom_tarea, t_recibida);
+            memcpy(nom_tarea, t_recibida, tarea_recibida->tamanio_tarea-2);
+
             tarea_descomprimida->codigoTarea   = MOVER_POSICION;
             tarea_descomprimida->parametro     = 0;
             tarea_descomprimida->posX          = atoi(tarea[1]);

@@ -51,7 +51,7 @@ void INICIAR_PATOTA(char **parametros)
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
                 int direccionPCB = (int)recibir_paquete(sockfd_ram);
-                //printf("Pos recibida: %p\n", direccionPCB);
+                printf("Pos recibida: %p y %d\n", (void *) direccionPCB, direccionPCB);
 
                 if (direccionPCB < 0)
                 {

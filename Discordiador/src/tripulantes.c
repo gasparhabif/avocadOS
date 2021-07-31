@@ -79,14 +79,12 @@ void tripulante(t_parametros_tripulantes *parametro)
     free(d_Enviar);
     log_info(logger, "Se envio el TCB a la RAM");
 
-    printf("Esperando que se guarden las estructuras\n");
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
     if (((int *) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
     {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         return;
     }
-    printf("Estructuras guardadas\n");
 
 /*
     admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
@@ -115,8 +113,6 @@ void tripulante(t_parametros_tripulantes *parametro)
 
         if (pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
             pthread_mutex_lock(&admin->pausar_tripulante);
-
-        printf("Empezando a planificar\n");
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -186,17 +182,19 @@ void tripulante(t_parametros_tripulantes *parametro)
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
             free(d_enviar);
         }
-        else
+        else{
             actualizar_estado(admin, READY);
+        }
 
         pthread_mutex_unlock(&admin->pausar_tripulante);
     }
-
+    
     //DOY EL AVISO AL MONGO QUE FINALICÉ MIS TAREAS
     int bEnviar;
-    void *dEnviar = serializarInt(1, FIN_TAREAS, &bEnviar);
-    send(admin->sockfd_tripulante_mongo, dEnviar, bEnviar, 0);
-    free(dEnviar);
+    void *dEnviar;
+    //d_Enviar = serializarInt(1, FIN_TAREAS, &bEnviar);
+    //send(admin->sockfd_tripulante_mongo, dEnviar, bEnviar, 0);
+    //free(dEnviar);
 
     //DOY EL AVISO A RAM QUE DEVUELVA MI MEMORIA
     dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
@@ -225,14 +223,14 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
 
-    printf("Solicitando tarea...\n");
+    //printf("Solicitando tarea...\n");
 
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
     t_tarea *tarea_comprimida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
 
-    printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
-    printf("Tarea: %s\n", tarea_comprimida->tarea);
+    //printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
+    //printf("Tarea: %s\n", tarea_comprimida->tarea);
 
     /*
     tarea_recibida->codigoTarea = 3;
@@ -242,15 +240,18 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     tarea_recibida->duracionTarea = 5;
     */
 
-    t_tarea_descomprimida * tarea_recibida = descomprimir_tarea(tarea_comprimida, len_tarea, nom_tarea);
+    t_tarea_descomprimida *tarea_recibida = NULL;
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
-    if (tarea_recibida->codigoTarea == FIN_TAREAS)
+    if (tarea_comprimida->tamanio_tarea == FIN_TAREAS){
         *finTareas = 1;
+    }
     else
     {
+        tarea_recibida = descomprimir_tarea(tarea_comprimida, len_tarea, nom_tarea);
+        
         //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
-        void *comenzar_tarea = serializar_inicioTarea(admin->tid, *len_tarea, nom_tarea, &tamanioSerializacion);
+        void *comenzar_tarea = serializarTarea(tarea_comprimida, INICIO_TAREA, &tamanioSerializacion);
         send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
         free(comenzar_tarea);
 

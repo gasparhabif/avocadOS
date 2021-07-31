@@ -45,8 +45,12 @@ t_registro_segmentos *guardar_tareas(int cantTareas, t_tarea *tareas_recibidas)
     void *pos_tareas = reservar_memoria(tamanio_tareas);
 
     //COPIO LAS TAREAS EN LA POSICION RESERVADA
-    for(int i = 0; i < cantTareas; i++)
-        memcpy(pos_tareas, tareas_recibidas[i].tarea, tareas_recibidas[i].tamanio_tarea);
+    int despl = 0;
+
+    for(int i = 0; i < cantTareas; i++){
+        memcpy(pos_tareas + despl, tareas_recibidas[i].tarea, tareas_recibidas[i].tamanio_tarea);
+        despl += tareas_recibidas[i].tamanio_tarea;
+    }
 
     //CREO EL REGISTRO PARA LUEGO AÑADIR A LA LISTA DEL PROCESO
     t_registro_segmentos *segmento_tareas = malloc(sizeof(t_registro_segmentos));

@@ -70,7 +70,7 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
 
     //MANDO LA TAREA AL DISCORDIADOR
     int tamanioSerializacion;
-    void *tarea_enviar = serializarTarea(tarea_recibida, &tamanioSerializacion);
+    void *tarea_enviar = serializarTarea(tarea_recibida, ENVIAR_PROXIMA_TAREA, &tamanioSerializacion);
     send(client, tarea_enviar, tamanioSerializacion, 0);
     free(tarea_enviar);
     free(tarea_recibida);

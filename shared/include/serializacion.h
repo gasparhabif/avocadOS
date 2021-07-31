@@ -10,8 +10,8 @@
 
 //DEFINIDAS EN serializacion.c
 void *serializarTCB(uint32_t, t_TCB, int *);
-void *serializarTarea(t_tarea *, int *);
-void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *, int);
+void *serializarTarea(t_tarea *, int, int *);
+void *serializarTareas_cPID(t_tarea *, int, int *, int);
 void *serializarInt(uint32_t, uint8_t, int *);
 void *serializar_ActulizacionEstado(uint32_t, uint32_t, char, int *);
 void *serializar_envioPosicion(uint32_t, uint32_t, uint32_t, uint32_t, int *);
@@ -22,7 +22,6 @@ void *serializar_bitacora(t_bitacora *, uint32_t *);
 void *serializar_ejecutarTarea(uint32_t, uint32_t, int *);
 void *serializar_posicionCtid(uint32_t, uint32_t, uint32_t, int *);
 void *serializar_bitacora_tripulante(uint32_t, char*, int*);
-void *serializar_inicioTarea(uint32_t, uint32_t, char *, int *);
 
 //DEFINIDAS EN deserializacion.c
 t_TCBcPID *deserializarTCB(t_buffer *);
