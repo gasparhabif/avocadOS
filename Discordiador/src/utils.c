@@ -178,6 +178,9 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
 
     t_tarea_descomprimida *tarea_descomprimida = malloc(sizeof(t_tarea_descomprimida));
     
+    char* t_recibida = string_new();
+    t_recibida = string_from_format("%s", tarea_recibida->tarea);
+
     if(tarea_recibida->tamanio_tarea == -1){
 
         tarea_descomprimida->codigoTarea   = FIN_TAREAS;
@@ -189,17 +192,19 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
     else{
 
         int cantEspacios = 0;
-
-        for (int i = 0; i < strlen(tarea_recibida->tarea); i++)
+        for (int i = 0; i < tarea_recibida->tamanio_tarea; i++)
         {
             if (tarea_recibida->tarea[i] == ' ')
                 cantEspacios++;   
         }
+        
+        char **tarea = NULL;
 
         if (cantEspacios > 0)
         {
             //ES UNA TAREA DE E/S
-            char **tarea = string_split(tarea_recibida->tarea, " ");
+            printf("Voy a splitear %s\n", t_recibida);
+            tarea = string_split(t_recibida, " ");
 
             if (strcmp(tarea[0], "GENERAR_OXIGENO") == 0)
                 tarea_descomprimida->codigoTarea = GENERAR_OXIGENO;
@@ -216,16 +221,17 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
 
             char **parametros = string_split(tarea[1], ";");
 
-            tarea_descomprimida->parametro = atoi(parametros[0]);
-            tarea_descomprimida->posX = atoi(parametros[1]);
-            tarea_descomprimida->posY = atoi(parametros[2]);
+            tarea_descomprimida->parametro     = atoi(parametros[0]);
+            tarea_descomprimida->posX          = atoi(parametros[1]);
+            tarea_descomprimida->posY          = atoi(parametros[2]);
             tarea_descomprimida->duracionTarea = atoi(parametros[3]);
 
         }
         else
         {
             //ES UNA TAREA NORMAL
-            char **tarea = string_split(tarea_recibida->tarea, ";");
+            printf("Voy a splitear %s\n", t_recibida);
+            tarea = string_split(t_recibida, ";");
 
             *len_tarea = tarea_recibida->tamanio_tarea;
             nom_tarea = malloc(tarea_recibida->tamanio_tarea);

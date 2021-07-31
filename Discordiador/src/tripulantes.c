@@ -225,14 +225,14 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     send(admin->sockfd_tripulante_ram, solicitud_tarea, tamanioSerializacion, 0);
     free(solicitud_tarea);
 
-    printf("Solicitando tarea\n");
+    printf("Solicitando tarea...\n");
 
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
     t_tarea *tarea_comprimida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
 
     printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
-    printf("Tamanio: %s\n", tarea_comprimida->tarea);
+    printf("Tarea: %s\n", tarea_comprimida->tarea);
 
     /*
     tarea_recibida->codigoTarea = 3;
