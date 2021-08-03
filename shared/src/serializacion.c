@@ -62,6 +62,8 @@ void *serializarTCB(uint32_t pid, t_TCB unTCB, int *tamanioSerializacion)
 void *serializarTarea(t_tarea *unaTarea, int cop, int *tamanioSerializacion)
 {
 
+    printf("Voy a enviar => %s\n", unaTarea->tarea);
+
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
@@ -77,7 +79,7 @@ void *serializarTarea(t_tarea *unaTarea, int cop, int *tamanioSerializacion)
 
     memcpy(stream + offset, &(unaTarea->tamanio_tarea), sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    if(unaTarea->tamanio_tarea != FIN_TAREAS)
+    if (unaTarea->tamanio_tarea != FIN_TAREAS)
         memcpy(stream + offset, unaTarea->tarea, unaTarea->tamanio_tarea);
 
     buffer->stream = stream;
@@ -176,11 +178,13 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     buffer->size = 0;
 
     for (int i = 0; i < cantTareas; i++)
+    {
         buffer->size += unasTareas[i].tamanio_tarea + sizeof(uint32_t);
+    }
 
     //CARGO EL SIZE DEL BUFFER
     // tamanio de todas las tareas += PID + Cant Tareas
-    buffer->size += + sizeof(uint32_t) * 2;
+    buffer->size += +sizeof(uint32_t) * 2;
 
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
 
@@ -305,6 +309,8 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
 
 void *serializarInt(uint32_t valor, uint8_t CODIGO_OPERACION, int *tamanioSerializacion)
 {
+
+    printf("Se va a enviar %d\n", valor);
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));

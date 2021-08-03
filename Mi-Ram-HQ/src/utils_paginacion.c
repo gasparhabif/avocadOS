@@ -261,12 +261,6 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
                 memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + offset_tarea, (int)list_get(pagina_proceso->len_tareas, nInstruccion));
                 tarea = deserializar_TAREA(tarea_serializada, (int)list_get(pagina_proceso->len_tareas, nInstruccion));
 
-                //printf("codigoTarea: %d\n", tarea->codigoTarea);
-                //printf("parametro: %d\n", tarea->parametro);
-                //printf("posX: %d\n", tarea->posX);
-                //printf("posY: %d\n", tarea->posY);
-                //printf("duracionTarea: %d\n", tarea->duracionTarea);
-
                 return tarea;
             }
         }

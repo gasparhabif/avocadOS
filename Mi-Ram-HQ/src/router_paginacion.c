@@ -2,6 +2,14 @@
 
 void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
+
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+    {
+        printf("TAREA %d\n", i + 1);
+        printf("Tamanio tarea %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+        printf("Tarea: %s\n\n", tareas_cPID_recibidas->tareas[i].tarea);
+    }
+
     void *paquete;
     int tamanioSerializacion;
     int tamanio_tareas = 0;

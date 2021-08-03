@@ -17,7 +17,7 @@ void INICIAR_PATOTA(char **parametros)
         int cantTripulantes = atoi(parametros[1]);
 
         FILE *fpTareas;
-        fpTareas = fopen(parametros[2], "r");        
+        fpTareas = fopen(parametros[2], "r");
 
         if (!fpTareas)
         {
@@ -35,10 +35,9 @@ void INICIAR_PATOTA(char **parametros)
 
                 t_tarea *tareas = leer_tareas(parametros[2], &cantTareas);
 
-                
                 //printf("Cant tareas: %d\n", cantTareas);
                 //for (int i = 0; i < cantTareas; i++)
-                //    printf("Tarea N°%d\nTamanio tarea: %d\nTarea: %s\n\n", i+1, tareas[i].tamanio_tarea, tareas[i].tarea);            
+                //    printf("Tarea N°%d\nTamanio tarea: %d\nTarea: %s\n\n", i+1, tareas[i].tamanio_tarea, tareas[i].tarea);
 
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //printf("Serializando...\n");
@@ -56,10 +55,10 @@ void INICIAR_PATOTA(char **parametros)
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
-                int *direccionPCB = (int *) recibir_paquete(sockfd_ram);
+                int *direccionPCB = (int *)recibir_paquete(sockfd_ram);
                 //printf("Pos recibida: %p y %d\n", (void *) *direccionPCB, *direccionPCB);
 
-                if (direccionPCB < 0)
+                if (*direccionPCB < 0)
                 {
                     log_info(logger, "Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes");
                     printf("Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes\n");
