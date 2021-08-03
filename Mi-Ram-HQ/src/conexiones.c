@@ -113,7 +113,7 @@ void recibir_mensaje(void *parametro)
                     break;
                 case IMPRIMIR_SEGMENTACION:
                     pthread_mutex_lock(&acceso_memoria);
-                    log_info(logger, "\n------------------------------------------------------------------\n");
+                    log_info(logger, "------------------------------------------------------------------\n");
                     for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
                     {
                         estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);

@@ -35,9 +35,10 @@ void INICIAR_PATOTA(char **parametros)
 
                 t_tarea *tareas = leer_tareas(parametros[2], &cantTareas);
 
-                printf("Cant tareas: %d\n", cantTareas);
-                for (int i = 0; i < cantTareas; i++)
-                    printf("Tarea N°%d\nTamanio tarea: %d\nTarea: %s\n\n", i+1, tareas[i].tamanio_tarea, tareas[i].tarea);            
+                
+                //printf("Cant tareas: %d\n", cantTareas);
+                //for (int i = 0; i < cantTareas; i++)
+                //    printf("Tarea N°%d\nTamanio tarea: %d\nTarea: %s\n\n", i+1, tareas[i].tamanio_tarea, tareas[i].tarea);            
 
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //printf("Serializando...\n");

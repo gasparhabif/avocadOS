@@ -6,6 +6,12 @@ t_tarea* leer_tareas(char* arr, int *cantTareas){
     int fpTareas = open(arr, O_RDONLY, S_IRUSR | S_IWUSR);
     struct stat sb;
 
+    if (fstat(fpTareas, &sb) == -1)
+    {
+        printf("Error\n");
+    }
+    
+
     char *file = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fpTareas, 0);
 
     char **instrucciones = string_split(file, "\n");
@@ -22,6 +28,7 @@ t_tarea* leer_tareas(char* arr, int *cantTareas){
         strcpy(tareas[i].tarea, instrucciones[i]);
     }
     
+    munmap(file, sb.st_size);
     close(fpTareas);
     
     return tareas;
