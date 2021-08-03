@@ -27,9 +27,11 @@ int solicitar_paginas(int bytes_solicitados, int pid)
 
     for (int i = 0; i < maxima_cantidad_paginas && paginas_reservadas < cantidad_paginas_a_reservar; i++)
     {
-        if (estado_frames[i] == 0)
+        t_estado_frame *frame = list_get(estado_frames, i);
+        if (frame->ocupado == 0)
         {
-            estado_frames[i] = 1;
+            frame->ocupado = 1;
+            list_replace(estado_frames, i, frame);
             list_add(paginas_proceso->paginas, (void *)(i * config->tamanio_pagina + (int)memoria));
             paginas_reservadas++;
         }
@@ -37,7 +39,7 @@ int solicitar_paginas(int bytes_solicitados, int pid)
 
     if (list_size(paginas_proceso->paginas) < cantidad_paginas_a_reservar)
     {
-
+        frame_a_memoria_virtual();
         // TODO: Una vez que este hecho el swapping y no se logre reservar la
         // cantidad de paginas -> Informar al discoridador
         log_info(logger, "No se pudo reserver memoria.");
@@ -120,6 +122,8 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
     tabla_paginas_pcb->offset = tareas_cPID_recibidas->cantTareas * sizeof(t_tarea);
     tabla_paginas_pcb->tamanio = sizeof(t_PCB);
     tabla_paginas_pcb->modificado = 0;
+    // gettimeofday(&tv, NULL);
+    // tabla_paginas_tcb->ultimo_acceso = tv.tv_usec;
 
     list_add(tabla_proceso, tabla_paginas_tareas);
     list_add(tabla_proceso, tabla_paginas_pcb);
@@ -200,36 +204,3 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
     t_list *tabla_proceso = obtener_lista_proceso(datos_recibidos->pid, &err);
     list_add(tabla_proceso, tabla_paginas_tcb);
 }
-
-/*
-void generar_archivo_swap()
-{
-    int *swap_fd = open(config->path_swap, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    ftruncate(swap_fd, config->tamanio_swap);
-    close(swap_fd);
-}
-
-void realizar_swap()
-{
-    if (strcmp(config->algoritmo_reemplazo, "LRU"))
-    {
-        swap_por_LRU();
-    }
-    else // clock
-    {
-        swap_por_Clock();
-    }
-}
-
-void dump_paginacion()
-{
-}
-
-void swap_por_Clock()
-{
-}
-
-void swap_por_LRU()
-{
-}
-*/

@@ -27,10 +27,11 @@ int main()
     //idMapa = '@';
     //nivel_gui_inicializar();
     //level = nivel_crear("AmongOS");
-    //nivel_gui_dibujar(level);   
+    //nivel_gui_dibujar(level);
 
     //CREO LA LISTA DE PROCESOS
     tabla_procesos = list_create();
+    tabla_memoria_virtual = list_create();
     pthread_mutex_init(&acceso_memoria, NULL);
 
     //CREO ESTRUCTURAS PARA CONOCER EL ESTADO DE LA MEMORIA:
@@ -55,8 +56,8 @@ int main()
     {
         tamanio_paginas = config->tamanio_pagina;
         maxima_cantidad_paginas = config->tamanio_memoria / tamanio_paginas;
-        estado_frames = malloc(maxima_cantidad_paginas);
-        limpiar_estado_frames();
+        estado_frames = list_create(); // malloc(maxima_cantidad_paginas);
+        iniciar_frames();
 
         tabla_paginas = list_create();
     }

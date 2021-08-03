@@ -317,10 +317,20 @@ int obtener_pid_pag(t_list *tablaUnProceso)
     return EXIT_FAILURE;
 }
 
-void limpiar_estado_frames()
+void iniciar_frames()
 {
     for (int i = 0; i < maxima_cantidad_paginas; i++)
     {
-        estado_frames[i] = 0;
+        t_estado_frame *frame = malloc(sizeof(t_estado_frame));
+
+        frame->ocupado = 0;
+        frame->ultimo_acceso = 0;
+
+        list_add(estado_frames, frame);
     }
+}
+
+int obtener_timestamp()
+{
+    return (unsigned)time(NULL);
 }
