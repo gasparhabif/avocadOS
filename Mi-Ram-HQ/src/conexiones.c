@@ -42,7 +42,6 @@ void recibir_mensaje(void *parametro)
         while (recibiendo_mensajes)
         {
             datos_recibidos = recibir_paquete_cCOP(client, &cop_recibido);
-            printf("COP Recibido: %d\n", cop_recibido);
             switch (cop_recibido)
             {
             case COMENZAR_PATOTA:

@@ -12,11 +12,11 @@ void dump(int sig)
         FILE *fpDump;
 
         char *nombreArchivo = string_new();
-        string_append(&nombreArchivo, "/home/utnso/Dump/Dump_");
-        string_append(&nombreArchivo, temporal_get_string_time("%d%m%y%H%M%S%MS"));
-        string_append(&nombreArchivo, ".dmp");
+        nombreArchivo = string_from_format("%s%d%s", "/home/utnso/Dump/Dump_", obtener_timestamp(), ".dmp");
 
         fpDump = fopen(nombreArchivo, "w+");
+
+        log_info(logger, "Archivo de dump creado en path: %s", nombreArchivo);
 
         free(nombreArchivo);
 
@@ -64,15 +64,14 @@ void dump_segmentacion(FILE *fpDump)
 
 void dump_paginacion(FILE *fpDump)
 {
-
-    t_pagina_proceso *pag_proc;
-
-    for (int i = 0; i < list_size(tabla_paginas); i++)
+    for (int i = 0; i < maxima_cantidad_paginas; i++)
     {
-        pag_proc = list_get(tabla_paginas, i);
-
-        for (int j = 0; j < list_size(pag_proc->paginas); j++)
-            fprintf(fpDump, "Proceso: %d\tPagina: %d\tMarco: %d\n", pag_proc->pid, j, (((int)list_get(pag_proc->paginas, j) - (int)memoria) / tamanio_paginas));
+        t_estado_frame *frame = list_get(estado_frames, i);
+        char *estado = frame->ocupado ? "Ocupado" : "Libre";
+        fprintf(fpDump, "Marco: %d \t", i);
+        fprintf(fpDump, "Estado: %s \t", estado);
+        frame->pid == 0 ? fprintf(fpDump, "Proceso: -\t") : fprintf(fpDump, "Proceso: %d\t", frame->pid);
+        frame->pag_proc == 0 ? fprintf(fpDump, "Pagina: -\n") : fprintf(fpDump, "Pagina: %d \n", frame->pag_proc);
     }
 
     return;

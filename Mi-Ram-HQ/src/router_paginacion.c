@@ -142,13 +142,13 @@ void actualizar_estado_paginada(t_estado *datos_recibidos)
         if (elemento_proceso->tipo == TCB && elemento_proceso->id == datos_recibidos->TID)
         {
             int bytes_ocupados = elemento_proceso->offset + elemento_proceso->tamanio;
-            for (int j = elemento_proceso->offset; j < bytes_ocupados; j += config->tamanio_pagina)
-            {
-                t_estado_frame *frame = list_get(estado_frames, j);
-                frame->ultimo_acceso = obtener_timestamp();
-                printf("EL ULTIMO ACCESO AL FRAME %d ES DE: %d\n", j, frame->ultimo_acceso);
-                list_replace(estado_frames, j, frame);
-            }
+            // for (int j = elemento_proceso->offset; j < bytes_ocupados; j += config->tamanio_pagina)
+            // {
+            //     t_estado_frame *frame = list_get(estado_frames, j);
+            //     frame->ultimo_acceso = obtener_timestamp();
+            //     printf("EL ULTIMO ACCESO AL FRAME %d ES DE: %d\n", j, frame->ultimo_acceso);
+            //     list_replace(estado_frames, j, frame);
+            // }
 
             memcpy(tcbSerializado, elementos_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
 
@@ -312,7 +312,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
                 if (paginasNecesarias < list_size(lista_paginas_proceso))
                 {
-
                     for (int i = list_size(lista_paginas_proceso) - 1; i > paginasNecesarias - 1; i--)
                     {
                         t_estado_frame *frame = list_get(estado_frames, i);

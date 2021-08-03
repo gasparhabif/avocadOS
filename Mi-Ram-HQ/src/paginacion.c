@@ -30,7 +30,10 @@ int solicitar_paginas(int bytes_solicitados, int pid)
         t_estado_frame *frame = list_get(estado_frames, i);
         if (frame->ocupado == 0)
         {
+            printf("Cantidad paginas %d y tambien i + 1 %d\n", cantidad_paginas_proceso(pid), i + 1);
+            frame->pag_proc = cantidad_paginas_proceso(pid) + paginas_reservadas + 1;
             frame->ocupado = 1;
+            frame->pid = pid;
             list_replace(estado_frames, i, frame);
             list_add(paginas_proceso->paginas, (void *)(i * config->tamanio_pagina + (int)memoria));
             paginas_reservadas++;
@@ -112,9 +115,9 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
     tabla_paginas_tareas->tamanio = tareas_cPID_recibidas->cantTareas * sizeof(t_tarea);
     tabla_paginas_tareas->modificado = 0;
     tabla_paginas_tareas->len_tareas = list_create();
-    
+
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
-        list_add(tabla_paginas_tareas->len_tareas, (void *) tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+        list_add(tabla_paginas_tareas->len_tareas, (void *)tareas_cPID_recibidas->tareas[i].tamanio_tarea);
 
     t_tabla_paginas_proceso *tabla_paginas_pcb = malloc(sizeof(t_tabla_paginas_proceso));
     tabla_paginas_pcb->id = tareas_cPID_recibidas->PID;

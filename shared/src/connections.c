@@ -43,7 +43,6 @@ void *recibir_paquete_cCOP(int sockfd, int *codigo_operacion)
     //RECIBO EL CODIGO DE OPERACION
 
     recv(sockfd, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
-    printf("Recibido el COP %d\n", paquete->codigo_operacion);
     //ASIGNO EL COP
     *codigo_operacion = paquete->codigo_operacion;
     //RECIBO EL TAMAÑO DEL STREAM

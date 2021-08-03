@@ -54,6 +54,8 @@ typedef struct
 typedef struct
 {
     uint32_t ultimo_acceso;
+    uint32_t pid;
+    uint32_t pag_proc;
     uint8_t ocupado;
 } t_estado_frame;
 
