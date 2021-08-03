@@ -112,7 +112,13 @@ int bytes_ocupados_lista(t_list *lista_elementos_proceso)
     for (int i = 0; i < list_size(lista_elementos_proceso); i++)
     {
         elemento_proceso = list_get(lista_elementos_proceso, i);
-        bytes += elemento_proceso->tamanio;
+        if(elemento_proceso->tipo == TAREAS){
+            for (int i = 0; i < list_size(elemento_proceso->len_tareas); i++)
+                bytes += (int) list_get(elemento_proceso->len_tareas, i);
+            
+        }
+        else
+            bytes += elemento_proceso->tamanio;
     }
     return bytes;
 }
@@ -231,8 +237,7 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
     elementos_proceso = recuperar_elementos_proceso(pid);
     t_tabla_paginas_proceso *pagina_proceso;
     void *tarea_serializada;
-    tarea_serializada = malloc(sizeof(t_tarea));
-    t_tarea *tarea;
+    t_tarea *tarea = malloc(sizeof(t_tarea));
 
     for (int i = 0; i < list_size(lista_proceso); i++)
     {
@@ -243,17 +248,18 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
 
             if (pagina_proceso->id == nInstruccion)
             {
-                tarea = malloc(sizeof(t_tarea));
                 tarea->tamanio_tarea = FIN_TAREAS;
-
                 return tarea;
             }
             else
             {
                 int offset_tarea = 0;
                 for (int i = 0; i < nInstruccion; i++)
-                    offset_tarea += (int) list_get(pagina_proceso->len_tareas , i);                
+                    offset_tarea += (int) list_get(pagina_proceso->len_tareas , i);
 
+            
+                
+                tarea_serializada = malloc((int) list_get(pagina_proceso->len_tareas , nInstruccion));
                 memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + offset_tarea, (int) list_get(pagina_proceso->len_tareas , nInstruccion));
                 tarea = deserializar_TAREA(tarea_serializada, (int) list_get(pagina_proceso->len_tareas, nInstruccion));
 

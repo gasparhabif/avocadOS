@@ -16,10 +16,13 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 #include <signal.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include "shared_utils.h"
@@ -54,7 +57,7 @@ void OBTENER_BITACORA(char **);
 void IMPRIMIR_SEGMENTOS(char **);
 
 //DEFINIDAS EN utils.c
-t_tarea* leer_tareas(FILE *, int *);
+t_tarea* leer_tareas(char*, int *);
 t_tarea_descomprimida* descomprimir_tarea(t_tarea*, int*, char*);
 int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);

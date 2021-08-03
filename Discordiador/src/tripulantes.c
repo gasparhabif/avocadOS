@@ -80,7 +80,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     log_info(logger, "Se envio el TCB a la RAM");
 
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
-    if (((int *) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
+    if (*((int *) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
     {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         return;
@@ -227,7 +227,7 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
 
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
-    t_tarea *tarea_comprimida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
+    t_tarea *tarea_comprimida = (t_tarea *) recibir_paquete(admin->sockfd_tripulante_ram);
 
     //printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
     //printf("Tarea: %s\n", tarea_comprimida->tarea);

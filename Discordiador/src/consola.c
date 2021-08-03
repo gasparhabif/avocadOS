@@ -14,10 +14,11 @@ void INICIAR_PATOTA(char **parametros)
         printf("Error: INICIAR_PATOTA [CANT TRIPULANTES] [RUTA DE TAREAS] [POSICIONES]\n");
     else
     {
-        FILE *fpTareas;
         int cantTripulantes = atoi(parametros[1]);
 
-        fpTareas = fopen(parametros[2], "r");
+        FILE *fpTareas;
+        fpTareas = fopen(parametros[2], "r");        
+
         if (!fpTareas)
         {
             printf("Error abriendo el archivo\n");
@@ -32,7 +33,11 @@ void INICIAR_PATOTA(char **parametros)
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 int cantTareas = 0;
 
-                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas);
+                t_tarea *tareas = leer_tareas(parametros[2], &cantTareas);
+
+                printf("Cant tareas: %d\n", cantTareas);
+                for (int i = 0; i < cantTareas; i++)
+                    printf("Tarea N°%d\nTamanio tarea: %d\nTarea: %s\n\n", i+1, tareas[i].tamanio_tarea, tareas[i].tarea);            
 
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //printf("Serializando...\n");
@@ -50,8 +55,8 @@ void INICIAR_PATOTA(char **parametros)
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
-                int direccionPCB = (int)recibir_paquete(sockfd_ram);
-                printf("Pos recibida: %p y %d\n", (void *) direccionPCB, direccionPCB);
+                int *direccionPCB = (int *) recibir_paquete(sockfd_ram);
+                //printf("Pos recibida: %p y %d\n", (void *) *direccionPCB, *direccionPCB);
 
                 if (direccionPCB < 0)
                 {
@@ -71,7 +76,7 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;
-                    tripulantes_tcb[i].puntero_PCB = direccionPCB;
+                    tripulantes_tcb[i].puntero_PCB = *direccionPCB;
                 }
 
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola

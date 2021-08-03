@@ -80,9 +80,9 @@ t_tareas_cPID *deserializarTareas_cPID(t_buffer *buffer)
 
 int *deserializarInt(t_buffer *buffer)
 {
-    int *numero_recibido = malloc(buffer->size);
+    int *numero_recibido = malloc(sizeof(uint32_t));
     void *stream = buffer->stream;
-    memcpy(numero_recibido, stream, buffer->size);
+    memcpy(numero_recibido, stream, sizeof(uint32_t));
     return numero_recibido;
 
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION

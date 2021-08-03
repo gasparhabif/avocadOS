@@ -1,5 +1,34 @@
 #include "proceso1.h"
 
+
+t_tarea* leer_tareas(char* arr, int *cantTareas){
+
+    int fpTareas = open(arr, O_RDONLY, S_IRUSR | S_IWUSR);
+    struct stat sb;
+
+    char *file = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fpTareas, 0);
+
+    char **instrucciones = string_split(file, "\n");
+
+    for (int i = 0; instrucciones[i] != NULL; i++)
+        (*cantTareas)++;
+
+    t_tarea *tareas = malloc(*cantTareas * sizeof(t_tarea));
+
+    for (int i = 0; i < *cantTareas; i++)
+    {
+        tareas[i].tamanio_tarea = strlen(instrucciones[i]) + 1;
+        tareas[i].tarea = malloc(tareas[i].tamanio_tarea);
+        strcpy(tareas[i].tarea, instrucciones[i]);
+    }
+    
+    close(fpTareas);
+    
+    return tareas;
+}
+
+
+/*
 t_tarea* leer_tareas(FILE *fpTareas, int *cantTareas){
     
     char *line = NULL;
@@ -21,16 +50,56 @@ t_tarea* leer_tareas(FILE *fpTareas, int *cantTareas){
     //LEO LINEA A LINEA
     for (int i = 0; i < cantLineas; i++)
     {
+
+//        int tamanio_tarea_contado_a_mano_con_nombre_feo = 0;
+//        int nuevaLinea = 1;
+//        char *texto;
+//        char *caracter;
+//        while (fread(caracter, 0, 1, fpTareas) != EOF)
+//        {
+//
+//
+//
+//            if (nuevaLinea)
+//            {
+//                texto = malloc(1);
+//                nuevaLinea = 0;
+//            }
+//            
+//            if (strcmp(caracter, "\n") == 0)
+//            {
+//                tamanio_tarea_contado_a_mano_con_nombre_feo++;
+//                //texto += caracter;
+//                if(!nuevaLinea)
+//                    texto = realloc(texto, 1);
+//                strcat(texto, caracter);
+//            }
+//            else{
+//                free(texto);
+//                nuevaLinea = 1;
+//            }
+//        }
+
         if ((read = getline(&line, &len, fpTareas)) != -1)
         {
-            tareas[i].tamanio_tarea = string_length(line);
+            int tamanio_tarea = string_length(line);
+            // if (string_contains(line, "\0"))
+            //     tamanio_tarea--;
+            if (string_contains(line, "\n"))
+                tamanio_tarea--;
+
+            tareas[i].tamanio_tarea = tamanio_tarea;
             tareas[i].tarea = malloc(tareas[i].tamanio_tarea);
             strcpy(tareas[i].tarea, line);
+
+            printf("Tamanio tarea %d = %d\n", i, tareas[i].tamanio_tarea);
+            printf("Tarea => %s\n", tareas[i].tarea);
         }
     }
 
     return tareas;
 }
+*/
 
 /*
 t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)

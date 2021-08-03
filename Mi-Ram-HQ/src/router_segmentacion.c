@@ -123,9 +123,9 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
 
     pthread_mutex_unlock(&m_procesos);
 
-    printf("Tamaño: %d\n", tarea_buscada->tamanio_tarea);
-    printf("Tarea: %s\n", tarea_buscada->tarea);    
-    
+    log_info(logger, "Tarea => %s", tarea_buscada->tarea);
+    log_info(logger, "Tamanio %d", tarea_buscada->tamanio_tarea);
+
     int bEnviar;
     void *d_enviar = serializarTarea(tarea_buscada, ENVIAR_PROXIMA_TAREA, &bEnviar);
     send(client, d_enviar, bEnviar, 0);
