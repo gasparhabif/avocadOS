@@ -62,8 +62,6 @@ void *serializarTCB(uint32_t pid, t_TCB unTCB, int *tamanioSerializacion)
 void *serializarTarea(t_tarea *unaTarea, int cop, int *tamanioSerializacion)
 {
 
-    printf("Voy a enviar => %s\n", unaTarea->tarea);
-
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
@@ -309,9 +307,6 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
 
 void *serializarInt(uint32_t valor, uint8_t CODIGO_OPERACION, int *tamanioSerializacion)
 {
-
-    printf("Se va a enviar %d\n", valor);
-
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 

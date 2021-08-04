@@ -3,12 +3,12 @@
 void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
 
-    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
-    {
-        printf("TAREA %d\n", i + 1);
-        printf("Tamanio tarea %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
-        printf("Tarea: %s\n\n", tareas_cPID_recibidas->tareas[i].tarea);
-    }
+    //for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+    //{
+    //    printf("TAREA %d\n", i + 1);
+    //    printf("Tamanio tarea %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+    //    printf("Tarea: %s\n\n", tareas_cPID_recibidas->tareas[i].tarea);
+    //}
 
     void *paquete;
     int tamanioSerializacion;
@@ -149,7 +149,7 @@ void actualizar_estado_paginada(t_estado *datos_recibidos)
 
         if (elemento_proceso->tipo == TCB && elemento_proceso->id == datos_recibidos->TID)
         {
-            int bytes_ocupados = elemento_proceso->offset + elemento_proceso->tamanio;
+            //int bytes_ocupados = elemento_proceso->offset + elemento_proceso->tamanio;
             // for (int j = elemento_proceso->offset; j < bytes_ocupados; j += config->tamanio_pagina)
             // {
             //     t_estado_frame *frame = list_get(estado_frames, j);
@@ -311,7 +311,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //memcpy(tcbSerializado, elementos_proceso_cTCB + elemento_del_proceso->offset, sizeof(t_TCB));
                 //t_TCB *TCB = deserializar_TCB(tcbSerializado);
                 //printf("%d\n", TCB->TID);
-                //printf("%C\n", TCB->estado);
+                //printf("%c\n", TCB->estado);
                 //printf("%d\n", TCB->posX);
                 //printf("%d\n", TCB->posY);
                 //printf("%d\n", TCB->proximaInstruccion);
@@ -326,7 +326,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                         frame->ocupado = 0;
                         list_replace(estado_frames, i, frame);
                         list_remove(lista_paginas_proceso, i);
-                        printf("Libero un pagina\n");
+                        //printf("Libero un pagina\n");
                     }
                 }
 

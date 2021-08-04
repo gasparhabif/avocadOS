@@ -87,7 +87,7 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
     int err;
     t_list *paginas_proceso = obtener_paginas_proceso(tareas_cPID_recibidas->PID, &err)->paginas;
 
-    int ultPagina = (sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas + sizeof(t_PCB)) % tamanio_paginas;
+    int ultPagina = (tamanio_tareas + sizeof(t_PCB)) % tamanio_paginas;
 
     for (int i = 0; i < list_size(paginas_proceso); i++)
     {

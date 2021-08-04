@@ -156,7 +156,7 @@ void LISTAR_TRIPULANTES(char **parametros)
     {
         printf("Patota: %d\t", tripulantesRecibidos->tripulantes[i].PID);
         printf("Tripulante: %d\t", tripulantesRecibidos->tripulantes[i].TID);
-        printf("Status: %c\t", tripulantesRecibidos->tripulantes[i].estado);
+        printf("Status: %s\t", imprimir_estado(tripulantesRecibidos->tripulantes[i].estado));
         printf("Pos X: %d\t", tripulantesRecibidos->tripulantes[i].posX);
         printf("Pos Y: %d\t", tripulantesRecibidos->tripulantes[i].posY);
         printf("Nro. Inst: %d\n", tripulantesRecibidos->tripulantes[i].proximaInstruccion);

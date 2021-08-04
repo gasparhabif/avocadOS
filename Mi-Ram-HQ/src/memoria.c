@@ -64,7 +64,7 @@ t_registro_segmentos *guardar_tareas(int cantTareas, t_tarea *tareas_recibidas)
     
     for(int i = 0; i < cantTareas; i++){
         list_add(segmento_tareas->tamanio_tareas, (void *) tareas_recibidas[i].tamanio_tarea);
-        printf("Agrego tarea %d con tamanio %d tamanio lista %d\n", i, (int) list_get(segmento_tareas->tamanio_tareas, i), list_size(segmento_tareas->tamanio_tareas));
+        //printf("Agrego tarea %d con tamanio %d tamanio lista %d\n", i, (int) list_get(segmento_tareas->tamanio_tareas, i), list_size(segmento_tareas->tamanio_tareas));
     }
 
     return segmento_tareas;
@@ -93,7 +93,6 @@ t_registro_segmentos *guardar_pcb(t_PCB *pcb_recibido)
 
 t_registro_segmentos *guardar_tcb(t_TCB tcb_recibido)
 {
-
     //RESERVO MEMORIA PARA EL TCB
     void *tcb = reservar_memoria(sizeof(t_TCB));
 

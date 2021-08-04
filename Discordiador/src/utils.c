@@ -273,7 +273,7 @@ t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tare
         if (string_contains(t_recibida, " "))
         {
             //ES UNA TAREA DE E/S
-            printf("Voy a splitear la T-E/S %s, tamaño: %d\n", t_recibida, tarea_recibida->tamanio_tarea);
+            //printf("Voy a splitear la T-E/S %s, tamaño: %d\n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, " ");
 
             *len_tarea = tarea_recibida->tamanio_tarea;
@@ -303,7 +303,7 @@ t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tare
         else
         {
             //ES UNA TAREA NORMAL
-            printf("Voy a splitear la TN: %s, tamaño: %d \n", t_recibida, tarea_recibida->tamanio_tarea);
+            //printf("Voy a splitear la TN: %s, tamaño: %d \n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, ";");
 
             *len_tarea = tarea_recibida->tamanio_tarea;
@@ -564,4 +564,31 @@ int revisarLista_avisoDeMuerte(t_list *lista, int tid)
     }
 
     return 0;
+}
+
+char* imprimir_estado(char status){
+
+    switch (status)
+    {
+        case 'N':
+            return "NEW";
+            break;
+        case 'R':
+            return "READY";
+            break;
+        case 'E':
+            return "EXEC";
+            break;
+        case 'B':
+            return "BLOCK I/O";
+            break;
+        case 'Y':
+            return "BLOCK EMERGRNCY";
+            break;
+        case 'X':
+            return "EXIT";
+            break;
+    }
+
+    return "";
 }

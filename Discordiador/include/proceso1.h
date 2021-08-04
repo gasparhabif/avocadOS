@@ -63,7 +63,6 @@ int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);
 void pausar_tripulantes(int);
 void pausar_lista(t_list *, int);
-
 int eliminarTripulante(t_list *, int);
 int menor_tid_list(t_list *);
 int mayor_tid_list(t_list *);
@@ -71,6 +70,7 @@ int matarTripulante(int);
 int existeTripulante(int);
 int avisoDeMuerte(int);
 int revisarLista_avisoDeMuerte(t_list *, int);
+char* imprimir_estado(char);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(t_parametros_tripulantes *parametro);

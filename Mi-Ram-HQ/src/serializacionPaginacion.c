@@ -103,7 +103,6 @@ t_TCB *deserializar_TCB(void *unTCB)
 
 t_tarea *deserializar_TAREA(void *unaTarea, int len_tarea)
 {
-
     t_tarea *tarea_deserializada = malloc(sizeof(t_tarea));
     memcpy(&(tarea_deserializada->tamanio_tarea), &len_tarea, sizeof(uint32_t));
     tarea_deserializada->tarea = malloc(tarea_deserializada->tamanio_tarea);
