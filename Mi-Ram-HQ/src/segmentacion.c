@@ -2,6 +2,7 @@
 
 void *reservar_segmento_FF(int bytes)
 {
+    printf("Busco lugar para %dB\n", bytes);
 
     estado_segmentos *segmento_obtenido = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento = malloc(sizeof(estado_segmentos));
@@ -16,6 +17,8 @@ void *reservar_segmento_FF(int bytes)
         if (segmento_obtenido->ocupado == 0 && segmento_obtenido->limite >= bytes)
         {
 
+            printf("Tengo un candidato\n");
+
             //Inicio el nuevo segmento
             nuevo_segmento->inicio = segmento_obtenido->inicio;
             nuevo_segmento->limite = bytes;
@@ -26,8 +29,11 @@ void *reservar_segmento_FF(int bytes)
             segmento_obtenido->limite -= bytes;
 
             //Chequeo que no me este pasando de la memoria reservada
-            if (segmento_obtenido->inicio + bytes < (int)memoria + config->tamanio_memoria)
+            printf("if((int) segmento_obtenido->inicio(%d) + bytes(%d)(%d) < (int)memoria + config->tamanio_memoria(%d))\n", (int) segmento_obtenido->inicio, bytes, segmento_obtenido->inicio + bytes, (int)memoria + config->tamanio_memoria);
+            if (((int) segmento_obtenido->inicio) < ((int) memoria + config->tamanio_memoria))
             {
+
+                printf("Tengo el segmento\n");
 
                 // En este caso podría ocurrir que los bytes entran perfecto en el
                 // segmento obtenido, en tal caso no seria necesaria una modificacion
@@ -54,6 +60,8 @@ void *reservar_segmento_FF(int bytes)
     //OJO: Entra en un ciclo
     //compactar(SIGUSR1);
     //return reservar_segmento_FF(bytes);
+    printf("No encontre memoria libre\n");
+
     return (void *)-1;
 }
 

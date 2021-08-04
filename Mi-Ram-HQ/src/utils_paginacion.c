@@ -112,10 +112,10 @@ int bytes_ocupados_lista(t_list *lista_elementos_proceso)
     for (int i = 0; i < list_size(lista_elementos_proceso); i++)
     {
         elemento_proceso = list_get(lista_elementos_proceso, i);
-        if(elemento_proceso->tipo == TAREAS){
+        if (elemento_proceso->tipo == TAREAS)
+        {
             for (int i = 0; i < list_size(elemento_proceso->len_tareas); i++)
-                bytes += (int) list_get(elemento_proceso->len_tareas, i);
-            
+                bytes += (int)list_get(elemento_proceso->len_tareas, i);
         }
         else
             bytes += elemento_proceso->tamanio;
@@ -136,7 +136,7 @@ int cantidad_paginas_proceso(int pid)
             return list_size(pagina_proceso->paginas);
     }
 
-    return EXIT_FAILURE;
+    return 0;
 }
 
 int obtener_numero_instruccion(t_list *tabla_proceso, int pid, int tid)
@@ -255,19 +255,11 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
             {
                 int offset_tarea = 0;
                 for (int i = 0; i < nInstruccion; i++)
-                    offset_tarea += (int) list_get(pagina_proceso->len_tareas , i);
+                    offset_tarea += (int)list_get(pagina_proceso->len_tareas, i);
 
-            
-                
-                tarea_serializada = malloc((int) list_get(pagina_proceso->len_tareas , nInstruccion));
-                memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + offset_tarea, (int) list_get(pagina_proceso->len_tareas , nInstruccion));
-                tarea = deserializar_TAREA(tarea_serializada, (int) list_get(pagina_proceso->len_tareas, nInstruccion));
-
-                //printf("codigoTarea: %d\n", tarea->codigoTarea);
-                //printf("parametro: %d\n", tarea->parametro);
-                //printf("posX: %d\n", tarea->posX);
-                //printf("posY: %d\n", tarea->posY);
-                //printf("duracionTarea: %d\n", tarea->duracionTarea);
+                tarea_serializada = malloc((int)list_get(pagina_proceso->len_tareas, nInstruccion));
+                memcpy(tarea_serializada, elementos_proceso + pagina_proceso->offset + offset_tarea, (int)list_get(pagina_proceso->len_tareas, nInstruccion));
+                tarea = deserializar_TAREA(tarea_serializada, (int)list_get(pagina_proceso->len_tareas, nInstruccion));
 
                 return tarea;
             }
@@ -317,10 +309,22 @@ int obtener_pid_pag(t_list *tablaUnProceso)
     return EXIT_FAILURE;
 }
 
-void limpiar_estado_frames()
+void iniciar_frames()
 {
     for (int i = 0; i < maxima_cantidad_paginas; i++)
     {
-        estado_frames[i] = 0;
+        t_estado_frame *frame = malloc(sizeof(t_estado_frame));
+
+        frame->ocupado = 0;
+        frame->ultimo_acceso = 0;
+        frame->pag_proc = 0;
+        frame->pid = 0;
+
+        list_add(estado_frames, frame);
     }
+}
+
+int obtener_timestamp()
+{
+    return (unsigned)time(NULL);
 }

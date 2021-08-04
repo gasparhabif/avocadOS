@@ -39,7 +39,7 @@ t_tarea *deserializarTarea(t_buffer *buffer)
     stream += sizeof(uint32_t);
 
     if (tarea_recibida->tamanio_tarea != FIN_TAREAS)
-    {    
+    {
         tarea_recibida->tarea = malloc(tarea_recibida->tamanio_tarea);
         memcpy(tarea_recibida->tarea, stream, tarea_recibida->tamanio_tarea);
     }
@@ -83,6 +83,9 @@ int *deserializarInt(t_buffer *buffer)
     int *numero_recibido = malloc(sizeof(uint32_t));
     void *stream = buffer->stream;
     memcpy(numero_recibido, stream, sizeof(uint32_t));
+
+    //printf("Recibiendo el numero %d\n", *numero_recibido);
+
     return numero_recibido;
 
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION

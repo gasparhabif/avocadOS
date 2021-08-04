@@ -2,12 +2,12 @@
 
 void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
-    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
-    {
-        printf("Tarea %d\n", i+1);
-        printf("Len tarea: %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
-        printf("Tarea %s\n", tareas_cPID_recibidas->tareas[i].tarea);
-    }
+    //for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+    //{
+    //    printf("Tarea %d\n", i+1);
+    //    printf("Len tarea: %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+    //    printf("Tarea %s\n", tareas_cPID_recibidas->tareas[i].tarea);
+    //}
     
 
     log_info(logger, "Una nueva patota aborda la nave");
@@ -51,7 +51,7 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
             list_add(tabla_procesos, registro_proceso);
 
             //CREO EL PAQUETE A ENVIAR
-            printf("Base PCB %d y P: %p\n", (int)segmento_pcb->base, segmento_pcb->base);
+            //printf("Base PCB %d y P: %p\n", (int)segmento_pcb->base, segmento_pcb->base);
 
             paquete = serializarInt((int)segmento_pcb->base, PUNTERO_PCB, &tamanioSerializacion);
         }
@@ -123,8 +123,8 @@ void solicitar_tarea(int client, t_pidYtid *pid_tid_recibidos)
 
     pthread_mutex_unlock(&m_procesos);
 
-    log_info(logger, "Tarea => %s", tarea_buscada->tarea);
-    log_info(logger, "Tamanio %d", tarea_buscada->tamanio_tarea);
+    //log_info(logger, "Tarea => %s", tarea_buscada->tarea);
+    //log_info(logger, "Tamanio %d", tarea_buscada->tamanio_tarea);
 
     int bEnviar;
     void *d_enviar = serializarTarea(tarea_buscada, ENVIAR_PROXIMA_TAREA, &bEnviar);

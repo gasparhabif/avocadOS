@@ -1,7 +1,7 @@
 #include "proceso1.h"
 
-
-t_tarea* leer_tareas(char* arr, int *cantTareas){
+t_tarea *leer_tareas(char *arr, int *cantTareas)
+{
 
     int fpTareas = open(arr, O_RDONLY, S_IRUSR | S_IWUSR);
     struct stat sb;
@@ -10,7 +10,6 @@ t_tarea* leer_tareas(char* arr, int *cantTareas){
     {
         printf("Error\n");
     }
-    
 
     char *file = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fpTareas, 0);
 
@@ -27,13 +26,12 @@ t_tarea* leer_tareas(char* arr, int *cantTareas){
         tareas[i].tarea = malloc(tareas[i].tamanio_tarea);
         strcpy(tareas[i].tarea, instrucciones[i]);
     }
-    
+
     munmap(file, sb.st_size);
     close(fpTareas);
-    
+
     return tareas;
 }
-
 
 /*
 t_tarea* leer_tareas(FILE *fpTareas, int *cantTareas){
@@ -243,30 +241,33 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 }
 */
 
-t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tarea, char* nom_tarea){
+t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tarea, char *nom_tarea)
+{
 
     t_tarea_descomprimida *tarea_descomprimida = malloc(sizeof(t_tarea_descomprimida));
-    
-    char* t_recibida = string_new();
+
+    char *t_recibida = string_new();
     t_recibida = string_from_format("%s", tarea_recibida->tarea);
 
-    if(tarea_recibida->tamanio_tarea == FIN_TAREAS){
+    if (tarea_recibida->tamanio_tarea == FIN_TAREAS)
+    {
 
-        tarea_descomprimida->codigoTarea   = FIN_TAREAS;
+        tarea_descomprimida->codigoTarea = FIN_TAREAS;
         tarea_descomprimida->duracionTarea = 0;
-        tarea_descomprimida->parametro     = 0;
-        tarea_descomprimida->posX          = 0;
-        tarea_descomprimida->posY          = 0;
+        tarea_descomprimida->parametro = 0;
+        tarea_descomprimida->posX = 0;
+        tarea_descomprimida->posY = 0;
     }
-    else{
+    else
+    {
 
         //int cantEspacios = 0;
         //for (int i = 0; i < tarea_recibida->tamanio_tarea; i++)
         //{
         //    if (tarea_recibida->tarea[i] == ' ')
-        //        cantEspacios++;   
+        //        cantEspacios++;
         //}
-        
+
         char **tarea = NULL;
 
         if (string_contains(t_recibida, " "))
@@ -282,7 +283,7 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
             if (strcmp(tarea[0], "GENERAR_OXIGENO") == 0)
                 tarea_descomprimida->codigoTarea = GENERAR_OXIGENO;
             else if (strcmp(tarea[0], "CONSUMIR_OXIGENO") == 0)
-                tarea_descomprimida->codigoTarea = CONSUMIR_OXIGENO;      
+                tarea_descomprimida->codigoTarea = CONSUMIR_OXIGENO;
             else if (strcmp(tarea[0], "GENERAR_COMIDA") == 0)
                 tarea_descomprimida->codigoTarea = GENERAR_COMIDA;
             else if (strcmp(tarea[0], "CONSUMIR_COMIDA") == 0)
@@ -294,34 +295,35 @@ t_tarea_descomprimida* descomprimir_tarea(t_tarea* tarea_recibida, int* len_tare
 
             char **parametros = string_split(tarea[1], ";");
 
-            tarea_descomprimida->parametro     = atoi(parametros[0]);
-            tarea_descomprimida->posX          = atoi(parametros[1]);
-            tarea_descomprimida->posY          = atoi(parametros[2]);
+            tarea_descomprimida->parametro = atoi(parametros[0]);
+            tarea_descomprimida->posX = atoi(parametros[1]);
+            tarea_descomprimida->posY = atoi(parametros[2]);
             tarea_descomprimida->duracionTarea = atoi(parametros[3]);
-
         }
         else
         {
             //ES UNA TAREA NORMAL
-            //printf("Voy a splitear la TN: %s, tamaño: %d\n", t_recibida, tarea_recibida->tamanio_tarea);
+            //printf("Voy a splitear la TN: %s, tamaño: %d \n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, ";");
 
             *len_tarea = tarea_recibida->tamanio_tarea;
-            nom_tarea = malloc(tarea_recibida->tamanio_tarea-2);
+            nom_tarea = malloc(tarea_recibida->tamanio_tarea);
             //strcpy(nom_tarea, t_recibida);
-            memcpy(nom_tarea, t_recibida, tarea_recibida->tamanio_tarea-2);
+            memcpy(nom_tarea, t_recibida, tarea_recibida->tamanio_tarea);
 
-            tarea_descomprimida->codigoTarea   = MOVER_POSICION;
-            tarea_descomprimida->parametro     = 0;
-            tarea_descomprimida->posX          = atoi(tarea[1]);
-            tarea_descomprimida->posY          = atoi(tarea[2]);
+            //nom_tarea = string_new();
+            //string_append(&nom_tarea, t_recibida);
+
+            tarea_descomprimida->codigoTarea = MOVER_POSICION;
+            tarea_descomprimida->parametro = 0;
+            tarea_descomprimida->posX = atoi(tarea[1]);
+            tarea_descomprimida->posY = atoi(tarea[2]);
             tarea_descomprimida->duracionTarea = atoi(tarea[3]);
         }
     }
 
     return tarea_descomprimida;
 }
-
 
 int contar_caracteres_especiales(size_t read, char *line, char caracterEspecial)
 {
@@ -562,4 +564,31 @@ int revisarLista_avisoDeMuerte(t_list *lista, int tid)
     }
 
     return 0;
+}
+
+char* imprimir_estado(char status){
+
+    switch (status)
+    {
+        case 'N':
+            return "NEW";
+            break;
+        case 'R':
+            return "READY";
+            break;
+        case 'E':
+            return "EXEC";
+            break;
+        case 'B':
+            return "BLOCK I/O";
+            break;
+        case 'Y':
+            return "BLOCK EMERGRNCY";
+            break;
+        case 'X':
+            return "EXIT";
+            break;
+    }
+
+    return "";
 }

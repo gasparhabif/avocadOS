@@ -194,7 +194,7 @@ int eliminar_pcbOtareas(t_list *lista_proceso, int queBorrar){
 }
 
 int obtener_PID(void *pcb){
-    printf("PCB: %p\n", pcb);
+    //printf("PCB: %p\n", pcb);
     int pid;
     t_PCB *pcb_aux = malloc(sizeof(t_PCB));
     memcpy(pcb_aux, pcb, sizeof(t_PCB));
