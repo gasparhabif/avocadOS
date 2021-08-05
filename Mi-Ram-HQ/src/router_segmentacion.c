@@ -100,7 +100,13 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTrip
 
     //LE AVISO AL TRIPULANTE QUE SUS ESTRUCTURAS YA SE ENCUENTRAN EN MEMORIA
     int tamanioSerializacion;
-    void *paquete = serializarInt(1, ESTRUCTURAS_EN_MEMORIA, &tamanioSerializacion);
+    void *paquete;
+    
+    if (segmento_tareas->base == (void*)-1)
+        paquete = serializarInt(-1, ESTRUCTURAS_EN_MEMORIA, &tamanioSerializacion);
+    else
+        paquete = serializarInt(1, ESTRUCTURAS_EN_MEMORIA, &tamanioSerializacion);
+    
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
     free(tcbCpid_recibido);

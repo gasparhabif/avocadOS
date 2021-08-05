@@ -83,6 +83,7 @@ void tripulante(t_parametros_tripulantes *parametro)
     if (*((int *) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
     {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
+        printf("Error guardando las estructuras del tripulante %d, abandonando la nave...\n", admin->tid);
         return;
     }
 

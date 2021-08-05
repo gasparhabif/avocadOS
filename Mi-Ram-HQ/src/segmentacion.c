@@ -281,16 +281,16 @@ void compactar(int sig)
 
         
         log_info(logger, "TERMINE LA COMPACTACION\n");
-        printf("------------------------------------------------------------------\n");
-        for (int i = 0; i < list_size(tabla_nueva); i++)
-        {
-            estado_segmentos *reg_seg = list_get(tabla_nueva, i);
-            printf("SEG N°: %d\t", i);
-            printf("Inicio: %d\t", reg_seg->inicio);
-            printf("Tamaño: %d\t", reg_seg->limite);
-            printf("Ocupado: %d\n", reg_seg->ocupado);
-        }
-        printf("------------------------------------------------------------------\n");
+        //printf("------------------------------------------------------------------\n");
+        //for (int i = 0; i < list_size(tabla_nueva); i++)
+        //{
+        //    estado_segmentos *reg_seg = list_get(tabla_nueva, i);
+        //    printf("SEG N°: %d\t", i);
+        //    printf("Inicio: %d\t", reg_seg->inicio);
+        //    printf("Tamaño: %d\t", reg_seg->limite);
+        //    printf("Ocupado: %d\n", reg_seg->ocupado);
+        //}
+        //printf("------------------------------------------------------------------\n");
         
 
         pthread_mutex_unlock(&acceso_memoria);

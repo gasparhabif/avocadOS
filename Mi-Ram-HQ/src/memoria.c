@@ -45,11 +45,13 @@ t_registro_segmentos *guardar_tareas(int cantTareas, t_tarea *tareas_recibidas)
     void *pos_tareas = reservar_memoria(tamanio_tareas);
 
     //COPIO LAS TAREAS EN LA POSICION RESERVADA
-    int despl = 0;
+    if(pos_tareas != (void *)-1){    
+        int despl = 0;
 
-    for(int i = 0; i < cantTareas; i++){
-        memcpy(pos_tareas + despl, tareas_recibidas[i].tarea, tareas_recibidas[i].tamanio_tarea);
-        despl += tareas_recibidas[i].tamanio_tarea;
+        for(int i = 0; i < cantTareas; i++){
+            memcpy(pos_tareas + despl, tareas_recibidas[i].tarea, tareas_recibidas[i].tamanio_tarea);
+            despl += tareas_recibidas[i].tamanio_tarea;
+        }
     }
 
     //CREO EL REGISTRO PARA LUEGO AÑADIR A LA LISTA DEL PROCESO
@@ -96,8 +98,10 @@ t_registro_segmentos *guardar_tcb(t_TCB tcb_recibido)
     //RESERVO MEMORIA PARA EL TCB
     void *tcb = reservar_memoria(sizeof(t_TCB));
 
-    //COPIO EL PCB EN LA POSICION RESERVADA
-    memcpy(tcb, &tcb_recibido, sizeof(t_TCB));
+    if(tcb != (void *)-1){   
+        //COPIO EL PCB EN LA POSICION RESERVADA
+        memcpy(tcb, &tcb_recibido, sizeof(t_TCB));
+    }
 
     //CREO EL REGISTRO PARA LUEGO AÑADIR A LA LISTA DEL PROCESO
     t_registro_segmentos *segmento_tcb = malloc(sizeof(t_registro_segmentos));
