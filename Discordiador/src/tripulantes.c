@@ -238,8 +238,8 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
     t_tarea *tarea_comprimida = (t_tarea *) recibir_paquete(admin->sockfd_tripulante_ram);
 
-    printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
-    printf("Tarea: %s\n", tarea_comprimida->tarea);
+    //printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
+    //printf("Tarea: %s\n", tarea_comprimida->tarea);
 
     t_tarea_descomprimida *tarea_recibida = NULL;
 
@@ -251,11 +251,13 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     {
         char* nombre_tarea;
         tarea_recibida = descomprimir_tarea(tarea_comprimida, len_tarea, &nombre_tarea);
+        (*len_tarea)++;
         *nom_tarea = malloc(*len_tarea);
         strcpy(*nom_tarea, nombre_tarea);
 
         //printf("Tarea LEN=> %d\n", *len_tarea);
-        //printf("Tarea CPY=> %s\n", *nom_tarea);
+        //if(*len_tarea != 0)
+        //    printf("Tarea CPY=> %s\n", *nom_tarea);
 
         //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
         void *comenzar_tarea = serializar_string(nombre_tarea, *len_tarea, &tamanioSerializacion);

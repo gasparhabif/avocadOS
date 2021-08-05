@@ -107,7 +107,7 @@ t_tarea *deserializar_TAREA(void *unaTarea, int len_tarea)
     memcpy(&(tarea_deserializada->tamanio_tarea), &len_tarea, sizeof(uint32_t));
     tarea_deserializada->tamanio_tarea++;
     tarea_deserializada->tarea = malloc(tarea_deserializada->tamanio_tarea);
-    memcpy(tarea_deserializada->tarea, unaTarea, tarea_deserializada->tamanio_tarea);
+    memcpy(tarea_deserializada->tarea, unaTarea, tarea_deserializada->tamanio_tarea-1);
     tarea_deserializada->tarea[tarea_deserializada->tamanio_tarea-1] = '\0';
 
     return tarea_deserializada;

@@ -16,6 +16,8 @@ void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
     for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
         tamanio_tareas += tareas_cPID_recibidas->tareas[i].tamanio_tarea;
 
+    //printf("Tamanio tareas %d\n", tamanio_tareas);
+
     pthread_mutex_lock(&acceso_memoria);
 
     if (solicitar_paginas(tamanio_tareas + sizeof(t_PCB), tareas_cPID_recibidas->PID) == -1)
@@ -39,7 +41,7 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
 
     pthread_mutex_lock(&acceso_memoria);
 
-    printf("Llego un tripulante\n");
+    //printf("Llego un tripulante\n");
 
     if (solicitar_paginas(sizeof(t_TCB), datos_recibidos->pid) == -1)
         paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
