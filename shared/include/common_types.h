@@ -82,7 +82,7 @@ typedef struct
     uint32_t posY;
     uint32_t proximaInstruccion;
     uint32_t puntero_PCB;
-} t_TCB;
+} __attribute__((packed)) t_TCB;
 
 typedef struct
 {

@@ -170,7 +170,7 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
         //ESCRIBO DESDE LA PAGINA QUE DEBA LLENAR HASTA TODAS LAS QUE NECESITE PARA GUARDAR EL TCB
         for (int i = escribirDesdePagina; i < (escribirDesdePagina + paginas_acceder); i++)
         {
-            //printf("i: %d\n", i);
+            printf("i: %d\n", i);
             //LA PRIMERA PAGINA DEBO UNICAMENTE LLENARLA CON LOS BYTES QUE FALTAN
             if (i == escribirDesdePagina)
             {

@@ -146,7 +146,7 @@ void LISTAR_TRIPULANTES(char **parametros)
     char *hora = malloc(128);
     strftime(hora, 128, "%d/%m/%y %H:%M:%S", tlocal);
 
-    printf("--------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
 
     printf("Estado de la nave: %s\n", hora);
     free(hora);
@@ -162,7 +162,7 @@ void LISTAR_TRIPULANTES(char **parametros)
         printf("Nro. Inst: %d\n", tripulantesRecibidos->tripulantes[i].proximaInstruccion);
     }
 
-    printf("--------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
 }
 
 void EXPULSAR_TRIPULANTE(char **parametros)

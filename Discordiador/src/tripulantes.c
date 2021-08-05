@@ -120,15 +120,17 @@ void tripulante(t_parametros_tripulantes *parametro)
         //CAMBIAR A ESTADO EXEC
         actualizar_estado(admin, EXEC);
 
+        if (admin->debeMorir)
+            finTareas = 1;
+
         //SI NO HAY TAREAS PENDIENTES, PIDO UNA TAREA
         if (tareaPendiente == 0)
         {
             //ANTES DE SOLICITAR UNA TAREA CHEQUEO SI EL TRIPULANTE DEBE MORIR
-            if (admin->debeMorir)
-                finTareas = 1;
-            else{
+            //if (admin->debeMorir)
+            //    finTareas = 1;
+            //else
                 tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, &len_tarea, &nom_tarea);
-            }
         }
 
         //SI LA TAREA RECIBIDA NO ES LA ULTIMA (o no se solicito el fin del tripulante)
@@ -187,15 +189,21 @@ void tripulante(t_parametros_tripulantes *parametro)
             actualizar_estado(admin, READY);
         }
 
+        if (admin->debeMorir)
+            finTareas = 1;
+
         pthread_mutex_unlock(&admin->pausar_tripulante);
     }
+
+    if (admin->estado != 'X')
+        actualizar_estado(admin, EXIT);    
     
     //DOY EL AVISO AL MONGO QUE FINALICÉ MIS TAREAS
     int bEnviar;
     void *dEnviar;
-    //d_Enviar = serializarInt(1, FIN_TAREAS, &bEnviar);
-    //send(admin->sockfd_tripulante_mongo, dEnviar, bEnviar, 0);
-    //free(dEnviar);
+    dEnviar = serializarInt(1, FIN_TAREAS, &bEnviar);
+    send(admin->sockfd_tripulante_mongo, dEnviar, bEnviar, 0);
+    free(dEnviar);
 
     //DOY EL AVISO A RAM QUE DEVUELVA MI MEMORIA
     dEnviar = serializar_pidYtid(admin->pid, admin->tid, ELIMINAR_TRIPULANTE, &bEnviar);
@@ -230,8 +238,8 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
     t_tarea *tarea_comprimida = (t_tarea *) recibir_paquete(admin->sockfd_tripulante_ram);
 
-    //printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
-    //printf("Tarea: %s\n", tarea_comprimida->tarea);
+    printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
+    printf("Tarea: %s\n", tarea_comprimida->tarea);
 
     t_tarea_descomprimida *tarea_recibida = NULL;
 

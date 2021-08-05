@@ -39,6 +39,8 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
 
     pthread_mutex_lock(&acceso_memoria);
 
+    printf("Llego un tripulante\n");
+
     if (solicitar_paginas(sizeof(t_TCB), datos_recibidos->pid) == -1)
         paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
     else
