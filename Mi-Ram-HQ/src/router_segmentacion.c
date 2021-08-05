@@ -8,7 +8,6 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
     //    printf("Len tarea: %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
     //    printf("Tarea %s\n", tareas_cPID_recibidas->tareas[i].tarea);
     //}
-    
 
     log_info(logger, "Una nueva patota aborda la nave");
 

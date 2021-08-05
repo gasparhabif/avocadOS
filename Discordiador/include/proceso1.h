@@ -58,7 +58,7 @@ void IMPRIMIR_SEGMENTOS(char **);
 
 //DEFINIDAS EN utils.c
 t_tarea* leer_tareas(char*, int *);
-t_tarea_descomprimida* descomprimir_tarea(t_tarea*, int*, char*);
+t_tarea_descomprimida* descomprimir_tarea(t_tarea*, int*, char**);
 int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);
 void pausar_tripulantes(int);
@@ -74,7 +74,7 @@ char* imprimir_estado(char);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(t_parametros_tripulantes *parametro);
-t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int *len_tarea, char *nom_tarea);
+t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int *len_tarea, char **nom_tarea);
 int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea_descomprimida *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
 void mover_tripulante(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY, int movimientosPosibles, int *duracionMovimientos);
 int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado);

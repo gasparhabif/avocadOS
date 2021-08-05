@@ -15,6 +15,7 @@ int main()
     //HAGO EL GRAN MALLOC
     memoria = malloc(config->tamanio_memoria);
     log_info(logger, "%d bytes reservados en %p", config->tamanio_memoria, memoria);
+    sinMemoria = 0;
 
     //SI SE UTILIZA EL ESQUEMA DE SEGMENTACION LE INDICO QUE EN CASO DE RECIBIR
     //SIGUSR1 COMPACTE LA MEMORIA

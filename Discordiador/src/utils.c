@@ -2,7 +2,6 @@
 
 t_tarea *leer_tareas(char *arr, int *cantTareas)
 {
-
     int fpTareas = open(arr, O_RDONLY, S_IRUSR | S_IWUSR);
     struct stat sb;
 
@@ -22,9 +21,10 @@ t_tarea *leer_tareas(char *arr, int *cantTareas)
 
     for (int i = 0; i < *cantTareas; i++)
     {
-        tareas[i].tamanio_tarea = strlen(instrucciones[i]) + 1;
+        tareas[i].tamanio_tarea = strlen(instrucciones[i]);
         tareas[i].tarea = malloc(tareas[i].tamanio_tarea);
-        strcpy(tareas[i].tarea, instrucciones[i]);
+        memcpy(tareas[i].tarea, instrucciones[i], tareas[i].tamanio_tarea);
+        //printf("Tarea => %s\n", tareas[i].tarea);
     }
 
     munmap(file, sb.st_size);
@@ -241,7 +241,7 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 }
 */
 
-t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tarea, char *nom_tarea)
+t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tarea, char **nom_tarea)
 {
 
     t_tarea_descomprimida *tarea_descomprimida = malloc(sizeof(t_tarea_descomprimida));
@@ -277,8 +277,10 @@ t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tare
             tarea = string_split(t_recibida, " ");
 
             *len_tarea = tarea_recibida->tamanio_tarea;
-            nom_tarea = malloc(tarea_recibida->tamanio_tarea);
-            strcpy(nom_tarea, t_recibida);
+            *nom_tarea = malloc(tarea_recibida->tamanio_tarea);
+            strcpy(*nom_tarea, tarea[0]);
+            //printf("Tarea ORG=> %s\n", t_recibida);
+            //printf("Tarea CPY=> %s\n", *nom_tarea);
 
             if (strcmp(tarea[0], "GENERAR_OXIGENO") == 0)
                 tarea_descomprimida->codigoTarea = GENERAR_OXIGENO;
@@ -306,10 +308,13 @@ t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tare
             //printf("Voy a splitear la TN: %s, tamaño: %d \n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, ";");
 
-            *len_tarea = tarea_recibida->tamanio_tarea;
-            nom_tarea = malloc(tarea_recibida->tamanio_tarea);
+            *len_tarea = strlen(tarea[0]);
+            *nom_tarea = malloc(tarea_recibida->tamanio_tarea);
             //strcpy(nom_tarea, t_recibida);
-            memcpy(nom_tarea, t_recibida, tarea_recibida->tamanio_tarea);
+            strcpy(*nom_tarea, tarea[0]);
+            
+            //printf("Tarea LEN=> %d\n", *len_tarea);
+            //printf("Tarea CPY=> %s\n", *nom_tarea);
 
             //nom_tarea = string_new();
             //string_append(&nom_tarea, t_recibida);

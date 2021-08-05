@@ -116,10 +116,10 @@ int traer_tarea(void *tareas, t_list* lista_proceso, int tid, t_tarea *tarea_bus
         }
 
         //ME COPIO LA TAREA QUE NECESITO
-        tarea_buscada->tamanio_tarea = (int) list_get(reg_tareas->tamanio_tareas, tcb->proximaInstruccion);
+        tarea_buscada->tamanio_tarea = ((int) list_get(reg_tareas->tamanio_tareas, tcb->proximaInstruccion)) + 1;
         tarea_buscada->tarea = malloc(tarea_buscada->tamanio_tarea);
         memcpy(tarea_buscada->tarea, tareas + offsetTarea, tarea_buscada->tamanio_tarea);
-        
+        tarea_buscada->tarea[tarea_buscada->tamanio_tarea - 1] = '\0';
         //SUMO UNO A LA PROXIMA INSTRUCCION
         tcb->proximaInstruccion += 1;
         memcpy((void*) reg_tcb->base, tcb, reg_tcb->tamanio);

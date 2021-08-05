@@ -665,14 +665,14 @@ void *serializar_bitacora(t_bitacora *unaBitacora, uint32_t *tamanioSerializacio
     //free(a_enviar);
 }
 
-void *serializar_ejecutarTarea(uint32_t codTarea, uint32_t parametro, int *tamanioSerializacion)
+void *serializar_ejecutarTarea(uint32_t codTarea, uint32_t parametro, char* tarea, uint32_t len_tarea, int *tamanioSerializacion)
 {
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) * 2;
+    buffer->size = sizeof(uint32_t) * 3 + len_tarea;
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
@@ -683,6 +683,10 @@ void *serializar_ejecutarTarea(uint32_t codTarea, uint32_t parametro, int *taman
 
     memcpy(stream + offset, &codTarea, sizeof(uint32_t));
     offset += sizeof(uint32_t);
+    memcpy(stream + offset, &len_tarea, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, tarea, len_tarea);
+    offset += len_tarea;
     memcpy(stream + offset, &parametro, sizeof(uint32_t));
 
     buffer->stream = stream;
@@ -785,6 +789,53 @@ void *serializar_bitacora_tripulante(uint32_t tamanio_bitacora, char *bitacora, 
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
     paquete->codigo_operacion = BITACORA_TRIPULANTE;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void *a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
+}
+
+void *serializar_string(char* str, uint32_t len_str, int *tamanioSerializacion){
+    
+    //CREO EL BUFFER
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    //CARGO EL SIZE DEL BUFFER
+    buffer->size = sizeof(uint32_t) + len_str;
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    void *stream = malloc(buffer->size);
+    int offset = 0;
+
+    memcpy(stream + offset, &len_str, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, str, len_str);
+    offset += len_str;
+
+    buffer->stream = stream;
+
+    //CREAMOS EL PAQUETE
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    paquete->codigo_operacion = INICIO_TAREA;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR

@@ -25,6 +25,7 @@ t_ram_conf *config;
 
 int aceptando_conexiones;
 void *memoria;
+int sinMemoria;
 
 struct timeval tv;
 
