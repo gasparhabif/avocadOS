@@ -54,9 +54,9 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
     pthread_mutex_unlock(&acceso_memoria);
 
     //DIBUJO EL TRIPULANTE EN EL MAPA
-    personaje_crear(level, idMapa, datos_recibidos->tcb.posX, datos_recibidos->tcb.posY);
-    ASSERT_CREATE(level, idMapa, err);
-    nivel_gui_dibujar(level);
+    //personaje_crear(level, idMapa, datos_recibidos->tcb.posX, datos_recibidos->tcb.posY);
+    //ASSERT_CREATE(level, idMapa, err);
+    //nivel_gui_dibujar(level);
 
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
@@ -132,8 +132,8 @@ void mover_tripulante_paginada(t_envio_posicion *datos_recibidos, char idMapa)
     pthread_mutex_unlock(&acceso_memoria);
 
     //MODIFICO LA POSICION DEL TRIPULANTE EN EL MAPA
-    item_mover(level, idMapa, datos_recibidos->pos.posX, datos_recibidos->pos.posY);
-    nivel_gui_dibujar(level);
+    //item_mover(level, idMapa, datos_recibidos->pos.posX, datos_recibidos->pos.posY);
+    //nivel_gui_dibujar(level);
 }
 
 void actualizar_estado_paginada(t_estado *datos_recibidos)
@@ -378,6 +378,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
     pthread_mutex_unlock(&acceso_memoria);
 
     //ELIMINO AL TRIPULANTE DEL MAPA
-    item_borrar(level, idMapa);
-    nivel_gui_dibujar(level);
+    //item_borrar(level, idMapa);
+    //nivel_gui_dibujar(level);
 }

@@ -351,6 +351,9 @@ int pausar(int pausarPlanificacion)
         pthread_mutex_unlock(&pause_block);
         pausar_tripulantes(0);
 
+        for (int i = 0; i < config->grado_multitarea; i++)
+            sem_post(&s_multiprocesamiento);
+
         planificando = 1;
         return 1;
     }
@@ -362,7 +365,9 @@ int pausar(int pausarPlanificacion)
         }
         pthread_mutex_lock(&pause_block);
         pausar_tripulantes(1);
-        ;
+
+        for (int i = 0; i < config->grado_multitarea; i++)
+            sem_wait(&s_multiprocesamiento);
 
         planificando = 0;
         return 1;

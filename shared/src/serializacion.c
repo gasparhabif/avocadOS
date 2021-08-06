@@ -815,8 +815,10 @@ void *serializar_bitacora_tripulante(uint32_t tamanio_bitacora, char *bitacora, 
     //free(a_enviar);
 }
 
-void *serializar_string(char *str, uint32_t len_str, int *tamanioSerializacion)
+void *serializar_string(char *str, int *tamanioSerializacion)
 {
+
+    int len_str = strlen(str) + 1;
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));

@@ -19,6 +19,7 @@ int main(int argc, char **argv)
 	ejecutandoPlanificador = 1;
 	escuchandoSabotajes = 1;
 	sabotaje = 0;
+	inicio_planificacion = 0;
 
 	pthread_mutex_init(&mutex_block, NULL);
 	sem_init(&s_multiprocesamiento, 0, config->grado_multitarea);

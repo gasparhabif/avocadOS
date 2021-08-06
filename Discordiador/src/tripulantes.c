@@ -44,8 +44,8 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     pthread_mutex_init(&(admin->pausar_tripulante), NULL);
 
-    if (!planificando)
-        pthread_mutex_trylock(&admin->pausar_tripulante);
+    //if (!planificando)
+    //    pthread_mutex_trylock(&admin->pausar_tripulante);
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -108,13 +108,18 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
-        //pthread_mutex_trylock(&admin->pausar_tripulante);
+        pthread_mutex_trylock(&admin->pausar_tripulante);
 
-        if (pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
-            pthread_mutex_lock(&admin->pausar_tripulante);
+        //if (pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
+        //{
+        //    pthread_mutex_lock(&admin->pausar_tripulante);
+        //    printf("No iniciar el tripulante %d\n", admin->tid);
+        //}
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
+
+        //printf("Pase el semafoto de exec, soy %d\n", admin->tid);
 
         //CAMBIAR A ESTADO EXEC
         actualizar_estado(admin, EXEC);
@@ -261,7 +266,7 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
         //    printf("Tarea CPY=> %s\n", *nom_tarea);
 
         //AVISO AL MONGO QUE INICIO UNA TAREA PARA INCLUIRLA EN LA BITACORA
-        void *comenzar_tarea = serializar_string(nombre_tarea, *len_tarea, &tamanioSerializacion);
+        void *comenzar_tarea = serializar_string(nombre_tarea, &tamanioSerializacion);
         send(admin->sockfd_tripulante_mongo, comenzar_tarea, tamanioSerializacion, 0);
         free(comenzar_tarea);
 

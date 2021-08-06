@@ -103,6 +103,7 @@ int ejecutandoTripulantes;
 int ejecutandoPlanificador;
 int escuchandoSabotajes;
 int planificando;
+int inicio_planificacion;
 int sabotaje;
 
 sem_t s_multiprocesamiento;

@@ -93,10 +93,10 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTrip
     pthread_mutex_unlock(&m_procesos);
 
     //DIBUJO EL TRIPULANTE EN EL MAPA
-    int err;
-    err = personaje_crear(level, idMapaTripulante, tcbCpid_recibido->tcb.posX, tcbCpid_recibido->tcb.posY);
-    ASSERT_CREATE(level, idMapaTripulante, err);
-    nivel_gui_dibujar(level);
+    //int err;
+    //err = personaje_crear(level, idMapaTripulante, tcbCpid_recibido->tcb.posX, tcbCpid_recibido->tcb.posY);
+    //ASSERT_CREATE(level, idMapaTripulante, err);
+    //nivel_gui_dibujar(level);
 
     //LE AVISO AL TRIPULANTE QUE SUS ESTRUCTURAS YA SE ENCUENTRAN EN MEMORIA
     int tamanioSerializacion;
@@ -167,8 +167,8 @@ void mover_tripulante(t_envio_posicion *pos_recibida, char idMapaTripulante)
     pthread_mutex_unlock(&m_procesos);
 
     //MODIFICO LA POSICION DEL TRIPULANTE EN EL MAPA
-    item_mover(level, idMapaTripulante, pos_recibida->pos.posX, pos_recibida->pos.posY);
-    nivel_gui_dibujar(level);
+    //item_mover(level, idMapaTripulante, pos_recibida->pos.posX, pos_recibida->pos.posY);
+    //nivel_gui_dibujar(level);
 
     log_info(logger, "Se movio al tripulante a la posicion %d|%d", pos_recibida->pos.posX, pos_recibida->pos.posY);
 
@@ -259,8 +259,8 @@ void eliminar_tripulante(t_pidYtid *pidCtid_recibido, char idMapaTripulante)
     pthread_mutex_unlock(&m_procesos);
 
     //ELIMINO AL TRIPULANTE DEL MAPA
-    item_borrar(level, idMapaTripulante);
-    nivel_gui_dibujar(level);
+    //item_borrar(level, idMapaTripulante);
+    //nivel_gui_dibujar(level);
 
     //LIBERO LA MEMORIA
     free(pidCtid_recibido);
