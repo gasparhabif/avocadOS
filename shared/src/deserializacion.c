@@ -234,12 +234,15 @@ t_ejecutar_tarea *deserealizar_ejecutarTarea(t_buffer *buffer)
     stream += sizeof(uint32_t);
     memcpy(&(ejecutarTarea_recibido->len_tarea), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
-    
+
     ejecutarTarea_recibido->tarea = malloc(ejecutarTarea_recibido->len_tarea);
     memcpy(ejecutarTarea_recibido->tarea, stream, ejecutarTarea_recibido->len_tarea);
     stream += ejecutarTarea_recibido->len_tarea;
 
     memcpy(&(ejecutarTarea_recibido->parametro), stream, sizeof(uint32_t));
+
+    // printf("Finaliza la tarea %s con %dB\n", ejecutarTarea_recibido->tarea, ejecutarTarea_recibido->len_tarea);
+    // printf("Parametro: %d\nCodigo %d\n", ejecutarTarea_recibido->parametro, ejecutarTarea_recibido->codigoTarea);
 
     return ejecutarTarea_recibido;
 }
@@ -272,7 +275,7 @@ char *deserializar_bitacora_tripulante(t_buffer *buffer)
     return bitacora_recibida;
 }
 
-t_tarea* deserializar_string(t_buffer *buffer)
+t_tarea *deserializar_string(t_buffer *buffer)
 {
     t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
 

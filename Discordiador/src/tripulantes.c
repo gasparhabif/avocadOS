@@ -80,14 +80,13 @@ void tripulante(t_parametros_tripulantes *parametro)
     log_info(logger, "Se envio el TCB a la RAM");
 
     //ESPERAR A QUE SE CREEN TODAS LAS ESTRUCTURAS DE LA MEMORIA
-    if (*((int *) recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
+    if (*((int *)recibir_paquete(admin->sockfd_tripulante_ram)) < 0)
     {
         log_info(logger, "La memoria no pudo guardar mis estructuras, voy a abandonar la nave");
         printf("Error guardando las estructuras del tripulante %d, abandonando la nave...\n", admin->tid);
         return;
     }
 
-/*
     admin->sockfd_tripulante_mongo = connect_to(config->ip_mongo, config->puerto_mongo);
     if (admin->sockfd_tripulante_mongo == -1)
     {
@@ -95,7 +94,6 @@ void tripulante(t_parametros_tripulantes *parametro)
         return;
     }
     log_info(logger, "El tripulante se conecto con i-Mongo-Store");
-*/
 
     //printf("Posición de TID %d: %d|%d\n", admin->tid, admin->posX, admin->posY);
 
@@ -131,7 +129,7 @@ void tripulante(t_parametros_tripulantes *parametro)
             //if (admin->debeMorir)
             //    finTareas = 1;
             //else
-                tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, &len_tarea, &nom_tarea);
+            tarea_recibida = solicitar_tarea(admin, &finTareas, &duracionMovimientos, &duracionEjecucion, &duracionBloqueado, &len_tarea, &nom_tarea);
         }
 
         //SI LA TAREA RECIBIDA NO ES LA ULTIMA (o no se solicito el fin del tripulante)
@@ -160,7 +158,7 @@ void tripulante(t_parametros_tripulantes *parametro)
 
             //ENVIO LA TAREA AL MONGO
             int bEnviar;
-            void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, len_tarea, nom_tarea, tarea_recibida->parametro, &bEnviar);
+            void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, nom_tarea, tarea_recibida->parametro, &bEnviar);
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
             free(d_enviar);
 
@@ -182,11 +180,12 @@ void tripulante(t_parametros_tripulantes *parametro)
         else if (!tareaPendiente && !finTareas)
         {
             int bEnviar;
-            void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, len_tarea, nom_tarea, tarea_recibida->parametro, &bEnviar);
+            void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, nom_tarea, tarea_recibida->parametro, &bEnviar);
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
             free(d_enviar);
         }
-        else{
+        else
+        {
             actualizar_estado(admin, READY);
         }
 
@@ -197,8 +196,8 @@ void tripulante(t_parametros_tripulantes *parametro)
     }
 
     if (admin->estado != 'X')
-        actualizar_estado(admin, EXIT);    
-    
+        actualizar_estado(admin, EXIT);
+
     //DOY EL AVISO AL MONGO QUE FINALICÉ MIS TAREAS
     int bEnviar;
     void *dEnviar;
@@ -237,7 +236,7 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
 
     //RECIBIR TAREA
     //t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
-    t_tarea *tarea_comprimida = (t_tarea *) recibir_paquete(admin->sockfd_tripulante_ram);
+    t_tarea *tarea_comprimida = (t_tarea *)recibir_paquete(admin->sockfd_tripulante_ram);
 
     //printf("Tamanio: %d\n", tarea_comprimida->tamanio_tarea);
     //printf("Tarea: %s\n", tarea_comprimida->tarea);
@@ -245,14 +244,15 @@ t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTarea
     t_tarea_descomprimida *tarea_recibida = NULL;
 
     //CHEQUEO QUE LA TAREA RECIBIDA SEA LA ULTIMA
-    if (tarea_comprimida->tamanio_tarea == FIN_TAREAS){
+    if (tarea_comprimida->tamanio_tarea == FIN_TAREAS)
+    {
         *finTareas = 1;
     }
     else
     {
-        char* nombre_tarea;
-        tarea_recibida = descomprimir_tarea(tarea_comprimida, len_tarea, &nombre_tarea);
-        (*len_tarea)++;
+        char *nombre_tarea;
+        tarea_recibida = descomprimir_tarea(tarea_comprimida, /*len_tarea,*/ &nombre_tarea);
+        *len_tarea = tarea_comprimida->tamanio_tarea + 1;
         *nom_tarea = malloc(*len_tarea);
         strcpy(*nom_tarea, nombre_tarea);
 

@@ -22,7 +22,7 @@
 #include <signal.h>
 
 // Constantes de FS
-#define BLOCK_SIZE 64
+#define BLOCK_SIZE 256
 #define BLOCKS 16384
 #define MD5_SIZE 32
 
@@ -79,9 +79,9 @@ char *blocks_file_copy;
 pthread_mutex_t fs_libre;
 
 // Estado real de recursos en FS
-t_recurso *last_oxigeno;
-t_recurso *last_comida;
-t_recurso *last_basura;
+t_recurso *backup_oxigeno;
+t_recurso *backup_comida;
+t_recurso *backup_basura;
 
 // Sync blocks handler
 void sync_blocks_handler();
@@ -122,7 +122,6 @@ void registrar_bitacora(t_bitacora_mongo *, char *);
 char *blocks_list_to_string(t_list *);
 char *pos_to_string(t_posicion *);
 void update_pos(t_posicion *, t_posicion *);
-char *get_nombre_tarea(int);
 char *reconstruir_bitacora(t_bitacora_mongo *);
 
 // SuperBloque utils (definidas en superbloque_utils.c)

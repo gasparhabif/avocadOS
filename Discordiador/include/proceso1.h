@@ -57,8 +57,8 @@ void OBTENER_BITACORA(char **);
 void IMPRIMIR_SEGMENTOS(char **);
 
 //DEFINIDAS EN utils.c
-t_tarea* leer_tareas(char*, int *);
-t_tarea_descomprimida* descomprimir_tarea(t_tarea*, int*, char**);
+t_tarea *leer_tareas(char *, int *);
+t_tarea_descomprimida *descomprimir_tarea(t_tarea *, /*int*,*/ char **);
 int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);
 void pausar_tripulantes(int);
@@ -70,7 +70,7 @@ int matarTripulante(int);
 int existeTripulante(int);
 int avisoDeMuerte(int);
 int revisarLista_avisoDeMuerte(t_list *, int);
-char* imprimir_estado(char);
+char *imprimir_estado(char);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(t_parametros_tripulantes *parametro);

@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 	//REALIZO LA CONEXION CON RAM Y MONGO
 	log_info(logger, "Conectando a RAM...");
 	sockfd_ram = connect_to(config->ip_ram, config->puerto_ram);
-/*
+
 	log_info(logger, "Conectando a MONGO...");
 	sockfd_mongo_sabotajes = connect_to(config->ip_mongo, config->puerto_mongo);
 	sockfd_mongo_bitacoras = connect_to(config->ip_mongo, config->puerto_mongo);
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 			system("clear");
 		}
 	}
-*/
+
 	log_info(logger, "Conexión establecida con RAM y con Mongo!");
 
 	//EMPIEZO A ESCUCHAR SABOTAJES QUE PUEDEN LLEGAR DESDE EL MONGO

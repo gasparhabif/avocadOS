@@ -42,13 +42,13 @@ void generarOxigeno(int cantidad)
     {
         create_recurso(oxigeno_file_path, "O");
         log_info(logger, "Se creó Oxigeno.ims");
-        last_oxigeno = load_recurso(oxigeno_file_path);
+        backup_oxigeno = load_recurso(oxigeno_file_path);
     }
 
     // t_recurso *oxigeno = load_recurso(oxigeno_file_path);
     // agregar_recurso(oxigeno, cantidad);
 
-    agregar_recurso(last_oxigeno, cantidad);
+    agregar_recurso(backup_oxigeno, cantidad);
 }
 
 void consumirOxigeno(int cantidad)
@@ -62,7 +62,7 @@ void consumirOxigeno(int cantidad)
     // t_recurso *oxigeno = load_recurso(oxigeno_file_path);
     // eliminar_recurso(oxigeno, cantidad);
 
-    eliminar_recurso(last_oxigeno, cantidad);
+    eliminar_recurso(backup_oxigeno, cantidad);
 }
 
 void generarComida(int cantidad)
@@ -71,13 +71,13 @@ void generarComida(int cantidad)
     {
         create_recurso(comida_file_path, "C");
         log_info(logger, "Se creó Comida.ims");
-        last_comida = load_recurso(comida_file_path);
+        backup_comida = load_recurso(comida_file_path);
     }
 
     // t_recurso *comida = load_recurso(comida_file_path);
     // agregar_recurso(comida, cantidad);
 
-    agregar_recurso(last_comida, cantidad);
+    agregar_recurso(backup_comida, cantidad);
 }
 
 void consumirComida(int cantidad)
@@ -91,7 +91,7 @@ void consumirComida(int cantidad)
     // t_recurso *comida = load_recurso(comida_file_path);
     // eliminar_recurso(comida, cantidad);
 
-    eliminar_recurso(last_comida, cantidad);
+    eliminar_recurso(backup_comida, cantidad);
 }
 
 void generarBasura(int cantidad)
@@ -100,13 +100,13 @@ void generarBasura(int cantidad)
     {
         create_recurso(basura_file_path, "B");
         log_info(logger, "Se creó Basura.ims");
-        last_basura = load_recurso(basura_file_path);
+        backup_basura = load_recurso(basura_file_path);
     }
 
     // t_recurso *basura = load_recurso(basura_file_path);
     // agregar_recurso(basura, cantidad);
 
-    agregar_recurso(last_basura, cantidad);
+    agregar_recurso(backup_basura, cantidad);
 }
 
 void descartarBasura()
@@ -120,12 +120,12 @@ void descartarBasura()
     // t_recurso *basura = load_recurso(basura_file_path);
     // eliminar_recurso(basura, basura->size);
 
-    eliminar_recurso(last_basura, last_basura->size);
+    eliminar_recurso(backup_basura, backup_basura->size);
 
     // Eliminar archivo
     if (file_exists(basura_file_path))
     {
         remove(basura_file_path);
-        liberar_recurso(last_basura);
+        liberar_recurso(backup_basura);
     }
 }

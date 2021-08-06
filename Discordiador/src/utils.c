@@ -241,7 +241,7 @@ t_tarea *leer_tareas(FILE *fpTareas, int *cantTareas, int *error)
 }
 */
 
-t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tarea, char **nom_tarea)
+t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, /*int *len_tarea,*/ char **nom_tarea)
 {
 
     t_tarea_descomprimida *tarea_descomprimida = malloc(sizeof(t_tarea_descomprimida));
@@ -276,7 +276,6 @@ t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tare
             //printf("Voy a splitear la T-E/S %s, tamaño: %d\n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, " ");
 
-            *len_tarea = tarea_recibida->tamanio_tarea;
             *nom_tarea = malloc(tarea_recibida->tamanio_tarea);
             strcpy(*nom_tarea, tarea[0]);
             //printf("Tarea ORG=> %s\n", t_recibida);
@@ -308,11 +307,11 @@ t_tarea_descomprimida *descomprimir_tarea(t_tarea *tarea_recibida, int *len_tare
             //printf("Voy a splitear la TN: %s, tamaño: %d \n", t_recibida, tarea_recibida->tamanio_tarea);
             tarea = string_split(t_recibida, ";");
 
-            *len_tarea = strlen(tarea[0]);
+            //*len_tarea = strlen(tarea[0]);
             *nom_tarea = malloc(tarea_recibida->tamanio_tarea);
             //strcpy(nom_tarea, t_recibida);
             strcpy(*nom_tarea, tarea[0]);
-            
+
             //printf("Tarea LEN=> %d\n", *len_tarea);
             //printf("Tarea CPY=> %s\n", *nom_tarea);
 
@@ -571,28 +570,29 @@ int revisarLista_avisoDeMuerte(t_list *lista, int tid)
     return 0;
 }
 
-char* imprimir_estado(char status){
+char *imprimir_estado(char status)
+{
 
     switch (status)
     {
-        case 'N':
-            return "NEW";
-            break;
-        case 'R':
-            return "READY";
-            break;
-        case 'E':
-            return "EXEC";
-            break;
-        case 'B':
-            return "BLOCK I/O";
-            break;
-        case 'Y':
-            return "BLOCK EMERGRNCY";
-            break;
-        case 'X':
-            return "EXIT";
-            break;
+    case 'N':
+        return "NEW";
+        break;
+    case 'R':
+        return "READY";
+        break;
+    case 'E':
+        return "EXEC";
+        break;
+    case 'B':
+        return "BLOCK I/O";
+        break;
+    case 'Y':
+        return "BLOCK EMERGRNCY";
+        break;
+    case 'X':
+        return "EXIT";
+        break;
     }
 
     return "";
