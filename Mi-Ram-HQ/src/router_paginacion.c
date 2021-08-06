@@ -2,9 +2,21 @@
 
 void comenzar_patota_paginada(int client, t_tareas_cPID *tareas_cPID_recibidas)
 {
-    int tamanio_tareas = sizeof(t_tarea) * tareas_cPID_recibidas->cantTareas;
+
+    //for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+    //{
+    //    printf("TAREA %d\n", i + 1);
+    //    printf("Tamanio tarea %d\n", tareas_cPID_recibidas->tareas[i].tamanio_tarea);
+    //    printf("Tarea: %s\n\n", tareas_cPID_recibidas->tareas[i].tarea);
+    //}
+
     void *paquete;
     int tamanioSerializacion;
+    int tamanio_tareas = 0;
+    for (int i = 0; i < tareas_cPID_recibidas->cantTareas; i++)
+        tamanio_tareas += tareas_cPID_recibidas->tareas[i].tamanio_tarea;
+
+    //printf("Tamanio tareas %d\n", tamanio_tareas);
 
     pthread_mutex_lock(&acceso_memoria);
 
@@ -28,6 +40,8 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
     int tamanioSerializacion;
 
     pthread_mutex_lock(&acceso_memoria);
+
+    //printf("Llego un tripulante\n");
 
     if (solicitar_paginas(sizeof(t_TCB), datos_recibidos->pid) == -1)
         paquete = serializarInt(-1, PUNTERO_PCB, &tamanioSerializacion);
@@ -61,13 +75,17 @@ void solicitar_tarea_paginada(int client, t_pidYtid *pidYtid_recibido)
     nInstruccion = obtener_numero_instruccion(tabla_proceso, pidYtid_recibido->pid, pidYtid_recibido->tid);
 
     //BUSCO LA TAREA QUE NECESITO
+    //FALTA MODIFICAR ESTO
     t_tarea *tarea_recibida = obtenerTarea(tabla_proceso, pidYtid_recibido->pid, nInstruccion);
+
+    //printf("Se envia la tarea => %s\n", tarea_recibida->tarea);
+    //printf("Con un tamanio de %dB\n", tarea_recibida->tamanio_tarea);
 
     pthread_mutex_unlock(&acceso_memoria);
 
     //MANDO LA TAREA AL DISCORDIADOR
     int tamanioSerializacion;
-    void *tarea_enviar = serializarTarea(tarea_recibida, &tamanioSerializacion);
+    void *tarea_enviar = serializarTarea(tarea_recibida, ENVIAR_PROXIMA_TAREA, &tamanioSerializacion);
     send(client, tarea_enviar, tamanioSerializacion, 0);
     free(tarea_enviar);
     free(tarea_recibida);
@@ -135,6 +153,15 @@ void actualizar_estado_paginada(t_estado *datos_recibidos)
 
         if (elemento_proceso->tipo == TCB && elemento_proceso->id == datos_recibidos->TID)
         {
+            //int bytes_ocupados = elemento_proceso->offset + elemento_proceso->tamanio;
+            // for (int j = elemento_proceso->offset; j < bytes_ocupados; j += config->tamanio_pagina)
+            // {
+            //     t_estado_frame *frame = list_get(estado_frames, j);
+            //     frame->ultimo_acceso = obtener_timestamp();
+            //     printf("EL ULTIMO ACCESO AL FRAME %d ES DE: %d\n", j, frame->ultimo_acceso);
+            //     list_replace(estado_frames, j, frame);
+            // }
+
             memcpy(tcbSerializado, elementos_proceso + elemento_proceso->offset, elemento_proceso->tamanio);
 
             tcb = deserializar_TCB(tcbSerializado);
@@ -233,7 +260,12 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //LIBERO LA MEMORIA Y ELIMINO LAS PAGINAS DEL PROCESO DE LA TABLA
                 for (int j = 0; j < list_size(pag_proceso->paginas); j++)
                 {
-                    estado_frames[((int)list_get(pag_proceso->paginas, j) - (int)memoria) / tamanio_paginas] = 0;
+                    int indice = ((int)list_get(pag_proceso->paginas, j) - (int)memoria) / tamanio_paginas;
+                    t_estado_frame *frame = list_get(estado_frames, indice);
+                    frame->ocupado = 0;
+                    frame->ultimo_acceso = 0;
+                    list_replace(estado_frames, indice, frame);
+
                     list_remove(pag_proceso->paginas, j);
                 }
 
@@ -251,7 +283,6 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
 
             if (obtener_pid_pag(tabla_un_proceso) == datos_recibidos->pid)
             {
-
                 list_remove(tabla_procesos, i);
             }
         }
@@ -284,7 +315,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //memcpy(tcbSerializado, elementos_proceso_cTCB + elemento_del_proceso->offset, sizeof(t_TCB));
                 //t_TCB *TCB = deserializar_TCB(tcbSerializado);
                 //printf("%d\n", TCB->TID);
-                //printf("%C\n", TCB->estado);
+                //printf("%c\n", TCB->estado);
                 //printf("%d\n", TCB->posX);
                 //printf("%d\n", TCB->posY);
                 //printf("%d\n", TCB->proximaInstruccion);
@@ -293,12 +324,13 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
                 if (paginasNecesarias < list_size(lista_paginas_proceso))
                 {
-
                     for (int i = list_size(lista_paginas_proceso) - 1; i > paginasNecesarias - 1; i--)
                     {
-                        estado_frames[i] = 0;
+                        t_estado_frame *frame = list_get(estado_frames, i);
+                        frame->ocupado = 0;
+                        list_replace(estado_frames, i, frame);
                         list_remove(lista_paginas_proceso, i);
-                        printf("Libero un pagina\n");
+                        //printf("Libero un pagina\n");
                     }
                 }
 

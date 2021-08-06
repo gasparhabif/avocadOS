@@ -2,7 +2,7 @@
 
 void discordiador_cxn_handler_bitacoras()
 {
-    int bitacora_tid = (int)recibir_paquete(discordiador_cxn_bitacoras);
+    int bitacora_tid = *(int *)recibir_paquete(discordiador_cxn_bitacoras);
 
     while (bitacora_tid >= 0)
     {
@@ -28,8 +28,11 @@ void discordiador_cxn_handler_bitacoras()
         liberar_bitacora(bitacora);
 
         pthread_mutex_unlock(&fs_libre);
-        bitacora_tid = (int)recibir_paquete(discordiador_cxn_bitacoras);
+        bitacora_tid = *(int *)recibir_paquete(discordiador_cxn_bitacoras);
     }
+
+    log_error(logger, "Se murió el thread de los sabotajes");
+    exit(EXIT_FAILURE);
 }
 
 void accept_tripulantes(void *arg)
@@ -72,7 +75,6 @@ void tripulante_cxn_handler(void *arg)
 
     // Obtener path
     char *bitacora_file_path = string_from_format("%s/Tripulante%s.ims", bitacoras_dir_path, tid);
-    // char *bitacora_file_path = string_from_format("%s/Tripulante.ims", bitacoras_dir_path, tid);
 
     if (!file_exists(bitacora_file_path))
     {
@@ -105,8 +107,11 @@ void tripulante_cxn_handler(void *arg)
             free(datos_posicion);
             break;
 
-        case INICIO_TAREA:
-            registrar_bitacora(bitacora, string_from_format("Comienza ejecución de tarea %s$", get_nombre_tarea((int)datos_recibidos)));
+        case INICIO_TAREA:;
+            t_tarea *datos_tarea = (t_tarea *)datos_recibidos;
+            registrar_bitacora(bitacora, string_from_format("Comienza ejecución de tarea %s$", datos_tarea->tarea));
+            free(datos_tarea->tarea);
+            free(datos_tarea);
             break;
 
         case INICIO_RESOLUCION_SABOTAJE:
@@ -124,7 +129,8 @@ void tripulante_cxn_handler(void *arg)
         case EJECUTAR_TAREA:;
             t_ejecutar_tarea *tarea_a_ejecutar = (t_ejecutar_tarea *)datos_recibidos;
             ejecutarTarea(tarea_a_ejecutar);
-            registrar_bitacora(bitacora, string_from_format("Se finaliza la tarea %s$", get_nombre_tarea(tarea_a_ejecutar->codigoTarea)));
+            registrar_bitacora(bitacora, string_from_format("Se finaliza la tarea %s$", tarea_a_ejecutar->tarea));
+            free(tarea_a_ejecutar->tarea);
             free(tarea_a_ejecutar);
             break;
 

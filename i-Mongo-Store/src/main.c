@@ -51,15 +51,15 @@ int main()
     // Si existen, cargar recursos
     if (file_exists(oxigeno_file_path))
     {
-        last_oxigeno = load_recurso(oxigeno_file_path);
+        backup_oxigeno = load_recurso(oxigeno_file_path);
     }
     if (file_exists(comida_file_path))
     {
-        last_comida = load_recurso(comida_file_path);
+        backup_comida = load_recurso(comida_file_path);
     }
     if (file_exists(basura_file_path))
     {
-        last_basura = load_recurso(basura_file_path);
+        backup_basura = load_recurso(basura_file_path);
     }
 
     // Inicializar servidor
@@ -114,9 +114,9 @@ int main()
 
     // ...
 
-    liberar_recurso(last_oxigeno);
-    liberar_recurso(last_comida);
-    liberar_recurso(last_basura);
+    liberar_recurso(backup_oxigeno);
+    liberar_recurso(backup_comida);
+    liberar_recurso(backup_basura);
 
     free(blocks_file_copy);
     free(superbloque->bitmap->bitarray);

@@ -113,49 +113,17 @@ void update_pos(t_posicion *current_pos, t_posicion *next_pos)
     current_pos->posY = next_pos->posY;
 }
 
-char *get_nombre_tarea(int cod_tarea)
-{
-    char *nombre_tarea = string_new();
-
-    switch (cod_tarea)
-    {
-    case GENERAR_OXIGENO:
-        string_append(&nombre_tarea, "GENERAR_OXIGENO");
-        break;
-    case CONSUMIR_OXIGENO:
-        string_append(&nombre_tarea, "CONSUMIR_OXIGENO");
-        break;
-    case GENERAR_COMIDA:
-        string_append(&nombre_tarea, "GENERAR_COMIDA");
-        break;
-    case CONSUMIR_COMIDA:
-        string_append(&nombre_tarea, "CONSUMIR_COMIDA");
-        break;
-    case GENERAR_BASURA:
-        string_append(&nombre_tarea, "GENERAR_BASURA");
-        break;
-    case DESCARTAR_BASURA:
-        string_append(&nombre_tarea, "DESCARTAR_BASURA");
-        break;
-    default:
-        string_append(&nombre_tarea, "NORMAL");
-        break;
-    }
-
-    return nombre_tarea;
-}
-
 char *reconstruir_bitacora(t_bitacora_mongo *bitacora)
 {
     char *bitacora_string = string_new();
+    char *block_info = malloc(superbloque->block_size);
 
     for (int i = 0; i < list_size(bitacora->blocks); i++)
     {
-        char *block_info = malloc(superbloque->block_size);
-        memcpy(block_info, blocks_file + (int)list_get(bitacora->blocks, i) * superbloque->block_size, superbloque->block_size);
-        string_append(&bitacora_string, block_info);
-        free(block_info);
+        memcpy(block_info, blocks_file_copy + (int)list_get(bitacora->blocks, i) * superbloque->block_size, superbloque->block_size);
+        string_append(&bitacora_string, string_substring_until(block_info, superbloque->block_size));
     }
 
+    free(block_info);
     return string_substring_until(bitacora_string, bitacora->size - 1);
 }

@@ -36,21 +36,38 @@ void liberar_memoria(int liberar)
 
 t_registro_segmentos *guardar_tareas(int cantTareas, t_tarea *tareas_recibidas)
 {
-
+    //CALCULO EL TAMAÑO DE LAS TAREAS
+    int tamanio_tareas = 0;
+    for (int i = 0; i < cantTareas; i++)
+        tamanio_tareas += tareas_recibidas[i].tamanio_tarea;
+    
     //RESERVO EL SEGMENTO PARA LAS TAREAS
-    void *pos_tareas = reservar_memoria(cantTareas * sizeof(t_tarea));
+    void *pos_tareas = reservar_memoria(tamanio_tareas);
 
     //COPIO LAS TAREAS EN LA POSICION RESERVADA
-    memcpy(pos_tareas, tareas_recibidas, cantTareas * sizeof(t_tarea));
+    if(pos_tareas != (void *)-1){    
+        int despl = 0;
+
+        for(int i = 0; i < cantTareas; i++){
+            memcpy(pos_tareas + despl, tareas_recibidas[i].tarea, tareas_recibidas[i].tamanio_tarea);
+            despl += tareas_recibidas[i].tamanio_tarea;
+        }
+    }
 
     //CREO EL REGISTRO PARA LUEGO AÑADIR A LA LISTA DEL PROCESO
     t_registro_segmentos *segmento_tareas = malloc(sizeof(t_registro_segmentos));
 
     //LLENO EL SEGMENTO DE LAS TAREAS
-    segmento_tareas->base = pos_tareas;
-    segmento_tareas->tamanio = sizeof(t_tarea) * cantTareas;
-    segmento_tareas->tipo = TAREAS;
-    segmento_tareas->id = cantTareas;
+    segmento_tareas->base           = pos_tareas;
+    segmento_tareas->tamanio        = tamanio_tareas;
+    segmento_tareas->tipo           = TAREAS;
+    segmento_tareas->id             = cantTareas;
+    segmento_tareas->tamanio_tareas = list_create();
+    
+    for(int i = 0; i < cantTareas; i++){
+        list_add(segmento_tareas->tamanio_tareas, (void *) tareas_recibidas[i].tamanio_tarea);
+        //printf("Agrego tarea %d con tamanio %d tamanio lista %d\n", i, (int) list_get(segmento_tareas->tamanio_tareas, i), list_size(segmento_tareas->tamanio_tareas));
+    }
 
     return segmento_tareas;
 }
@@ -78,12 +95,13 @@ t_registro_segmentos *guardar_pcb(t_PCB *pcb_recibido)
 
 t_registro_segmentos *guardar_tcb(t_TCB tcb_recibido)
 {
-
     //RESERVO MEMORIA PARA EL TCB
     void *tcb = reservar_memoria(sizeof(t_TCB));
 
-    //COPIO EL PCB EN LA POSICION RESERVADA
-    memcpy(tcb, &tcb_recibido, sizeof(t_TCB));
+    if(tcb != (void *)-1){   
+        //COPIO EL PCB EN LA POSICION RESERVADA
+        memcpy(tcb, &tcb_recibido, sizeof(t_TCB));
+    }
 
     //CREO EL REGISTRO PARA LUEGO AÑADIR A LA LISTA DEL PROCESO
     t_registro_segmentos *segmento_tcb = malloc(sizeof(t_registro_segmentos));

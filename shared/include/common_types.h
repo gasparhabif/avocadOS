@@ -82,7 +82,7 @@ typedef struct
     uint32_t posY;
     uint32_t proximaInstruccion;
     uint32_t puntero_PCB;
-} t_TCB;
+} __attribute__((packed)) t_TCB;
 
 typedef struct
 {
@@ -142,23 +142,31 @@ typedef struct
 //TAREAS
 typedef struct
 {
+    uint32_t tamanio_tarea;
+    char *tarea;
+} t_tarea;
+
+typedef struct
+{
     uint8_t codigoTarea;
     uint32_t parametro;
     uint32_t posX;
     uint32_t posY;
     uint32_t duracionTarea;
-} t_tarea;
+} t_tarea_descomprimida;
 
 typedef struct
 {
     uint32_t PID;
-    uint8_t cantTareas;
+    uint32_t cantTareas;
     t_tarea *tareas;
 } t_tareas_cPID;
 
 typedef struct
 {
-    uint8_t codigoTarea;
+    uint32_t codigoTarea;
+    uint32_t len_tarea;
+    char* tarea;
     uint32_t parametro;
 } t_ejecutar_tarea;
 

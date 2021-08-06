@@ -14,10 +14,11 @@ void INICIAR_PATOTA(char **parametros)
         printf("Error: INICIAR_PATOTA [CANT TRIPULANTES] [RUTA DE TAREAS] [POSICIONES]\n");
     else
     {
-        FILE *fpTareas;
         int cantTripulantes = atoi(parametros[1]);
 
+        FILE *fpTareas;
         fpTareas = fopen(parametros[2], "r");
+
         if (!fpTareas)
         {
             printf("Error abriendo el archivo\n");
@@ -31,12 +32,12 @@ void INICIAR_PATOTA(char **parametros)
             {
                 //LEO LAS INSTRUCCIONES DEL ARCHIVO Y LAS EMPAQUETO
                 int cantTareas = 0;
-                int errorLeyendoTareas = 0;
 
-                t_tarea *tareas = leer_tareas(fpTareas, &cantTareas, &errorLeyendoTareas);
+                t_tarea *tareas = leer_tareas(parametros[2], &cantTareas);
 
-                if (errorLeyendoTareas)
-                    return;
+                //printf("Cant tareas: %d\n", cantTareas);
+                //for (int i = 0; i < cantTareas; i++)
+                //    printf("Tarea N°%d\nTamanio tarea: %d\nTarea: %s\n\n", i+1, tareas[i].tamanio_tarea, tareas[i].tarea);
 
                 //SERIALIZAR INSTRUCCIONES DEL ARCHIVO
                 //printf("Serializando...\n");
@@ -54,10 +55,10 @@ void INICIAR_PATOTA(char **parametros)
 
                 //RECIBO LA DIRECCION LOGICA DEL PCB
                 //printf("Recibiendo datos\n");
-                int direccionPCB = (int)recibir_paquete(sockfd_ram);
-                //printf("Pos recibida: %d\n", direccionPCB);
+                int *direccionPCB = (int *)recibir_paquete(sockfd_ram);
+                //printf("Pos recibida: %p y %d\n", (void *) *direccionPCB, *direccionPCB);
 
-                if (direccionPCB < 0)
+                if (*direccionPCB < 0)
                 {
                     log_info(logger, "Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes");
                     printf("Error guardando PCB y/o tareas en memoria, no se crearon los tripulantes\n");
@@ -75,7 +76,7 @@ void INICIAR_PATOTA(char **parametros)
                     tripulantes_tcb[i].posX = 0;
                     tripulantes_tcb[i].posY = 0;
                     tripulantes_tcb[i].proximaInstruccion = 0;
-                    tripulantes_tcb[i].puntero_PCB = direccionPCB;
+                    tripulantes_tcb[i].puntero_PCB = *direccionPCB;
                 }
 
                 //Le asigno las posiciones a los tripilantes si es que vinieron seteadas por consola
@@ -145,7 +146,7 @@ void LISTAR_TRIPULANTES(char **parametros)
     char *hora = malloc(128);
     strftime(hora, 128, "%d/%m/%y %H:%M:%S", tlocal);
 
-    printf("--------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
 
     printf("Estado de la nave: %s\n", hora);
     free(hora);
@@ -155,13 +156,13 @@ void LISTAR_TRIPULANTES(char **parametros)
     {
         printf("Patota: %d\t", tripulantesRecibidos->tripulantes[i].PID);
         printf("Tripulante: %d\t", tripulantesRecibidos->tripulantes[i].TID);
-        printf("Status: %c\t", tripulantesRecibidos->tripulantes[i].estado);
+        printf("Status: %s\t", imprimir_estado(tripulantesRecibidos->tripulantes[i].estado));
         printf("Pos X: %d\t", tripulantesRecibidos->tripulantes[i].posX);
         printf("Pos Y: %d\t", tripulantesRecibidos->tripulantes[i].posY);
         printf("Nro. Inst: %d\n", tripulantesRecibidos->tripulantes[i].proximaInstruccion);
     }
 
-    printf("--------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
 }
 
 void EXPULSAR_TRIPULANTE(char **parametros)

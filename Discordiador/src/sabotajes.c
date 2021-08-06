@@ -24,7 +24,8 @@ void sabotajes()
         sabotaje = 1;
 
         //DOY EL AVISO CORRESPONDIENTE DE COMIENZO
-        printf(">>>>>>>>>>>>>>>>>>>>>\nATENDIENDO UN SABOTAJE\n<<<<<<<<<<<<<<<<<<<<<<\n\n");
+        system("clear");
+        printf("----------------------\nATENDIENDO UN SABOTAJE\n----------------------\n\n>");
         log_info(logger, "ATENDIENDO UN SABOTAJE");
 
         //MUEVO LOS TRIPULANTES A LA LISTA DE BLOQ
@@ -105,13 +106,13 @@ void sabotajes()
             //PONGO LOS TRIPULANTES EN LA COLA QUE PERTENECEN
             switch (aux_admin->estado)
             {
-            case READY:
-                list_add(ready, aux_admin);
-                break;
+                case READY:
+                    list_add(ready, aux_admin);
+                    break;
 
-            case EXEC:
-                list_add(exec, aux_admin);
-                break;
+                case EXEC:
+                    list_add(exec, aux_admin);
+                    break;
             }
         }
 
@@ -126,7 +127,8 @@ void sabotajes()
         pausar(0);
 
         //DOY EL AVISO CORRESPONDIENTE DE FIN
-        printf("\n\n--------------------------\nFIN RESOLUCION DE SABOTAJE\n--------------------------\n\n>");
+        system("clear");
+        printf("--------------------------\nFIN RESOLUCION DE SABOTAJE\n--------------------------\n\n>");
         log_info(logger, "FIN RESOLUCION DE SABOTAJE");
     }
 

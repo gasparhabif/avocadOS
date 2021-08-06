@@ -59,6 +59,57 @@ void *serializarTCB(uint32_t pid, t_TCB unTCB, int *tamanioSerializacion)
     //free(a_enviar);
 }
 
+void *serializarTarea(t_tarea *unaTarea, int cop, int *tamanioSerializacion)
+{
+
+    //CREO EL BUFFER
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    //CARGO EL SIZE DEL BUFFER
+    buffer->size = unaTarea->tamanio_tarea + sizeof(uint32_t);
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    void *stream = malloc(buffer->size);
+    int offset = 0;
+
+    memcpy(stream + offset, &(unaTarea->tamanio_tarea), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    if (unaTarea->tamanio_tarea != FIN_TAREAS)
+        memcpy(stream + offset, unaTarea->tarea, unaTarea->tamanio_tarea);
+
+    buffer->stream = stream;
+
+    //CREAMOS EL PAQUETE
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = ENVIAR_PROXIMA_TAREA;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void *a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
+}
+
+/*
+
 void *serializarTarea(t_tarea *unaTarea, int *tamanioSerializacion)
 {
 
@@ -114,6 +165,78 @@ void *serializarTarea(t_tarea *unaTarea, int *tamanioSerializacion)
     //free(a_enviar);
 }
 
+
+*/
+
+void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSerializacion, int cantTareas)
+{
+    //CREO EL BUFFER Y LE RESERVO LA MEMORIA
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = 0;
+
+    for (int i = 0; i < cantTareas; i++)
+    {
+        buffer->size += unasTareas[i].tamanio_tarea + sizeof(uint32_t);
+    }
+
+    //CARGO EL SIZE DEL BUFFER
+    // tamanio de todas las tareas += PID + Cant Tareas
+    buffer->size += +sizeof(uint32_t) * 2;
+
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    buffer->stream = malloc(buffer->size);
+
+    int offset = 0;
+
+    memcpy(buffer->stream + offset, &patotaID, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(buffer->stream + offset, &cantTareas, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+
+    for (int i = 0; i < cantTareas; i++)
+    {
+        memcpy(buffer->stream + offset, &(unasTareas[i].tamanio_tarea), sizeof(uint32_t));
+        offset += sizeof(uint32_t);
+        memcpy(buffer->stream + offset, unasTareas[i].tarea, unasTareas[i].tamanio_tarea);
+        offset += unasTareas[i].tamanio_tarea;
+    }
+
+    //CREAMOS EL PAQUETE
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+
+    //buffer->stream = stream;
+
+    // Cantidad de Tareas * Tamaño Tareas + Cant Tareas + PID + Size del Stream
+    //paquete->buffer = malloc(cantTareas * sizeof(t_tarea) + sizeof(u_int8_t) + sizeof(uint32_t) + sizeof(uint32_t));
+
+    paquete->codigo_operacion = COMENZAR_PATOTA;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void *a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    //DEVUELVO LA MEMORIA UTILIZADA
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
+}
+
+/*
 void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSerializacion, int cantTareas)
 {
     //CREO EL BUFFER Y LE RESERVO LA MEMORIA
@@ -180,10 +303,10 @@ void *serializarTareas_cPID(t_tarea *unasTareas, int patotaID, int *tamanioSeria
     //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
     //free(a_enviar);
 }
+*/
 
 void *serializarInt(uint32_t valor, uint8_t CODIGO_OPERACION, int *tamanioSerializacion)
 {
-
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
@@ -542,14 +665,18 @@ void *serializar_bitacora(t_bitacora *unaBitacora, uint32_t *tamanioSerializacio
     //free(a_enviar);
 }
 
-void *serializar_ejecutarTarea(uint32_t codTarea, uint32_t parametro, int *tamanioSerializacion)
+void *serializar_ejecutarTarea(uint32_t codTarea, char *tarea, uint32_t parametro, int *tamanioSerializacion)
 {
+
+    //printf("Se envia:\n\tCOD: %d\n\tLEN: %d\n\tTAREA: %s\n\tPARAMETRO: %d\n", codTarea, strlen(tarea), tarea, parametro);
+    uint32_t tamanio_nombre_tarea;
+    tamanio_nombre_tarea = strlen(tarea) + 1;
 
     //CREO EL BUFFER
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     //CARGO EL SIZE DEL BUFFER
-    buffer->size = sizeof(uint32_t) * 2;
+    buffer->size = sizeof(uint32_t) * 3 + tamanio_nombre_tarea;
 
     //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
     *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
@@ -560,6 +687,10 @@ void *serializar_ejecutarTarea(uint32_t codTarea, uint32_t parametro, int *taman
 
     memcpy(stream + offset, &codTarea, sizeof(uint32_t));
     offset += sizeof(uint32_t);
+    memcpy(stream + offset, &tamanio_nombre_tarea, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, tarea, tamanio_nombre_tarea);
+    offset += tamanio_nombre_tarea;
     memcpy(stream + offset, &parametro, sizeof(uint32_t));
 
     buffer->stream = stream;
@@ -662,6 +793,54 @@ void *serializar_bitacora_tripulante(uint32_t tamanio_bitacora, char *bitacora, 
     //CREAMOS EL PAQUETE
     t_paquete *paquete = malloc(sizeof(t_paquete));
     paquete->codigo_operacion = BITACORA_TRIPULANTE;
+    paquete->buffer = buffer;
+
+    //CREO EL STREAM A ENVIAR
+    void *a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
+    return a_enviar;
+
+    //NO OLVIDARSE DE LIBERAR LA MEMORIA QUE DEVUELVE ESTA FUNCION
+    //free(a_enviar);
+}
+
+void *serializar_string(char *str, uint32_t len_str, int *tamanioSerializacion)
+{
+
+    //CREO EL BUFFER
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    //CARGO EL SIZE DEL BUFFER
+    buffer->size = sizeof(uint32_t) + len_str;
+
+    //CARGO EL TAMAÑO SE LA SERIALIZACION (PARA QUE EL SEND SE PUEDA REALIZAR CORRECTAMENTE)
+    *tamanioSerializacion = buffer->size + sizeof(uint32_t) + sizeof(uint8_t);
+
+    //CARGO EL STREAM DEL BUFFER
+    void *stream = malloc(buffer->size);
+    int offset = 0;
+
+    memcpy(stream + offset, &len_str, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(stream + offset, str, len_str);
+    offset += len_str;
+
+    buffer->stream = stream;
+
+    //CREAMOS EL PAQUETE
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    paquete->codigo_operacion = INICIO_TAREA;
     paquete->buffer = buffer;
 
     //CREO EL STREAM A ENVIAR

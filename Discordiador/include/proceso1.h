@@ -16,10 +16,13 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 #include <signal.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include "shared_utils.h"
@@ -54,12 +57,12 @@ void OBTENER_BITACORA(char **);
 void IMPRIMIR_SEGMENTOS(char **);
 
 //DEFINIDAS EN utils.c
-t_tarea *leer_tareas(FILE *, int *, int *);
+t_tarea *leer_tareas(char *, int *);
+t_tarea_descomprimida *descomprimir_tarea(t_tarea *, /*int*,*/ char **);
 int contar_caracteres_especiales(size_t, char *, char);
 int pausar(int);
 void pausar_tripulantes(int);
 void pausar_lista(t_list *, int);
-
 int eliminarTripulante(t_list *, int);
 int menor_tid_list(t_list *);
 int mayor_tid_list(t_list *);
@@ -67,11 +70,12 @@ int matarTripulante(int);
 int existeTripulante(int);
 int avisoDeMuerte(int);
 int revisarLista_avisoDeMuerte(t_list *, int);
+char *imprimir_estado(char);
 
 //DEFINIDAS EN tripulantes.c
 void tripulante(t_parametros_tripulantes *parametro);
-t_tarea *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado);
-int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
+t_tarea_descomprimida *solicitar_tarea(t_admin_tripulantes *admin, int *finTareas, int *duracionMovimientos, int *duracionEjecucion, int *duracionBloqueado, int *len_tarea, char **nom_tarea);
+int ejecutar_tarea(t_admin_tripulantes *admin, t_tarea_descomprimida *unaTarea, int *duracionMovimientos, int *duracionEjecucion);
 void mover_tripulante(t_admin_tripulantes *admin, uint32_t posX, uint32_t posY, int movimientosPosibles, int *duracionMovimientos);
 int ejecutar_tiempos_CPU(int duracionEjecucion, int tEjecutado);
 void actualizar_estado(t_admin_tripulantes *admin, char nuevoEstado);
