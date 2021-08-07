@@ -64,7 +64,7 @@ void recibir_mensaje(void *parametro)
                 actualizar_estado_paginada(datos_recibidos);
                 break;
             case SOLICITAR_LISTA:
-                log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
+                log_info(logger, "El discordiador %d solicito un listado de tripulantes", client);
                 solicitar_tripulantes_paginada(client);
                 //free(datos_recibidos);
                 break;
@@ -107,7 +107,7 @@ void recibir_mensaje(void *parametro)
                 actualizar_estado(datos_recibidos);
                 break;
             case SOLICITAR_LISTA:
-                log_info(logger, "El discordiador %d solicito un listdo de tripulantes", client);
+                log_info(logger, "El discordiador %d solicito un listado de tripulantes", client);
                 solicitar_tripulantes(client);
                 //free(datos_recibidos);
                 break;

@@ -246,13 +246,15 @@ t_tarea *obtenerTarea(t_list *lista_proceso, int pid, int nInstruccion)
         if (pagina_proceso->tipo == TAREAS)
         {
 
-            if (pagina_proceso->id == nInstruccion)
+            if (pagina_proceso->id <= nInstruccion)
             {
                 tarea->tamanio_tarea = FIN_TAREAS;
                 return tarea;
             }
             else
             {
+                //printf("nInstruccion: %d\ncantInstruccion: %d\tamanioLista: %d\n", nInstruccion, pagina_proceso->id, list_size(pagina_proceso->len_tareas));
+
                 int offset_tarea = 0;
                 for (int i = 0; i < nInstruccion; i++)
                     offset_tarea += (int)list_get(pagina_proceso->len_tareas, i);

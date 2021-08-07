@@ -16,7 +16,7 @@ int solicitar_paginas(int bytes_solicitados, int pid)
     cantidad_paginas_a_reservar = (bytes_solicitados - fragmentacion_interna) / tamanio_paginas;
     if (((bytes_solicitados - fragmentacion_interna) % tamanio_paginas) != 0)
         cantidad_paginas_a_reservar++;
- 
+
     //log_info(logger, "Se solicitaron %dB, la fragmentacion es %dB", bytes_solicitados, fragmentacion_interna);
 
     paginas_proceso = obtener_paginas_proceso(pid, &err);
@@ -144,7 +144,6 @@ void guardar_tareas_pcb_paginacion(t_tareas_cPID *tareas_cPID_recibidas)
 
 void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
 {
-
     //SERIALIZO EL TCB
     void *tcb = serializar_TCB(datos_recibidos->tcb);
 
@@ -175,12 +174,13 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
     else
     {
         //ESCRIBO DESDE LA PAGINA QUE DEBA LLENAR HASTA TODAS LAS QUE NECESITE PARA GUARDAR EL TCB
-        for (int i = escribirDesdePagina; i < (escribirDesdePagina + paginas_acceder); i++)
+        for (int i = escribirDesdePagina; i <= (escribirDesdePagina + paginas_acceder); i++)
         {
             //log_info(logger, "i: %d", i);
             //LA PRIMERA PAGINA DEBO UNICAMENTE LLENARLA CON LOS BYTES QUE FALTAN
             if (i == escribirDesdePagina)
             {
+                printf("Ahora guardo %d bytes\n", bGuardadros + fragmentacion_interna);
                 memcpy((list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina), tcb, fragmentacion_interna);
                 bGuardadros += fragmentacion_interna;
             }
@@ -189,6 +189,7 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
             {
                 if (bGuardadros + tamanio_paginas < sizeof(t_TCB))
                 {
+                    printf("Guardé %d bytes\n", bGuardadros + tamanio_paginas);
                     //printf("Se copia en %p lo que esta en %p, un total de %dB\n", list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, tamanio_paginas);
                     memcpy(list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, tamanio_paginas);
                     bGuardadros += tamanio_paginas;
@@ -196,6 +197,7 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
                 else
                 {
                     //printf("Se copia en %p lo que esta en %p, un total de %dB\n", list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, sizeof(t_TCB)-bGuardadros);
+                    printf("bGuardados: %d\tEscribo: %d\n", bGuardadros, sizeof(t_TCB) - bGuardadros);
                     memcpy(list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, sizeof(t_TCB) - bGuardadros);
                     bGuardadros += sizeof(t_TCB) - bGuardadros;
                 }
