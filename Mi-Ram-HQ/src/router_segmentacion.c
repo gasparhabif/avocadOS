@@ -80,8 +80,6 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTrip
 
     list_add(buscar_lista_proceso(tcbCpid_recibido->pid), segmento_tareas);
 
-    pthread_mutex_unlock(&m_procesos);
-
     //DIBUJO EL TRIPULANTE EN EL MAPA
     int err;
     err = personaje_crear(level, idMapaTripulante, tcbCpid_recibido->tcb.posX, tcbCpid_recibido->tcb.posY);
@@ -89,6 +87,8 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTrip
         log_error(logger, "Error al crear el personaje en el mapa");
     ASSERT_CREATE(level, idMapaTripulante, err);
     nivel_gui_dibujar(level);
+
+    pthread_mutex_unlock(&m_procesos);
 
     //LE AVISO AL TRIPULANTE QUE SUS ESTRUCTURAS YA SE ENCUENTRAN EN MEMORIA
     int tamanioSerializacion;
@@ -156,11 +156,11 @@ void mover_tripulante(t_envio_posicion *pos_recibida, char idMapaTripulante)
     //LLEVO EL TCB NUEVAMENTE A MEMORIA
     memcpy(seg_tcb->base, tcb, sizeof(t_TCB));
 
-    pthread_mutex_unlock(&m_procesos);
-
     //MODIFICO LA POSICION DEL TRIPULANTE EN EL MAPA
     item_mover(level, idMapaTripulante, pos_recibida->pos.posX, pos_recibida->pos.posY);
     nivel_gui_dibujar(level);
+
+    pthread_mutex_unlock(&m_procesos);
 
     log_info(logger, "Se movio al tripulante a la posicion %d|%d", pos_recibida->pos.posX, pos_recibida->pos.posY);
 
@@ -247,12 +247,11 @@ void eliminar_tripulante(t_pidYtid *pidCtid_recibido, char idMapaTripulante)
         liberar_memoria(baseTCB);
         log_info(logger, "Se elimino el trpulante N°%d", pidCtid_recibido->tid);
     }
-
-    pthread_mutex_unlock(&m_procesos);
-
     //ELIMINO AL TRIPULANTE DEL MAPA
     item_borrar(level, idMapaTripulante);
     nivel_gui_dibujar(level);
+
+    pthread_mutex_unlock(&m_procesos);
 
     //LIBERO LA MEMORIA
     free(pidCtid_recibido);

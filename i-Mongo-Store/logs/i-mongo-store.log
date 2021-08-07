@@ -1,126 +1,992 @@
-[INFO] 14:18:13:128 i-Mongo-Store/(9480:9480): Se inició el log
-[INFO] 14:18:13:131 i-Mongo-Store/(9480:9480): Se cargó la configuración
-[INFO] 14:18:13:131 i-Mongo-Store/(9480:9480): El FS no existe. Creando FS desde cero...
-[INFO] 14:18:13:132 i-Mongo-Store/(9480:9480): Se crearon los directorios
-[INFO] 14:18:13:133 i-Mongo-Store/(9480:9480): Se creó SuperBloque.ims
-[INFO] 14:18:13:141 i-Mongo-Store/(9480:9480): Se creó Blocks.ims
-[INFO] 14:18:13:143 i-Mongo-Store/(9480:9480): Se creó el FS
-[INFO] 14:18:13:144 i-Mongo-Store/(9480:9480): Se cargó SuperBloque.ims
-[INFO] 14:18:13:146 i-Mongo-Store/(9480:9480): Se cargó Blocks.ims
-[INFO] 14:18:13:149 i-Mongo-Store/(9480:9480): Esperando Discordiador en el puerto 5002 para informar sabotajes
-[INFO] 14:18:17:145 i-Mongo-Store/(9480:9480): Se conectó el discordiador en el socket 7 para informar sabotajes
-[INFO] 14:18:17:145 i-Mongo-Store/(9480:9480): Esperando Discordiador en el puerto 5002 para traficar bitácoras
-[INFO] 14:18:17:146 i-Mongo-Store/(9480:9480): Se conectó el Discordiador en el socket 8 para traficar bitácoras
-[INFO] 14:18:17:146 i-Mongo-Store/(9480:9480): Esperando tripulantes en el puerto 5002
-[INFO] 14:18:20:607 i-Mongo-Store/(9480:9535): Se conectó el tripulante TID: 9532 - Posición inicial: 1|1
-[INFO] 14:18:20:608 i-Mongo-Store/(9480:9535): Se creó Tripulante9532.ims
-[INFO] 14:18:20:608 i-Mongo-Store/(9480:9535): Se cargó Tripulante9532.ims
-[INFO] 14:18:20:612 i-Mongo-Store/(9480:9537): Se conectó el tripulante TID: 9533 - Posición inicial: 0|0
-[INFO] 14:18:20:615 i-Mongo-Store/(9480:9537): Se creó Tripulante9533.ims
-[INFO] 14:18:20:620 i-Mongo-Store/(9480:9537): Se cargó Tripulante9533.ims
-[INFO] 14:18:24:858 i-Mongo-Store/(9480:9540): Se conectó el tripulante TID: 9538 - Posición inicial: 1|0
-[INFO] 14:18:24:861 i-Mongo-Store/(9480:9540): Se creó Tripulante9538.ims
-[INFO] 14:18:24:864 i-Mongo-Store/(9480:9540): Se cargó Tripulante9538.ims
-[INFO] 14:18:25:157 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
-[INFO] 14:18:30:351 i-Mongo-Store/(9480:9543): Se conectó el tripulante TID: 9541 - Posición inicial: 0|1
-[INFO] 14:18:30:352 i-Mongo-Store/(9480:9543): Se creó Tripulante9541.ims
-[INFO] 14:18:30:353 i-Mongo-Store/(9480:9543): Se cargó Tripulante9541.ims
-[INFO] 14:18:37:164 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
-[INFO] 14:18:39:133 i-Mongo-Store/(9480:9540): Comienza ejecución de tarea GENERAR_BASURA$
-[INFO] 14:18:39:134 i-Mongo-Store/(9480:9535): Comienza ejecución de tarea GENERAR_OXIGENO$
-[INFO] 14:18:39:138 i-Mongo-Store/(9480:9535): Se mueve de 1|1 a 2|1$
-[INFO] 14:18:39:143 i-Mongo-Store/(9480:9535): Se mueve de 2|1 a 3|1$
-[INFO] 14:18:39:145 i-Mongo-Store/(9480:9540): Se mueve de 1|0 a 2|0$
-[INFO] 14:18:39:147 i-Mongo-Store/(9480:9540): Se mueve de 2|0 a 2|1$
-[INFO] 14:18:39:148 i-Mongo-Store/(9480:9540): Se mueve de 2|1 a 2|2$
-[INFO] 14:18:39:153 i-Mongo-Store/(9480:9535): Se mueve de 3|1 a 4|1$
-[INFO] 14:18:39:154 i-Mongo-Store/(9480:9537): Comienza ejecución de tarea GENERAR_OXIGENO$
-[INFO] 14:18:39:155 i-Mongo-Store/(9480:9537): Se mueve de 0|0 a 1|0$
-[INFO] 14:18:39:155 i-Mongo-Store/(9480:9537): Se mueve de 1|0 a 2|0$
-[INFO] 14:18:39:156 i-Mongo-Store/(9480:9537): Se mueve de 2|0 a 3|0$
-[INFO] 14:18:39:157 i-Mongo-Store/(9480:9543): Comienza ejecución de tarea ESCANEAR_MUESTRAS$
-[INFO] 14:18:39:162 i-Mongo-Store/(9480:9543): Se mueve de 0|1 a 1|1$
-[INFO] 14:18:39:165 i-Mongo-Store/(9480:9543): Se mueve de 1|1 a 2|1$
-[INFO] 14:18:39:187 i-Mongo-Store/(9480:9540): Se creó Basura.ims
-[INFO] 14:18:39:188 i-Mongo-Store/(9480:9540): Se cargó /home/utnso/fs/Files/Basura.ims
-[INFO] 14:18:39:227 i-Mongo-Store/(9480:9540): Se finaliza la tarea GENERAR_BASURA$
-[INFO] 14:18:39:228 i-Mongo-Store/(9480:9540): Comienza ejecución de tarea LIMPIAR_ACUARIOS$
-[INFO] 14:18:39:231 i-Mongo-Store/(9480:9540): Se mueve de 2|2 a 3|2$
-[INFO] 14:18:39:232 i-Mongo-Store/(9480:9540): Se mueve de 3|2 a 4|2$
-[INFO] 14:18:39:234 i-Mongo-Store/(9480:9540): Se mueve de 4|2 a 4|3$
-[INFO] 14:18:39:236 i-Mongo-Store/(9480:9537): Se mueve de 3|0 a 4|0$
-[INFO] 14:18:39:237 i-Mongo-Store/(9480:9537): Se mueve de 4|0 a 5|0$
-[INFO] 14:18:39:239 i-Mongo-Store/(9480:9537): Se mueve de 5|0 a 6|0$
-[INFO] 14:18:39:243 i-Mongo-Store/(9480:9537): Se mueve de 6|0 a 7|0$
-[INFO] 14:18:39:246 i-Mongo-Store/(9480:9537): Se mueve de 7|0 a 7|1$
-[INFO] 14:18:39:249 i-Mongo-Store/(9480:9537): Se mueve de 7|1 a 7|2$
-[INFO] 14:18:39:276 i-Mongo-Store/(9480:9537): Se creó Oxigeno.ims
-[INFO] 14:18:39:277 i-Mongo-Store/(9480:9537): Se cargó /home/utnso/fs/Files/Oxigeno.ims
-[INFO] 14:18:39:303 i-Mongo-Store/(9480:9537): Se finaliza la tarea GENERAR_OXIGENO$
-[INFO] 14:18:39:304 i-Mongo-Store/(9480:9537): Comienza ejecución de tarea BARRER$
-[INFO] 14:18:39:306 i-Mongo-Store/(9480:9535): Se mueve de 4|1 a 5|1$
-[INFO] 14:18:39:307 i-Mongo-Store/(9480:9535): Se mueve de 5|1 a 6|1$
-[INFO] 14:18:39:310 i-Mongo-Store/(9480:9543): Se mueve de 2|1 a 3|1$
-[INFO] 14:18:39:311 i-Mongo-Store/(9480:9543): Se mueve de 3|1 a 3|2$
-[INFO] 14:18:39:312 i-Mongo-Store/(9480:9543): Se mueve de 3|2 a 3|3$
-[INFO] 14:18:39:313 i-Mongo-Store/(9480:9543): Se finaliza la tarea ESCANEAR_MUESTRAS$
-[INFO] 14:18:39:314 i-Mongo-Store/(9480:9543): Comienza ejecución de tarea DESCARTAR_BASURA$
-[INFO] 14:18:39:316 i-Mongo-Store/(9480:9543): Se mueve de 3|3 a 4|3$
-[INFO] 14:18:39:316 i-Mongo-Store/(9480:9543): Se mueve de 4|3 a 5|3$
-[INFO] 14:18:39:318 i-Mongo-Store/(9480:9543): Se mueve de 5|3 a 5|4$
-[INFO] 14:18:39:319 i-Mongo-Store/(9480:9543): Se mueve de 5|4 a 5|5$
-[INFO] 14:18:39:335 i-Mongo-Store/(9480:9543): Se finaliza la tarea DESCARTAR_BASURA$
-[INFO] 14:18:39:336 i-Mongo-Store/(9480:9543): Comienza ejecución de tarea IRSE$
-[INFO] 14:18:39:338 i-Mongo-Store/(9480:9543): Se mueve de 5|5 a 6|5$
-[INFO] 14:18:39:340 i-Mongo-Store/(9480:9543): Se mueve de 6|5 a 7|5$
-[INFO] 14:18:39:341 i-Mongo-Store/(9480:9543): Se mueve de 7|5 a 8|5$
-[INFO] 14:18:39:343 i-Mongo-Store/(9480:9543): Se mueve de 8|5 a 8|6$
-[INFO] 14:18:39:345 i-Mongo-Store/(9480:9535): Se mueve de 6|1 a 7|1$
-[INFO] 14:18:39:346 i-Mongo-Store/(9480:9535): Se mueve de 7|1 a 7|2$
-[INFO] 14:18:39:363 i-Mongo-Store/(9480:9535): Se finaliza la tarea GENERAR_OXIGENO$
-[INFO] 14:18:39:364 i-Mongo-Store/(9480:9537): Se mueve de 7|2 a 7|3$
-[INFO] 14:18:39:365 i-Mongo-Store/(9480:9537): Se mueve de 7|3 a 7|4$
-[INFO] 14:18:39:365 i-Mongo-Store/(9480:9537): Se mueve de 7|4 a 7|5$
-[INFO] 14:18:39:365 i-Mongo-Store/(9480:9537): Se mueve de 7|5 a 7|6$
-[INFO] 14:18:39:366 i-Mongo-Store/(9480:9537): Se mueve de 7|6 a 7|7$
-[INFO] 14:18:39:366 i-Mongo-Store/(9480:9537): Se finaliza la tarea BARRER$
-[INFO] 14:18:39:367 i-Mongo-Store/(9480:9537): Comienza ejecución de tarea SALUDAR$
-[INFO] 14:18:39:370 i-Mongo-Store/(9480:9540): Se mueve de 4|3 a 4|4$
-[INFO] 14:18:39:371 i-Mongo-Store/(9480:9540): Se finaliza la tarea LIMPIAR_ACUARIOS$
-[INFO] 14:18:39:373 i-Mongo-Store/(9480:9540): Comienza ejecución de tarea IRSE$
-[INFO] 14:18:39:374 i-Mongo-Store/(9480:9540): Se mueve de 4|4 a 5|4$
-[INFO] 14:18:39:374 i-Mongo-Store/(9480:9540): Se mueve de 5|4 a 6|4$
-[INFO] 14:18:39:377 i-Mongo-Store/(9480:9540): Se mueve de 6|4 a 6|5$
-[INFO] 14:18:39:380 i-Mongo-Store/(9480:9537): Se mueve de 7|7 a 6|7$
-[INFO] 14:18:39:381 i-Mongo-Store/(9480:9537): Se mueve de 6|7 a 5|7$
-[INFO] 14:18:39:382 i-Mongo-Store/(9480:9537): Se mueve de 5|7 a 4|7$
-[INFO] 14:18:39:382 i-Mongo-Store/(9480:9537): Se mueve de 4|7 a 3|7$
-[INFO] 14:18:39:383 i-Mongo-Store/(9480:9535): Comienza ejecución de tarea BARRER$
-[INFO] 14:18:39:384 i-Mongo-Store/(9480:9535): Se mueve de 7|2 a 7|3$
-[INFO] 14:18:39:386 i-Mongo-Store/(9480:9535): Se mueve de 7|3 a 7|4$
-[INFO] 14:18:39:389 i-Mongo-Store/(9480:9535): Se mueve de 7|4 a 7|5$
-[INFO] 14:18:39:392 i-Mongo-Store/(9480:9535): Se mueve de 7|5 a 7|6$
-[INFO] 14:18:39:394 i-Mongo-Store/(9480:9535): Se mueve de 7|6 a 7|7$
-[INFO] 14:18:39:395 i-Mongo-Store/(9480:9535): Se finaliza la tarea BARRER$
-[INFO] 14:18:39:397 i-Mongo-Store/(9480:9537): Se mueve de 3|7 a 2|7$
-[INFO] 14:18:39:398 i-Mongo-Store/(9480:9537): Se finaliza la tarea SALUDAR$
-[INFO] 14:18:39:399 i-Mongo-Store/(9480:9543): Se mueve de 8|6 a 8|7$
-[INFO] 14:18:39:399 i-Mongo-Store/(9480:9543): Se mueve de 8|7 a 8|8$
-[INFO] 14:18:39:401 i-Mongo-Store/(9480:9543): Se finaliza la tarea IRSE$
-[INFO] 14:18:39:401 i-Mongo-Store/(9480:9537): El tripulante 9533 finalizó sus tareas y se desconectó
-[INFO] 14:18:39:403 i-Mongo-Store/(9480:9540): Se mueve de 6|5 a 6|6$
-[INFO] 14:18:39:403 i-Mongo-Store/(9480:9540): Se finaliza la tarea IRSE$
-[INFO] 14:18:39:403 i-Mongo-Store/(9480:9540): El tripulante 9538 finalizó sus tareas y se desconectó
-[INFO] 14:18:39:403 i-Mongo-Store/(9480:9535): Comienza ejecución de tarea SALUDAR$
-[INFO] 14:18:39:404 i-Mongo-Store/(9480:9535): Se mueve de 7|7 a 6|7$
-[INFO] 14:18:39:406 i-Mongo-Store/(9480:9535): Se mueve de 6|7 a 5|7$
-[INFO] 14:18:39:407 i-Mongo-Store/(9480:9535): Se mueve de 5|7 a 4|7$
-[INFO] 14:18:39:409 i-Mongo-Store/(9480:9543): El tripulante 9541 finalizó sus tareas y se desconectó
-[INFO] 14:18:39:411 i-Mongo-Store/(9480:9535): Se mueve de 4|7 a 3|7$
-[INFO] 14:18:39:411 i-Mongo-Store/(9480:9535): Se mueve de 3|7 a 2|7$
-[INFO] 14:18:39:413 i-Mongo-Store/(9480:9535): Se finaliza la tarea SALUDAR$
-[INFO] 14:18:39:413 i-Mongo-Store/(9480:9535): El tripulante 9532 finalizó sus tareas y se desconectó
-[INFO] 14:18:49:172 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
-[INFO] 14:19:01:178 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
-[INFO] 14:19:13:196 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
-[INFO] 14:19:25:207 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
+[INFO] 14:24:59:851 i-Mongo-Store/(10207:10207): Se inició el log
+[INFO] 14:24:59:854 i-Mongo-Store/(10207:10207): Se cargó la configuración
+[INFO] 14:24:59:855 i-Mongo-Store/(10207:10207): El FS no existe. Creando FS desde cero...
+[INFO] 14:24:59:855 i-Mongo-Store/(10207:10207): Se crearon los directorios
+[INFO] 14:24:59:857 i-Mongo-Store/(10207:10207): Se creó SuperBloque.ims
+[INFO] 14:24:59:909 i-Mongo-Store/(10207:10207): Se creó Blocks.ims
+[INFO] 14:24:59:909 i-Mongo-Store/(10207:10207): Se creó el FS
+[INFO] 14:24:59:910 i-Mongo-Store/(10207:10207): Se cargó SuperBloque.ims
+[INFO] 14:24:59:915 i-Mongo-Store/(10207:10207): Se cargó Blocks.ims
+[INFO] 14:24:59:916 i-Mongo-Store/(10207:10207): Esperando Discordiador en el puerto 5002 para informar sabotajes
+[INFO] 14:25:03:021 i-Mongo-Store/(10207:10207): Se conectó el discordiador en el socket 7 para informar sabotajes
+[INFO] 14:25:03:022 i-Mongo-Store/(10207:10207): Esperando Discordiador en el puerto 5002 para traficar bitácoras
+[INFO] 14:25:03:022 i-Mongo-Store/(10207:10207): Se conectó el Discordiador en el socket 8 para traficar bitácoras
+[INFO] 14:25:03:023 i-Mongo-Store/(10207:10207): Esperando tripulantes en el puerto 5002
+[INFO] 14:25:08:892 i-Mongo-Store/(10207:10265): Se conectó el tripulante TID: 10260 - Posición inicial: 0|0
+[INFO] 14:25:08:893 i-Mongo-Store/(10207:10265): Se creó Tripulante10260.ims
+[INFO] 14:25:08:894 i-Mongo-Store/(10207:10265): Se cargó Tripulante10260.ims
+[INFO] 14:25:08:898 i-Mongo-Store/(10207:10266): Se conectó el tripulante TID: 10259 - Posición inicial: 9|9
+[INFO] 14:25:08:900 i-Mongo-Store/(10207:10266): Se creó Tripulante10259.ims
+[INFO] 14:25:08:904 i-Mongo-Store/(10207:10266): Se cargó Tripulante10259.ims
+[INFO] 14:25:08:904 i-Mongo-Store/(10207:10267): Se conectó el tripulante TID: 10261 - Posición inicial: 5|5
+[INFO] 14:25:08:907 i-Mongo-Store/(10207:10267): Se creó Tripulante10261.ims
+[INFO] 14:25:08:907 i-Mongo-Store/(10207:10267): Se cargó Tripulante10261.ims
+[INFO] 14:25:11:955 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques
+[INFO] 14:25:13:429 i-Mongo-Store/(10207:10275): Se conectó el tripulante TID: 10268 - Posición inicial: 4|0
+[INFO] 14:25:13:430 i-Mongo-Store/(10207:10275): Se creó Tripulante10268.ims
+[INFO] 14:25:13:431 i-Mongo-Store/(10207:10275): Se cargó Tripulante10268.ims
+[INFO] 14:25:13:429 i-Mongo-Store/(10207:10274): Se conectó el tripulante TID: 10270 - Posición inicial: 8|2
+[INFO] 14:25:13:432 i-Mongo-Store/(10207:10276): Se conectó el tripulante TID: 10269 - Posición inicial: 2|6
+[INFO] 14:25:13:436 i-Mongo-Store/(10207:10274): Se creó Tripulante10270.ims
+[INFO] 14:25:13:438 i-Mongo-Store/(10207:10274): Se cargó Tripulante10270.ims
+[INFO] 14:25:13:439 i-Mongo-Store/(10207:10276): Se creó Tripulante10269.ims
+[INFO] 14:25:13:441 i-Mongo-Store/(10207:10276): Se cargó Tripulante10269.ims
+[INFO] 14:25:18:176 i-Mongo-Store/(10207:10282): Se conectó el tripulante TID: 10279 - Posición inicial: 5|3
+[INFO] 14:25:18:176 i-Mongo-Store/(10207:10284): Se conectó el tripulante TID: 10277 - Posición inicial: 2|3
+[INFO] 14:25:18:177 i-Mongo-Store/(10207:10282): Se creó Tripulante10279.ims
+[INFO] 14:25:18:180 i-Mongo-Store/(10207:10282): Se cargó Tripulante10279.ims
+[INFO] 14:25:18:184 i-Mongo-Store/(10207:10284): Se creó Tripulante10277.ims
+[INFO] 14:25:18:186 i-Mongo-Store/(10207:10284): Se cargó Tripulante10277.ims
+[INFO] 14:25:18:187 i-Mongo-Store/(10207:10285): Se conectó el tripulante TID: 10278 - Posición inicial: 5|8
+[INFO] 14:25:18:190 i-Mongo-Store/(10207:10285): Se creó Tripulante10278.ims
+[INFO] 14:25:18:190 i-Mongo-Store/(10207:10285): Se cargó Tripulante10278.ims
+[INFO] 14:25:22:763 i-Mongo-Store/(10207:10292): Se conectó el tripulante TID: 10286 - Posición inicial: 0|9
+[INFO] 14:25:22:765 i-Mongo-Store/(10207:10292): Se creó Tripulante10286.ims
+[INFO] 14:25:22:767 i-Mongo-Store/(10207:10293): Se conectó el tripulante TID: 10287 - Posición inicial: 4|4
+[INFO] 14:25:22:767 i-Mongo-Store/(10207:10292): Se cargó Tripulante10286.ims
+[INFO] 14:25:22:769 i-Mongo-Store/(10207:10293): Se creó Tripulante10287.ims
+[INFO] 14:25:22:773 i-Mongo-Store/(10207:10294): Se conectó el tripulante TID: 10288 - Posición inicial: 9|0
+[INFO] 14:25:22:775 i-Mongo-Store/(10207:10293): Se cargó Tripulante10287.ims
+[INFO] 14:25:22:775 i-Mongo-Store/(10207:10294): Se creó Tripulante10288.ims
+[INFO] 14:25:22:776 i-Mongo-Store/(10207:10294): Se cargó Tripulante10288.ims
+[INFO] 14:25:24:092 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques
+[INFO] 14:25:27:415 i-Mongo-Store/(10207:10303): Se conectó el tripulante TID: 10296 - Posición inicial: 9|6
+[INFO] 14:25:27:415 i-Mongo-Store/(10207:10301): Se conectó el tripulante TID: 10295 - Posición inicial: 0|2
+[INFO] 14:25:27:416 i-Mongo-Store/(10207:10303): Se creó Tripulante10296.ims
+[INFO] 14:25:27:417 i-Mongo-Store/(10207:10301): Se creó Tripulante10295.ims
+[INFO] 14:25:27:417 i-Mongo-Store/(10207:10301): Se cargó Tripulante10295.ims
+[INFO] 14:25:27:417 i-Mongo-Store/(10207:10303): Se cargó Tripulante10296.ims
+[INFO] 14:25:27:415 i-Mongo-Store/(10207:10302): Se conectó el tripulante TID: 10297 - Posición inicial: 3|5
+[INFO] 14:25:27:419 i-Mongo-Store/(10207:10302): Se creó Tripulante10297.ims
+[INFO] 14:25:27:419 i-Mongo-Store/(10207:10302): Se cargó Tripulante10297.ims
+[INFO] 14:25:36:140 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques
+[INFO] 14:25:46:502 i-Mongo-Store/(10207:10274): Comienza ejecución de tarea COMPRAR_FACTURAS$
+[INFO] 14:25:46:504 i-Mongo-Store/(10207:10274): Se mueve de 8|2 a 7|2$
+[INFO] 14:25:46:508 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea ARREGLAR_REACTOR$
+[INFO] 14:25:46:511 i-Mongo-Store/(10207:10266): Se mueve de 9|9 a 8|9$
+[INFO] 14:25:46:513 i-Mongo-Store/(10207:10266): Se mueve de 8|9 a 7|9$
+[INFO] 14:25:46:517 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea ARREGLAR_REACTOR$
+[INFO] 14:25:46:518 i-Mongo-Store/(10207:10265): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:46:519 i-Mongo-Store/(10207:10275): Comienza ejecución de tarea COMPRAR_FACTURAS$
+[INFO] 14:25:46:520 i-Mongo-Store/(10207:10276): Comienza ejecución de tarea COMPRAR_FACTURAS$
+[INFO] 14:25:46:521 i-Mongo-Store/(10207:10276): Se mueve de 2|6 a 1|6$
+[INFO] 14:25:46:523 i-Mongo-Store/(10207:10275): Se mueve de 4|0 a 3|0$
+[INFO] 14:25:46:525 i-Mongo-Store/(10207:10276): Se mueve de 1|6 a 1|5$
+[INFO] 14:25:46:533 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:46:535 i-Mongo-Store/(10207:10294): Se mueve de 9|0 a 8|0$
+[INFO] 14:25:46:537 i-Mongo-Store/(10207:10303): Comienza ejecución de tarea REALIZAR_PRIMER_COMMIT$
+[INFO] 14:25:46:539 i-Mongo-Store/(10207:10303): Se mueve de 9|6 a 8|6$
+[INFO] 14:25:46:544 i-Mongo-Store/(10207:10301): Comienza ejecución de tarea REALIZAR_PRIMER_COMMIT$
+[INFO] 14:25:46:549 i-Mongo-Store/(10207:10301): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:556 i-Mongo-Store/(10207:10302): Comienza ejecución de tarea REALIZAR_PRIMER_COMMIT$
+[INFO] 14:25:46:557 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:46:559 i-Mongo-Store/(10207:10293): Se mueve de 4|4 a 3|4$
+[INFO] 14:25:46:560 i-Mongo-Store/(10207:10293): Se mueve de 3|4 a 2|4$
+[INFO] 14:25:46:568 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:46:572 i-Mongo-Store/(10207:10302): Se mueve de 3|5 a 2|5$
+[INFO] 14:25:46:573 i-Mongo-Store/(10207:10285): Se mueve de 5|8 a 4|8$
+[INFO] 14:25:46:575 i-Mongo-Store/(10207:10285): Se mueve de 4|8 a 3|8$
+[INFO] 14:25:46:579 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:46:581 i-Mongo-Store/(10207:10282): Se mueve de 5|3 a 4|3$
+[INFO] 14:25:46:590 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea ARREGLAR_REACTOR$
+[INFO] 14:25:46:591 i-Mongo-Store/(10207:10265): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:46:594 i-Mongo-Store/(10207:10266): Se mueve de 7|9 a 7|8$
+[INFO] 14:25:46:600 i-Mongo-Store/(10207:10267): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:46:601 i-Mongo-Store/(10207:10266): Se mueve de 7|8 a 7|7$
+[INFO] 14:25:46:602 i-Mongo-Store/(10207:10275): Se mueve de 3|0 a 2|0$
+[INFO] 14:25:46:604 i-Mongo-Store/(10207:10276): Se mueve de 1|5 a 1|4$
+[INFO] 14:25:46:607 i-Mongo-Store/(10207:10303): Se mueve de 8|6 a 7|6$
+[INFO] 14:25:46:608 i-Mongo-Store/(10207:10301): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:46:608 i-Mongo-Store/(10207:10294): Se mueve de 8|0 a 7|0$
+[INFO] 14:25:46:612 i-Mongo-Store/(10207:10302): Se mueve de 2|5 a 1|5$
+[INFO] 14:25:46:614 i-Mongo-Store/(10207:10293): Se mueve de 2|4 a 1|4$
+[INFO] 14:25:46:619 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:46:621 i-Mongo-Store/(10207:10274): Se mueve de 7|2 a 6|2$
+[INFO] 14:25:46:623 i-Mongo-Store/(10207:10285): Se mueve de 3|8 a 2|8$
+[INFO] 14:25:46:625 i-Mongo-Store/(10207:10284): Se mueve de 2|3 a 1|3$
+[INFO] 14:25:46:633 i-Mongo-Store/(10207:10284): Se mueve de 1|3 a 0|3$
+[INFO] 14:25:46:635 i-Mongo-Store/(10207:10282): Se mueve de 4|3 a 3|3$
+[INFO] 14:25:46:640 i-Mongo-Store/(10207:10266): Se mueve de 7|7 a 7|6$
+[INFO] 14:25:46:642 i-Mongo-Store/(10207:10275): Se mueve de 2|0 a 1|0$
+[INFO] 14:25:46:643 i-Mongo-Store/(10207:10275): Se mueve de 1|0 a 1|1$
+[INFO] 14:25:46:650 i-Mongo-Store/(10207:10303): Se mueve de 7|6 a 6|6$
+[INFO] 14:25:46:656 i-Mongo-Store/(10207:10294): Se mueve de 7|0 a 6|0$
+[INFO] 14:25:46:658 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:46:659 i-Mongo-Store/(10207:10302): Se mueve de 1|5 a 0|5$
+[INFO] 14:25:46:660 i-Mongo-Store/(10207:10292): Se mueve de 0|9 a 0|8$
+[INFO] 14:25:46:664 i-Mongo-Store/(10207:10302): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:46:668 i-Mongo-Store/(10207:10274): Se mueve de 6|2 a 5|2$
+[INFO] 14:25:46:672 i-Mongo-Store/(10207:10285): Se mueve de 2|8 a 1|8$
+[INFO] 14:25:46:673 i-Mongo-Store/(10207:10265): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:46:679 i-Mongo-Store/(10207:10284): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:46:692 i-Mongo-Store/(10207:10282): Se mueve de 3|3 a 2|3$
+[INFO] 14:25:46:693 i-Mongo-Store/(10207:10267): Se mueve de 6|5 a 7|5$
+[INFO] 14:25:46:704 i-Mongo-Store/(10207:10266): Se mueve de 7|6 a 7|5$
+[INFO] 14:25:46:705 i-Mongo-Store/(10207:10276): Se mueve de 1|4 a 1|3$
+[INFO] 14:25:46:709 i-Mongo-Store/(10207:10303): Se mueve de 6|6 a 5|6$
+[INFO] 14:25:46:716 i-Mongo-Store/(10207:10294): Se mueve de 6|0 a 5|0$
+[INFO] 14:25:46:719 i-Mongo-Store/(10207:10293): Se mueve de 1|4 a 0|4$
+[INFO] 14:25:46:720 i-Mongo-Store/(10207:10302): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:46:722 i-Mongo-Store/(10207:10285): Se mueve de 1|8 a 0|8$
+[INFO] 14:25:46:725 i-Mongo-Store/(10207:10284): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:730 i-Mongo-Store/(10207:10292): Se mueve de 0|8 a 0|7$
+[INFO] 14:25:46:751 i-Mongo-Store/(10207:10274): Se mueve de 5|2 a 4|2$
+[INFO] 14:25:46:755 i-Mongo-Store/(10207:10265): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:46:757 i-Mongo-Store/(10207:10267): Se mueve de 7|5 a 7|4$
+[INFO] 14:25:46:759 i-Mongo-Store/(10207:10267): Se mueve de 7|4 a 7|3$
+[INFO] 14:25:46:761 i-Mongo-Store/(10207:10282): Se mueve de 2|3 a 1|3$
+[INFO] 14:25:46:764 i-Mongo-Store/(10207:10267): Se mueve de 7|3 a 7|2$
+[INFO] 14:25:46:773 i-Mongo-Store/(10207:10303): Se mueve de 5|6 a 4|6$
+[INFO] 14:25:46:773 i-Mongo-Store/(10207:10294): Se mueve de 5|0 a 4|0$
+[INFO] 14:25:46:775 i-Mongo-Store/(10207:10302): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:46:777 i-Mongo-Store/(10207:10302): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:780 i-Mongo-Store/(10207:10293): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:46:782 i-Mongo-Store/(10207:10292): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:46:784 i-Mongo-Store/(10207:10285): Se mueve de 0|8 a 0|7$
+[INFO] 14:25:46:790 i-Mongo-Store/(10207:10274): Se mueve de 4|2 a 3|2$
+[INFO] 14:25:46:792 i-Mongo-Store/(10207:10265): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:46:795 i-Mongo-Store/(10207:10266): Se mueve de 7|5 a 7|4$
+[INFO] 14:25:46:799 i-Mongo-Store/(10207:10276): Se mueve de 1|3 a 1|2$
+[INFO] 14:25:46:802 i-Mongo-Store/(10207:10282): Se mueve de 1|3 a 0|3$
+[INFO] 14:25:46:807 i-Mongo-Store/(10207:10303): Se mueve de 4|6 a 3|6$
+[INFO] 14:25:46:807 i-Mongo-Store/(10207:10294): Se mueve de 4|0 a 3|0$
+[INFO] 14:25:46:809 i-Mongo-Store/(10207:10294): Se mueve de 3|0 a 2|0$
+[INFO] 14:25:46:810 i-Mongo-Store/(10207:10294): Se mueve de 2|0 a 1|0$
+[INFO] 14:25:46:816 i-Mongo-Store/(10207:10292): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:46:818 i-Mongo-Store/(10207:10285): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:46:822 i-Mongo-Store/(10207:10285): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:46:822 i-Mongo-Store/(10207:10274): Se mueve de 3|2 a 2|2$
+[INFO] 14:25:46:825 i-Mongo-Store/(10207:10276): Se mueve de 1|2 a 1|1$
+[INFO] 14:25:46:827 i-Mongo-Store/(10207:10265): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:46:830 i-Mongo-Store/(10207:10282): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:46:836 i-Mongo-Store/(10207:10284): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:46:838 i-Mongo-Store/(10207:10293): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:46:839 i-Mongo-Store/(10207:10303): Se mueve de 3|6 a 2|6$
+[INFO] 14:25:46:840 i-Mongo-Store/(10207:10302): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:46:840 i-Mongo-Store/(10207:10294): Se mueve de 1|0 a 0|0$
+[INFO] 14:25:46:843 i-Mongo-Store/(10207:10275): Se finaliza la tarea COMPRAR_FACTURAS$
+[INFO] 14:25:46:847 i-Mongo-Store/(10207:10266): Se mueve de 7|4 a 7|3$
+[INFO] 14:25:46:849 i-Mongo-Store/(10207:10292): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:46:852 i-Mongo-Store/(10207:10274): Se mueve de 2|2 a 1|2$
+[INFO] 14:25:46:856 i-Mongo-Store/(10207:10292): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:46:864 i-Mongo-Store/(10207:10265): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:46:867 i-Mongo-Store/(10207:10282): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:869 i-Mongo-Store/(10207:10265): Se mueve de 7|0 a 7|1$
+[INFO] 14:25:46:874 i-Mongo-Store/(10207:10293): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:876 i-Mongo-Store/(10207:10303): Se mueve de 2|6 a 1|6$
+[INFO] 14:25:46:882 i-Mongo-Store/(10207:10266): Se mueve de 7|3 a 7|2$
+[INFO] 14:25:46:885 i-Mongo-Store/(10207:10285): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:46:887 i-Mongo-Store/(10207:10274): Se mueve de 1|2 a 1|1$
+[INFO] 14:25:46:897 i-Mongo-Store/(10207:10292): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:46:901 i-Mongo-Store/(10207:10282): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:46:904 i-Mongo-Store/(10207:10265): Se mueve de 7|1 a 7|2$
+[INFO] 14:25:46:907 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:46:914 i-Mongo-Store/(10207:10267): Se finaliza la tarea ARREGLAR_REACTOR$
+[INFO] 14:25:46:918 i-Mongo-Store/(10207:10293): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:46:919 i-Mongo-Store/(10207:10303): Se mueve de 1|6 a 0|6$
+[INFO] 14:25:46:933 i-Mongo-Store/(10207:10285): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:46:935 i-Mongo-Store/(10207:10285): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:46:941 i-Mongo-Store/(10207:10292): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:942 i-Mongo-Store/(10207:10275): Comienza ejecución de tarea HACER_EJERCICIO$
+[INFO] 14:25:46:946 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:46:949 i-Mongo-Store/(10207:10275): Se mueve de 1|1 a 2|1$
+[INFO] 14:25:46:971 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:46:972 i-Mongo-Store/(10207:10284): Se mueve de 0|0 a 0|1$
+[INFO] 14:25:46:974 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea BARRER$
+[INFO] 14:25:46:975 i-Mongo-Store/(10207:10303): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:46:978 i-Mongo-Store/(10207:10267): Se mueve de 7|2 a 7|3$
+[INFO] 14:25:46:985 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:46:989 i-Mongo-Store/(10207:10285): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:46:998 i-Mongo-Store/(10207:10292): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:47:010 i-Mongo-Store/(10207:10275): Se mueve de 2|1 a 3|1$
+[INFO] 14:25:47:013 i-Mongo-Store/(10207:10276): Se finaliza la tarea COMPRAR_FACTURAS$
+[INFO] 14:25:47:017 i-Mongo-Store/(10207:10267): Se mueve de 7|3 a 7|4$
+[INFO] 14:25:47:021 i-Mongo-Store/(10207:10267): Se mueve de 7|4 a 7|5$
+[INFO] 14:25:47:025 i-Mongo-Store/(10207:10301): Se finaliza la tarea REALIZAR_PRIMER_COMMIT$
+[INFO] 14:25:47:029 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:035 i-Mongo-Store/(10207:10282): Se mueve de 0|0 a 0|1$
+[INFO] 14:25:47:038 i-Mongo-Store/(10207:10303): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:47:038 i-Mongo-Store/(10207:10275): Se mueve de 3|1 a 4|1$
+[INFO] 14:25:47:039 i-Mongo-Store/(10207:10285): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:47:040 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:041 i-Mongo-Store/(10207:10276): Comienza ejecución de tarea HACER_EJERCICIO$
+[INFO] 14:25:47:043 i-Mongo-Store/(10207:10276): Se mueve de 1|1 a 2|1$
+[INFO] 14:25:47:046 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:050 i-Mongo-Store/(10207:10294): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:053 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:055 i-Mongo-Store/(10207:10303): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:47:055 i-Mongo-Store/(10207:10267): Se mueve de 7|5 a 7|6$
+[INFO] 14:25:47:060 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:067 i-Mongo-Store/(10207:10301): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:069 i-Mongo-Store/(10207:10301): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:071 i-Mongo-Store/(10207:10301): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:071 i-Mongo-Store/(10207:10276): Se mueve de 2|1 a 3|1$
+[INFO] 14:25:47:073 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:073 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:074 i-Mongo-Store/(10207:10293): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:075 i-Mongo-Store/(10207:10267): Se mueve de 7|6 a 7|7$
+[INFO] 14:25:47:077 i-Mongo-Store/(10207:10303): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:47:080 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:082 i-Mongo-Store/(10207:10284): Se mueve de 0|1 a 0|2$
+[INFO] 14:25:47:088 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:089 i-Mongo-Store/(10207:10265): Se finaliza la tarea ARREGLAR_REACTOR$
+[INFO] 14:25:47:090 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:092 i-Mongo-Store/(10207:10266): Se finaliza la tarea ARREGLAR_REACTOR$
+[INFO] 14:25:47:097 i-Mongo-Store/(10207:10285): Se mueve de 0|0 a 0|1$
+[INFO] 14:25:47:102 i-Mongo-Store/(10207:10301): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:47:104 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:105 i-Mongo-Store/(10207:10274): Se finaliza la tarea COMPRAR_FACTURAS$
+[INFO] 14:25:47:107 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:109 i-Mongo-Store/(10207:10303): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:47:113 i-Mongo-Store/(10207:10292): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:116 i-Mongo-Store/(10207:10303): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:47:120 i-Mongo-Store/(10207:10275): Se mueve de 4|1 a 5|1$
+[INFO] 14:25:47:122 i-Mongo-Store/(10207:10302): Se finaliza la tarea REALIZAR_PRIMER_COMMIT$
+[INFO] 14:25:47:124 i-Mongo-Store/(10207:10276): Se mueve de 3|1 a 4|1$
+[INFO] 14:25:47:125 i-Mongo-Store/(10207:10301): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:47:126 i-Mongo-Store/(10207:10301): Se mueve de 4|0 a 4|1$
+[INFO] 14:25:47:130 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea BARRER$
+[INFO] 14:25:47:134 i-Mongo-Store/(10207:10265): Se mueve de 7|2 a 7|3$
+[INFO] 14:25:47:137 i-Mongo-Store/(10207:10265): Se mueve de 7|3 a 7|4$
+[INFO] 14:25:47:138 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:138 i-Mongo-Store/(10207:10265): Se mueve de 7|4 a 7|5$
+[INFO] 14:25:47:146 i-Mongo-Store/(10207:10265): Se mueve de 7|5 a 7|6$
+[INFO] 14:25:47:151 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea BARRER$
+[INFO] 14:25:47:153 i-Mongo-Store/(10207:10266): Se mueve de 7|2 a 7|3$
+[INFO] 14:25:47:155 i-Mongo-Store/(10207:10266): Se mueve de 7|3 a 7|4$
+[INFO] 14:25:47:155 i-Mongo-Store/(10207:10266): Se mueve de 7|4 a 7|5$
+[INFO] 14:25:47:157 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:157 i-Mongo-Store/(10207:10276): Se mueve de 4|1 a 5|1$
+[INFO] 14:25:47:157 i-Mongo-Store/(10207:10302): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:158 i-Mongo-Store/(10207:10302): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:161 i-Mongo-Store/(10207:10301): Se mueve de 4|1 a 4|2$
+[INFO] 14:25:47:163 i-Mongo-Store/(10207:10301): Se mueve de 4|2 a 4|3$
+[INFO] 14:25:47:166 i-Mongo-Store/(10207:10282): Se mueve de 0|1 a 0|2$
+[INFO] 14:25:47:169 i-Mongo-Store/(10207:10302): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:170 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:171 i-Mongo-Store/(10207:10294): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:172 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:176 i-Mongo-Store/(10207:10265): Se mueve de 7|6 a 7|7$
+[INFO] 14:25:47:179 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:188 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:190 i-Mongo-Store/(10207:10275): Se mueve de 5|1 a 6|1$
+[INFO] 14:25:47:192 i-Mongo-Store/(10207:10276): Se mueve de 5|1 a 6|1$
+[INFO] 14:25:47:194 i-Mongo-Store/(10207:10266): Se mueve de 7|5 a 7|6$
+[INFO] 14:25:47:208 i-Mongo-Store/(10207:10274): Comienza ejecución de tarea HACER_EJERCICIO$
+[INFO] 14:25:47:209 i-Mongo-Store/(10207:10274): Se mueve de 1|1 a 2|1$
+[INFO] 14:25:47:211 i-Mongo-Store/(10207:10302): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:47:223 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:225 i-Mongo-Store/(10207:10293): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:233 i-Mongo-Store/(10207:10301): Se mueve de 4|3 a 4|4$
+[INFO] 14:25:47:240 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:257 i-Mongo-Store/(10207:10294): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:47:293 i-Mongo-Store/(10207:10301): Se creó Oxigeno.ims
+[INFO] 14:25:47:293 i-Mongo-Store/(10207:10301): Se cargó /home/utnso/fs/Files/Oxigeno.ims
+[INFO] 14:25:47:313 i-Mongo-Store/(10207:10301): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:317 i-Mongo-Store/(10207:10276): Se mueve de 6|1 a 7|1$
+[INFO] 14:25:47:318 i-Mongo-Store/(10207:10275): Se mueve de 6|1 a 7|1$
+[INFO] 14:25:47:319 i-Mongo-Store/(10207:10266): Se mueve de 7|6 a 7|7$
+[INFO] 14:25:47:320 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:322 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:324 i-Mongo-Store/(10207:10282): Se mueve de 0|2 a 0|3$
+[INFO] 14:25:47:325 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:328 i-Mongo-Store/(10207:10285): Se mueve de 0|1 a 0|2$
+[INFO] 14:25:47:330 i-Mongo-Store/(10207:10265): Se finaliza la tarea BARRER$
+[INFO] 14:25:47:331 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:337 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:339 i-Mongo-Store/(10207:10274): Se mueve de 2|1 a 3|1$
+[INFO] 14:25:47:340 i-Mongo-Store/(10207:10274): Se mueve de 3|1 a 4|1$
+[INFO] 14:25:47:341 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:342 i-Mongo-Store/(10207:10284): Se mueve de 0|2 a 0|3$
+[INFO] 14:25:47:355 i-Mongo-Store/(10207:10265): Se mueve de 7|7 a 6|7$
+[INFO] 14:25:47:356 i-Mongo-Store/(10207:10302): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:47:356 i-Mongo-Store/(10207:10302): Se mueve de 4|0 a 4|1$
+[INFO] 14:25:47:356 i-Mongo-Store/(10207:10275): Se mueve de 7|1 a 7|2$
+[INFO] 14:25:47:358 i-Mongo-Store/(10207:10276): Se mueve de 7|1 a 7|2$
+[INFO] 14:25:47:360 i-Mongo-Store/(10207:10265): Se mueve de 6|7 a 5|7$
+[INFO] 14:25:47:361 i-Mongo-Store/(10207:10267): Se finaliza la tarea BARRER$
+[INFO] 14:25:47:375 i-Mongo-Store/(10207:10265): Se mueve de 5|7 a 4|7$
+[INFO] 14:25:47:378 i-Mongo-Store/(10207:10274): Se mueve de 4|1 a 5|1$
+[INFO] 14:25:47:381 i-Mongo-Store/(10207:10301): Comienza ejecución de tarea HACER_EJERCICIO$
+[INFO] 14:25:47:384 i-Mongo-Store/(10207:10301): Se mueve de 4|4 a 5|4$
+[INFO] 14:25:47:388 i-Mongo-Store/(10207:10302): Se mueve de 4|1 a 4|2$
+[INFO] 14:25:47:389 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:389 i-Mongo-Store/(10207:10267): Se mueve de 7|7 a 6|7$
+[INFO] 14:25:47:391 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:393 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:396 i-Mongo-Store/(10207:10293): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:47:408 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:408 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:413 i-Mongo-Store/(10207:10292): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:416 i-Mongo-Store/(10207:10276): Se mueve de 7|2 a 7|3$
+[INFO] 14:25:47:421 i-Mongo-Store/(10207:10265): Se mueve de 4|7 a 3|7$
+[INFO] 14:25:47:422 i-Mongo-Store/(10207:10265): Se mueve de 3|7 a 2|7$
+[INFO] 14:25:47:423 i-Mongo-Store/(10207:10301): Se mueve de 5|4 a 5|5$
+[INFO] 14:25:47:425 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:428 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:430 i-Mongo-Store/(10207:10294): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:47:440 i-Mongo-Store/(10207:10275): Se mueve de 7|2 a 7|3$
+[INFO] 14:25:47:450 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:451 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:455 i-Mongo-Store/(10207:10274): Se mueve de 5|1 a 6|1$
+[INFO] 14:25:47:457 i-Mongo-Store/(10207:10302): Se mueve de 4|2 a 4|3$
+[INFO] 14:25:47:460 i-Mongo-Store/(10207:10265): Se mueve de 2|7 a 1|7$
+[INFO] 14:25:47:460 i-Mongo-Store/(10207:10302): Se mueve de 4|3 a 4|4$
+[INFO] 14:25:47:489 i-Mongo-Store/(10207:10302): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:489 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:491 i-Mongo-Store/(10207:10293): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:47:492 i-Mongo-Store/(10207:10274): Se mueve de 6|1 a 7|1$
+[INFO] 14:25:47:494 i-Mongo-Store/(10207:10274): Se mueve de 7|1 a 7|2$
+[INFO] 14:25:47:495 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:498 i-Mongo-Store/(10207:10284): Se mueve de 0|3 a 0|4$
+[INFO] 14:25:47:500 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:501 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:504 i-Mongo-Store/(10207:10292): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:47:505 i-Mongo-Store/(10207:10265): Se mueve de 1|7 a 0|7$
+[INFO] 14:25:47:509 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:518 i-Mongo-Store/(10207:10302): Comienza ejecución de tarea HACER_EJERCICIO$
+[INFO] 14:25:47:519 i-Mongo-Store/(10207:10302): Se mueve de 4|4 a 5|4$
+[INFO] 14:25:47:520 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:523 i-Mongo-Store/(10207:10302): Se mueve de 5|4 a 5|5$
+[INFO] 14:25:47:524 i-Mongo-Store/(10207:10285): Se mueve de 0|2 a 0|3$
+[INFO] 14:25:47:531 i-Mongo-Store/(10207:10265): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:47:544 i-Mongo-Store/(10207:10267): Se mueve de 6|7 a 5|7$
+[INFO] 14:25:47:552 i-Mongo-Store/(10207:10267): Se mueve de 5|7 a 4|7$
+[INFO] 14:25:47:553 i-Mongo-Store/(10207:10303): Se finaliza la tarea REALIZAR_PRIMER_COMMIT$
+[INFO] 14:25:47:553 i-Mongo-Store/(10207:10265): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:47:554 i-Mongo-Store/(10207:10266): Se finaliza la tarea BARRER$
+[INFO] 14:25:47:555 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:556 i-Mongo-Store/(10207:10274): Se mueve de 7|2 a 7|3$
+[INFO] 14:25:47:558 i-Mongo-Store/(10207:10265): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:47:559 i-Mongo-Store/(10207:10265): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:47:560 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:563 i-Mongo-Store/(10207:10266): Se mueve de 7|7 a 6|7$
+[INFO] 14:25:47:565 i-Mongo-Store/(10207:10266): Se mueve de 6|7 a 5|7$
+[INFO] 14:25:47:568 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:569 i-Mongo-Store/(10207:10282): Se mueve de 0|3 a 0|4$
+[INFO] 14:25:47:575 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:585 i-Mongo-Store/(10207:10303): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:588 i-Mongo-Store/(10207:10303): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:590 i-Mongo-Store/(10207:10303): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:590 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:591 i-Mongo-Store/(10207:10294): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:47:601 i-Mongo-Store/(10207:10267): Se mueve de 4|7 a 3|7$
+[INFO] 14:25:47:604 i-Mongo-Store/(10207:10267): Se mueve de 3|7 a 2|7$
+[INFO] 14:25:47:610 i-Mongo-Store/(10207:10265): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:47:611 i-Mongo-Store/(10207:10265): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:47:627 i-Mongo-Store/(10207:10265): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:47:629 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:633 i-Mongo-Store/(10207:10267): Se mueve de 2|7 a 1|7$
+[INFO] 14:25:47:635 i-Mongo-Store/(10207:10303): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:47:637 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:685 i-Mongo-Store/(10207:10265): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:688 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:689 i-Mongo-Store/(10207:10292): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:47:691 i-Mongo-Store/(10207:10267): Se mueve de 1|7 a 0|7$
+[INFO] 14:25:47:691 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:692 i-Mongo-Store/(10207:10293): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:47:693 i-Mongo-Store/(10207:10266): Se mueve de 5|7 a 4|7$
+[INFO] 14:25:47:694 i-Mongo-Store/(10207:10303): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:47:694 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:695 i-Mongo-Store/(10207:10285): Se mueve de 0|3 a 0|4$
+[INFO] 14:25:47:701 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea CAMINAR$
+[INFO] 14:25:47:708 i-Mongo-Store/(10207:10265): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:47:710 i-Mongo-Store/(10207:10303): Se mueve de 4|0 a 4|1$
+[INFO] 14:25:47:714 i-Mongo-Store/(10207:10267): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:47:718 i-Mongo-Store/(10207:10267): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:47:727 i-Mongo-Store/(10207:10267): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:47:728 i-Mongo-Store/(10207:10266): Se mueve de 4|7 a 3|7$
+[INFO] 14:25:47:729 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:739 i-Mongo-Store/(10207:10265): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:47:743 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:744 i-Mongo-Store/(10207:10303): Se mueve de 4|1 a 4|2$
+[INFO] 14:25:47:750 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:755 i-Mongo-Store/(10207:10266): Se mueve de 3|7 a 2|7$
+[INFO] 14:25:47:757 i-Mongo-Store/(10207:10267): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:47:759 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:761 i-Mongo-Store/(10207:10265): Se mueve de 2|0 a 2|1$
+[INFO] 14:25:47:763 i-Mongo-Store/(10207:10301): Se finaliza la tarea HACER_EJERCICIO$
+[INFO] 14:25:47:767 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:769 i-Mongo-Store/(10207:10284): Se mueve de 0|4 a 0|5$
+[INFO] 14:25:47:774 i-Mongo-Store/(10207:10303): Se mueve de 4|2 a 4|3$
+[INFO] 14:25:47:778 i-Mongo-Store/(10207:10276): Se finaliza la tarea HACER_EJERCICIO$
+[INFO] 14:25:47:784 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:788 i-Mongo-Store/(10207:10293): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:47:790 i-Mongo-Store/(10207:10276): Comienza ejecución de tarea SUBIR_FOTOS_A_IG$
+[INFO] 14:25:47:791 i-Mongo-Store/(10207:10267): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:47:792 i-Mongo-Store/(10207:10266): Se mueve de 2|7 a 1|7$
+[INFO] 14:25:47:794 i-Mongo-Store/(10207:10266): Se mueve de 1|7 a 0|7$
+[INFO] 14:25:47:798 i-Mongo-Store/(10207:10301): Comienza ejecución de tarea CONSUMIR_OXIGENO$
+[INFO] 14:25:47:827 i-Mongo-Store/(10207:10301): Se finaliza la tarea CONSUMIR_OXIGENO$
+[INFO] 14:25:47:830 i-Mongo-Store/(10207:10265): Se mueve de 2|1 a 2|2$
+[INFO] 14:25:47:833 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:836 i-Mongo-Store/(10207:10294): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:47:841 i-Mongo-Store/(10207:10267): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:47:843 i-Mongo-Store/(10207:10266): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:47:844 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:851 i-Mongo-Store/(10207:10292): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:47:856 i-Mongo-Store/(10207:10303): Se mueve de 4|3 a 4|4$
+[INFO] 14:25:47:859 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:872 i-Mongo-Store/(10207:10265): Se finaliza la tarea CAMINAR$
+[INFO] 14:25:47:879 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:883 i-Mongo-Store/(10207:10267): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:47:885 i-Mongo-Store/(10207:10266): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:47:907 i-Mongo-Store/(10207:10303): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:909 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:912 i-Mongo-Store/(10207:10282): Se mueve de 0|4 a 0|5$
+[INFO] 14:25:47:920 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea GENERAR_COMIDA$
+[INFO] 14:25:47:924 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:928 i-Mongo-Store/(10207:10265): Se mueve de 2|2 a 3|2$
+[INFO] 14:25:47:934 i-Mongo-Store/(10207:10301): Comienza ejecución de tarea CAMBIARSE_DE_NAVE$
+[INFO] 14:25:47:935 i-Mongo-Store/(10207:10301): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:47:939 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:47:940 i-Mongo-Store/(10207:10274): Se finaliza la tarea HACER_EJERCICIO$
+[INFO] 14:25:47:961 i-Mongo-Store/(10207:10267): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:25:47:962 i-Mongo-Store/(10207:10293): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:47:968 i-Mongo-Store/(10207:10266): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:47:969 i-Mongo-Store/(10207:10275): Se finaliza la tarea HACER_EJERCICIO$
+[INFO] 14:25:47:971 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:972 i-Mongo-Store/(10207:10284): Se mueve de 0|5 a 0|6$
+[INFO] 14:25:47:975 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:47:976 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:47:978 i-Mongo-Store/(10207:10303): Comienza ejecución de tarea HACER_EJERCICIO$
+[INFO] 14:25:47:984 i-Mongo-Store/(10207:10303): Se mueve de 4|4 a 5|4$
+[INFO] 14:25:47:985 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:47:988 i-Mongo-Store/(10207:10301): Se mueve de 6|5 a 7|5$
+[INFO] 14:25:47:992 i-Mongo-Store/(10207:10285): Se mueve de 0|4 a 0|5$
+[INFO] 14:25:47:997 i-Mongo-Store/(10207:10274): Comienza ejecución de tarea SUBIR_FOTOS_A_IG$
+[INFO] 14:25:48:003 i-Mongo-Store/(10207:10266): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:48:008 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea CAMINAR$
+[INFO] 14:25:48:010 i-Mongo-Store/(10207:10267): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:48:014 i-Mongo-Store/(10207:10275): Comienza ejecución de tarea SUBIR_FOTOS_A_IG$
+[INFO] 14:25:48:018 i-Mongo-Store/(10207:10265): Se mueve de 3|2 a 3|3$
+[INFO] 14:25:48:024 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:024 i-Mongo-Store/(10207:10303): Se mueve de 5|4 a 5|5$
+[INFO] 14:25:48:029 i-Mongo-Store/(10207:10301): Se mueve de 7|5 a 8|5$
+[INFO] 14:25:48:036 i-Mongo-Store/(10207:10302): Se finaliza la tarea HACER_EJERCICIO$
+[INFO] 14:25:48:046 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:057 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:061 i-Mongo-Store/(10207:10267): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:48:071 i-Mongo-Store/(10207:10266): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:48:076 i-Mongo-Store/(10207:10265): Se mueve de 3|3 a 3|4$
+[INFO] 14:25:48:097 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:108 i-Mongo-Store/(10207:10292): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:48:123 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:130 i-Mongo-Store/(10207:10301): Se mueve de 8|5 a 9|5$
+[INFO] 14:25:48:135 i-Mongo-Store/(10207:10294): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:48:306 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques
+[INFO] 14:25:48:308 i-Mongo-Store/(10207:10302): Comienza ejecución de tarea CONSUMIR_OXIGENO$
+[INFO] 14:25:48:326 i-Mongo-Store/(10207:10302): Se finaliza la tarea CONSUMIR_OXIGENO$
+[INFO] 14:25:48:339 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:340 i-Mongo-Store/(10207:10282): Se mueve de 0|5 a 0|6$
+[INFO] 14:25:48:342 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:346 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:348 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:349 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:350 i-Mongo-Store/(10207:10292): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:48:351 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:352 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:352 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:353 i-Mongo-Store/(10207:10294): Se mueve de 7|0 a 8|0$
+[INFO] 14:25:48:353 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:354 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:355 i-Mongo-Store/(10207:10285): Se mueve de 0|5 a 0|6$
+[INFO] 14:25:48:355 i-Mongo-Store/(10207:10274): Se finaliza la tarea SUBIR_FOTOS_A_IG$
+[INFO] 14:25:48:357 i-Mongo-Store/(10207:10302): Comienza ejecución de tarea CAMBIARSE_DE_NAVE$
+[INFO] 14:25:48:358 i-Mongo-Store/(10207:10302): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:48:358 i-Mongo-Store/(10207:10301): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:48:359 i-Mongo-Store/(10207:10301): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:48:361 i-Mongo-Store/(10207:10301): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:48:363 i-Mongo-Store/(10207:10282): Se mueve de 0|6 a 0|7$
+[INFO] 14:25:48:365 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:366 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:369 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:372 i-Mongo-Store/(10207:10275): Se finaliza la tarea SUBIR_FOTOS_A_IG$
+[INFO] 14:25:48:373 i-Mongo-Store/(10207:10266): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:48:374 i-Mongo-Store/(10207:10266): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:48:398 i-Mongo-Store/(10207:10266): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:25:48:399 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea CAMINAR$
+[INFO] 14:25:48:404 i-Mongo-Store/(10207:10266): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:48:406 i-Mongo-Store/(10207:10266): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:48:409 i-Mongo-Store/(10207:10284): Se mueve de 0|6 a 0|7$
+[INFO] 14:25:48:410 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:425 i-Mongo-Store/(10207:10265): Se creó Comida.ims
+[INFO] 14:25:48:427 i-Mongo-Store/(10207:10265): Se cargó /home/utnso/fs/Files/Comida.ims
+[INFO] 14:25:48:447 i-Mongo-Store/(10207:10265): Se finaliza la tarea GENERAR_COMIDA$
+[INFO] 14:25:48:449 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea COMER$
+[INFO] 14:25:48:452 i-Mongo-Store/(10207:10265): Se mueve de 3|4 a 4|4$
+[INFO] 14:25:48:457 i-Mongo-Store/(10207:10265): Se mueve de 4|4 a 5|4$
+[INFO] 14:25:48:463 i-Mongo-Store/(10207:10265): Se mueve de 5|4 a 5|5$
+[INFO] 14:25:48:465 i-Mongo-Store/(10207:10274): Comienza ejecución de tarea ARREGLAR_CABLEADOS$
+[INFO] 14:25:48:472 i-Mongo-Store/(10207:10274): Se mueve de 7|3 a 6|3$
+[INFO] 14:25:48:478 i-Mongo-Store/(10207:10274): Se mueve de 6|3 a 5|3$
+[INFO] 14:25:48:479 i-Mongo-Store/(10207:10274): Se mueve de 5|3 a 4|3$
+[INFO] 14:25:48:480 i-Mongo-Store/(10207:10274): Se mueve de 4|3 a 3|3$
+[INFO] 14:25:48:480 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:481 i-Mongo-Store/(10207:10293): Se mueve de 7|0 a 8|0$
+[INFO] 14:25:48:482 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:483 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:485 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:488 i-Mongo-Store/(10207:10285): Se mueve de 0|6 a 0|7$
+[INFO] 14:25:48:496 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:497 i-Mongo-Store/(10207:10292): Se mueve de 7|0 a 8|0$
+[INFO] 14:25:48:499 i-Mongo-Store/(10207:10301): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:48:501 i-Mongo-Store/(10207:10266): Se mueve de 2|0 a 2|1$
+[INFO] 14:25:48:501 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:502 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:502 i-Mongo-Store/(10207:10294): Se mueve de 8|0 a 9|0$
+[INFO] 14:25:48:508 i-Mongo-Store/(10207:10265): Se finaliza la tarea COMER$
+[INFO] 14:25:48:511 i-Mongo-Store/(10207:10302): Se mueve de 6|5 a 7|5$
+[INFO] 14:25:48:513 i-Mongo-Store/(10207:10302): Se mueve de 7|5 a 8|5$
+[INFO] 14:25:48:514 i-Mongo-Store/(10207:10302): Se mueve de 8|5 a 9|5$
+[INFO] 14:25:48:515 i-Mongo-Store/(10207:10302): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:48:516 i-Mongo-Store/(10207:10302): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:48:524 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:526 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:528 i-Mongo-Store/(10207:10282): Se mueve de 0|7 a 0|8$
+[INFO] 14:25:48:531 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:538 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:539 i-Mongo-Store/(10207:10267): Se mueve de 2|0 a 2|1$
+[INFO] 14:25:48:539 i-Mongo-Store/(10207:10267): Se mueve de 2|1 a 2|2$
+[INFO] 14:25:48:540 i-Mongo-Store/(10207:10267): Se finaliza la tarea CAMINAR$
+[INFO] 14:25:48:542 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea GENERAR_COMIDA$
+[INFO] 14:25:48:546 i-Mongo-Store/(10207:10267): Se mueve de 2|2 a 3|2$
+[INFO] 14:25:48:549 i-Mongo-Store/(10207:10275): Comienza ejecución de tarea ARREGLAR_CABLEADOS$
+[INFO] 14:25:48:550 i-Mongo-Store/(10207:10275): Se mueve de 7|3 a 6|3$
+[INFO] 14:25:48:552 i-Mongo-Store/(10207:10275): Se mueve de 6|3 a 5|3$
+[INFO] 14:25:48:554 i-Mongo-Store/(10207:10275): Se mueve de 5|3 a 4|3$
+[INFO] 14:25:48:557 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:558 i-Mongo-Store/(10207:10284): Se mueve de 0|7 a 0|8$
+[INFO] 14:25:48:562 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:564 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:573 i-Mongo-Store/(10207:10274): Se mueve de 3|3 a 2|3$
+[INFO] 14:25:48:574 i-Mongo-Store/(10207:10276): Se finaliza la tarea SUBIR_FOTOS_A_IG$
+[INFO] 14:25:48:574 i-Mongo-Store/(10207:10276): Comienza ejecución de tarea ARREGLAR_CABLEADOS$
+[INFO] 14:25:48:575 i-Mongo-Store/(10207:10276): Se mueve de 7|3 a 6|3$
+[INFO] 14:25:48:576 i-Mongo-Store/(10207:10276): Se mueve de 6|3 a 5|3$
+[INFO] 14:25:48:577 i-Mongo-Store/(10207:10276): Se mueve de 5|3 a 4|3$
+[INFO] 14:25:48:578 i-Mongo-Store/(10207:10302): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:48:581 i-Mongo-Store/(10207:10266): Se mueve de 2|1 a 2|2$
+[INFO] 14:25:48:582 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea CONSUMIR_COMIDA$
+[INFO] 14:25:48:611 i-Mongo-Store/(10207:10265): Se finaliza la tarea CONSUMIR_COMIDA$
+[INFO] 14:25:48:613 i-Mongo-Store/(10207:10293): Se mueve de 8|0 a 9|0$
+[INFO] 14:25:48:614 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:616 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:616 i-Mongo-Store/(10207:10293): Se mueve de 9|0 a 9|1$
+[INFO] 14:25:48:618 i-Mongo-Store/(10207:10267): Se mueve de 3|2 a 3|3$
+[INFO] 14:25:48:620 i-Mongo-Store/(10207:10267): Se mueve de 3|3 a 3|4$
+[INFO] 14:25:48:623 i-Mongo-Store/(10207:10276): Se mueve de 4|3 a 3|3$
+[INFO] 14:25:48:624 i-Mongo-Store/(10207:10276): Se mueve de 3|3 a 2|3$
+[INFO] 14:25:48:625 i-Mongo-Store/(10207:10276): Se mueve de 2|3 a 1|3$
+[INFO] 14:25:48:629 i-Mongo-Store/(10207:10302): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:48:632 i-Mongo-Store/(10207:10275): Se mueve de 4|3 a 3|3$
+[INFO] 14:25:48:635 i-Mongo-Store/(10207:10275): Se mueve de 3|3 a 2|3$
+[INFO] 14:25:48:636 i-Mongo-Store/(10207:10275): Se mueve de 2|3 a 1|3$
+[INFO] 14:25:48:638 i-Mongo-Store/(10207:10275): Se mueve de 1|3 a 1|4$
+[INFO] 14:25:48:640 i-Mongo-Store/(10207:10275): Se mueve de 1|4 a 1|5$
+[INFO] 14:25:48:641 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:672 i-Mongo-Store/(10207:10267): Se finaliza la tarea GENERAR_COMIDA$
+[INFO] 14:25:48:675 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea TIRAR_TODO_AL_PISO$
+[INFO] 14:25:48:676 i-Mongo-Store/(10207:10265): Se finaliza la tarea TIRAR_TODO_AL_PISO$
+[INFO] 14:25:48:676 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:25:48:714 i-Mongo-Store/(10207:10265): Se creó Basura.ims
+[INFO] 14:25:48:717 i-Mongo-Store/(10207:10265): Se cargó /home/utnso/fs/Files/Basura.ims
+[INFO] 14:25:48:746 i-Mongo-Store/(10207:10265): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:25:48:750 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea BARRER$
+[INFO] 14:25:48:756 i-Mongo-Store/(10207:10266): Se finaliza la tarea CAMINAR$
+[INFO] 14:25:48:756 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea GENERAR_COMIDA$
+[INFO] 14:25:48:767 i-Mongo-Store/(10207:10266): Se mueve de 2|2 a 3|2$
+[INFO] 14:25:48:772 i-Mongo-Store/(10207:10266): Se mueve de 3|2 a 3|3$
+[INFO] 14:25:48:774 i-Mongo-Store/(10207:10266): Se mueve de 3|3 a 3|4$
+[INFO] 14:25:48:802 i-Mongo-Store/(10207:10266): Se finaliza la tarea GENERAR_COMIDA$
+[INFO] 14:25:48:803 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea COMER$
+[INFO] 14:25:48:804 i-Mongo-Store/(10207:10266): Se mueve de 3|4 a 4|4$
+[INFO] 14:25:48:809 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:811 i-Mongo-Store/(10207:10275): Se mueve de 1|5 a 1|6$
+[INFO] 14:25:48:814 i-Mongo-Store/(10207:10275): Se mueve de 1|6 a 1|7$
+[INFO] 14:25:48:816 i-Mongo-Store/(10207:10275): Se mueve de 1|7 a 1|8$
+[INFO] 14:25:48:819 i-Mongo-Store/(10207:10284): Se mueve de 0|8 a 0|9$
+[INFO] 14:25:48:821 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:822 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:824 i-Mongo-Store/(10207:10265): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:48:824 i-Mongo-Store/(10207:10265): Se mueve de 6|5 a 6|6$
+[INFO] 14:25:48:825 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:827 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:828 i-Mongo-Store/(10207:10294): Se mueve de 9|0 a 9|1$
+[INFO] 14:25:48:830 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:834 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:838 i-Mongo-Store/(10207:10294): Se mueve de 9|1 a 9|2$
+[INFO] 14:25:48:839 i-Mongo-Store/(10207:10303): Se finaliza la tarea HACER_EJERCICIO$
+[INFO] 14:25:48:841 i-Mongo-Store/(10207:10303): Comienza ejecución de tarea CONSUMIR_OXIGENO$
+[INFO] 14:25:48:873 i-Mongo-Store/(10207:10303): Se finaliza la tarea CONSUMIR_OXIGENO$
+[INFO] 14:25:48:874 i-Mongo-Store/(10207:10303): Comienza ejecución de tarea CAMBIARSE_DE_NAVE$
+[INFO] 14:25:48:883 i-Mongo-Store/(10207:10282): Se mueve de 0|8 a 0|9$
+[INFO] 14:25:48:884 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:887 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:890 i-Mongo-Store/(10207:10292): Se mueve de 8|0 a 9|0$
+[INFO] 14:25:48:892 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:895 i-Mongo-Store/(10207:10274): Se mueve de 2|3 a 1|3$
+[INFO] 14:25:48:897 i-Mongo-Store/(10207:10274): Se mueve de 1|3 a 1|4$
+[INFO] 14:25:48:899 i-Mongo-Store/(10207:10266): Se mueve de 4|4 a 5|4$
+[INFO] 14:25:48:902 i-Mongo-Store/(10207:10266): Se mueve de 5|4 a 5|5$
+[INFO] 14:25:48:904 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:908 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:910 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:912 i-Mongo-Store/(10207:10293): Se mueve de 9|1 a 9|2$
+[INFO] 14:25:48:914 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea COMER$
+[INFO] 14:25:48:914 i-Mongo-Store/(10207:10267): Se mueve de 3|4 a 4|4$
+[INFO] 14:25:48:915 i-Mongo-Store/(10207:10267): Se mueve de 4|4 a 5|4$
+[INFO] 14:25:48:917 i-Mongo-Store/(10207:10267): Se mueve de 5|4 a 5|5$
+[INFO] 14:25:48:917 i-Mongo-Store/(10207:10274): Se mueve de 1|4 a 1|5$
+[INFO] 14:25:48:918 i-Mongo-Store/(10207:10284): Se mueve de 0|9 a 1|9$
+[INFO] 14:25:48:922 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:924 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:927 i-Mongo-Store/(10207:10284): Se mueve de 1|9 a 2|9$
+[INFO] 14:25:48:930 i-Mongo-Store/(10207:10276): Se mueve de 1|3 a 1|4$
+[INFO] 14:25:48:932 i-Mongo-Store/(10207:10276): Se mueve de 1|4 a 1|5$
+[INFO] 14:25:48:933 i-Mongo-Store/(10207:10274): Se mueve de 1|5 a 1|6$
+[INFO] 14:25:48:935 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:937 i-Mongo-Store/(10207:10285): Se mueve de 0|7 a 0|8$
+[INFO] 14:25:48:938 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:939 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:941 i-Mongo-Store/(10207:10285): Se mueve de 0|8 a 0|9$
+[INFO] 14:25:48:943 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:48:946 i-Mongo-Store/(10207:10276): Se mueve de 1|5 a 1|6$
+[INFO] 14:25:48:949 i-Mongo-Store/(10207:10274): Se mueve de 1|6 a 1|7$
+[INFO] 14:25:48:949 i-Mongo-Store/(10207:10274): Se mueve de 1|7 a 1|8$
+[INFO] 14:25:48:949 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:950 i-Mongo-Store/(10207:10292): Se mueve de 9|0 a 9|1$
+[INFO] 14:25:48:956 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:48:958 i-Mongo-Store/(10207:10276): Se mueve de 1|6 a 1|7$
+[INFO] 14:25:48:966 i-Mongo-Store/(10207:10276): Se mueve de 1|7 a 1|8$
+[INFO] 14:25:48:968 i-Mongo-Store/(10207:10282): Se mueve de 0|9 a 1|9$
+[INFO] 14:25:48:971 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:972 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:973 i-Mongo-Store/(10207:10282): Se mueve de 1|9 a 2|9$
+[INFO] 14:25:48:975 i-Mongo-Store/(10207:10303): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:48:977 i-Mongo-Store/(10207:10303): Se mueve de 6|5 a 7|5$
+[INFO] 14:25:48:979 i-Mongo-Store/(10207:10303): Se mueve de 7|5 a 8|5$
+[INFO] 14:25:48:980 i-Mongo-Store/(10207:10303): Se mueve de 8|5 a 9|5$
+[INFO] 14:25:48:982 i-Mongo-Store/(10207:10303): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:48:983 i-Mongo-Store/(10207:10303): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:48:986 i-Mongo-Store/(10207:10276): Se finaliza la tarea ARREGLAR_CABLEADOS$
+[INFO] 14:25:48:989 i-Mongo-Store/(10207:10293): Se mueve de 9|2 a 9|3$
+[INFO] 14:25:48:992 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:48:994 i-Mongo-Store/(10207:10267): Se finaliza la tarea COMER$
+[INFO] 14:25:48:999 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:48:999 i-Mongo-Store/(10207:10285): Se mueve de 0|9 a 1|9$
+[INFO] 14:25:49:000 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea CONSUMIR_COMIDA$
+[INFO] 14:25:49:028 i-Mongo-Store/(10207:10267): Se finaliza la tarea CONSUMIR_COMIDA$
+[INFO] 14:25:49:031 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:034 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:035 i-Mongo-Store/(10207:10276): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:25:49:036 i-Mongo-Store/(10207:10276): Se mueve de 1|8 a 0|8$
+[INFO] 14:25:49:037 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:039 i-Mongo-Store/(10207:10303): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:49:040 i-Mongo-Store/(10207:10266): Se finaliza la tarea COMER$
+[INFO] 14:25:49:043 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:049 i-Mongo-Store/(10207:10284): Se mueve de 2|9 a 3|9$
+[INFO] 14:25:49:050 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:050 i-Mongo-Store/(10207:10294): Se mueve de 9|2 a 9|3$
+[INFO] 14:25:49:056 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea TIRAR_TODO_AL_PISO$
+[INFO] 14:25:49:072 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:074 i-Mongo-Store/(10207:10303): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:49:078 i-Mongo-Store/(10207:10267): Se finaliza la tarea TIRAR_TODO_AL_PISO$
+[INFO] 14:25:49:080 i-Mongo-Store/(10207:10276): Se mueve de 0|8 a 0|7$
+[INFO] 14:25:49:083 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:085 i-Mongo-Store/(10207:10301): Se finaliza la tarea CAMBIARSE_DE_NAVE$
+[INFO] 14:25:49:087 i-Mongo-Store/(10207:10282): Se mueve de 2|9 a 3|9$
+[INFO] 14:25:49:093 i-Mongo-Store/(10207:10302): Se finaliza la tarea CAMBIARSE_DE_NAVE$
+[INFO] 14:25:49:095 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea CONSUMIR_COMIDA$
+[INFO] 14:25:49:119 i-Mongo-Store/(10207:10266): Se finaliza la tarea CONSUMIR_COMIDA$
+[INFO] 14:25:49:122 i-Mongo-Store/(10207:10302): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:49:125 i-Mongo-Store/(10207:10302): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:49:126 i-Mongo-Store/(10207:10276): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:49:131 i-Mongo-Store/(10207:10275): Se finaliza la tarea ARREGLAR_CABLEADOS$
+[INFO] 14:25:49:132 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:133 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:134 i-Mongo-Store/(10207:10293): Se mueve de 9|3 a 9|4$
+[INFO] 14:25:49:136 i-Mongo-Store/(10207:10301): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:49:136 i-Mongo-Store/(10207:10301): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:49:141 i-Mongo-Store/(10207:10302): El tripulante 10297 finalizó sus tareas y se desconectó
+[INFO] 14:25:49:151 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:25:49:211 i-Mongo-Store/(10207:10267): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:25:49:212 i-Mongo-Store/(10207:10301): El tripulante 10295 finalizó sus tareas y se desconectó
+[INFO] 14:25:49:213 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea TIRAR_TODO_AL_PISO$
+[INFO] 14:25:49:216 i-Mongo-Store/(10207:10266): Se finaliza la tarea TIRAR_TODO_AL_PISO$
+[INFO] 14:25:49:218 i-Mongo-Store/(10207:10276): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:49:219 i-Mongo-Store/(10207:10276): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:49:221 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:223 i-Mongo-Store/(10207:10285): Se mueve de 1|9 a 2|9$
+[INFO] 14:25:49:229 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:242 i-Mongo-Store/(10207:10265): Se finaliza la tarea BARRER$
+[INFO] 14:25:49:252 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea BARRER$
+[INFO] 14:25:49:257 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:25:49:263 i-Mongo-Store/(10207:10267): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:49:264 i-Mongo-Store/(10207:10275): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:25:49:321 i-Mongo-Store/(10207:10266): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:25:49:324 i-Mongo-Store/(10207:10275): Se mueve de 1|8 a 0|8$
+[INFO] 14:25:49:326 i-Mongo-Store/(10207:10275): Se mueve de 0|8 a 0|7$
+[INFO] 14:25:49:338 i-Mongo-Store/(10207:10276): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:49:341 i-Mongo-Store/(10207:10276): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:49:348 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea DESCARTAR_BASURA$
+[INFO] 14:25:49:388 i-Mongo-Store/(10207:10265): Se finaliza la tarea DESCARTAR_BASURA$
+[INFO] 14:25:49:394 i-Mongo-Store/(10207:10265): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:49:396 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea BARRER$
+[INFO] 14:25:49:399 i-Mongo-Store/(10207:10266): Se mueve de 5|5 a 6|5$
+[INFO] 14:25:49:402 i-Mongo-Store/(10207:10266): Se mueve de 6|5 a 6|6$
+[INFO] 14:25:49:404 i-Mongo-Store/(10207:10275): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:49:406 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:415 i-Mongo-Store/(10207:10276): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:49:418 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:427 i-Mongo-Store/(10207:10292): Se mueve de 9|1 a 9|2$
+[INFO] 14:25:49:431 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:432 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:433 i-Mongo-Store/(10207:10282): Se mueve de 3|9 a 4|9$
+[INFO] 14:25:49:435 i-Mongo-Store/(10207:10267): Se mueve de 6|5 a 6|6$
+[INFO] 14:25:49:436 i-Mongo-Store/(10207:10276): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:49:442 i-Mongo-Store/(10207:10265): Se mueve de 6|6 a 7|6$
+[INFO] 14:25:49:445 i-Mongo-Store/(10207:10275): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:49:446 i-Mongo-Store/(10207:10275): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:49:447 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:448 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:450 i-Mongo-Store/(10207:10284): Se mueve de 3|9 a 4|9$
+[INFO] 14:25:49:450 i-Mongo-Store/(10207:10265): Se mueve de 7|6 a 8|6$
+[INFO] 14:25:49:453 i-Mongo-Store/(10207:10274): Se finaliza la tarea ARREGLAR_CABLEADOS$
+[INFO] 14:25:49:458 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:461 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:467 i-Mongo-Store/(10207:10294): Se mueve de 9|3 a 9|4$
+[INFO] 14:25:49:469 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:472 i-Mongo-Store/(10207:10274): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:25:49:512 i-Mongo-Store/(10207:10276): Se creó Basura.ims
+[INFO] 14:25:49:514 i-Mongo-Store/(10207:10276): Se cargó /home/utnso/fs/Files/Basura.ims
+[INFO] 14:25:49:535 i-Mongo-Store/(10207:10276): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:25:49:538 i-Mongo-Store/(10207:10274): Se mueve de 1|8 a 0|8$
+[INFO] 14:25:49:539 i-Mongo-Store/(10207:10275): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:49:541 i-Mongo-Store/(10207:10275): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:49:545 i-Mongo-Store/(10207:10275): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:49:555 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:559 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:565 i-Mongo-Store/(10207:10285): Se mueve de 2|9 a 3|9$
+[INFO] 14:25:49:567 i-Mongo-Store/(10207:10276): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:49:571 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:575 i-Mongo-Store/(10207:10293): Se mueve de 9|4 a 9|5$
+[INFO] 14:25:49:583 i-Mongo-Store/(10207:10276): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:49:585 i-Mongo-Store/(10207:10274): Se mueve de 0|8 a 0|7$
+[INFO] 14:25:49:589 i-Mongo-Store/(10207:10274): Se mueve de 0|7 a 0|6$
+[INFO] 14:25:49:593 i-Mongo-Store/(10207:10265): Se mueve de 8|6 a 9|6$
+[INFO] 14:25:49:595 i-Mongo-Store/(10207:10265): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:49:597 i-Mongo-Store/(10207:10265): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:49:602 i-Mongo-Store/(10207:10275): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:49:609 i-Mongo-Store/(10207:10276): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:49:611 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:612 i-Mongo-Store/(10207:10292): Se mueve de 9|2 a 9|3$
+[INFO] 14:25:49:619 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:624 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:629 i-Mongo-Store/(10207:10274): Se mueve de 0|6 a 0|5$
+[INFO] 14:25:49:634 i-Mongo-Store/(10207:10282): Se mueve de 4|9 a 5|9$
+[INFO] 14:25:49:662 i-Mongo-Store/(10207:10275): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:25:49:665 i-Mongo-Store/(10207:10276): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:49:671 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:673 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:49:677 i-Mongo-Store/(10207:10303): Se finaliza la tarea CAMBIARSE_DE_NAVE$
+[INFO] 14:25:49:679 i-Mongo-Store/(10207:10274): Se mueve de 0|5 a 0|4$
+[INFO] 14:25:49:691 i-Mongo-Store/(10207:10265): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:49:692 i-Mongo-Store/(10207:10294): Se mueve de 9|4 a 9|5$
+[INFO] 14:25:49:697 i-Mongo-Store/(10207:10275): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:49:700 i-Mongo-Store/(10207:10275): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:49:702 i-Mongo-Store/(10207:10265): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:49:705 i-Mongo-Store/(10207:10276): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:49:741 i-Mongo-Store/(10207:10303): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:49:749 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:776 i-Mongo-Store/(10207:10303): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:49:777 i-Mongo-Store/(10207:10274): Se mueve de 0|4 a 0|3$
+[INFO] 14:25:49:780 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:49:796 i-Mongo-Store/(10207:10275): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:49:810 i-Mongo-Store/(10207:10265): El tripulante 10260 finalizó sus tareas y se desconectó
+[INFO] 14:25:49:818 i-Mongo-Store/(10207:10276): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:49:822 i-Mongo-Store/(10207:10303): El tripulante 10296 finalizó sus tareas y se desconectó
+[INFO] 14:25:49:840 i-Mongo-Store/(10207:10267): Se finaliza la tarea BARRER$
+[INFO] 14:25:49:842 i-Mongo-Store/(10207:10274): Se mueve de 0|3 a 0|2$
+[INFO] 14:25:49:859 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:861 i-Mongo-Store/(10207:10285): Se mueve de 3|9 a 4|9$
+[INFO] 14:25:49:892 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:49:900 i-Mongo-Store/(10207:10284): Se mueve de 4|9 a 5|9$
+[INFO] 14:25:49:911 i-Mongo-Store/(10207:10275): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:49:915 i-Mongo-Store/(10207:10276): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:49:921 i-Mongo-Store/(10207:10274): Se mueve de 0|2 a 0|1$
+[INFO] 14:25:49:922 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea DESCARTAR_BASURA$
+[INFO] 14:25:49:957 i-Mongo-Store/(10207:10267): Se finaliza la tarea DESCARTAR_BASURA$
+[INFO] 14:25:49:958 i-Mongo-Store/(10207:10275): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:49:962 i-Mongo-Store/(10207:10275): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:49:967 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:49:968 i-Mongo-Store/(10207:10274): Se mueve de 0|1 a 0|0$
+[INFO] 14:25:49:993 i-Mongo-Store/(10207:10274): Se creó Basura.ims
+[INFO] 14:25:49:995 i-Mongo-Store/(10207:10274): Se cargó /home/utnso/fs/Files/Basura.ims
+[INFO] 14:25:50:021 i-Mongo-Store/(10207:10274): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:25:50:028 i-Mongo-Store/(10207:10274): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:037 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:038 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:039 i-Mongo-Store/(10207:10282): Se mueve de 5|9 a 6|9$
+[INFO] 14:25:50:044 i-Mongo-Store/(10207:10275): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:50:046 i-Mongo-Store/(10207:10275): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:50:050 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:051 i-Mongo-Store/(10207:10276): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:50:053 i-Mongo-Store/(10207:10276): Se mueve de 7|0 a 8|0$
+[INFO] 14:25:50:054 i-Mongo-Store/(10207:10276): Se mueve de 8|0 a 9|0$
+[INFO] 14:25:50:056 i-Mongo-Store/(10207:10276): Se mueve de 9|0 a 9|1$
+[INFO] 14:25:50:058 i-Mongo-Store/(10207:10266): Se finaliza la tarea BARRER$
+[INFO] 14:25:50:061 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea DESCARTAR_BASURA$
+[INFO] 14:25:50:102 i-Mongo-Store/(10207:10266): Se finaliza la tarea DESCARTAR_BASURA$
+[INFO] 14:25:50:104 i-Mongo-Store/(10207:10274): Se mueve de 0|0 a 1|0$
+[INFO] 14:25:50:105 i-Mongo-Store/(10207:10274): Se mueve de 1|0 a 2|0$
+[INFO] 14:25:50:105 i-Mongo-Store/(10207:10274): Se mueve de 2|0 a 3|0$
+[INFO] 14:25:50:106 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:107 i-Mongo-Store/(10207:10292): Se mueve de 9|3 a 9|4$
+[INFO] 14:25:50:108 i-Mongo-Store/(10207:10276): Se mueve de 9|1 a 9|2$
+[INFO] 14:25:50:113 i-Mongo-Store/(10207:10276): Se mueve de 9|2 a 9|3$
+[INFO] 14:25:50:140 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:151 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:151 i-Mongo-Store/(10207:10285): Se mueve de 4|9 a 5|9$
+[INFO] 14:25:50:153 i-Mongo-Store/(10207:10267): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:160 i-Mongo-Store/(10207:10267): Se mueve de 6|6 a 7|6$
+[INFO] 14:25:50:162 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:170 i-Mongo-Store/(10207:10266): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:175 i-Mongo-Store/(10207:10266): Se mueve de 6|6 a 7|6$
+[INFO] 14:25:50:177 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:179 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:181 i-Mongo-Store/(10207:10282): Se mueve de 6|9 a 7|9$
+[INFO] 14:25:50:182 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:185 i-Mongo-Store/(10207:10293): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:50:187 i-Mongo-Store/(10207:10267): Se mueve de 7|6 a 8|6$
+[INFO] 14:25:50:190 i-Mongo-Store/(10207:10267): Se mueve de 8|6 a 9|6$
+[INFO] 14:25:50:192 i-Mongo-Store/(10207:10267): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:200 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:201 i-Mongo-Store/(10207:10276): Se mueve de 9|3 a 9|4$
+[INFO] 14:25:50:202 i-Mongo-Store/(10207:10274): Se mueve de 3|0 a 4|0$
+[INFO] 14:25:50:203 i-Mongo-Store/(10207:10274): Se mueve de 4|0 a 5|0$
+[INFO] 14:25:50:207 i-Mongo-Store/(10207:10274): Se mueve de 5|0 a 6|0$
+[INFO] 14:25:50:214 i-Mongo-Store/(10207:10274): Se mueve de 6|0 a 7|0$
+[INFO] 14:25:50:216 i-Mongo-Store/(10207:10267): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:219 i-Mongo-Store/(10207:10267): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:227 i-Mongo-Store/(10207:10266): Se mueve de 7|6 a 8|6$
+[INFO] 14:25:50:234 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:235 i-Mongo-Store/(10207:10284): Se mueve de 5|9 a 6|9$
+[INFO] 14:25:50:243 i-Mongo-Store/(10207:10274): Se mueve de 7|0 a 8|0$
+[INFO] 14:25:50:246 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:247 i-Mongo-Store/(10207:10294): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:50:249 i-Mongo-Store/(10207:10275): Se mueve de 7|0 a 8|0$
+[INFO] 14:25:50:252 i-Mongo-Store/(10207:10275): Se mueve de 8|0 a 9|0$
+[INFO] 14:25:50:256 i-Mongo-Store/(10207:10266): Se mueve de 8|6 a 9|6$
+[INFO] 14:25:50:256 i-Mongo-Store/(10207:10276): Se mueve de 9|4 a 9|5$
+[INFO] 14:25:50:257 i-Mongo-Store/(10207:10276): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:50:258 i-Mongo-Store/(10207:10276): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:259 i-Mongo-Store/(10207:10276): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:264 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:266 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:268 i-Mongo-Store/(10207:10292): Se mueve de 9|4 a 9|5$
+[INFO] 14:25:50:273 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:274 i-Mongo-Store/(10207:10267): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:276 i-Mongo-Store/(10207:10275): Se mueve de 9|0 a 9|1$
+[INFO] 14:25:50:277 i-Mongo-Store/(10207:10274): Se mueve de 8|0 a 9|0$
+[INFO] 14:25:50:278 i-Mongo-Store/(10207:10274): Se mueve de 9|0 a 9|1$
+[INFO] 14:25:50:280 i-Mongo-Store/(10207:10274): Se mueve de 9|1 a 9|2$
+[INFO] 14:25:50:281 i-Mongo-Store/(10207:10267): El tripulante 10261 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:282 i-Mongo-Store/(10207:10274): Se mueve de 9|2 a 9|3$
+[INFO] 14:25:50:284 i-Mongo-Store/(10207:10276): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:285 i-Mongo-Store/(10207:10274): Se mueve de 9|3 a 9|4$
+[INFO] 14:25:50:290 i-Mongo-Store/(10207:10266): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:293 i-Mongo-Store/(10207:10274): Se mueve de 9|4 a 9|5$
+[INFO] 14:25:50:303 i-Mongo-Store/(10207:10274): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:50:309 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:310 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:311 i-Mongo-Store/(10207:10284): Se mueve de 6|9 a 7|9$
+[INFO] 14:25:50:314 i-Mongo-Store/(10207:10276): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:315 i-Mongo-Store/(10207:10275): Se mueve de 9|1 a 9|2$
+[INFO] 14:25:50:315 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:320 i-Mongo-Store/(10207:10274): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:325 i-Mongo-Store/(10207:10274): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:327 i-Mongo-Store/(10207:10276): El tripulante 10269 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:330 i-Mongo-Store/(10207:10275): Se mueve de 9|2 a 9|3$
+[INFO] 14:25:50:331 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:334 i-Mongo-Store/(10207:10285): Se mueve de 5|9 a 6|9$
+[INFO] 14:25:50:336 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:337 i-Mongo-Store/(10207:10282): Se mueve de 7|9 a 8|9$
+[INFO] 14:25:50:339 i-Mongo-Store/(10207:10266): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:344 i-Mongo-Store/(10207:10274): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:356 i-Mongo-Store/(10207:10275): Se mueve de 9|3 a 9|4$
+[INFO] 14:25:50:358 i-Mongo-Store/(10207:10266): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:363 i-Mongo-Store/(10207:10274): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:372 i-Mongo-Store/(10207:10282): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:376 i-Mongo-Store/(10207:10275): Se mueve de 9|4 a 9|5$
+[INFO] 14:25:50:382 i-Mongo-Store/(10207:10266): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:384 i-Mongo-Store/(10207:10274): El tripulante 10270 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:385 i-Mongo-Store/(10207:10266): El tripulante 10259 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:393 i-Mongo-Store/(10207:10282): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:397 i-Mongo-Store/(10207:10282): Se mueve de 8|9 a 9|9$
+[INFO] 14:25:50:403 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:405 i-Mongo-Store/(10207:10282): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:408 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:412 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:413 i-Mongo-Store/(10207:10285): Se mueve de 6|9 a 7|9$
+[INFO] 14:25:50:417 i-Mongo-Store/(10207:10275): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:50:419 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:421 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:423 i-Mongo-Store/(10207:10284): Se mueve de 7|9 a 8|9$
+[INFO] 14:25:50:431 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:434 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:436 i-Mongo-Store/(10207:10294): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:440 i-Mongo-Store/(10207:10284): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:442 i-Mongo-Store/(10207:10282): El tripulante 10279 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:445 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:448 i-Mongo-Store/(10207:10293): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:453 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:455 i-Mongo-Store/(10207:10275): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:461 i-Mongo-Store/(10207:10284): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:464 i-Mongo-Store/(10207:10284): Se mueve de 8|9 a 9|9$
+[INFO] 14:25:50:466 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea CEBAR_MATES$
+[INFO] 14:25:50:471 i-Mongo-Store/(10207:10275): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:474 i-Mongo-Store/(10207:10285): Se mueve de 7|9 a 8|9$
+[INFO] 14:25:50:478 i-Mongo-Store/(10207:10275): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:485 i-Mongo-Store/(10207:10284): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:491 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:495 i-Mongo-Store/(10207:10275): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:502 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:503 i-Mongo-Store/(10207:10292): Se mueve de 9|5 a 9|6$
+[INFO] 14:25:50:510 i-Mongo-Store/(10207:10284): El tripulante 10277 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:518 i-Mongo-Store/(10207:10285): Se finaliza la tarea CEBAR_MATES$
+[INFO] 14:25:50:518 i-Mongo-Store/(10207:10275): El tripulante 10268 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:522 i-Mongo-Store/(10207:10285): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:524 i-Mongo-Store/(10207:10285): Se mueve de 8|9 a 9|9$
+[INFO] 14:25:50:538 i-Mongo-Store/(10207:10285): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:570 i-Mongo-Store/(10207:10285): El tripulante 10278 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:573 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:575 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:576 i-Mongo-Store/(10207:10292): Se mueve de 9|6 a 9|7$
+[INFO] 14:25:50:607 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:612 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:615 i-Mongo-Store/(10207:10294): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:619 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:623 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:629 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:629 i-Mongo-Store/(10207:10293): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:632 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea CODEAR_EL_TP$
+[INFO] 14:25:50:635 i-Mongo-Store/(10207:10292): Se mueve de 9|7 a 9|8$
+[INFO] 14:25:50:681 i-Mongo-Store/(10207:10294): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:686 i-Mongo-Store/(10207:10294): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:688 i-Mongo-Store/(10207:10294): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:694 i-Mongo-Store/(10207:10294): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:699 i-Mongo-Store/(10207:10292): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:703 i-Mongo-Store/(10207:10292): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:704 i-Mongo-Store/(10207:10292): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:708 i-Mongo-Store/(10207:10292): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:729 i-Mongo-Store/(10207:10294): El tripulante 10288 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:735 i-Mongo-Store/(10207:10293): Se finaliza la tarea CODEAR_EL_TP$
+[INFO] 14:25:50:736 i-Mongo-Store/(10207:10293): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:25:50:738 i-Mongo-Store/(10207:10293): Se mueve de 9|8 a 9|9$
+[INFO] 14:25:50:740 i-Mongo-Store/(10207:10293): Se finaliza la tarea SALUDAR$
+[INFO] 14:25:50:746 i-Mongo-Store/(10207:10292): El tripulante 10286 finalizó sus tareas y se desconectó
+[INFO] 14:25:50:776 i-Mongo-Store/(10207:10293): El tripulante 10287 finalizó sus tareas y se desconectó
+[INFO] 14:26:00:398 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques
+[INFO] 14:26:12:439 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques
+[INFO] 14:26:24:473 i-Mongo-Store/(10207:10212): Se sincronizaron los bloques

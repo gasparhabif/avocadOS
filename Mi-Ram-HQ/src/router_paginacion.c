@@ -51,8 +51,6 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
         paquete = serializarInt(1, PUNTERO_PCB, &tamanioSerializacion);
     }
 
-    pthread_mutex_unlock(&acceso_memoria);
-
     //DIBUJO EL TRIPULANTE EN EL MAPA
     int err;
     err = personaje_crear(level, idMapa, datos_recibidos->tcb.posX, datos_recibidos->tcb.posY);
@@ -60,6 +58,7 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
         log_error(logger, "Error al crear el personaje en el mapa");
     ASSERT_CREATE(level, idMapa, err);
     nivel_gui_dibujar(level);
+    pthread_mutex_unlock(&acceso_memoria);
 
     send(client, paquete, tamanioSerializacion, 0);
     free(paquete);
@@ -132,11 +131,11 @@ void mover_tripulante_paginada(t_envio_posicion *datos_recibidos, char idMapa)
         }
     }
 
-    pthread_mutex_unlock(&acceso_memoria);
-
     //MODIFICO LA POSICION DEL TRIPULANTE EN EL MAPA
     item_mover(level, idMapa, datos_recibidos->pos.posX, datos_recibidos->pos.posY);
     nivel_gui_dibujar(level);
+
+    pthread_mutex_unlock(&acceso_memoria);
 }
 
 void actualizar_estado_paginada(t_estado *datos_recibidos)
@@ -398,9 +397,8 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
         log_info(logger, "El tripulante %d abandono la nave", datos_recibidos->tid);
     }
 
-    pthread_mutex_unlock(&acceso_memoria);
-
     //ELIMINO AL TRIPULANTE DEL MAPA
     item_borrar(level, idMapa);
     nivel_gui_dibujar(level);
+    pthread_mutex_unlock(&acceso_memoria);
 }
