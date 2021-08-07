@@ -1,6 +1,327 @@
-[INFO] 13:40:40:706 DISCORDIADOR/(7629:7629): Se inicio el log del discordiador
-[INFO] 13:40:40:708 DISCORDIADOR/(7629:7629): Se cargo la config del Discordador
-[INFO] 13:40:40:708 DISCORDIADOR/(7629:7629): Conectando a RAM...
-[INFO] 13:40:40:709 DISCORDIADOR/(7629:7629): Conectando a MONGO...
-[INFO] 13:40:40:709 DISCORDIADOR/(7629:7629): Conexión establecida con RAM y con Mongo!
-[INFO] 13:41:58:268 DISCORDIADOR/(7629:7635): ATENDIENDO UN SABOTAJE
+[INFO] 14:18:17:135 DISCORDIADOR/(9523:9523): Se inicio el log del discordiador
+[INFO] 14:18:17:141 DISCORDIADOR/(9523:9523): Se cargo la config del Discordador
+[INFO] 14:18:17:142 DISCORDIADOR/(9523:9523): Conectando a RAM...
+[INFO] 14:18:17:144 DISCORDIADOR/(9523:9523): Conectando a MONGO...
+[INFO] 14:18:17:145 DISCORDIADOR/(9523:9523): Conexión establecida con RAM y con Mongo!
+[INFO] 14:18:20:599 DISCORDIADOR/(9523:9532): Se inicio el tripulante N°:9532
+[INFO] 14:18:20:600 DISCORDIADOR/(9523:9532): Tripulante en posicion X:1 Y:1
+[INFO] 14:18:20:601 DISCORDIADOR/(9523:9533): Se inicio el tripulante N°:9533
+[INFO] 14:18:20:602 DISCORDIADOR/(9523:9533): Tripulante en posicion X:0 Y:0
+[INFO] 14:18:20:603 DISCORDIADOR/(9523:9532): El tripulante se conecto con Mi-RAM-HQ
+[INFO] 14:18:20:605 DISCORDIADOR/(9523:9532): Se envio el TCB a la RAM
+[INFO] 14:18:20:606 DISCORDIADOR/(9523:9532): El tripulante se conecto con i-Mongo-Store
+[INFO] 14:18:20:604 DISCORDIADOR/(9523:9533): El tripulante se conecto con Mi-RAM-HQ
+[INFO] 14:18:20:607 DISCORDIADOR/(9523:9533): Se envio el TCB a la RAM
+[INFO] 14:18:20:607 DISCORDIADOR/(9523:9532): Se envio el TID y la posicion al i-mongo-store
+[INFO] 14:18:20:607 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:20:609 DISCORDIADOR/(9523:9533): El tripulante se conecto con i-Mongo-Store
+[INFO] 14:18:20:611 DISCORDIADOR/(9523:9533): Se envio el TID y la posicion al i-mongo-store
+[INFO] 14:18:20:616 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:24:855 DISCORDIADOR/(9523:9538): Se inicio el tripulante N°:9538
+[INFO] 14:18:24:855 DISCORDIADOR/(9523:9538): Tripulante en posicion X:1 Y:0
+[INFO] 14:18:24:856 DISCORDIADOR/(9523:9538): El tripulante se conecto con Mi-RAM-HQ
+[INFO] 14:18:24:856 DISCORDIADOR/(9523:9538): Se envio el TCB a la RAM
+[INFO] 14:18:24:858 DISCORDIADOR/(9523:9538): El tripulante se conecto con i-Mongo-Store
+[INFO] 14:18:24:858 DISCORDIADOR/(9523:9538): Se envio el TID y la posicion al i-mongo-store
+[INFO] 14:18:24:859 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:30:345 DISCORDIADOR/(9523:9541): Se inicio el tripulante N°:9541
+[INFO] 14:18:30:346 DISCORDIADOR/(9523:9541): Tripulante en posicion X:0 Y:1
+[INFO] 14:18:30:347 DISCORDIADOR/(9523:9541): El tripulante se conecto con Mi-RAM-HQ
+[INFO] 14:18:30:347 DISCORDIADOR/(9523:9541): Se envio el TCB a la RAM
+[INFO] 14:18:30:349 DISCORDIADOR/(9523:9541): El tripulante se conecto con i-Mongo-Store
+[INFO] 14:18:30:350 DISCORDIADOR/(9523:9541): Se envio el TID y la posicion al i-mongo-store
+[INFO] 14:18:30:351 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:132 DISCORDIADOR/(9523:9523): Iniciando planificacion...
+
+[INFO] 14:18:39:132 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:132 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:133 DISCORDIADOR/(9523:9538): Tarea recibida:
+Duracion movimientos: 3
+Duracion ejecucion:   1
+Duracion bloqueado:   2
+
+[INFO] 14:18:39:133 DISCORDIADOR/(9523:9532): Tarea recibida:
+Duracion movimientos: 7
+Duracion ejecucion:   1
+Duracion bloqueado:   10
+
+[INFO] 14:18:39:135 DISCORDIADOR/(9523:9532): Tripulante en posicion X:2 Y:1
+[INFO] 14:18:39:140 DISCORDIADOR/(9523:9538): Tripulante en posicion X:2 Y:0
+[INFO] 14:18:39:142 DISCORDIADOR/(9523:9538): Tripulante en posicion X:2 Y:1
+[INFO] 14:18:39:141 DISCORDIADOR/(9523:9532): Tripulante en posicion X:3 Y:1
+[INFO] 14:18:39:145 DISCORDIADOR/(9523:9538): Tripulante en posicion X:2 Y:2
+[INFO] 14:18:39:148 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:150 DISCORDIADOR/(9523:9533): Tarea recibida:
+Duracion movimientos: 9
+Duracion ejecucion:   1
+Duracion bloqueado:   10
+
+[INFO] 14:18:39:147 DISCORDIADOR/(9523:9532): Tripulante en posicion X:4 Y:1
+[INFO] 14:18:39:150 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:150 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:150 DISCORDIADOR/(9523:9533): Tripulante en posicion X:1 Y:0
+[INFO] 14:18:39:152 DISCORDIADOR/(9523:9533): Tripulante en posicion X:2 Y:0
+[INFO] 14:18:39:148 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:153 DISCORDIADOR/(9523:9533): Tripulante en posicion X:3 Y:0
+[INFO] 14:18:39:153 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:153 DISCORDIADOR/(9523:9541): Tarea recibida:
+Duracion movimientos: 5
+Duracion ejecucion:   5
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:155 DISCORDIADOR/(9523:9541): Tripulante en posicion X:1 Y:1
+[INFO] 14:18:39:153 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:156 DISCORDIADOR/(9523:9541): Tripulante en posicion X:2 Y:1
+[INFO] 14:18:39:158 DISCORDIADOR/(9523:9532): Tripulante en posicion X:5 Y:1
+[INFO] 14:18:39:158 DISCORDIADOR/(9523:9541): Tripulante en posicion X:3 Y:1
+[INFO] 14:18:39:159 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:159 DISCORDIADOR/(9523:9532): Tripulante en posicion X:6 Y:1
+[INFO] 14:18:39:159 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:160 DISCORDIADOR/(9523:9538): Tiempo ejecutado: 1
+[INFO] 14:18:39:160 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:160 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:160 DISCORDIADOR/(9523:9538): Tripulante en estado: B
+[INFO] 14:18:39:161 DISCORDIADOR/(9523:9538): Ciclo bloqueado
+[INFO] 14:18:39:161 DISCORDIADOR/(9523:9533): Tripulante en posicion X:4 Y:0
+[INFO] 14:18:39:161 DISCORDIADOR/(9523:9538): Ciclo bloqueado
+[INFO] 14:18:39:162 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:1
+[INFO] 14:18:39:163 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:163 DISCORDIADOR/(9523:9541): Tiempo ejecutado: 1
+[INFO] 14:18:39:163 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:164 DISCORDIADOR/(9523:9541): Tripulante en posicion X:3 Y:2
+[INFO] 14:18:39:162 DISCORDIADOR/(9523:9533): Tripulante en posicion X:5 Y:0
+[INFO] 14:18:39:166 DISCORDIADOR/(9523:9533): Tripulante en posicion X:6 Y:0
+[INFO] 14:18:39:167 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:165 DISCORDIADOR/(9523:9541): Tripulante en posicion X:3 Y:3
+[INFO] 14:18:39:163 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:168 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:169 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:169 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:167 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:169 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:0
+[INFO] 14:18:39:170 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:1
+[INFO] 14:18:39:170 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:2
+[INFO] 14:18:39:171 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:171 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:171 DISCORDIADOR/(9523:9532): Tiempo ejecutado: 1
+[INFO] 14:18:39:172 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:2
+[INFO] 14:18:39:172 DISCORDIADOR/(9523:9532): Ciclo ejecucion
+[INFO] 14:18:39:172 DISCORDIADOR/(9523:9532): Tripulante en estado: B
+[INFO] 14:18:39:173 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:173 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:174 DISCORDIADOR/(9523:9541): Tiempo ejecutado: 3
+[INFO] 14:18:39:174 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:175 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:175 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:176 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:176 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:177 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:178 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:178 DISCORDIADOR/(9523:9533): Tiempo ejecutado: 1
+[INFO] 14:18:39:178 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:179 DISCORDIADOR/(9523:9533): Ciclo ejecucion
+[INFO] 14:18:39:180 DISCORDIADOR/(9523:9533): Tripulante en estado: B
+[INFO] 14:18:39:181 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:182 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:183 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:184 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:183 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:185 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:186 DISCORDIADOR/(9523:9541): Tiempo ejecutado: 1
+[INFO] 14:18:39:185 DISCORDIADOR/(9523:9538): Tarea recibida:
+Duracion movimientos: 4
+Duracion ejecucion:   5
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:187 DISCORDIADOR/(9523:9538): Tripulante en posicion X:3 Y:2
+[INFO] 14:18:39:188 DISCORDIADOR/(9523:9538): Tripulante en posicion X:4 Y:2
+[INFO] 14:18:39:189 DISCORDIADOR/(9523:9538): Tripulante en posicion X:4 Y:3
+[INFO] 14:18:39:190 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:191 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:193 DISCORDIADOR/(9523:9538): Tiempo ejecutado: 2
+[INFO] 14:18:39:194 DISCORDIADOR/(9523:9538): Tripulante en posicion X:4 Y:4
+[INFO] 14:18:39:187 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:195 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:195 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:195 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:185 DISCORDIADOR/(9523:9532): Ciclo bloqueado
+[INFO] 14:18:39:196 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:196 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:197 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:198 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:199 DISCORDIADOR/(9523:9538): Tiempo ejecutado: 3
+[INFO] 14:18:39:200 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:196 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:196 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:201 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:200 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:201 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:202 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:203 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:204 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:203 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:209 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:209 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:205 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:211 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:212 DISCORDIADOR/(9523:9533): Ciclo bloqueado
+[INFO] 14:18:39:213 DISCORDIADOR/(9523:9532): Tarea recibida:
+Duracion movimientos: 5
+Duracion ejecucion:   4
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:213 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:214 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:3
+[INFO] 14:18:39:214 DISCORDIADOR/(9523:9541): Tarea recibida:
+Duracion movimientos: 4
+Duracion ejecucion:   1
+Duracion bloqueado:   2
+
+[INFO] 14:18:39:216 DISCORDIADOR/(9523:9541): Tripulante en posicion X:4 Y:3
+[INFO] 14:18:39:215 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:4
+[INFO] 14:18:39:217 DISCORDIADOR/(9523:9541): Tripulante en posicion X:5 Y:3
+[INFO] 14:18:39:219 DISCORDIADOR/(9523:9541): Tripulante en posicion X:5 Y:4
+[INFO] 14:18:39:219 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:217 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:5
+[INFO] 14:18:39:220 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:221 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:222 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:226 DISCORDIADOR/(9523:9533): Tarea recibida:
+Duracion movimientos: 5
+Duracion ejecucion:   4
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:227 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:3
+[INFO] 14:18:39:229 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:4
+[INFO] 14:18:39:231 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:5
+[INFO] 14:18:39:234 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:234 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:237 DISCORDIADOR/(9523:9541): Tiempo ejecutado: 1
+[INFO] 14:18:39:238 DISCORDIADOR/(9523:9541): Tripulante en posicion X:5 Y:5
+[INFO] 14:18:39:241 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:243 DISCORDIADOR/(9523:9541): Tripulante en estado: B
+[INFO] 14:18:39:245 DISCORDIADOR/(9523:9541): Ciclo bloqueado
+[INFO] 14:18:39:243 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:250 DISCORDIADOR/(9523:9532): Tiempo ejecutado: 1
+[INFO] 14:18:39:247 DISCORDIADOR/(9523:9541): Ciclo bloqueado
+[INFO] 14:18:39:254 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:6
+[INFO] 14:18:39:255 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:258 DISCORDIADOR/(9523:9532): Tripulante en posicion X:7 Y:7
+[INFO] 14:18:39:262 DISCORDIADOR/(9523:9532): Ciclo ejecucion
+[INFO] 14:18:39:265 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:252 DISCORDIADOR/(9523:9538): Tarea recibida:
+Duracion movimientos: 4
+Duracion ejecucion:   1
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:266 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:270 DISCORDIADOR/(9523:9533): Tiempo ejecutado: 1
+[INFO] 14:18:39:270 DISCORDIADOR/(9523:9538): Tripulante en posicion X:5 Y:4
+[INFO] 14:18:39:271 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:6
+[INFO] 14:18:39:272 DISCORDIADOR/(9523:9538): Tripulante en posicion X:6 Y:4
+[INFO] 14:18:39:273 DISCORDIADOR/(9523:9538): Tripulante en posicion X:6 Y:5
+[INFO] 14:18:39:274 DISCORDIADOR/(9523:9533): Tripulante en posicion X:7 Y:7
+[INFO] 14:18:39:274 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:274 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:275 DISCORDIADOR/(9523:9533): Ciclo ejecucion
+[INFO] 14:18:39:277 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:277 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:279 DISCORDIADOR/(9523:9532): Tiempo ejecutado: 3
+[INFO] 14:18:39:280 DISCORDIADOR/(9523:9532): Ciclo ejecucion
+[INFO] 14:18:39:280 DISCORDIADOR/(9523:9532): Ciclo ejecucion
+[INFO] 14:18:39:282 DISCORDIADOR/(9523:9532): Ciclo ejecucion
+[INFO] 14:18:39:283 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:283 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:290 DISCORDIADOR/(9523:9541): Tarea recibida:
+Duracion movimientos: 6
+Duracion ejecucion:   1
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:291 DISCORDIADOR/(9523:9541): Tripulante en posicion X:6 Y:5
+[INFO] 14:18:39:292 DISCORDIADOR/(9523:9541): Tripulante en posicion X:7 Y:5
+[INFO] 14:18:39:294 DISCORDIADOR/(9523:9541): Tripulante en posicion X:8 Y:5
+[INFO] 14:18:39:295 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:295 DISCORDIADOR/(9523:9533): Tiempo ejecutado: 3
+[INFO] 14:18:39:295 DISCORDIADOR/(9523:9532): Tarea recibida:
+Duracion movimientos: 5
+Duracion ejecucion:   1
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:296 DISCORDIADOR/(9523:9533): Ciclo ejecucion
+[INFO] 14:18:39:297 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:296 DISCORDIADOR/(9523:9532): Tripulante en posicion X:6 Y:7
+[INFO] 14:18:39:297 DISCORDIADOR/(9523:9533): Ciclo ejecucion
+[INFO] 14:18:39:300 DISCORDIADOR/(9523:9532): Tripulante en posicion X:5 Y:7
+[INFO] 14:18:39:301 DISCORDIADOR/(9523:9532): Tripulante en posicion X:4 Y:7
+[INFO] 14:18:39:303 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:302 DISCORDIADOR/(9523:9533): Ciclo ejecucion
+[INFO] 14:18:39:304 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:304 DISCORDIADOR/(9523:9532): Tiempo ejecutado: 1
+[INFO] 14:18:39:305 DISCORDIADOR/(9523:9532): Tripulante en posicion X:3 Y:7
+[INFO] 14:18:39:306 DISCORDIADOR/(9523:9532): Tripulante en posicion X:2 Y:7
+[INFO] 14:18:39:308 DISCORDIADOR/(9523:9532): Ciclo ejecucion
+[INFO] 14:18:39:309 DISCORDIADOR/(9523:9532): Tripulante en estado: R
+[INFO] 14:18:39:304 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:311 DISCORDIADOR/(9523:9538): Tiempo ejecutado: 1
+[INFO] 14:18:39:312 DISCORDIADOR/(9523:9538): Tripulante en posicion X:6 Y:6
+[INFO] 14:18:39:304 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:314 DISCORDIADOR/(9523:9538): Ciclo ejecucion
+[INFO] 14:18:39:314 DISCORDIADOR/(9523:9538): Tripulante en estado: R
+[INFO] 14:18:39:314 DISCORDIADOR/(9523:9532): Tripulante en estado: E
+[INFO] 14:18:39:311 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:316 DISCORDIADOR/(9523:9541): Tripulante en posicion X:8 Y:6
+[INFO] 14:18:39:318 DISCORDIADOR/(9523:9541): Tripulante en posicion X:8 Y:7
+[INFO] 14:18:39:319 DISCORDIADOR/(9523:9541): Tripulante en posicion X:8 Y:8
+[INFO] 14:18:39:320 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:326 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:329 DISCORDIADOR/(9523:9533): Tarea recibida:
+Duracion movimientos: 5
+Duracion ejecucion:   1
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:329 DISCORDIADOR/(9523:9533): Tripulante en posicion X:6 Y:7
+[INFO] 14:18:39:330 DISCORDIADOR/(9523:9533): Tripulante en posicion X:5 Y:7
+[INFO] 14:18:39:332 DISCORDIADOR/(9523:9533): Tripulante en posicion X:4 Y:7
+[INFO] 14:18:39:333 DISCORDIADOR/(9523:9538): Tripulante en estado: E
+[INFO] 14:18:39:333 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:343 DISCORDIADOR/(9523:9538): Tarea recibida:
+Duracion movimientos: 0
+Duracion ejecucion:   0
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:343 DISCORDIADOR/(9523:9538): Tripulante en estado: X
+[INFO] 14:18:39:344 DISCORDIADOR/(9523:9538): Termine mis tareas en la nave, adios
+[INFO] 14:18:39:344 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:347 DISCORDIADOR/(9523:9541): Tiempo ejecutado: 1
+[INFO] 14:18:39:347 DISCORDIADOR/(9523:9532): Tarea recibida:
+Duracion movimientos: 0
+Duracion ejecucion:   0
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:350 DISCORDIADOR/(9523:9532): Tripulante en estado: X
+[INFO] 14:18:39:350 DISCORDIADOR/(9523:9532): Termine mis tareas en la nave, adios
+[INFO] 14:18:39:350 DISCORDIADOR/(9523:9541): Ciclo ejecucion
+[INFO] 14:18:39:350 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:352 DISCORDIADOR/(9523:9533): Tiempo ejecutado: 1
+[INFO] 14:18:39:352 DISCORDIADOR/(9523:9541): Tripulante en estado: R
+[INFO] 14:18:39:353 DISCORDIADOR/(9523:9533): Tripulante en posicion X:3 Y:7
+[INFO] 14:18:39:355 DISCORDIADOR/(9523:9541): Tripulante en estado: E
+[INFO] 14:18:39:355 DISCORDIADOR/(9523:9533): Tripulante en posicion X:2 Y:7
+[INFO] 14:18:39:359 DISCORDIADOR/(9523:9533): Ciclo ejecucion
+[INFO] 14:18:39:360 DISCORDIADOR/(9523:9533): Tripulante en estado: R
+[INFO] 14:18:39:360 DISCORDIADOR/(9523:9533): Tripulante en estado: E
+[INFO] 14:18:39:361 DISCORDIADOR/(9523:9541): Tarea recibida:
+Duracion movimientos: 0
+Duracion ejecucion:   0
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:368 DISCORDIADOR/(9523:9541): Tripulante en estado: X
+[INFO] 14:18:39:375 DISCORDIADOR/(9523:9533): Tarea recibida:
+Duracion movimientos: 0
+Duracion ejecucion:   0
+Duracion bloqueado:   0
+
+[INFO] 14:18:39:376 DISCORDIADOR/(9523:9533): Tripulante en estado: X
+[INFO] 14:18:39:376 DISCORDIADOR/(9523:9533): Termine mis tareas en la nave, adios
+[INFO] 14:18:39:370 DISCORDIADOR/(9523:9541): Termine mis tareas en la nave, adios
+[INFO] 14:19:34:329 DISCORDIADOR/(9523:9529): ATENDIENDO UN SABOTAJE

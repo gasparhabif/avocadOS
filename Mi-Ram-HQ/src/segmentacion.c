@@ -26,7 +26,7 @@ void *reservar_segmento_FF(int bytes)
             segmento_obtenido->limite -= bytes;
 
             //Chequeo que no me este pasando de la memoria reservada
-            if (((int) segmento_obtenido->inicio) < ((int) memoria + config->tamanio_memoria))
+            if (((int)segmento_obtenido->inicio) < ((int)memoria + config->tamanio_memoria))
             {
 
                 // En este caso podría ocurrir que los bytes entran perfecto en el
@@ -76,7 +76,7 @@ void *reservar_segmento_FF(int bytes)
             segmento_obtenido->limite -= bytes;
 
             //Chequeo que no me este pasando de la memoria reservada
-            if (((int) segmento_obtenido->inicio) < ((int) memoria + config->tamanio_memoria))
+            if (((int)segmento_obtenido->inicio) < ((int)memoria + config->tamanio_memoria))
             {
 
                 // En este caso podría ocurrir que los bytes entran perfecto en el
@@ -110,14 +110,14 @@ void *reservar_segmento_BF(int bytes)
     uint32_t inicio_minimo;
     uint32_t tamanio_minimo = -1;
     uint32_t pos_seg = -1;
-    estado_segmentos *segmento_obtenido;// = malloc(sizeof(estado_segmentos));
+    estado_segmentos *segmento_obtenido; // = malloc(sizeof(estado_segmentos));
     estado_segmentos *nuevo_segmento = malloc(sizeof(estado_segmentos));
 
     for (int l = 0; l < 2; l++)
     {
-    
+
         tamanio_minimo = -1;
-        pos_seg        = -1;
+        pos_seg = -1;
 
         for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
         {
@@ -176,8 +176,9 @@ void *reservar_segmento_BF(int bytes)
                 return (void *)nuevo_segmento->inicio;
             }
         }
-        
-        if(l==0){
+
+        if (l == 0)
+        {
             sinMemoria = 1;
             compactar(SIGUSR1);
         }
@@ -187,7 +188,7 @@ void *reservar_segmento_BF(int bytes)
     //free(segmento_obtenido);
     //free(nuevo_segmento);
 
-    return (void *) -1;
+    return (void *)-1;
 }
 
 void liberar_memoria_segmentacion(int baseDelSegmento)
@@ -220,20 +221,8 @@ void compactar(int sig)
 
         log_info(logger, "COMENZANDO LA COMPACTACION");
 
-        /*
-        printf("------------------------------------------------------------------\n");
-        for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
+        if (!sinMemoria)
         {
-            estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
-            printf("SEG N°: %d\t", i);
-            printf("Inicio: %d\t", reg_seg->inicio);
-            printf("Tamaño: %d\t", reg_seg->limite);
-            printf("Ocupado: %d\n", reg_seg->ocupado);
-        }
-        printf("------------------------------------------------------------------\n");
-        */
-
-        if(!sinMemoria){
             pthread_mutex_lock(&acceso_memoria);
             pthread_mutex_lock(&m_procesos);
         }
@@ -279,7 +268,6 @@ void compactar(int sig)
 
         tabla_estado_segmentos = tabla_nueva;
 
-        
         log_info(logger, "TERMINE LA COMPACTACION\n");
         //printf("------------------------------------------------------------------\n");
         //for (int i = 0; i < list_size(tabla_nueva); i++)
@@ -291,7 +279,6 @@ void compactar(int sig)
         //    printf("Ocupado: %d\n", reg_seg->ocupado);
         //}
         //printf("------------------------------------------------------------------\n");
-        
 
         pthread_mutex_unlock(&acceso_memoria);
         pthread_mutex_unlock(&m_procesos);

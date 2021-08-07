@@ -1,5 +1,269 @@
-[INFO] 13:40:33:897 Mi-Ram-HQ/(7532:7532): Se inicio el log
-[INFO] 13:40:33:900 Mi-Ram-HQ/(7532:7532): Se cargo la config de la RAM
-[INFO] 13:40:33:900 Mi-Ram-HQ/(7532:7532): 256 bytes reservados en 0x8182278
-[INFO] 13:40:33:903 Mi-Ram-HQ/(7532:7532): Se inicio el server
-[INFO] 13:40:40:709 Mi-Ram-HQ/(7532:7537): Recibí una conexión en el socket 5
+[INFO] 14:18:10:956 Mi-Ram-HQ/(9426:9426): Se inicio el log
+[INFO] 14:18:10:959 Mi-Ram-HQ/(9426:9426): Se cargo la config de la RAM
+[INFO] 14:18:10:959 Mi-Ram-HQ/(9426:9426): 8192 bytes reservados en 0x8d36538
+[INFO] 14:18:10:965 Mi-Ram-HQ/(9426:9426): Se inicio el server
+[INFO] 14:18:17:144 Mi-Ram-HQ/(9426:9431): Recibí una conexión en el socket 5
+[INFO] 14:18:20:592 Mi-Ram-HQ/(9426:9528): El discordiador 5 comenzo una patota
+[INFO] 14:18:20:593 Mi-Ram-HQ/(9426:9528): Una nueva patota aborda la nave
+[INFO] 14:18:20:597 Mi-Ram-HQ/(9426:9528): Tareas en memoria
+[INFO] 14:18:20:598 Mi-Ram-HQ/(9426:9528): PCB en memoria
+[INFO] 14:18:20:601 Mi-Ram-HQ/(9426:9431): Recibí una conexión en el socket 6
+[INFO] 14:18:20:604 Mi-Ram-HQ/(9426:9431): Recibí una conexión en el socket 7
+[INFO] 14:18:20:605 Mi-Ram-HQ/(9426:9534): El tripulante 6 solicita el ingreso a la nave
+[INFO] 14:18:20:605 Mi-Ram-HQ/(9426:9534): TCB en memoria
+[INFO] 14:18:20:607 Mi-Ram-HQ/(9426:9536): El tripulante 7 solicita el ingreso a la nave
+[INFO] 14:18:20:607 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:20:609 Mi-Ram-HQ/(9426:9536): TCB en memoria
+[INFO] 14:18:20:618 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:24:852 Mi-Ram-HQ/(9426:9528): El discordiador 5 comenzo una patota
+[INFO] 14:18:24:853 Mi-Ram-HQ/(9426:9528): Una nueva patota aborda la nave
+[INFO] 14:18:24:854 Mi-Ram-HQ/(9426:9528): Tareas en memoria
+[INFO] 14:18:24:854 Mi-Ram-HQ/(9426:9528): PCB en memoria
+[INFO] 14:18:24:856 Mi-Ram-HQ/(9426:9431): Recibí una conexión en el socket 8
+[INFO] 14:18:24:856 Mi-Ram-HQ/(9426:9539): El tripulante 8 solicita el ingreso a la nave
+[INFO] 14:18:24:857 Mi-Ram-HQ/(9426:9539): TCB en memoria
+[INFO] 14:18:24:859 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:30:343 Mi-Ram-HQ/(9426:9528): El discordiador 5 comenzo una patota
+[INFO] 14:18:30:344 Mi-Ram-HQ/(9426:9528): Una nueva patota aborda la nave
+[INFO] 14:18:30:344 Mi-Ram-HQ/(9426:9528): Tareas en memoria
+[INFO] 14:18:30:344 Mi-Ram-HQ/(9426:9528): PCB en memoria
+[INFO] 14:18:30:347 Mi-Ram-HQ/(9426:9431): Recibí una conexión en el socket 9
+[INFO] 14:18:30:347 Mi-Ram-HQ/(9426:9542): El tripulante 9 solicita el ingreso a la nave
+[INFO] 14:18:30:348 Mi-Ram-HQ/(9426:9542): TCB en memoria
+[INFO] 14:18:30:352 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:132 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:132 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:132 Mi-Ram-HQ/(9426:9539): El tripulante 8 solicito una tarea
+[INFO] 14:18:39:132 Mi-Ram-HQ/(9426:9534): El tripulante 6 solicito una tarea
+[INFO] 14:18:39:134 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:139 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 2|1
+[INFO] 14:18:39:141 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:142 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 2|0
+[INFO] 14:18:39:148 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:149 Mi-Ram-HQ/(9426:9536): El tripulante 7 solicito una tarea
+[INFO] 14:18:39:150 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:151 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 1|0
+[INFO] 14:18:39:152 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:153 Mi-Ram-HQ/(9426:9542): El tripulante 9 solicito una tarea
+[INFO] 14:18:39:156 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:156 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 1|1
+[INFO] 14:18:39:175 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:176 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 3|1
+[INFO] 14:18:39:176 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:177 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 4|1
+[INFO] 14:18:39:178 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:178 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:179 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:179 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:179 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 5|1
+[INFO] 14:18:39:179 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:180 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 2|1
+[INFO] 14:18:39:180 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:180 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 6|1
+[INFO] 14:18:39:181 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:182 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|1
+[INFO] 14:18:39:182 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:182 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:181 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 2|2
+[INFO] 14:18:39:183 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:183 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:183 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:184 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:184 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:183 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:184 Mi-Ram-HQ/(9426:9539): El tripulante 8 solicito una tarea
+[INFO] 14:18:39:185 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|2
+[INFO] 14:18:39:185 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:187 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:188 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 2|0
+[INFO] 14:18:39:189 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:187 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:191 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 3|0
+[INFO] 14:18:39:193 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:194 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:194 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:193 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 3|2
+[INFO] 14:18:39:194 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:195 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 2|1
+[INFO] 14:18:39:195 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:195 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 3|1
+[INFO] 14:18:39:195 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:196 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:197 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:197 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 3|2
+[INFO] 14:18:39:199 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:199 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 3|3
+[INFO] 14:18:39:200 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:200 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:201 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:201 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:201 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:196 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:196 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 4|0
+[INFO] 14:18:39:202 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:203 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 5|0
+[INFO] 14:18:39:203 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:204 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 6|0
+[INFO] 14:18:39:209 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:209 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:210 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:209 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:212 Mi-Ram-HQ/(9426:9534): El tripulante 6 solicito una tarea
+[INFO] 14:18:39:202 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:213 Mi-Ram-HQ/(9426:9542): El tripulante 9 solicito una tarea
+[INFO] 14:18:39:211 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|0
+[INFO] 14:18:39:214 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:214 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:215 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|1
+[INFO] 14:18:39:216 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:216 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:217 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|3
+[INFO] 14:18:39:217 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 4|3
+[INFO] 14:18:39:217 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|2
+[INFO] 14:18:39:218 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:218 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:219 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:220 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:223 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:225 Mi-Ram-HQ/(9426:9536): El tripulante 7 solicito una tarea
+[INFO] 14:18:39:227 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:227 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 4|2
+[INFO] 14:18:39:227 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:228 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 4|3
+[INFO] 14:18:39:231 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:234 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:235 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:229 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:239 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|3
+[INFO] 14:18:39:238 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 4|4
+[INFO] 14:18:39:243 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:246 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:248 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:249 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:252 Mi-Ram-HQ/(9426:9539): El tripulante 8 solicito una tarea
+[INFO] 14:18:39:252 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:255 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|4
+[INFO] 14:18:39:258 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:257 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:262 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 5|3
+[INFO] 14:18:39:266 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:261 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|5
+[INFO] 14:18:39:269 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:270 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:271 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:269 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 5|4
+[INFO] 14:18:39:270 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:274 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 5|4
+[INFO] 14:18:39:273 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:276 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:277 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:273 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|6
+[INFO] 14:18:39:278 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:277 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 5|5
+[INFO] 14:18:39:279 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:281 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:271 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:284 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|4
+[INFO] 14:18:39:284 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:285 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|5
+[INFO] 14:18:39:285 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:284 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:289 Mi-Ram-HQ/(9426:9542): El tripulante 9 solicito una tarea
+[INFO] 14:18:39:279 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 7|7
+[INFO] 14:18:39:291 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:286 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:292 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:293 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:294 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:295 Mi-Ram-HQ/(9426:9534): El tripulante 6 solicito una tarea
+[INFO] 14:18:39:293 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:291 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:296 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:297 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 6|5
+[INFO] 14:18:39:297 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|6
+[INFO] 14:18:39:298 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:297 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 6|7
+[INFO] 14:18:39:299 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 7|7
+[INFO] 14:18:39:301 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:301 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:304 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:308 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:309 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 6|4
+[INFO] 14:18:39:311 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:311 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 6|5
+[INFO] 14:18:39:312 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:313 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:314 Mi-Ram-HQ/(9426:9539): El tripulante 8 ha realizado un movimiento
+[INFO] 14:18:39:314 Mi-Ram-HQ/(9426:9539): Se movio al tripulante a la posicion 6|6
+[INFO] 14:18:39:315 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:325 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:328 Mi-Ram-HQ/(9426:9536): El tripulante 7 solicito una tarea
+[INFO] 14:18:39:329 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:330 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 6|7
+[INFO] 14:18:39:331 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:332 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 7|5
+[INFO] 14:18:39:332 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:332 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 8|5
+[INFO] 14:18:39:333 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:333 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:333 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:335 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 8|6
+[INFO] 14:18:39:335 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:335 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:336 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 5|7
+[INFO] 14:18:39:336 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:336 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 8|7
+[INFO] 14:18:39:337 Mi-Ram-HQ/(9426:9542): El tripulante 9 ha realizado un movimiento
+[INFO] 14:18:39:337 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 4|7
+[INFO] 14:18:39:339 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:334 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:340 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:342 Mi-Ram-HQ/(9426:9539): El tripulante 8 solicito una tarea
+[INFO] 14:18:39:343 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:338 Mi-Ram-HQ/(9426:9542): Se movio al tripulante a la posicion 8|8
+[INFO] 14:18:39:344 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:344 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:343 Mi-Ram-HQ/(9426:9539): El tripulante 8 actualizo su estado
+[INFO] 14:18:39:343 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 3|7
+[INFO] 14:18:39:345 Mi-Ram-HQ/(9426:9534): El tripulante 6 ha realizado un movimiento
+[INFO] 14:18:39:345 Mi-Ram-HQ/(9426:9534): Se movio al tripulante a la posicion 2|7
+[INFO] 14:18:39:346 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:346 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:346 Mi-Ram-HQ/(9426:9534): El tripulante 6 solicito una tarea
+[INFO] 14:18:39:347 Mi-Ram-HQ/(9426:9539): El tripulante 8 quiere abandonar la nave
+[INFO] 14:18:39:348 Mi-Ram-HQ/(9426:9539): Se elimino el trpulante N°9538
+[INFO] 14:18:39:349 Mi-Ram-HQ/(9426:9539): Se eliminaron las tareas de la patota N°2
+[INFO] 14:18:39:350 Mi-Ram-HQ/(9426:9539): Se elimino el PCB de la patota N°2
+[INFO] 14:18:39:351 Mi-Ram-HQ/(9426:9539): Se desconecto un tripulante
+[INFO] 14:18:39:350 Mi-Ram-HQ/(9426:9534): El tripulante 6 actualizo su estado
+[INFO] 14:18:39:351 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:353 Mi-Ram-HQ/(9426:9534): El tripulante 6 quiere abandonar la nave
+[INFO] 14:18:39:355 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:355 Mi-Ram-HQ/(9426:9534): Se elimino el trpulante N°9532
+[INFO] 14:18:39:355 Mi-Ram-HQ/(9426:9534): Se desconecto un tripulante
+[INFO] 14:18:39:359 Mi-Ram-HQ/(9426:9542): El tripulante 9 solicito una tarea
+[INFO] 14:18:39:367 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:367 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 5|7
+[INFO] 14:18:39:369 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:368 Mi-Ram-HQ/(9426:9542): El tripulante 9 actualizo su estado
+[INFO] 14:18:39:370 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 4|7
+[INFO] 14:18:39:372 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:372 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:372 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:373 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 3|7
+[INFO] 14:18:39:373 Mi-Ram-HQ/(9426:9536): El tripulante 7 ha realizado un movimiento
+[INFO] 14:18:39:373 Mi-Ram-HQ/(9426:9536): Se movio al tripulante a la posicion 2|7
+[INFO] 14:18:39:374 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:374 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:374 Mi-Ram-HQ/(9426:9536): El tripulante 7 solicito una tarea
+[INFO] 14:18:39:372 Mi-Ram-HQ/(9426:9542): El tripulante 9 quiere abandonar la nave
+[INFO] 14:18:39:376 Mi-Ram-HQ/(9426:9542): Se elimino el trpulante N°9541
+[INFO] 14:18:39:376 Mi-Ram-HQ/(9426:9542): Se eliminaron las tareas de la patota N°3
+[INFO] 14:18:39:377 Mi-Ram-HQ/(9426:9542): Se elimino el PCB de la patota N°3
+[INFO] 14:18:39:376 Mi-Ram-HQ/(9426:9536): El tripulante 7 actualizo su estado
+[INFO] 14:18:39:378 Mi-Ram-HQ/(9426:9536): El tripulante 7 quiere abandonar la nave
+[INFO] 14:18:39:379 Mi-Ram-HQ/(9426:9536): Se elimino el trpulante N°9533
+[INFO] 14:18:39:379 Mi-Ram-HQ/(9426:9536): Se eliminaron las tareas de la patota N°1
+[INFO] 14:18:39:378 Mi-Ram-HQ/(9426:9542): Se desconecto un tripulante
+[INFO] 14:18:39:380 Mi-Ram-HQ/(9426:9536): Se elimino el PCB de la patota N°1
+[INFO] 14:18:39:380 Mi-Ram-HQ/(9426:9536): Se desconecto un tripulante

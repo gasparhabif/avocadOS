@@ -73,16 +73,6 @@ void comenzar_patota(int client, t_tareas_cPID *tareas_cPID_recibidas)
 
 void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTripulante)
 {
-    /*
-    printf("\n-----UN TRIPULANTE CON PID: %d ABORDO LA NAVE-----\n", tcbCpid_recibido->pid);
-    printf("TID: %d\n", tcbCpid_recibido->tcb.TID);
-    printf("EST: %c\n", tcbCpid_recibido->tcb.estado);
-    printf("P_X: %d\n", tcbCpid_recibido->tcb.posX);
-    printf("P_Y: %d\n", tcbCpid_recibido->tcb.posY);
-    printf("PRI: %d\n", tcbCpid_recibido->tcb.proximaInstruccion);
-    printf("PCB: %d\n", tcbCpid_recibido->tcb.puntero_PCB);
-    printf("----------------------------------------------------\n\n\n");
-    */
 
     pthread_mutex_lock(&m_procesos);
 

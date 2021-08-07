@@ -1,22 +1,126 @@
-[INFO] 13:40:36:207 i-Mongo-Store/(7586:7586): Se inició el log
-[INFO] 13:40:36:210 i-Mongo-Store/(7586:7586): Se cargó la configuración
-[INFO] 13:40:36:211 i-Mongo-Store/(7586:7586): El FS no existe. Creando FS desde cero...
-[INFO] 13:40:36:211 i-Mongo-Store/(7586:7586): Se crearon los directorios
-[INFO] 13:40:36:213 i-Mongo-Store/(7586:7586): Se creó SuperBloque.ims
-[INFO] 13:40:36:221 i-Mongo-Store/(7586:7586): Se creó Blocks.ims
-[INFO] 13:40:36:221 i-Mongo-Store/(7586:7586): Se creó el FS
-[INFO] 13:40:36:222 i-Mongo-Store/(7586:7586): Se cargó SuperBloque.ims
-[INFO] 13:40:36:225 i-Mongo-Store/(7586:7586): Se cargó Blocks.ims
-[INFO] 13:40:36:226 i-Mongo-Store/(7586:7586): Esperando Discordiador en el puerto 5002 para informar sabotajes
-[INFO] 13:40:40:709 i-Mongo-Store/(7586:7586): Se conectó el discordiador en el socket 7 para informar sabotajes
-[INFO] 13:40:40:710 i-Mongo-Store/(7586:7586): Esperando Discordiador en el puerto 5002 para traficar bitácoras
-[INFO] 13:40:40:710 i-Mongo-Store/(7586:7586): Se conectó el Discordiador en el socket 8 para traficar bitácoras
-[INFO] 13:40:40:711 i-Mongo-Store/(7586:7586): Esperando tripulantes en el puerto 5002
-[INFO] 13:40:46:232 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:40:56:239 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:41:06:246 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:41:16:265 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:41:26:276 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:41:36:281 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:41:46:289 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
-[INFO] 13:41:56:295 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 14:18:13:128 i-Mongo-Store/(9480:9480): Se inició el log
+[INFO] 14:18:13:131 i-Mongo-Store/(9480:9480): Se cargó la configuración
+[INFO] 14:18:13:131 i-Mongo-Store/(9480:9480): El FS no existe. Creando FS desde cero...
+[INFO] 14:18:13:132 i-Mongo-Store/(9480:9480): Se crearon los directorios
+[INFO] 14:18:13:133 i-Mongo-Store/(9480:9480): Se creó SuperBloque.ims
+[INFO] 14:18:13:141 i-Mongo-Store/(9480:9480): Se creó Blocks.ims
+[INFO] 14:18:13:143 i-Mongo-Store/(9480:9480): Se creó el FS
+[INFO] 14:18:13:144 i-Mongo-Store/(9480:9480): Se cargó SuperBloque.ims
+[INFO] 14:18:13:146 i-Mongo-Store/(9480:9480): Se cargó Blocks.ims
+[INFO] 14:18:13:149 i-Mongo-Store/(9480:9480): Esperando Discordiador en el puerto 5002 para informar sabotajes
+[INFO] 14:18:17:145 i-Mongo-Store/(9480:9480): Se conectó el discordiador en el socket 7 para informar sabotajes
+[INFO] 14:18:17:145 i-Mongo-Store/(9480:9480): Esperando Discordiador en el puerto 5002 para traficar bitácoras
+[INFO] 14:18:17:146 i-Mongo-Store/(9480:9480): Se conectó el Discordiador en el socket 8 para traficar bitácoras
+[INFO] 14:18:17:146 i-Mongo-Store/(9480:9480): Esperando tripulantes en el puerto 5002
+[INFO] 14:18:20:607 i-Mongo-Store/(9480:9535): Se conectó el tripulante TID: 9532 - Posición inicial: 1|1
+[INFO] 14:18:20:608 i-Mongo-Store/(9480:9535): Se creó Tripulante9532.ims
+[INFO] 14:18:20:608 i-Mongo-Store/(9480:9535): Se cargó Tripulante9532.ims
+[INFO] 14:18:20:612 i-Mongo-Store/(9480:9537): Se conectó el tripulante TID: 9533 - Posición inicial: 0|0
+[INFO] 14:18:20:615 i-Mongo-Store/(9480:9537): Se creó Tripulante9533.ims
+[INFO] 14:18:20:620 i-Mongo-Store/(9480:9537): Se cargó Tripulante9533.ims
+[INFO] 14:18:24:858 i-Mongo-Store/(9480:9540): Se conectó el tripulante TID: 9538 - Posición inicial: 1|0
+[INFO] 14:18:24:861 i-Mongo-Store/(9480:9540): Se creó Tripulante9538.ims
+[INFO] 14:18:24:864 i-Mongo-Store/(9480:9540): Se cargó Tripulante9538.ims
+[INFO] 14:18:25:157 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
+[INFO] 14:18:30:351 i-Mongo-Store/(9480:9543): Se conectó el tripulante TID: 9541 - Posición inicial: 0|1
+[INFO] 14:18:30:352 i-Mongo-Store/(9480:9543): Se creó Tripulante9541.ims
+[INFO] 14:18:30:353 i-Mongo-Store/(9480:9543): Se cargó Tripulante9541.ims
+[INFO] 14:18:37:164 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
+[INFO] 14:18:39:133 i-Mongo-Store/(9480:9540): Comienza ejecución de tarea GENERAR_BASURA$
+[INFO] 14:18:39:134 i-Mongo-Store/(9480:9535): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:18:39:138 i-Mongo-Store/(9480:9535): Se mueve de 1|1 a 2|1$
+[INFO] 14:18:39:143 i-Mongo-Store/(9480:9535): Se mueve de 2|1 a 3|1$
+[INFO] 14:18:39:145 i-Mongo-Store/(9480:9540): Se mueve de 1|0 a 2|0$
+[INFO] 14:18:39:147 i-Mongo-Store/(9480:9540): Se mueve de 2|0 a 2|1$
+[INFO] 14:18:39:148 i-Mongo-Store/(9480:9540): Se mueve de 2|1 a 2|2$
+[INFO] 14:18:39:153 i-Mongo-Store/(9480:9535): Se mueve de 3|1 a 4|1$
+[INFO] 14:18:39:154 i-Mongo-Store/(9480:9537): Comienza ejecución de tarea GENERAR_OXIGENO$
+[INFO] 14:18:39:155 i-Mongo-Store/(9480:9537): Se mueve de 0|0 a 1|0$
+[INFO] 14:18:39:155 i-Mongo-Store/(9480:9537): Se mueve de 1|0 a 2|0$
+[INFO] 14:18:39:156 i-Mongo-Store/(9480:9537): Se mueve de 2|0 a 3|0$
+[INFO] 14:18:39:157 i-Mongo-Store/(9480:9543): Comienza ejecución de tarea ESCANEAR_MUESTRAS$
+[INFO] 14:18:39:162 i-Mongo-Store/(9480:9543): Se mueve de 0|1 a 1|1$
+[INFO] 14:18:39:165 i-Mongo-Store/(9480:9543): Se mueve de 1|1 a 2|1$
+[INFO] 14:18:39:187 i-Mongo-Store/(9480:9540): Se creó Basura.ims
+[INFO] 14:18:39:188 i-Mongo-Store/(9480:9540): Se cargó /home/utnso/fs/Files/Basura.ims
+[INFO] 14:18:39:227 i-Mongo-Store/(9480:9540): Se finaliza la tarea GENERAR_BASURA$
+[INFO] 14:18:39:228 i-Mongo-Store/(9480:9540): Comienza ejecución de tarea LIMPIAR_ACUARIOS$
+[INFO] 14:18:39:231 i-Mongo-Store/(9480:9540): Se mueve de 2|2 a 3|2$
+[INFO] 14:18:39:232 i-Mongo-Store/(9480:9540): Se mueve de 3|2 a 4|2$
+[INFO] 14:18:39:234 i-Mongo-Store/(9480:9540): Se mueve de 4|2 a 4|3$
+[INFO] 14:18:39:236 i-Mongo-Store/(9480:9537): Se mueve de 3|0 a 4|0$
+[INFO] 14:18:39:237 i-Mongo-Store/(9480:9537): Se mueve de 4|0 a 5|0$
+[INFO] 14:18:39:239 i-Mongo-Store/(9480:9537): Se mueve de 5|0 a 6|0$
+[INFO] 14:18:39:243 i-Mongo-Store/(9480:9537): Se mueve de 6|0 a 7|0$
+[INFO] 14:18:39:246 i-Mongo-Store/(9480:9537): Se mueve de 7|0 a 7|1$
+[INFO] 14:18:39:249 i-Mongo-Store/(9480:9537): Se mueve de 7|1 a 7|2$
+[INFO] 14:18:39:276 i-Mongo-Store/(9480:9537): Se creó Oxigeno.ims
+[INFO] 14:18:39:277 i-Mongo-Store/(9480:9537): Se cargó /home/utnso/fs/Files/Oxigeno.ims
+[INFO] 14:18:39:303 i-Mongo-Store/(9480:9537): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:18:39:304 i-Mongo-Store/(9480:9537): Comienza ejecución de tarea BARRER$
+[INFO] 14:18:39:306 i-Mongo-Store/(9480:9535): Se mueve de 4|1 a 5|1$
+[INFO] 14:18:39:307 i-Mongo-Store/(9480:9535): Se mueve de 5|1 a 6|1$
+[INFO] 14:18:39:310 i-Mongo-Store/(9480:9543): Se mueve de 2|1 a 3|1$
+[INFO] 14:18:39:311 i-Mongo-Store/(9480:9543): Se mueve de 3|1 a 3|2$
+[INFO] 14:18:39:312 i-Mongo-Store/(9480:9543): Se mueve de 3|2 a 3|3$
+[INFO] 14:18:39:313 i-Mongo-Store/(9480:9543): Se finaliza la tarea ESCANEAR_MUESTRAS$
+[INFO] 14:18:39:314 i-Mongo-Store/(9480:9543): Comienza ejecución de tarea DESCARTAR_BASURA$
+[INFO] 14:18:39:316 i-Mongo-Store/(9480:9543): Se mueve de 3|3 a 4|3$
+[INFO] 14:18:39:316 i-Mongo-Store/(9480:9543): Se mueve de 4|3 a 5|3$
+[INFO] 14:18:39:318 i-Mongo-Store/(9480:9543): Se mueve de 5|3 a 5|4$
+[INFO] 14:18:39:319 i-Mongo-Store/(9480:9543): Se mueve de 5|4 a 5|5$
+[INFO] 14:18:39:335 i-Mongo-Store/(9480:9543): Se finaliza la tarea DESCARTAR_BASURA$
+[INFO] 14:18:39:336 i-Mongo-Store/(9480:9543): Comienza ejecución de tarea IRSE$
+[INFO] 14:18:39:338 i-Mongo-Store/(9480:9543): Se mueve de 5|5 a 6|5$
+[INFO] 14:18:39:340 i-Mongo-Store/(9480:9543): Se mueve de 6|5 a 7|5$
+[INFO] 14:18:39:341 i-Mongo-Store/(9480:9543): Se mueve de 7|5 a 8|5$
+[INFO] 14:18:39:343 i-Mongo-Store/(9480:9543): Se mueve de 8|5 a 8|6$
+[INFO] 14:18:39:345 i-Mongo-Store/(9480:9535): Se mueve de 6|1 a 7|1$
+[INFO] 14:18:39:346 i-Mongo-Store/(9480:9535): Se mueve de 7|1 a 7|2$
+[INFO] 14:18:39:363 i-Mongo-Store/(9480:9535): Se finaliza la tarea GENERAR_OXIGENO$
+[INFO] 14:18:39:364 i-Mongo-Store/(9480:9537): Se mueve de 7|2 a 7|3$
+[INFO] 14:18:39:365 i-Mongo-Store/(9480:9537): Se mueve de 7|3 a 7|4$
+[INFO] 14:18:39:365 i-Mongo-Store/(9480:9537): Se mueve de 7|4 a 7|5$
+[INFO] 14:18:39:365 i-Mongo-Store/(9480:9537): Se mueve de 7|5 a 7|6$
+[INFO] 14:18:39:366 i-Mongo-Store/(9480:9537): Se mueve de 7|6 a 7|7$
+[INFO] 14:18:39:366 i-Mongo-Store/(9480:9537): Se finaliza la tarea BARRER$
+[INFO] 14:18:39:367 i-Mongo-Store/(9480:9537): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:18:39:370 i-Mongo-Store/(9480:9540): Se mueve de 4|3 a 4|4$
+[INFO] 14:18:39:371 i-Mongo-Store/(9480:9540): Se finaliza la tarea LIMPIAR_ACUARIOS$
+[INFO] 14:18:39:373 i-Mongo-Store/(9480:9540): Comienza ejecución de tarea IRSE$
+[INFO] 14:18:39:374 i-Mongo-Store/(9480:9540): Se mueve de 4|4 a 5|4$
+[INFO] 14:18:39:374 i-Mongo-Store/(9480:9540): Se mueve de 5|4 a 6|4$
+[INFO] 14:18:39:377 i-Mongo-Store/(9480:9540): Se mueve de 6|4 a 6|5$
+[INFO] 14:18:39:380 i-Mongo-Store/(9480:9537): Se mueve de 7|7 a 6|7$
+[INFO] 14:18:39:381 i-Mongo-Store/(9480:9537): Se mueve de 6|7 a 5|7$
+[INFO] 14:18:39:382 i-Mongo-Store/(9480:9537): Se mueve de 5|7 a 4|7$
+[INFO] 14:18:39:382 i-Mongo-Store/(9480:9537): Se mueve de 4|7 a 3|7$
+[INFO] 14:18:39:383 i-Mongo-Store/(9480:9535): Comienza ejecución de tarea BARRER$
+[INFO] 14:18:39:384 i-Mongo-Store/(9480:9535): Se mueve de 7|2 a 7|3$
+[INFO] 14:18:39:386 i-Mongo-Store/(9480:9535): Se mueve de 7|3 a 7|4$
+[INFO] 14:18:39:389 i-Mongo-Store/(9480:9535): Se mueve de 7|4 a 7|5$
+[INFO] 14:18:39:392 i-Mongo-Store/(9480:9535): Se mueve de 7|5 a 7|6$
+[INFO] 14:18:39:394 i-Mongo-Store/(9480:9535): Se mueve de 7|6 a 7|7$
+[INFO] 14:18:39:395 i-Mongo-Store/(9480:9535): Se finaliza la tarea BARRER$
+[INFO] 14:18:39:397 i-Mongo-Store/(9480:9537): Se mueve de 3|7 a 2|7$
+[INFO] 14:18:39:398 i-Mongo-Store/(9480:9537): Se finaliza la tarea SALUDAR$
+[INFO] 14:18:39:399 i-Mongo-Store/(9480:9543): Se mueve de 8|6 a 8|7$
+[INFO] 14:18:39:399 i-Mongo-Store/(9480:9543): Se mueve de 8|7 a 8|8$
+[INFO] 14:18:39:401 i-Mongo-Store/(9480:9543): Se finaliza la tarea IRSE$
+[INFO] 14:18:39:401 i-Mongo-Store/(9480:9537): El tripulante 9533 finalizó sus tareas y se desconectó
+[INFO] 14:18:39:403 i-Mongo-Store/(9480:9540): Se mueve de 6|5 a 6|6$
+[INFO] 14:18:39:403 i-Mongo-Store/(9480:9540): Se finaliza la tarea IRSE$
+[INFO] 14:18:39:403 i-Mongo-Store/(9480:9540): El tripulante 9538 finalizó sus tareas y se desconectó
+[INFO] 14:18:39:403 i-Mongo-Store/(9480:9535): Comienza ejecución de tarea SALUDAR$
+[INFO] 14:18:39:404 i-Mongo-Store/(9480:9535): Se mueve de 7|7 a 6|7$
+[INFO] 14:18:39:406 i-Mongo-Store/(9480:9535): Se mueve de 6|7 a 5|7$
+[INFO] 14:18:39:407 i-Mongo-Store/(9480:9535): Se mueve de 5|7 a 4|7$
+[INFO] 14:18:39:409 i-Mongo-Store/(9480:9543): El tripulante 9541 finalizó sus tareas y se desconectó
+[INFO] 14:18:39:411 i-Mongo-Store/(9480:9535): Se mueve de 4|7 a 3|7$
+[INFO] 14:18:39:411 i-Mongo-Store/(9480:9535): Se mueve de 3|7 a 2|7$
+[INFO] 14:18:39:413 i-Mongo-Store/(9480:9535): Se finaliza la tarea SALUDAR$
+[INFO] 14:18:39:413 i-Mongo-Store/(9480:9535): El tripulante 9532 finalizó sus tareas y se desconectó
+[INFO] 14:18:49:172 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
+[INFO] 14:19:01:178 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
+[INFO] 14:19:13:196 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
+[INFO] 14:19:25:207 i-Mongo-Store/(9480:9485): Se sincronizaron los bloques
