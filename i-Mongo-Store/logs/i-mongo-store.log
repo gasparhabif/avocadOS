@@ -1,0 +1,22 @@
+[INFO] 13:40:36:207 i-Mongo-Store/(7586:7586): Se inició el log
+[INFO] 13:40:36:210 i-Mongo-Store/(7586:7586): Se cargó la configuración
+[INFO] 13:40:36:211 i-Mongo-Store/(7586:7586): El FS no existe. Creando FS desde cero...
+[INFO] 13:40:36:211 i-Mongo-Store/(7586:7586): Se crearon los directorios
+[INFO] 13:40:36:213 i-Mongo-Store/(7586:7586): Se creó SuperBloque.ims
+[INFO] 13:40:36:221 i-Mongo-Store/(7586:7586): Se creó Blocks.ims
+[INFO] 13:40:36:221 i-Mongo-Store/(7586:7586): Se creó el FS
+[INFO] 13:40:36:222 i-Mongo-Store/(7586:7586): Se cargó SuperBloque.ims
+[INFO] 13:40:36:225 i-Mongo-Store/(7586:7586): Se cargó Blocks.ims
+[INFO] 13:40:36:226 i-Mongo-Store/(7586:7586): Esperando Discordiador en el puerto 5002 para informar sabotajes
+[INFO] 13:40:40:709 i-Mongo-Store/(7586:7586): Se conectó el discordiador en el socket 7 para informar sabotajes
+[INFO] 13:40:40:710 i-Mongo-Store/(7586:7586): Esperando Discordiador en el puerto 5002 para traficar bitácoras
+[INFO] 13:40:40:710 i-Mongo-Store/(7586:7586): Se conectó el Discordiador en el socket 8 para traficar bitácoras
+[INFO] 13:40:40:711 i-Mongo-Store/(7586:7586): Esperando tripulantes en el puerto 5002
+[INFO] 13:40:46:232 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:40:56:239 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:41:06:246 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:41:16:265 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:41:26:276 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:41:36:281 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:41:46:289 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques
+[INFO] 13:41:56:295 i-Mongo-Store/(7586:7591): Se sincronizaron los bloques

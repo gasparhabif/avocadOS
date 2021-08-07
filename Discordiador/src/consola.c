@@ -232,4 +232,17 @@ void IMPRIMIR_SEGMENTOS(char **parametros)
     void *dEnviar = serializarInt(0, IMPRIMIR_SEGMENTACION, &bEnviar);
     send(sockfd_ram, dEnviar, bEnviar, 0);
     free(dEnviar);
+
+    t_tarea *segmentos_recibidos = (t_tarea *)recibir_paquete(sockfd_ram);
+
+    char **segmentos_spliteados = string_split(segmentos_recibidos->tarea, "$");
+    char **datos_un_segmento;
+
+    printf("----------------------------------------------------------------------------\n");
+    for (int i = 0; segmentos_spliteados[i] != NULL; i++)
+    {
+        datos_un_segmento = string_split(segmentos_spliteados[i], "-");
+        printf("%s\t%s\t%s\t%s\n", datos_un_segmento[0], datos_un_segmento[1], datos_un_segmento[2], datos_un_segmento[3]);
+    }
+    printf("----------------------------------------------------------------------------\n");
 }

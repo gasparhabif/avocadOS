@@ -5,3 +5,5 @@ Another way to make a directory stay (almost) empty (in the repository) is to cr
 *
 # Except this file
 !.gitignore
+!mi-ram-hq.log
+!proceso3.log

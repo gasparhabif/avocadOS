@@ -1,0 +1,5 @@
+[INFO] 13:40:33:897 Mi-Ram-HQ/(7532:7532): Se inicio el log
+[INFO] 13:40:33:900 Mi-Ram-HQ/(7532:7532): Se cargo la config de la RAM
+[INFO] 13:40:33:900 Mi-Ram-HQ/(7532:7532): 256 bytes reservados en 0x8182278
+[INFO] 13:40:33:903 Mi-Ram-HQ/(7532:7532): Se inicio el server
+[INFO] 13:40:40:709 Mi-Ram-HQ/(7532:7537): Recibí una conexión en el socket 5

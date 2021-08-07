@@ -54,7 +54,10 @@ void iniciar_tripulante_paginado(int client, t_TCBcPID *datos_recibidos, char id
     pthread_mutex_unlock(&acceso_memoria);
 
     //DIBUJO EL TRIPULANTE EN EL MAPA
-    personaje_crear(level, idMapa, datos_recibidos->tcb.posX, datos_recibidos->tcb.posY);
+    int err;
+    err = personaje_crear(level, idMapa, datos_recibidos->tcb.posX, datos_recibidos->tcb.posY);
+    if (err != 0)
+        log_error(logger, "Error al crear el personaje en el mapa");
     ASSERT_CREATE(level, idMapa, err);
     nivel_gui_dibujar(level);
 

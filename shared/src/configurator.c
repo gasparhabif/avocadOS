@@ -96,6 +96,8 @@ t_store_conf *get_store_config(char *path)
     response->puerto = config_get_int_value(basicConfig, campos_store[STORE_PUERTO]);
     response->tiempo_sincronizacion = config_get_int_value(basicConfig, campos_store[TIEMPO_SINCRONIZACION]);
     response->posiciones_sabotaje = list_create();
+    response->block_size = config_get_int_value(basicConfig, campos_store[TAMANIO_BLOQUES]);
+    response->blocks = config_get_int_value(basicConfig, campos_store[CANTIDAD_BLOQUES]);
 
     char **posiciones_sabotaje_aux = config_get_array_value(basicConfig, campos_store[POSICIONES_SABOTAJE]);
     for (int i = 0; posiciones_sabotaje_aux[i] != NULL; i++)
@@ -118,6 +120,8 @@ static void llenar_campos_store(char *response[CANTIDAD_CAMPOS_STORE])
     response[STORE_PUERTO] = "PUERTO";
     response[TIEMPO_SINCRONIZACION] = "TIEMPO_SINCRONIZACION";
     response[POSICIONES_SABOTAJE] = "POSICIONES_SABOTAJE";
+    response[CANTIDAD_BLOQUES] = "BLOCKS";
+    response[TAMANIO_BLOQUES] = "BLOCK_SIZE";
 }
 
 t_ram_conf *get_ram_config(char *path)

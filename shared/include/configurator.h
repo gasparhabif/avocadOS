@@ -10,7 +10,7 @@
 // TODO: Desarrollar destroyers para cada TAD
 
 #define CANTIDAD_CAMPOS_CPU 9
-#define CANTIDAD_CAMPOS_STORE 4
+#define CANTIDAD_CAMPOS_STORE 6
 #define CANTIDAD_CAMPOS_RAM 8
 
 enum POS_CAMPOS_CPU
@@ -31,7 +31,9 @@ enum POS_CAMPOS_STORE
     PUNTO_MONTAJE,
     STORE_PUERTO,
     TIEMPO_SINCRONIZACION,
-    POSICIONES_SABOTAJE
+    POSICIONES_SABOTAJE,
+    CANTIDAD_BLOQUES,
+    TAMANIO_BLOQUES
 };
 enum POS_CAMPOS_RAM
 {
@@ -64,7 +66,8 @@ typedef struct
     int puerto;
     int tiempo_sincronizacion;
     t_list *posiciones_sabotaje;
-
+    int block_size;
+    int blocks;
 } t_store_conf;
 
 typedef struct

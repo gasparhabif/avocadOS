@@ -5,6 +5,7 @@ int main()
     system("clear");
 
     // Iniciar logger
+    system("rm logs/i-mongo-store.log");
     logger = log_create("logs/i-mongo-store.log", "i-Mongo-Store", 1, LOG_LEVEL_INFO);
     log_info(logger, "Se inició el log");
 
@@ -27,7 +28,7 @@ int main()
 
         create_dirs();
         log_info(logger, "Se crearon los directorios");
-        create_superbloque(BLOCK_SIZE, BLOCKS);
+        create_superbloque(config->block_size, config->blocks);
         log_info(logger, "Se creó SuperBloque.ims");
         create_blocks();
         log_info(logger, "Se creó Blocks.ims");

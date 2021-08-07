@@ -95,6 +95,8 @@ void iniciar_tripulante(int client, t_TCBcPID *tcbCpid_recibido, char idMapaTrip
     //DIBUJO EL TRIPULANTE EN EL MAPA
     int err;
     err = personaje_crear(level, idMapaTripulante, tcbCpid_recibido->tcb.posX, tcbCpid_recibido->tcb.posY);
+    if (err != 0)
+        log_error(logger, "Error al crear el personaje en el mapa");
     ASSERT_CREATE(level, idMapaTripulante, err);
     nivel_gui_dibujar(level);
 

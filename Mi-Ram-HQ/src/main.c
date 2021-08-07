@@ -5,7 +5,8 @@ int main()
     system("clear");
 
     //CREO EL LOGGER
-    logger = log_create("../Mi-Ram-HQ/logs/proceso3.log", "Mi-Ram-HQ", 0, LOG_LEVEL_INFO);
+    system("rm logs/mi-ram-hq.log");
+    logger = log_create("logs/mi-ram-hq.log", "Mi-Ram-HQ", 0, LOG_LEVEL_INFO);
     log_info(logger, "Se inicio el log");
 
     //INICIO DEL CONFIG

@@ -165,22 +165,24 @@ void ejecutar_fsck()
             log_info(logger, "Reparación de SIZE de Oxigeno.ims finalizada");
         }
 
-        // Verificar cantidad de bloques y lista de bloques
-        if (!recurso_block_count_check(oxigeno_aux))
-        {
-            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Oxigeno.ims");
-            log_info(logger, "Reparando BLOCK_COUNT de Oxigeno.ims...");
-            update_recurso_metadata(backup_oxigeno);
-            log_info(logger, "Reparación de BLOCK_COUNT de Oxigeno.ims finalizada");
-        }
-
         // Verificar bloques
+        oxigeno_aux = load_recurso(oxigeno_file_path);
         if (!recurso_blocks_check(backup_oxigeno, oxigeno_aux))
         {
             log_error(logger, "Hubo un sabotaje en BLOCKS de Oxigeno.ims");
             log_info(logger, "Reparando BLOCKS de Oxigeno.ims...");
             update_recurso_metadata(backup_oxigeno);
             log_info(logger, "Reparación de BLOCKS de Oxigeno.ims finalizada");
+        }
+
+        // Verificar cantidad de bloques y lista de bloques
+        oxigeno_aux = load_recurso(oxigeno_file_path);
+        if (!recurso_block_count_check(oxigeno_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Oxigeno.ims");
+            log_info(logger, "Reparando BLOCK_COUNT de Oxigeno.ims...");
+            update_recurso_metadata(backup_oxigeno);
+            log_info(logger, "Reparación de BLOCK_COUNT de Oxigeno.ims finalizada");
         }
 
         liberar_recurso(oxigeno_aux);
@@ -201,22 +203,24 @@ void ejecutar_fsck()
             log_info(logger, "Reparación de SIZE de Comida.ims finalizada");
         }
 
-        // Verificar cantidad de bloques y lista de bloques
-        if (!recurso_block_count_check(comida_aux))
-        {
-            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Comida.ims");
-            log_info(logger, "Reparando BLOCK_COUNT de Comida.ims...");
-            update_recurso_metadata(backup_comida);
-            log_info(logger, "Reparación de BLOCK_COUNT de Comida.ims finalizada");
-        }
-
         // Verificar bloques
+        comida_aux = load_recurso(comida_file_path);
         if (!recurso_blocks_check(backup_comida, comida_aux))
         {
             log_error(logger, "Hubo un sabotaje en BLOCKS de Comida.ims");
             log_info(logger, "Reparando BLOCKS de Comida.ims...");
             update_recurso_metadata(backup_comida);
             log_info(logger, "Reparación de BLOCKS de Comida.ims finalizada");
+        }
+
+        // Verificar cantidad de bloques y lista de bloques
+        comida_aux = load_recurso(comida_file_path);
+        if (!recurso_block_count_check(comida_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Comida.ims");
+            log_info(logger, "Reparando BLOCK_COUNT de Comida.ims...");
+            update_recurso_metadata(backup_comida);
+            log_info(logger, "Reparación de BLOCK_COUNT de Comida.ims finalizada");
         }
 
         liberar_recurso(comida_aux);
@@ -237,22 +241,24 @@ void ejecutar_fsck()
             log_info(logger, "Reparación de SIZE de Basura.ims finalizada");
         }
 
-        // Verificar cantidad de bloques y lista de bloques
-        if (!recurso_block_count_check(basura_aux))
-        {
-            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Basura.ims");
-            log_info(logger, "Reparando BLOCK_COUNT de Basura.ims...");
-            update_recurso_metadata(backup_basura);
-            log_info(logger, "Reparación de BLOCK_COUNT de Basura.ims finalizada");
-        }
-
         // Verificar bloques
+        basura_aux = load_recurso(basura_file_path);
         if (!recurso_blocks_check(backup_basura, basura_aux))
         {
             log_error(logger, "Hubo un sabotaje en BLOCKS de Basura.ims");
             log_info(logger, "Reparando BLOCKS de Basura.ims...");
             update_recurso_metadata(backup_basura);
             log_info(logger, "Reparación de BLOCKS de Basura.ims finalizada");
+        }
+
+        // Verificar cantidad de bloques y lista de bloques
+        basura_aux = load_recurso(basura_file_path);
+        if (!recurso_block_count_check(basura_aux))
+        {
+            log_error(logger, "Hubo un sabotaje en BLOCK_COUNT de Basura.ims");
+            log_info(logger, "Reparando BLOCK_COUNT de Basura.ims...");
+            update_recurso_metadata(backup_basura);
+            log_info(logger, "Reparación de BLOCK_COUNT de Basura.ims finalizada");
         }
 
         liberar_recurso(basura_aux);

@@ -113,16 +113,25 @@ void recibir_mensaje(void *parametro)
                 break;
             case IMPRIMIR_SEGMENTACION:
                 pthread_mutex_lock(&acceso_memoria);
-                log_info(logger, "------------------------------------------------------------------\n");
+
+                char *segmentos = string_new();
+
                 for (int i = 0; i < list_size(tabla_estado_segmentos); i++)
                 {
                     estado_segmentos *reg_seg = list_get(tabla_estado_segmentos, i);
-                    log_info(logger, "SEG N°: %d\t", i);
-                    log_info(logger, "Inicio: %d\t", reg_seg->inicio);
-                    log_info(logger, "Tamaño: %d\t", reg_seg->limite);
-                    log_info(logger, "Ocupado: %d\n", reg_seg->ocupado);
+                    string_append_with_format(&segmentos, "SEG N°: %s-", string_itoa(i));
+                    string_append_with_format(&segmentos, "Inicio: %s-", string_itoa(reg_seg->inicio));
+                    string_append_with_format(&segmentos, "Tamaño: %s-", string_itoa(reg_seg->limite));
+                    char *estado = reg_seg->ocupado ? "Si " : "No";
+                    if (i == list_size(tabla_estado_segmentos) - 1)
+                        string_append_with_format(&segmentos, "Ocupado: %s", estado); //string_itoa(reg_seg->ocupado)
+                    else
+                        string_append_with_format(&segmentos, "Ocupado: %s$", estado);
                 }
-                log_info(logger, "------------------------------------------------------------------\n");
+                int bEnviar;
+                void *datos_enviar = serializar_string(segmentos, &bEnviar);
+                send(client, datos_enviar, bEnviar, 0);
+
                 pthread_mutex_unlock(&acceso_memoria);
                 break;
             case ELIMINAR_TRIPULANTE:
