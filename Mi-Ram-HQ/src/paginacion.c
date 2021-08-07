@@ -49,7 +49,8 @@ int solicitar_paginas(int bytes_solicitados, int pid)
         frame_a_memoria_virtual();
         // TODO: Una vez que este hecho el swapping y no se logre reservar la
         // cantidad de paginas -> Informar al discoridador
-        log_info(logger, "No se pudo reserver memoria.");
+        log_error(logger, "No se pudo reserver memoria.");
+        exit(EXIT_FAILURE);
         return EXIT_FAILURE;
     }
 
@@ -151,12 +152,18 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
     int bytesOcupados = bytes_ocupados_pid(datos_recibidos->pid);
     int fragmentacion_interna = calcular_fragmentacion(datos_recibidos->pid);
     int escribirDesdePagina;
-    int offsetPrimeraPagina = tamanio_paginas - fragmentacion_interna;
+    int offsetPrimeraPagina = fragmentacion_interna == 0 ? 0 : tamanio_paginas - fragmentacion_interna;
     int paginas_acceder = 0;
-    int bGuardadros = 0;
+    int bGuardados = 0;
+
+    //printf("\n\nBYTES OCUPADOS: %d\n", bytesOcupados);
+    //printf("FRAGMENTACION INTERNA: %d\n", fragmentacion_interna);
+    //printf("OFFSET PRIMERA PAGINA: %d\n", offsetPrimeraPagina);
 
     for (int i = fragmentacion_interna; i < sizeof(t_TCB); i += tamanio_paginas)
         paginas_acceder++;
+
+    // printf("PAGINAS A ACCEDER: %d\n", paginas_acceder);
 
     int err;
     t_pagina_proceso *lista_paginas_proceso = obtener_paginas_proceso(datos_recibidos->pid, &err);
@@ -177,31 +184,40 @@ void guardar_tcb_paginacion(t_TCBcPID *datos_recibidos)
         for (int i = escribirDesdePagina; i <= (escribirDesdePagina + paginas_acceder); i++)
         {
             //log_info(logger, "i: %d", i);
+            if (bGuardados == sizeof(t_TCB))
+                continue;
+
             //LA PRIMERA PAGINA DEBO UNICAMENTE LLENARLA CON LOS BYTES QUE FALTAN
             if (i == escribirDesdePagina)
             {
-                printf("Ahora guardo %d bytes\n", bGuardadros + fragmentacion_interna);
-                memcpy((list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina), tcb, fragmentacion_interna);
-                bGuardadros += fragmentacion_interna;
+                int bytes_a_copiar = fragmentacion_interna == 0 ? tamanio_paginas : fragmentacion_interna;
+                // printf("Ahora guardo %d bytes\n", bGuardados + bytes_a_copiar);
+                // printf("Bytes a copiar %d\n", bytes_a_copiar);
+                memcpy((list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina), tcb, bytes_a_copiar);
+                // memcpy((list_get(lista_paginas_proceso->paginas, i) + offsetPrimeraPagina), tcb, fragmentacion_interna);
+                // bGuardados += fragmentacion_interna;
+                bGuardados += bytes_a_copiar;
             }
             //EL RESTO DE LAS PAGINAS DEBO LLENARLAS ENTERAS O CON EL RESTANTE DEL TCB
             else
             {
-                if (bGuardadros + tamanio_paginas < sizeof(t_TCB))
+                if (bGuardados + tamanio_paginas < sizeof(t_TCB))
                 {
-                    printf("Guardé %d bytes\n", bGuardadros + tamanio_paginas);
-                    //printf("Se copia en %p lo que esta en %p, un total de %dB\n", list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, tamanio_paginas);
-                    memcpy(list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, tamanio_paginas);
-                    bGuardadros += tamanio_paginas;
+                    //printf("Guardé %d bytes\n", bGuardados + tamanio_paginas);
+                    //printf("Se copia en %p lo que esta en %p, un total de %dB\n", list_get(lista_paginas_proceso->paginas, i), tcb + bGuardados, tamanio_paginas);
+                    memcpy(list_get(lista_paginas_proceso->paginas, i), tcb + bGuardados, tamanio_paginas);
+                    bGuardados += tamanio_paginas;
                 }
                 else
                 {
-                    //printf("Se copia en %p lo que esta en %p, un total de %dB\n", list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, sizeof(t_TCB)-bGuardadros);
-                    printf("bGuardados: %d\tEscribo: %d\n", bGuardadros, sizeof(t_TCB) - bGuardadros);
-                    memcpy(list_get(lista_paginas_proceso->paginas, i), tcb + bGuardadros, sizeof(t_TCB) - bGuardadros);
-                    bGuardadros += sizeof(t_TCB) - bGuardadros;
+                    //printf("Se copia en %p lo que esta en %p, un total de %dB\n", list_get(lista_paginas_proceso->paginas, i), tcb + bGuardados, sizeof(t_TCB)-bGuardados);
+                    // printf("bGuardados: %d\tEscribo: %d\n", bGuardados, sizeof(t_TCB) - bGuardados);
+                    memcpy(list_get(lista_paginas_proceso->paginas, i), tcb + bGuardados, sizeof(t_TCB) - bGuardados);
+                    bGuardados += sizeof(t_TCB) - bGuardados;
                 }
             }
+
+            // printf("Copié %d bytes\n", bGuardados);
         }
     }
 

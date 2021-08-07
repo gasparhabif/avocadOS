@@ -67,9 +67,9 @@ void dump_paginacion(FILE *fpDump)
     for (int i = 0; i < maxima_cantidad_paginas; i++)
     {
         t_estado_frame *frame = list_get(estado_frames, i);
-        char *estado = frame->ocupado ? "Ocupado" : "Libre";
+        char *estado = frame->ocupado ? "Ocupado " : "Libre\t";
         fprintf(fpDump, "Marco: %d \t", i);
-        fprintf(fpDump, "Estado: %s \t", estado);
+        fprintf(fpDump, "Estado: %s", estado);
         frame->pid == 0 ? fprintf(fpDump, "Proceso: -\t") : fprintf(fpDump, "Proceso: %d\t", frame->pid);
         frame->pag_proc == 0 ? fprintf(fpDump, "Pagina: -\n") : fprintf(fpDump, "Pagina: %d \n", frame->pag_proc);
     }

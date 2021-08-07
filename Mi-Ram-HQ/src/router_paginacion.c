@@ -247,6 +247,7 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
     if (cant_tripulantes_proceso(datos_recibidos->pid) == 1)
     {
         //ELIMINAR PCB Y TAREAS (ADEMAS DEL TCB)
+        // log_error(logger, "Se elimina PATOTA %d, TRIPULANTE %d", datos_recibidos->pid, datos_recibidos->tid);
 
         t_pagina_proceso *pag_proceso;
 
@@ -257,16 +258,21 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
             if (pag_proceso->pid == datos_recibidos->pid)
             {
 
+                int tamanio_lista = list_size(pag_proceso->paginas);
+                // log_error(logger, "Tamanio de la lista: %d", tamanio_lista);
                 //LIBERO LA MEMORIA Y ELIMINO LAS PAGINAS DEL PROCESO DE LA TABLA
-                for (int j = 0; j < list_size(pag_proceso->paginas); j++)
+                for (int j = 0; j < tamanio_lista; j++)
                 {
-                    int indice = ((int)list_get(pag_proceso->paginas, j) - (int)memoria) / tamanio_paginas;
+                    int indice = ((int)list_get(pag_proceso->paginas, 0) - (int)memoria) / tamanio_paginas;
+                    // log_error(logger, "El indice es: %d para el marco: %d con pid: %d\n", indice, indice, pag_proceso->pid);
                     t_estado_frame *frame = list_get(estado_frames, indice);
+                    frame->pag_proc = 0;
+                    frame->pid = 0;
                     frame->ocupado = 0;
                     frame->ultimo_acceso = 0;
                     list_replace(estado_frames, indice, frame);
 
-                    list_remove(pag_proceso->paginas, j);
+                    list_remove(pag_proceso->paginas, 0);
                 }
 
                 //ELIMINO LA TABLA DE PAGINAS DEL PROCEO
@@ -291,6 +297,8 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
     {
         //ELIMINAR TCB SOLICITADO UNICAMENTE
 
+        // log_error(logger, "Se elimina unicamente el tripulante %d de la patota %d", datos_recibidos->tid, datos_recibidos->pid);
+
         int bProceso = bytes_ocupados_pid(datos_recibidos->pid);
         void *elementos_proceso_cTCB = recuperar_elementos_proceso(datos_recibidos->pid);
         void *elementos_proceso_sTCB = malloc(bProceso - sizeof(t_TCB));
@@ -301,8 +309,12 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
         int index;
         int paginasNecesarias = (bProceso - sizeof(t_TCB)) / tamanio_paginas;
 
+        // log_info(logger, "(bProceso(%d) - sizeof(t_TCB)(%d)) / tamanio_paginas(%d)", bProceso, sizeof(t_TCB), tamanio_paginas);
+
         if (((bProceso - sizeof(t_TCB)) % tamanio_paginas) != 0)
             paginasNecesarias++;
+
+        // log_info(logger, "Supuestas paginas necesarias: %d para el tripulante %d en el proceso %d", paginasNecesarias, datos_recibidos->tid, datos_recibidos->pid);
 
         for (int i = 0; i < list_size(tabla_proceso); i++)
         {
@@ -322,15 +334,23 @@ void eliminar_tripulante_paginado(t_pidYtid *datos_recibidos, char idMapa)
                 //printf("%d\n", TCB->puntero_PCB);
 
                 //ME FIJO SI HAY QUE DEVOLVER PAGINAS O NO
+                // log_error(logger, "La condicion del if es pagsNecesarias %d < tamanio lista %d", paginasNecesarias, list_size(lista_paginas_proceso));
                 if (paginasNecesarias < list_size(lista_paginas_proceso))
                 {
-                    for (int i = list_size(lista_paginas_proceso) - 1; i > paginasNecesarias - 1; i--)
+                    // log_error(logger, "Estoy entrando al If que estamos chequando");
+                    for (int j = list_size(lista_paginas_proceso) - 1; j > paginasNecesarias - 1; j--)
                     {
-                        t_estado_frame *frame = list_get(estado_frames, i);
+                        int indice = ((int)list_get(lista_paginas_proceso, j) - (int)memoria) / tamanio_paginas;
+                        // t_estado_frame *frame = list_get(estado_frames, j);
+                        t_estado_frame *frame = list_get(estado_frames, indice);
+                        // log_error(logger, "2do indice es: %d para el marco: %d con pid: %d\n", indice, indice, datos_recibidos->pid);
+                        frame->pag_proc = 0;
+                        frame->pid = 0;
                         frame->ocupado = 0;
-                        list_replace(estado_frames, i, frame);
-                        list_remove(lista_paginas_proceso, i);
-                        //printf("Libero un pagina\n");
+                        frame->ultimo_acceso = 0;
+                        list_replace(estado_frames, indice, frame);
+                        list_remove(lista_paginas_proceso, j);
+                        // log_error(logger, "Liberando la página: %d", indice);
                     }
                 }
 
