@@ -44,8 +44,8 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     pthread_mutex_init(&(admin->pausar_tripulante), NULL);
 
-    //if (!planificando)
-    //    pthread_mutex_trylock(&admin->pausar_tripulante);
+    if (!planificando)
+        pthread_mutex_trylock(&admin->pausar_tripulante);
 
     /*
     printf("---------------ADMIN----------------\n");
@@ -108,13 +108,13 @@ void tripulante(t_parametros_tripulantes *parametro)
 
     while (finTareas == 0)
     {
-        pthread_mutex_trylock(&admin->pausar_tripulante);
+        //pthread_mutex_lock(&admin->pausar_tripulante);
 
-        //if (pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
-        //{
-        //    pthread_mutex_lock(&admin->pausar_tripulante);
-        //    printf("No iniciar el tripulante %d\n", admin->tid);
-        //}
+        if (pthread_mutex_trylock(&admin->pausar_tripulante) != 0)
+        {
+            pthread_mutex_lock(&admin->pausar_tripulante);
+            //printf("No iniciar el tripulante %d\n", admin->tid);
+        }
 
         //PIDO EL SEMAFORO PARA ENTRAR EN EXEC (WAIT)
         sem_wait(&s_multiprocesamiento);
@@ -159,6 +159,7 @@ void tripulante(t_parametros_tripulantes *parametro)
         {
             block = 0;
             actualizar_estado(admin, BLOCKED_IO);
+
             pthread_mutex_lock(&mutex_block);
 
             //ENVIO LA TAREA AL MONGO
@@ -184,6 +185,8 @@ void tripulante(t_parametros_tripulantes *parametro)
         }
         else if (!tareaPendiente && !finTareas)
         {
+            actualizar_estado(admin, READY);
+
             int bEnviar;
             void *d_enviar = serializar_ejecutarTarea(tarea_recibida->codigoTarea, nom_tarea, tarea_recibida->parametro, &bEnviar);
             send(admin->sockfd_tripulante_mongo, d_enviar, bEnviar, 0);
